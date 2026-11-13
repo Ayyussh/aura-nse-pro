@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aura_nse_api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=production
+      - TIMEZONE=Asia/Kolkata
+      - DATABASE_URL=sqlite:///./backend/aura_nse.db
+    volumes:
+      - ./backend/aura_nse.db:/app/backend/aura_nse.db
+      - ./data/cache:/app/data/cache
+      - ./config:/app/config
+    env_file:
+      - .env

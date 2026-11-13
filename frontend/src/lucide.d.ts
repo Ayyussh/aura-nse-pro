@@ -1,0 +1,55 @@
+declare module 'lucide-react' {
+  import * as React from 'react';
+  export interface IconProps extends React.SVGProps<SVGSVGElement> {
+    size?: number | string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
+  export type Icon = React.FC<IconProps>;
+  export const LayoutDashboard: Icon;
+  export const TrendingUp: Icon;
+  export const TrendingDown: Icon;
+  export const Shield: Icon;
+  export const ShieldCheck: Icon;
+  export const ShieldAlert: Icon;
+  export const Bug: Icon;
+  export const Key: Icon;
+  export const MessageSquare: Icon;
+  export const Receipt: Icon;
+  export const Activity: Icon;
+  export const Sparkles: Icon;
+  export const Volume2: Icon;
+  export const VolumeX: Icon;
+  export const Play: Icon;
+  export const Pause: Icon;
+  export const Brain: Icon;
+  export const Radio: Icon;
+  export const ExternalLink: Icon;
+  export const RefreshCw: Icon;
+  export const CheckCircle2: Icon;
+  export const XCircle: Icon;
+  export const Info: Icon;
+  export const ChevronDown: Icon;
+  export const ChevronUp: Icon;
+  export const Award: Icon;
+  export const AlertOctagon: Icon;
+  export const AlertTriangle: Icon;
+  export const AlertCircle: Icon;
+  export const DollarSign: Icon;
+  export const Percent: Icon;
+  export const PlusCircle: Icon;
+  export const Trash2: Icon;
+  export const PieChart: Icon;
+  export const CheckCircle: Icon;
+  export const Flame: Icon;
+  export const ArrowRight: Icon;
+  export const ArrowUpRight: Icon;
+  export const RotateCcw: Icon;
+  export const Send: Icon;
+  export const Clock: Icon;
+  export const Bot: Icon;
+  export const User: Icon;
+  export const Database: Icon;
+  export const Calendar: Icon;
+  export const Download: Icon;
+}

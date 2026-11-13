@@ -1,0 +1,38 @@
+# Indian Capital Gains Taxation Rules
+# Validated as of: 2026-11-13 (FY 2026-27 / AY 2027-28)
+
+version: "2026.11"
+assessment_year: "2027-28"
+financial_year: "2026-27"
+
+capital_gains:
+  stcg: # Short-Term Capital Gains (Holding Period <= 12 months, STT paid)
+    base_rate: 0.20           # 20.0%
+    cess_rate: 0.04           # 4.0% Health & Education Cess
+    effective_rate_standard: 0.208 # 20.8%
+    surcharge_slabs:
+      up_to_50l: 0.0
+      above_50l_to_1cr: 0.10
+      above_1cr_to_2cr: 0.15
+      above_2cr: 0.15        # Capped at 15% for listed equity capital gains
+
+  ltcg: # Long-Term Capital Gains (Holding Period > 12 months, STT paid)
+    base_rate: 0.125          # 12.5%
+    cess_rate: 0.04           # 4.0%
+    effective_rate_standard: 0.130 # 13.0%
+    exemption_limit_rupees: 125000.0 # ₹1.25 Lakh per financial year
+    indexation_allowed: false
+    surcharge_slabs:
+      up_to_50l: 0.0
+      above_50l_to_1cr: 0.10
+      above_1cr_to_2cr: 0.15
+      above_2cr: 0.15
+
+set_off_rules:
+  stcl_can_offset: ["STCG", "LTCG"]
+  ltcl_can_offset: ["LTCG"]
+  carry_forward_years_max: 8
+  mandatory_itr_filing_date_for_carry_forward: "July 31 / October 31"
+
+tax_classification_choice: "INVESTOR_CAPITAL_GAINS" # or "BUSINESS_INCOME_TRADING"
+disclaimer: "Tax figures are estimates for educational planning. Frequent high-volume trading may be classified by assessing officers as business income. Consult a Chartered Accountant."

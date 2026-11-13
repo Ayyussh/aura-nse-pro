@@ -1,0 +1,23 @@
+# AURA-NSE Pro Pinned Dependencies
+alembic==1.20.1
+apscheduler==3.11.3
+cryptography==50.0.2
+fastapi==0.162.5
+google-genai==3.3.0
+httpx==0.28.1
+lightgbm==4.7.0
+numpy==2.4.6
+pandas==3.1.1
+pydantic==2.14.3
+pydantic-settings==2.16.3
+pytest==9.2.0
+pytest-asyncio==1.5.0
+python-dotenv==1.2.4
+pyyaml==6.0.3
+scikit-learn==1.9.1
+shap==0.51.0
+sqlalchemy==2.1.8
+tenacity==9.1.4
+uvicorn==0.54.0
+websockets==17.4
+yfinance==1.8.0

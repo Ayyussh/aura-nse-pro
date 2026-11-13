@@ -1,0 +1,141 @@
+name: "AURA Market Automation & Self-Improving Pipeline"
+
+on:
+  schedule:
+    # 09:00 AM IST (03:30 UTC) Mon-Fri: Pre-Market Screening & Telegram Alert
+    - cron: '30 3 * * 1-5'
+    # 09:15 AM IST (03:45 UTC) Mon-Fri: Market Open Anti-Chase Gap Verification
+    - cron: '45 3 * * 1-5'
+    # 15:45 PM IST (10:15 UTC) Mon-Fri: Post-Market Trade Grading & P&L Attribution
+    - cron: '15 10 * * 1-5'
+    # 18:30 PM IST (13:00 UTC) Mon-Fri: EOD Official Bhavcopy Reconciliation
+    - cron: '0 13 * * 1-5'
+    # 10:00 AM IST (04:30 UTC) Saturday: Weekly Mistake Audit & Self-Improving ML Retraining
+    - cron: '30 4 * * 6'
+
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Automation Phase to Execute"
+        required: true
+        type: choice
+        options:
+          - premarket
+          - open_check
+          - postmarket
+          - eod_recon
+          - retrain
+          - full_cycle
+        default: premarket
+      limit:
+        description: "Candidate Scan Limit"
+        required: false
+        type: number
+        default: 25
+      force:
+        description: "Force execution on weekends or holidays"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  run-aura-automation:
+    name: "AURA Autonomous Market Routine"
+    runs-on: ubuntu-latest
+
+    env:
+      GEMINI_API_KEY_1: ${{ secrets.GEMINI_API_KEY_1 }}
+      GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      UPSTOX_ANALYTICS_TOKEN: ${{ secrets.UPSTOX_ANALYTICS_TOKEN }}
+      APP_SECRET_KEY: ${{ secrets.APP_SECRET_KEY }}
+      HEALTHCHECKS_IO_URL: ${{ secrets.HEALTHCHECKS_IO_URL }}
+
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: "Set up Python 3.11"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: "Install Dependencies"
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: "Ensure SQLite Database Exists"
+        run: |
+          python -m backend.db.init_db
+
+      - name: "Determine Automation Mode"
+        id: select-mode
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "mode=${{ github.event.inputs.mode }}" >> $GITHUB_OUTPUT
+            echo "limit=${{ github.event.inputs.limit }}" >> $GITHUB_OUTPUT
+            echo "force=${{ github.event.inputs.force }}" >> $GITHUB_OUTPUT
+          else
+            CRON_SCHEDULE="${{ github.event.schedule }}"
+            echo "Triggered by cron: $CRON_SCHEDULE"
+            case "$CRON_SCHEDULE" in
+              "30 3 * * 1-5")
+                echo "mode=premarket" >> $GITHUB_OUTPUT
+                echo "limit=25" >> $GITHUB_OUTPUT
+                echo "force=false" >> $GITHUB_OUTPUT
+                ;;
+              "45 3 * * 1-5")
+                echo "mode=open_check" >> $GITHUB_OUTPUT
+                echo "limit=25" >> $GITHUB_OUTPUT
+                echo "force=false" >> $GITHUB_OUTPUT
+                ;;
+              "15 10 * * 1-5")
+                echo "mode=postmarket" >> $GITHUB_OUTPUT
+                echo "limit=25" >> $GITHUB_OUTPUT
+                echo "force=false" >> $GITHUB_OUTPUT
+                ;;
+              "0 13 * * 1-5")
+                echo "mode=eod_recon" >> $GITHUB_OUTPUT
+                echo "limit=25" >> $GITHUB_OUTPUT
+                echo "force=false" >> $GITHUB_OUTPUT
+                ;;
+              "30 4 * * 6")
+                echo "mode=retrain" >> $GITHUB_OUTPUT
+                echo "limit=25" >> $GITHUB_OUTPUT
+                echo "force=false" >> $GITHUB_OUTPUT
+                ;;
+              *)
+                echo "mode=premarket" >> $GITHUB_OUTPUT
+                echo "limit=25" >> $GITHUB_OUTPUT
+                echo "force=false" >> $GITHUB_OUTPUT
+                ;;
+            esac
+          fi
+
+      - name: "Execute AURA Pipeline: ${{ steps.select-mode.outputs.mode }}"
+        run: |
+          EXTRA_FLAGS=""
+          if [ "${{ steps.select-mode.outputs.force }}" = "true" ]; then
+            EXTRA_FLAGS="--force"
+          fi
+          python scripts/run_automation.py \
+            --mode ${{ steps.select-mode.outputs.mode }} \
+            --limit ${{ steps.select-mode.outputs.limit }} \
+            $EXTRA_FLAGS
+
+      - name: "Persist Trading Ledger, Model Weights & Mistake Rules"
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add backend/aura_nse.db backend/ml/models/ data/
+          git commit -m "chore(automation): persist trade ledger and champion model updates [skip ci]" || echo "No state changes to commit."
+          git pull --rebase origin main || true
+          git push origin main || echo "Push skipped or branch up-to-date."
