@@ -55,6 +55,8 @@ export const DEMO_FII_DII = {
 export const DEMO_APPROVED_PREDICTIONS = [
   {
     id: 101,
+    is_demo: true,
+    badge: "DEMO, NOT LIVE",
     symbol: "RELIANCE.NS",
     horizon: "SWING",
     setup_tag: "EMA_Pullback",
@@ -92,11 +94,13 @@ export const DEMO_APPROVED_PREDICTIONS = [
       supertrend: "BULLISH",
       delivery_pct: 58.2,
     },
-    audit_hash: "a4f91b72e90c33d1b827e69f41a87c12",
+    audit_hash: "demo_a4f91b72e90c33d1b827e69f41a87c12",
     created_at: "2026-11-14T09:00:00",
   },
   {
     id: 102,
+    is_demo: true,
+    badge: "DEMO, NOT LIVE",
     symbol: "TCS.NS",
     horizon: "SWING",
     setup_tag: "VCP_Contraction",
@@ -133,7 +137,7 @@ export const DEMO_APPROVED_PREDICTIONS = [
       supertrend: "BULLISH",
       delivery_pct: 64.1,
     },
-    audit_hash: "91b2c4e8f1708a329d714bc58231ea70",
+    audit_hash: "demo_91b2c4e8f1708a329d714bc58231ea70",
     created_at: "2026-11-14T09:00:00",
   },
 ];

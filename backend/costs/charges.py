@@ -45,6 +45,7 @@ class IndianChargesEngine:
 
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         self.cfg = config or get_charges_config()
+        self.effective_date = self.cfg.get("effective_date", "2026-11-13")
         self.rates = self.cfg.get("rates", {})
         self.broker_profiles = self.cfg.get("broker_profiles", {})
         self.default_profile = self.cfg.get("default_broker_profile", "zero_brokerage_delivery")

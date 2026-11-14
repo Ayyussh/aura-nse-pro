@@ -32,6 +32,23 @@ from backend.strategies.swing import swing_engine
 logger = logging.getLogger("aura.pipeline")
 
 
+def anchor_latest_audit_hash(latest_hash: str) -> None:
+    """Anchor the latest audit hash externally to an immutable daily anchor file."""
+    try:
+        from backend.core.config import PROJECT_ROOT
+        anchor_file = PROJECT_ROOT / "data" / "audit_anchor_latest.json"
+        anchor_file.parent.mkdir(parents=True, exist_ok=True)
+        with open(anchor_file, "w", encoding="utf-8") as f:
+            json.dump({
+                "latest_audit_hash": latest_hash,
+                "anchored_at_ist": get_ist_now().strftime("%Y-%m-%d %H:%M:%S IST"),
+                "anchored_at_utc": datetime.datetime.utcnow().isoformat() + "Z",
+                "status": "TAMPER_EVIDENT_DAILY_ANCHOR",
+            }, f, indent=2)
+    except Exception as e:
+        logger.warning(f"Could not write external audit anchor: {e}")
+
+
 def log_alert_to_audit(message: str, channel: str = "TELEGRAM") -> None:
     """Persist alert to SystemAuditLog so frontend and audit trail can view it."""
     try:
@@ -248,11 +265,28 @@ def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False) -> Di
                     quantity=sizing.quantity,
                 )
 
-                # Append-only hash chain linking
+                # Append-only canonical JSON audit hash with prev_hash chaining (Section 18.2)
                 last_pred = db.query(Prediction).order_by(Prediction.id.desc()).first()
                 prev_hash = last_pred.audit_hash if last_pred and last_pred.audit_hash else "GENESIS_AURA_HASH"
-                raw_hash = f"{prev_hash}:{symbol}:{today.isoformat()}:{sizing.quantity}:{cand.entry_price}"
-                audit_hash = hashlib.sha256(raw_hash.encode()).hexdigest()
+                canonical_payload = {
+                    "hash_version": "v2",
+                    "prev_hash": prev_hash,
+                    "symbol": symbol,
+                    "side": "BUY",
+                    "entry_price": float(cand.entry_price),
+                    "stop_loss": float(cand.stop_loss),
+                    "target_price": float(cand.target_price),
+                    "quantity": int(sizing.quantity),
+                    "probability": float(ml_res.get("win_probability", 0.5)),
+                    "ev_r": float(ml_res.get("ev_r", 0.0)),
+                    "model_version": ml_predictor.model_version,
+                    "config_hash": config_hash,
+                    "data_snapshot_id": q_meta.get("provenance_timestamp", datetime.datetime.utcnow().isoformat()),
+                    "llm_output_hash": hashlib.sha256(json.dumps(verdict_data, sort_keys=True).encode("utf-8")).hexdigest(),
+                    "utc_timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+                }
+                canonical_json = json.dumps(canonical_payload, sort_keys=True)
+                audit_hash = hashlib.sha256(canonical_json.encode("utf-8")).hexdigest()
 
                 # Record prediction into DB (status: OPEN)
                 pred_record = Prediction(
@@ -282,9 +316,14 @@ def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False) -> Di
                     entry_date=today,
                     charges_rupees=charges.total_charges_and_brokerage,
                     audit_hash=audit_hash,
+                    prev_hash=prev_hash,
+                    hash_version="v2",
                 )
                 db.add(pred_record)
                 db.commit()
+
+                # Anchor the latest hash externally
+                anchor_latest_audit_hash(audit_hash)
 
                 # Add to local tracking for concurrent constraint updates
                 open_positions.append({

@@ -13,7 +13,7 @@ Implements institutional outcome grading on daily OHLC and intraday replay:
 
 from __future__ import annotations
 import datetime
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any, Optional, Tuple
 import pandas as pd
 
 from backend.costs.charges import charges_engine

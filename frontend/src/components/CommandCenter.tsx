@@ -343,6 +343,11 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                         <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-gray-800 text-gray-300">
                           Setup: {p.setup_tag}
                         </span>
+                        {p.is_demo && (
+                          <span className="px-2 py-0.5 rounded text-[10px] font-extrabold bg-amber-950 text-amber-300 border border-amber-700 animate-pulse">
+                            DEMO, NOT LIVE
+                          </span>
+                        )}
                         <span
                           className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                             p.status === "OPEN"

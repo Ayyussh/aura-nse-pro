@@ -70,6 +70,8 @@ class Prediction(Base):
     tax_estimated_rupees = Column(Float, nullable=True)
 
     audit_hash = Column(String(64), nullable=True) # Hash-chain link
+    prev_hash = Column(String(64), nullable=True, default="GENESIS_AURA_HASH")
+    hash_version = Column(String(16), nullable=False, default="v2")
 
     executions = relationship("TradeExecution", back_populates="prediction", cascade="all, delete-orphan")
     mistakes = relationship("MistakeLog", back_populates="prediction")

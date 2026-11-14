@@ -35,16 +35,38 @@ def evaluate_market_regime() -> Dict[str, Any]:
     nifty_above_50ema = bool(nifty_close > ema50)
     nifty_above_200sma = bool(nifty_close > sma200)
 
-    # 3. Macro Regime Classification Rules
-    # RED: VIX > 24 or NIFTY below 50-EMA with sharp drop
-    # AMBER: VIX > 18 or NIFTY < 20-EMA
-    # GREEN: NIFTY > 20-EMA and VIX <= 18
-    if vix_level > 24.0 or (not nifty_above_50ema and vix_level > 20.0):
-        regime_label = "RED"
+    # 3. Macro Regime Classification Rules with Two-Close Hysteresis (Section 18.2)
+    def _classify_raw(c: float, e20: float, e50: float, vx: float) -> str:
+        if vx > 24.0 or (c < e50 and vx > 20.0):
+            return "RED"
+        elif vx > 18.0 or c < e20:
+            return "AMBER"
+        return "GREEN"
+
+    today_regime = _classify_raw(nifty_close, ema20, ema50, vix_level)
+
+    # Two-close hysteresis: check previous trading bar
+    prev_regime = today_regime
+    if len(nifty_df) >= 2 and len(vix_df) >= 2:
+        prev_c = float(nifty_df["close"].iloc[-2])
+        prev_vx = float(vix_df["close"].iloc[-2])
+        e20_s = compute_ema(nifty_df["close"], 20)
+        e50_s = compute_ema(nifty_df["close"], 50)
+        prev_e20 = float(e20_s.iloc[-2]) if len(e20_s) >= 2 else prev_c
+        prev_e50 = float(e50_s.iloc[-2]) if len(e50_s) >= 2 else prev_c
+        prev_regime = _classify_raw(prev_c, prev_e20, prev_e50, prev_vx)
+
+    # Require two consecutive closes to change regime state to avoid single-day whipsaw
+    if today_regime == prev_regime:
+        regime_label = today_regime
+    else:
+        # Retain previous confirmed regime until 2nd confirming close
+        regime_label = prev_regime
+
+    if regime_label == "RED":
         sizing_multiplier = 0.0
-        regime_description = "Defensive / Bearish: High volatility (VIX > 24) or NIFTY breaking below 50-EMA. Zero new swing entries."
-    elif vix_level > 18.0 or not nifty_above_20ema:
-        regime_label = "AMBER"
+        regime_description = "Defensive / Bearish: High volatility (VIX > 24) or NIFTY breaking below 50-EMA. Zero new live swing entries (Shadow tracking active)."
+    elif regime_label == "AMBER":
         sizing_multiplier = 0.5
         regime_description = "Cautionary / Choppy: VIX > 18 or NIFTY below 20-EMA. Position sizing reduced to 50%."
     else:

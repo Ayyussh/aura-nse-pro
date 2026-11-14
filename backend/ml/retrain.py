@@ -205,11 +205,19 @@ class SelfImprovingMLEngine:
         # - Brier Score must be <= threshold (0.24)
         # - AUC must be >= threshold (0.58)
         # - Candidate must be at least as well calibrated as current champion (cand_brier <= champ_brier + 0.015)
+        # - Leakage Guard (Section 18.2): AUC > 0.80 or BSS > 0.50 flags SUSPECTED_LEAKAGE and blocks promotion
+        cand_bss = round(1.0 - (cand_brier / 0.25), 4)
+        suspected_leakage = (cand_auc > 0.80) or (cand_bss > 0.50)
+
         passed_gates = (
             cand_brier <= self.max_brier_threshold
             and cand_auc >= self.min_auc_threshold
             and cand_brier <= (champ_brier + 0.015)
+            and not suspected_leakage
         )
+
+        if suspected_leakage:
+            logger.warning(f"Model promotion BLOCKED due to SUSPECTED_LEAKAGE (AUC: {cand_auc}, BSS: {cand_bss}).")
 
         decision = "PROMOTED" if passed_gates else "RETAINED_CHAMPION"
         new_version = current_version

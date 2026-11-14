@@ -90,11 +90,13 @@ class MLPredictor:
         self,
         features: Dict[str, float],
         cost_r: float = 0.08,
+        target_r: Optional[float] = None,
+        stop_r: float = 1.0,
     ) -> Dict[str, Any]:
         """Predict calibrated win probability, confidence intervals, and EV_R.
 
         Formula:
-        EV_R = (p * 2.0) - ((1 - p) * 1.0) - cost_r
+        EV_R = (p * target_r) - ((1 - p) * stop_r) - cost_r
         """
         if not self.is_trained or self.model is None:
             return {
@@ -119,15 +121,20 @@ class MLPredictor:
         prob_lower = max(0.01, round(prob_win - margin_error, 3))
         prob_upper = min(0.99, round(prob_win + margin_error, 3))
 
-        # Expected Value in R: Target gives +2R, Stop loss gives -1R, minus realistic costs
-        target_r = self.ml_cfg.get("target_r", 2.0)
-        stop_r = self.ml_cfg.get("stop_r", 1.0)
+        # Expected Value in R: Target gives +target_r, Stop loss gives -stop_r, minus realistic costs
+        if target_r is None:
+            target_r = self.ml_cfg.get("target_r", 2.0)
         ev_r = (prob_win * target_r) - ((1.0 - prob_win) * stop_r) - cost_r
         ev_r = round(ev_r, 3)
 
         min_prob = self.ml_cfg.get("min_probability_threshold", 0.45)
         min_ev = self.ml_cfg.get("min_ev_r_threshold", 0.20)
         passed_gate = (prob_win >= min_prob) and (ev_r >= min_ev)
+
+        # Brier Skill Score against no-skill baseline (BSS = 1 - Brier / 0.25)
+        brier_base = 0.25
+        brier_skill_score = round(1.0 - (self.brier_score / brier_base), 3) if self.brier_score <= brier_base else -0.1
+        suspected_leakage = (self.auc_score > 0.80) or (brier_skill_score > 0.50)
 
         # Extract top 3 driving features (SHAP-style local attribution)
         feature_importance_proxy = {
@@ -151,7 +158,9 @@ class MLPredictor:
             "model_version": self.model_version,
             "sample_size": self.sample_size,
             "brier_score": self.brier_score,
+            "brier_skill_score": brier_skill_score,
             "auc_score": self.auc_score,
+            "suspected_leakage": suspected_leakage,
             "shap_top_features": top_shap,
         }
 

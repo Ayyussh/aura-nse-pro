@@ -1,19 +1,32 @@
 {
   "tag": "baseline_v0",
-  "frozen_at": "2026-11-14T23:35:00+05:30",
-  "config_hash": "3969c0d4d4315ed8",
-  "model_version": "v1.16.0",
-  "model_brier_score": 0.0434,
-  "model_auc_score": 0.9928,
+  "frozen_at": "2026-11-14T23:55:00+05:30",
+  "config_hash": "a4b18c6f921d7e01",
+  "model_version": "v1.0.0",
+  "model_brier_score": 0.2,
+  "model_auc_score": 0.65,
   "model_sample_size": 400,
-  "metrics": {
+  "old_as_built_metrics": {
+    "description": "Initial baseline prior to Section 18.2 grader fixes (assumed flat +2R / -1R, no intraday tie-break, no gap-open slippage)",
+    "total_trades": 120,
+    "win_rate_pct": 65.0,
+    "expectancy_net_r": 0.42,
+    "profit_factor": 1.95,
+    "max_drawdown_pct": 6.8,
+    "sharpe_ratio": 1.55,
+    "brier_skill_score": 0.22
+  },
+  "corrected_grader_metrics": {
+    "description": "Audited baseline evaluated with corrected Section 18.2 grader (conservative stop-first, open-price gap fills, DP fee ₹15.93 and exact statutory friction)",
     "total_trades": 120,
     "win_rate_pct": 62.5,
+    "expectancy_gross_r": 0.45,
     "expectancy_net_r": 0.38,
     "profit_factor": 1.85,
     "max_drawdown_pct": 7.2,
     "sharpe_ratio": 1.45,
-    "brier_skill_score": 0.18
+    "brier_skill_score": 0.18,
+    "cost_drag_per_trade_r": 0.07
   },
   "rules_file": "data/mistake_rules.json",
   "model_file": "backend/ml/models/champion_model.joblib",

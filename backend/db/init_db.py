@@ -58,6 +58,41 @@ def init_database():
 
             db.commit()
 
+        # Ensure prev_hash and hash_version columns exist
+        with engine.begin() as conn:
+            from sqlalchemy import text
+            try:
+                conn.execute(text("ALTER TABLE predictions ADD COLUMN prev_hash VARCHAR(64) DEFAULT 'GENESIS_AURA_HASH'"))
+            except Exception:
+                pass
+            try:
+                conn.execute(text("ALTER TABLE predictions ADD COLUMN hash_version VARCHAR(16) DEFAULT 'v2'"))
+            except Exception:
+                pass
+
+            # SQLite database triggers to block UPDATE/DELETE on audit ledger
+            conn.execute(text("""
+                CREATE TRIGGER IF NOT EXISTS abort_update_system_audit_logs
+                BEFORE UPDATE ON system_audit_logs
+                BEGIN
+                    SELECT RAISE(ABORT, 'IMMUTABLE_AUDIT_LOG: UPDATE is strictly prohibited.');
+                END;
+            """))
+            conn.execute(text("""
+                CREATE TRIGGER IF NOT EXISTS abort_delete_system_audit_logs
+                BEFORE DELETE ON system_audit_logs
+                BEGIN
+                    SELECT RAISE(ABORT, 'IMMUTABLE_AUDIT_LOG: DELETE is strictly prohibited.');
+                END;
+            """))
+            conn.execute(text("""
+                CREATE TRIGGER IF NOT EXISTS abort_delete_predictions
+                BEFORE DELETE ON predictions
+                BEGIN
+                    SELECT RAISE(ABORT, 'IMMUTABLE_PREDICTIONS: DELETE is strictly prohibited on predictions ledger.');
+                END;
+            """))
+
         # Log system initialization event
         audit = SystemAuditLog(
             event_type="SYSTEM_INITIALIZED",

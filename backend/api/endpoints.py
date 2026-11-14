@@ -459,7 +459,20 @@ def api_verify_audit_chain(db: Session = Depends(get_db)):
             "message": "Audit ledger is currently empty.",
         }
 
-    tampered_ids = [p.id for p in predictions if not p.audit_hash]
+    tampered_ids = []
+    expected_prev = "GENESIS_AURA_HASH"
+    for idx, pred in enumerate(predictions):
+        if not pred.audit_hash:
+            tampered_ids.append(pred.id)
+            continue
+
+        # Check prev_hash link if present
+        if idx > 0 and hasattr(pred, "prev_hash") and pred.prev_hash:
+            if pred.prev_hash != expected_prev:
+                tampered_ids.append(pred.id)
+
+        expected_prev = pred.audit_hash
+
     is_valid = len(tampered_ids) == 0
     return {
         "chain_valid": is_valid,
@@ -467,7 +480,7 @@ def api_verify_audit_chain(db: Session = Depends(get_db)):
         "tampered_record_ids": tampered_ids,
         "head_hash": predictions[-1].audit_hash if predictions else None,
         "status": "TAMPER_EVIDENT_VERIFIED" if is_valid else "TAMPER_DETECTED",
-        "compliance_note": "Tamper-evident append-only cryptographic ledger.",
+        "compliance_note": "Tamper-evident append-only cryptographic ledger with prev_hash chaining.",
     }
 
 

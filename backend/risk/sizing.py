@@ -192,14 +192,12 @@ class RiskGuardEngine:
                 notes=notes,
             )
 
-        # 5b. Check Promoter Group Constraints (config/groups.yaml: Max 2 trades, max 25% exposure per group)
+        # 5b. Check Promoter Group Constraints (config/groups.yaml: Max 2 trades / 25% for private groups, looser 4 trades / 40% for PSU)
         try:
             from backend.core.config import get_groups_config
             groups_cfg = get_groups_config()
             group_map = groups_cfg.get("groups", {})
             constraints = groups_cfg.get("group_constraints", {})
-            max_group_trades = constraints.get("max_open_positions_per_group", 2)
-            max_group_capital_pct = constraints.get("max_group_capital_exposure_pct", 25.0)
 
             symbol_group = None
             for grp_name, grp_syms in group_map.items():
@@ -208,6 +206,11 @@ class RiskGuardEngine:
                     break
 
             if symbol_group:
+                # Group-specific limits (PSU cluster has looser caps)
+                grp_rules = constraints.get(symbol_group, constraints.get("default", {}))
+                max_group_trades = grp_rules.get("max_open_positions_per_group", 2)
+                max_group_capital_pct = grp_rules.get("max_group_capital_exposure_pct", 25.0)
+
                 group_open = [
                     p for p in open_positions
                     if p.get("symbol") in group_map.get(symbol_group, [])
