@@ -1,6 +1,7 @@
 {
-  "updated_at": "2026-11-14T19:38:15.351138",
+  "updated_at": "2026-11-14T19:40:21.045224",
   "rules": [
-    "Past Failure Pattern: High VIX Trap triggered 20 losses recently. Check closely."
+    "Past Failure Pattern: High VIX Trap triggered 14 losses recently. Check closely.",
+    "Past Failure Pattern: Sector Weakness triggered 6 losses recently. Check closely."
   ]
 }

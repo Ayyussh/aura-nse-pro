@@ -1,7 +1,15 @@
 """Database initialization script."""
 
 from backend.db.session import engine, Base, SessionLocal
-from backend.db.models import ApiKeyVault, SystemAuditLog
+from backend.db.models import (
+    Prediction,
+    TradeExecution,
+    PortfolioHolding,
+    MistakeLog,
+    ApiKeyVault,
+    SystemAuditLog,
+    PriceTruth,
+)
 from backend.core.config import settings, encrypt_secret
 import datetime
 
