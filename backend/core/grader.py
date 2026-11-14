@@ -32,18 +32,33 @@ def round_to_exchange_tick(price: float) -> float:
 
 
 def replay_intraday_tie_breaker(
-    intraday_candles: List[Dict[str, float]],
+    intraday_candles: List[Dict[str, Any]],
     stop_loss: float,
     target_price: float,
+    fill_time: Optional[datetime.time] = None,
 ) -> Optional[Tuple[str, float, str]]:
     """Replay 1-minute or 5-minute candles to resolve ambiguous same-day bars."""
     for candle in intraday_candles:
-        h = candle.get("high", 0.0)
-        l = candle.get("low", 0.0)
+        candle_time = candle.get("time")
+        if fill_time and candle_time:
+            if isinstance(candle_time, str):
+                try:
+                    c_time = datetime.time.fromisoformat(candle_time)
+                except Exception:
+                    c_time = None
+            elif isinstance(candle_time, datetime.time):
+                c_time = candle_time
+            else:
+                c_time = None
+            if c_time and c_time <= fill_time:
+                continue
+
+        h = float(candle.get("high", 0.0))
+        l = float(candle.get("low", 0.0))
 
         # Check which was hit first within this fine-grained bar
         if l <= stop_loss and h >= target_price:
-            # Still ambiguous inside 1-min candle -> conservative stop first
+            # Still ambiguous inside fine-grained candle -> conservative stop first
             return "STOP_LOSS_HIT", stop_loss, "Intraday 1-min tie: conservative stop-first attributed."
         if l <= stop_loss:
             return "STOP_LOSS_HIT", stop_loss, "Intraday replay verified stop loss hit first."
@@ -62,9 +77,17 @@ def grade_trade_outcome(
     quantity: int,
     time_limit_days: int,
     history_df: pd.DataFrame,
-    intraday_candles_by_date: Optional[Dict[str, List[Dict[str, float]]]] = None,
+    entry_at_open: bool = True,
+    fill_time: Optional[datetime.time] = None,
+    intraday_candles_by_date: Optional[Dict[str, List[Dict[str, Any]]]] = None,
 ) -> Dict[str, Any]:
-    """Grade an open trade strictly using price bars after the entry date."""
+    """Grade an open trade with precise time-of-fill awareness.
+
+    - When entry_at_open is True: evaluates entry bar starting from open fill.
+      If open gaps through stop, status is SKIPPED_GAP_DOWN (trade not filled).
+    - When entry_at_open is False: strictly evaluates bars after entry_date.
+    - Intraday entries evaluate 5-minute bars strictly after fill_time.
+    """
     if history_df.empty:
         return {"status": "OPEN", "reason": "No price history available."}
 
@@ -73,18 +96,22 @@ def grade_trade_outcome(
     stop_loss = round_to_exchange_tick(stop_loss)
     target_price = round_to_exchange_tick(target_price)
 
-    # Filter bars strictly after entry date
-    df_after = history_df.loc[history_df.index.date > entry_date]
-    if df_after.empty:
+    # Determine candidate bars
+    if entry_at_open:
+        df_bars = history_df.loc[history_df.index.date >= entry_date]
+    else:
+        df_bars = history_df.loc[history_df.index.date > entry_date]
+
+    if df_bars.empty:
         return {"status": "OPEN", "reason": "Trade entered today; awaiting subsequent market bars."}
 
-    bars_elapsed = len(df_after)
+    bars_elapsed = len(df_bars)
     final_status = "OPEN"
     exit_price = 0.0
     exit_reason = ""
     exit_date = None
 
-    for idx, (bar_ts, bar) in enumerate(df_after.iterrows(), start=1):
+    for idx, (bar_ts, bar) in enumerate(df_bars.iterrows(), start=1):
         o = float(bar["open"])
         h = float(bar["high"])
         l = float(bar["low"])
@@ -92,6 +119,64 @@ def grade_trade_outcome(
         bar_date = bar_ts.date()
         date_str = bar_date.isoformat()
 
+        # Handle entry day when entry is at market open
+        if bar_date == entry_date and entry_at_open:
+            # 1. Open gaps down through stop loss -> Trade is skipped (never filled)
+            if o <= stop_loss:
+                return {
+                    "status": "SKIPPED_GAP_DOWN",
+                    "exit_price": round_to_exchange_tick(o),
+                    "exit_reason": f"Gapped down through stop loss at open (Open ₹{o} <= Stop ₹{stop_loss}); trade was not filled.",
+                    "exit_date": bar_date.isoformat(),
+                    "gross_pnl_rupees": 0.0,
+                    "gross_pnl_r": 0.0,
+                    "charges_rupees": 0.0,
+                    "net_pnl_rupees": 0.0,
+                    "net_pnl_r": 0.0,
+                    "tax_estimated_rupees": 0.0,
+                    "charges_breakdown": {},
+                }
+
+            # 2. Open gaps up to target -> Filled and exited at open
+            if o >= target_price:
+                final_status = "TARGET_HIT"
+                exit_price = round_to_exchange_tick(o)
+                exit_reason = "Gap-up above target at market open."
+                exit_date = bar_date
+                break
+
+            # 3. Intraday replay on entry day (evaluating only bars after fill_time)
+            intraday_bars = intraday_candles_by_date.get(date_str) if intraday_candles_by_date else None
+            active_fill_time = fill_time or datetime.time(9, 15)
+            tie_result = replay_intraday_tie_breaker(intraday_bars, stop_loss, target_price, fill_time=active_fill_time) if intraday_bars else None
+
+            if tie_result:
+                final_status, exit_price, exit_reason = tie_result
+                exit_date = bar_date
+                break
+            elif l <= stop_loss and h >= target_price:
+                final_status = "STOP_LOSS_HIT"
+                exit_price = stop_loss
+                exit_reason = "Ambiguous bar on entry day (no intraday replay): conservative stop-first attributed."
+                exit_date = bar_date
+                break
+            elif l <= stop_loss:
+                final_status = "STOP_LOSS_HIT"
+                exit_price = stop_loss
+                exit_reason = "Stop loss touched on entry day."
+                exit_date = bar_date
+                break
+            elif h >= target_price:
+                final_status = "TARGET_HIT"
+                exit_price = target_price
+                exit_reason = "Target reached on entry day."
+                exit_date = bar_date
+                break
+
+            # If neither touched on entry day, continue to subsequent days
+            continue
+
+        # For subsequent days (strictly after entry)
         # 1. Gap down through stop at open
         if o <= stop_loss:
             final_status = "STOP_LOSS_HIT"
@@ -110,14 +195,12 @@ def grade_trade_outcome(
 
         # 3. Ambiguous day: High touches target AND Low touches stop
         if l <= stop_loss and h >= target_price:
-            # Check if intraday 1m/5m replay data is available
             intraday_bars = intraday_candles_by_date.get(date_str) if intraday_candles_by_date else None
             tie_result = replay_intraday_tie_breaker(intraday_bars, stop_loss, target_price) if intraday_bars else None
 
             if tie_result:
                 final_status, exit_price, exit_reason = tie_result
             else:
-                # Conservative fallback: STOP FIRST
                 final_status = "STOP_LOSS_HIT"
                 exit_price = stop_loss
                 exit_reason = "Ambiguous bar (no intraday candles): conservative stop-first attributed."
@@ -152,7 +235,7 @@ def grade_trade_outcome(
     if final_status == "OPEN":
         return {
             "status": "OPEN",
-            "current_price": float(df_after["close"].iloc[-1]),
+            "current_price": float(df_bars["close"].iloc[-1]),
             "bars_held": bars_elapsed,
         }
 

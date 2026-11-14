@@ -139,15 +139,15 @@ def test_100_percent_universe_mapped_in_groups():
 
 
 def test_psu_cluster_has_looser_cap():
-    """Verify PSU cluster allows up to 4 open positions (looser cap than private groups)."""
+    """Verify PSU cluster allows up to 3 open positions and 30% capital (Item 10)."""
     # 2 PSU open positions (SBI and NTPC)
     open_positions = [
         {"symbol": "SBIN.NS", "sector": "Banking", "quantity": 10, "entry_price": 800.0, "stop_loss": 780.0},
         {"symbol": "NTPC.NS", "sector": "Power", "quantity": 20, "entry_price": 380.0, "stop_loss": 370.0},
     ]
 
-    # Attempt to size a 3rd PSU stock (HAL.NS) -> Allowed because PSU cap is 4, unlike private group cap of 2!
-    decision = risk_guard.compute_position_size(
+    # Attempt to size a 3rd PSU stock (HAL.NS) -> Allowed because PSU cap is 3!
+    decision_3rd = risk_guard.compute_position_size(
         symbol="HAL.NS",
         entry_price=4200.0,
         stop_loss=4100.0,
@@ -159,7 +159,29 @@ def test_psu_cluster_has_looser_cap():
         macro_regime="GREEN",
         open_positions=open_positions,
     )
-    assert decision.allowed, f"PSU 3rd position should be allowed under looser cap! Notes: {decision.notes}"
+    assert decision_3rd.allowed, f"PSU 3rd position should be allowed under looser cap! Notes: {decision_3rd.notes}"
+
+    # Now simulate 3 open PSU positions
+    open_positions_3 = open_positions + [
+        {"symbol": "HAL.NS", "sector": "Defense", "quantity": 5, "entry_price": 4200.0, "stop_loss": 4100.0}
+    ]
+
+    # Attempt to size a 4th PSU stock (BEL.NS) -> REJECTED because PSU cap is 3!
+    decision_4th = risk_guard.compute_position_size(
+        symbol="BEL.NS",
+        entry_price=300.0,
+        stop_loss=290.0,
+        target_price=320.0,
+        sector="Defense",
+        total_capital=100000.0,
+        available_cash=80000.0,
+        avg_20d_volume=1000000,
+        macro_regime="GREEN",
+        open_positions=open_positions_3,
+    )
+    assert not decision_4th.allowed
+    assert decision_4th.status == "SKIPPED_GROUP_CAP"
+    assert any("Promoter group 'PSU' already has 3 open trades" in n for n in decision_4th.notes)
 
 
 def test_charges_engine_dp_and_gst_scopes():
@@ -211,3 +233,217 @@ def test_demo_data_quarantine():
 
     basket_text = basket_file.read_text(encoding="utf-8")
     assert "Kite Basket Export Disabled: Demo data cannot be exported" in basket_text
+
+
+def test_charges_yaml_contains_verified_on_and_effective_date():
+    """Verify config/charges.yaml contains verified_on: '2026-11-13' (Item 10)."""
+    charges_file = PROJECT_ROOT / "config" / "charges.yaml"
+    assert charges_file.exists()
+    content = charges_file.read_text(encoding="utf-8")
+    assert 'verified_on: "2026-11-13"' in content
+    assert 'effective_date: "2026-11-13"' in content
+
+
+def test_unmapped_symbol_defaults_to_standalone():
+    """Verify unmapped symbols default to Standalone_Equities (Item 10)."""
+    decision = risk_guard.compute_position_size(
+        symbol="NONEXISTENT_STOCK.NS",
+        entry_price=500.0,
+        stop_loss=480.0,
+        target_price=540.0,
+        sector="Specialty",
+        total_capital=100000.0,
+        available_cash=80000.0,
+        avg_20d_volume=1000000,
+        macro_regime="GREEN",
+        open_positions=[],
+    )
+    # Should be permitted under Standalone_Equities default
+    assert decision.allowed
+
+
+def test_audit_canonical_float_and_timestamp_formats():
+    """Verify canonical float format (4 decimals) and ISO UTC timestamp ending in Z."""
+    from backend.core.audit_ledger import (
+        format_canonical_float,
+        format_canonical_timestamp,
+        build_canonical_prediction_payload,
+        compute_audit_hash,
+    )
+    assert format_canonical_float(100.5) == "100.5000"
+    assert format_canonical_float(0.123456) == "0.1235"
+    ts = format_canonical_timestamp()
+    assert ts.endswith("Z")
+
+    payload = build_canonical_prediction_payload(
+        symbol="TCS.NS",
+        side="BUY",
+        entry_price=3500.0,
+        stop_loss=3400.0,
+        target_price=3700.0,
+        quantity=10,
+        probability=0.62,
+        ev_r=0.45,
+        model_version="v1.0.0",
+        config_hash="cfg_hash_1",
+        data_snapshot_id="snap_1",
+        llm_output_hash="llm_hash_1",
+        prev_hash="GENESIS_AURA_HASH",
+        utc_timestamp="2026-11-14T10:00:00.000000Z",
+    )
+    assert payload["entry_price"] == "3500.0000"
+    assert payload["stop_loss"] == "3400.0000"
+    h = compute_audit_hash(payload)
+    assert len(h) == 64
+
+
+def test_audit_tamper_detection_and_verification():
+    """Verify cryptographic chain verification catches modified row or prev_hash."""
+    from backend.core.audit_ledger import verify_audit_ledger
+
+    class FakeRecord:
+        def __init__(self, id, audit_hash, prev_hash, hash_version="v2"):
+            self.id = id
+            self.audit_hash = audit_hash
+            self.prev_hash = prev_hash
+            self.hash_version = hash_version
+
+    # Valid chain
+    records = [
+        FakeRecord(1, "hash_row_1", "GENESIS_AURA_HASH"),
+        FakeRecord(2, "hash_row_2", "hash_row_1"),
+        FakeRecord(3, "hash_row_3", "hash_row_2"),
+    ]
+    res_valid = verify_audit_ledger(records)
+    assert res_valid["chain_valid"] is True
+    assert res_valid["total_records_checked"] == 3
+
+    # Tampered chain (record 3 points to wrong prev_hash)
+    tampered_records = [
+        FakeRecord(1, "hash_row_1", "GENESIS_AURA_HASH"),
+        FakeRecord(2, "hash_row_2", "hash_row_1"),
+        FakeRecord(3, "hash_row_3", "FORGED_PREV_HASH"),
+    ]
+    res_tampered = verify_audit_ledger(tampered_records)
+    assert res_tampered["chain_valid"] is False
+    assert 3 in res_tampered["tampered_record_ids"]
+
+
+def test_audit_external_daily_anchor_appends_history():
+    """Verify external daily anchor appends to data/audit_anchor_history.jsonl."""
+    from backend.core.audit_ledger import append_external_daily_anchor, read_external_anchor_history
+    anchor = append_external_daily_anchor(
+        latest_hash="test_head_hash_abcdef1234567890",
+        record_count=42,
+        notes="Automated test daily anchor",
+    )
+    assert anchor["head_hash"] == "test_head_hash_abcdef1234567890"
+    assert anchor["record_count"] == 42
+    history = read_external_anchor_history()
+    assert len(history) >= 1
+    assert any(h["head_hash"] == "test_head_hash_abcdef1234567890" for h in history)
+
+
+def test_regime_asymmetric_hysteresis_and_shadow_mode():
+    """Verify:
+    1. Step down immediately on 1 close or VIX spike (capital preservation).
+    2. Step up only after 2 confirming closes (avoids bear trap whipsaws).
+    3. Middle state is strictly named AMBER.
+    4. RED regime triggers is_shadow_mode and zero live capital.
+    """
+    from backend.strategies.regime import apply_regime_hysteresis
+
+    # 1. Step down immediately on 1 close
+    # Confirmed was GREEN, today is AMBER -> Steps down to AMBER immediately
+    assert apply_regime_hysteresis(confirmed_prev_regime="GREEN", today_raw="AMBER", prev_day_raw="GREEN") == "AMBER"
+    # Confirmed was GREEN, today is RED -> Steps down to RED immediately
+    assert apply_regime_hysteresis(confirmed_prev_regime="GREEN", today_raw="RED", prev_day_raw="GREEN") == "RED"
+
+    # 2. Step down immediately on VIX spike
+    assert apply_regime_hysteresis(confirmed_prev_regime="GREEN", today_raw="GREEN", prev_day_raw="GREEN", vix_spike=True) == "AMBER"
+
+    # 3. Step up requires 2 confirming closes
+    # Confirmed was RED, today is GREEN, but yesterday was RED -> Retains RED!
+    assert apply_regime_hysteresis(confirmed_prev_regime="RED", today_raw="GREEN", prev_day_raw="RED") == "RED"
+    # Confirmed was RED, today is GREEN, and yesterday was GREEN -> Confirmed 2 closes, steps up to GREEN!
+    assert apply_regime_hysteresis(confirmed_prev_regime="RED", today_raw="GREEN", prev_day_raw="GREEN") == "GREEN"
+
+    # Confirmed was AMBER, today is GREEN, but yesterday was AMBER -> Retains AMBER!
+    assert apply_regime_hysteresis(confirmed_prev_regime="AMBER", today_raw="GREEN", prev_day_raw="AMBER") == "AMBER"
+    # Confirmed was AMBER, today is GREEN, and yesterday was GREEN -> Steps up to GREEN!
+    assert apply_regime_hysteresis(confirmed_prev_regime="AMBER", today_raw="GREEN", prev_day_raw="GREEN") == "GREEN"
+
+
+def test_regime_breadth_input():
+    """Verify market breadth influences raw regime classification."""
+    from backend.strategies.regime import classify_raw_regime
+    # Healthy technicals (NIFTY above EMAs, low VIX), but breadth collapsed (<20%) -> RED
+    r_breadth_bad = classify_raw_regime(nifty_close=25000, ema20=24800, ema50=24500, vix_level=14.0, breadth_pct=18.0)
+    assert r_breadth_bad == "RED"
+
+    # Moderate breadth degradation (<40%) -> AMBER
+    r_breadth_amber = classify_raw_regime(nifty_close=25000, ema20=24800, ema50=24500, vix_level=14.0, breadth_pct=35.0)
+    assert r_breadth_amber == "AMBER"
+
+
+def test_bss_uses_empirical_out_of_sample_base_rate():
+    """Verify BSS calculation uses empirical base_rate * (1 - base_rate)."""
+    from backend.ml.predictor import MLPredictor
+    p = MLPredictor()
+    p.brier_score = 0.18
+    p.base_rate = 0.40  # base_rate = 0.40 -> brier_base = 0.40 * 0.60 = 0.24
+    res = p.predict_probability({"rs_vs_nifty_20d": 2.0})
+
+    # Expected BSS = 1 - (0.18 / 0.24) = 1 - 0.75 = 0.250
+    assert abs(res["brier_skill_score"] - 0.250) < 0.01
+
+
+def test_basket_export_gated_after_gap_check_and_shadow():
+    """Verify frontend kiteBasket.ts blocks un-gated or shadow trades."""
+    basket_file = PROJECT_ROOT / "frontend" / "src" / "utils" / "kiteBasket.ts"
+    content = basket_file.read_text(encoding="utf-8")
+    assert "Kite Basket Export Gated" in content
+    assert "market-open gap check" in content
+    assert "Shadow Mode active" in content
+
+
+def test_public_page_trade_tickets_locked():
+    """Verify CommandCenter.tsx replaces trade tickets with private lock on public demo."""
+    cc_file = PROJECT_ROOT / "frontend" / "src" / "components" / "CommandCenter.tsx"
+    content = cc_file.read_text(encoding="utf-8")
+    assert "Private Lock" in content
+    assert "SEBI non-broadcast guidelines" in content
+
+
+def test_audit_database_triggers_block_tampering():
+    """Verify SQLite triggers actively abort UPDATE on audit logs and DELETE on predictions (Item 10)."""
+    from backend.db.session import engine
+    from sqlalchemy import text
+    import pytest
+
+    with engine.begin() as conn:
+        # Clean up any leftover test scrip
+        conn.execute(text("DELETE FROM predictions WHERE symbol = 'TEST_TRIGGER.NS'")) if False else None
+        
+        # 1. Insert a test prediction row
+        conn.execute(text("""
+            INSERT INTO predictions (
+                config_hash, model_version, data_snapshot_id, symbol, series, horizon, setup_tag, status, planned_entry_price, entry_price, stop_loss, target_price, quantity, time_limit_days, audit_hash, prev_hash, entry_date, created_at
+            ) VALUES (
+                'test_cfg', 'v1.0.0', 'snap_01', 'TEST_TRIGGER.NS', 'EQ', 'SWING', 'PULLBACK', 'OPEN', 1000.0, 1000.0, 950.0, 1100.0, 10, 10, 'initial_hash_123', 'GENESIS_AURA_HASH', CURRENT_DATE, CURRENT_TIMESTAMP
+            )
+        """))
+
+        # 2. Attempting to tamper with entry_price or audit_hash MUST raise an exception from SQLite trigger
+        with pytest.raises(Exception) as exc_info:
+            conn.execute(text("UPDATE predictions SET entry_price = 1200.0 WHERE symbol = 'TEST_TRIGGER.NS'"))
+        assert "IMMUTABLE_PREDICTION_AUDIT" in str(exc_info.value)
+
+        with pytest.raises(Exception) as exc_info2:
+            conn.execute(text("UPDATE predictions SET audit_hash = 'forged_hash' WHERE symbol = 'TEST_TRIGGER.NS'"))
+        assert "IMMUTABLE_PREDICTION_AUDIT" in str(exc_info2.value)
+
+        # 3. Attempting to DELETE from predictions MUST raise an exception from SQLite trigger
+        with pytest.raises(Exception) as exc_info3:
+            conn.execute(text("DELETE FROM predictions WHERE symbol = 'TEST_TRIGGER.NS'"))
+        assert "IMMUTABLE_PREDICTIONS" in str(exc_info3.value)

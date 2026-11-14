@@ -46,6 +46,26 @@ export function downloadKiteBasketJson(predictions: any[], filename?: string): v
     return;
   }
 
+  // Section 18.2: Shadow mode gating (RED regime zero live capital)
+  const hasShadow = predictions.some(
+    (p) => p.is_shadow === true || p.macro_regime === "RED" || p.source === "SHADOW"
+  );
+  if (hasShadow) {
+    alert("Kite Basket Export Disabled: Shadow Mode active (RED Macro Regime). Zero live executions permitted.");
+    return;
+  }
+
+  // Section 18.2: Basket export gating after the 09:15 gap check
+  const ungatedOrSkipped = predictions.filter(
+    (p) => p.status !== "OPEN" || p.status === "PENDING_OPEN_CHECK" || p.status?.startsWith("SKIPPED")
+  );
+  if (ungatedOrSkipped.length > 0) {
+    alert(
+      `Kite Basket Export Gated: ${ungatedOrSkipped.length} trade(s) have not passed the 09:15 AM market-open gap check. Only confirmed OPEN trades post-gap-check can be exported.`
+    );
+    return;
+  }
+
   const basket = formatKiteBasket(predictions);
   const jsonStr = JSON.stringify(basket, null, 2);
   const blob = new Blob([jsonStr], { type: "application/json" });

@@ -201,12 +201,15 @@ class SelfImprovingMLEngine:
         champ_auc = ml_predictor.auc_score
         current_version = ml_predictor.model_version
 
-        # 4. Institutional Promotion Gates:
+        # - Institutional Promotion Gates:
         # - Brier Score must be <= threshold (0.24)
         # - AUC must be >= threshold (0.58)
         # - Candidate must be at least as well calibrated as current champion (cand_brier <= champ_brier + 0.015)
+        # - BSS computed from out-of-sample empirical base rate: BSS = 1 - (Brier / (base_rate * (1 - base_rate)))
         # - Leakage Guard (Section 18.2): AUC > 0.80 or BSS > 0.50 flags SUSPECTED_LEAKAGE and blocks promotion
-        cand_bss = round(1.0 - (cand_brier / 0.25), 4)
+        val_base_rate = float(np.mean(y_val)) if len(y_val) > 0 else 0.50
+        brier_base = max(0.01, val_base_rate * (1.0 - val_base_rate))
+        cand_bss = round(1.0 - (cand_brier / brier_base), 4)
         suspected_leakage = (cand_auc > 0.80) or (cand_bss > 0.50)
 
         passed_gates = (
@@ -236,6 +239,9 @@ class SelfImprovingMLEngine:
                 "promoted_at": datetime.datetime.utcnow().isoformat(),
                 "brier_score": cand_brier,
                 "auc_score": cand_auc,
+                "base_rate": round(val_base_rate, 4),
+                "brier_base": round(brier_base, 4),
+                "brier_skill_score": cand_bss,
                 "training_samples": len(X_train),
                 "validation_samples": len(X_val),
                 "live_trade_experiences": live_count,
@@ -248,6 +254,7 @@ class SelfImprovingMLEngine:
             ml_predictor.model_version = new_version
             ml_predictor.brier_score = cand_brier
             ml_predictor.auc_score = cand_auc
+            ml_predictor.base_rate = val_base_rate
             ml_predictor.sample_size = len(X_train)
 
             logger.info(f"Model successfully PROMOTED to {new_version} (Brier: {cand_brier}, AUC: {cand_auc})")

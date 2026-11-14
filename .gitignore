@@ -38,3 +38,5 @@ data/bhavcopy/*.csv
 .DS_Store
 Thumbs.db
 desktop.ini
+*.db-shm
+*.db-wal

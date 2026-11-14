@@ -14,7 +14,69 @@ from backend.data.provider import data_provider
 from backend.strategies.indicators import compute_ema
 
 
-def evaluate_market_regime() -> Dict[str, Any]:
+REGIME_RANK = {"RED": 0, "AMBER": 1, "GREEN": 2}
+
+
+def classify_raw_regime(
+    nifty_close: float,
+    ema20: float,
+    ema50: float,
+    vix_level: float,
+    breadth_pct: Optional[float] = None,
+) -> str:
+    """Classify raw market state without hysteresis.
+    Middle state is strictly named 'AMBER'.
+    """
+    # 1. Extreme volatility or breakdown -> RED
+    if vix_level > 24.0 or (nifty_close < ema50 and vix_level > 20.0):
+        return "RED"
+    if breadth_pct is not None and breadth_pct < 20.0:
+        return "RED"
+
+    # 2. Caution / choppiness -> AMBER
+    if vix_level > 18.0 or nifty_close < ema20:
+        return "AMBER"
+    if breadth_pct is not None and breadth_pct < 40.0:
+        return "AMBER"
+
+    return "GREEN"
+
+
+def apply_regime_hysteresis(
+    confirmed_prev_regime: str,
+    today_raw: str,
+    prev_day_raw: str,
+    vix_spike: bool = False,
+) -> str:
+    """Apply institutional asymmetric hysteresis (Section 18.2 & Item 10):
+    - STEP DOWN immediately on 1 close or VIX spike (preserves capital).
+    - STEP UP only after 2 confirming closes (avoids bear trap whipsaws).
+    - Middle state is strictly named 'AMBER'.
+    """
+    confirmed_prev = confirmed_prev_regime.upper()
+    today_r = today_raw.upper()
+    prev_r = prev_day_raw.upper()
+
+    if vix_spike:
+        return "RED" if today_r == "RED" else "AMBER"
+
+    # Step down immediately on 1 close
+    if REGIME_RANK[today_r] < REGIME_RANK[confirmed_prev]:
+        return today_r
+
+    # Step up requires 2 consecutive confirming closes
+    if REGIME_RANK[today_r] > REGIME_RANK[confirmed_prev]:
+        if REGIME_RANK[prev_r] >= REGIME_RANK[today_r]:
+            return today_r
+        return confirmed_prev
+
+    return confirmed_prev
+
+
+def evaluate_market_regime(
+    breadth_pct: Optional[float] = None,
+    prev_confirmed_regime: Optional[str] = None,
+) -> Dict[str, Any]:
     """Evaluate current Indian equity macro regime."""
     # 1. Fetch NIFTY 50 and INDIA VIX
     nifty_df = data_provider.fetch_history("^NSEI", period="1y", interval="1d")
@@ -23,8 +85,14 @@ def evaluate_market_regime() -> Dict[str, Any]:
     nifty_close = float(nifty_df["close"].iloc[-1]) if not nifty_df.empty else 25000.0
     vix_level = float(vix_df["close"].iloc[-1]) if not vix_df.empty else 15.0
     vix_5d_change = 0.0
+    vix_1d_change = 0.0
+    if not vix_df.empty and len(vix_df) >= 2:
+        vix_1d_change = float(vix_level - vix_df["close"].iloc[-2])
     if not vix_df.empty and len(vix_df) >= 6:
         vix_5d_change = float(vix_level - vix_df["close"].iloc[-6])
+
+    # VIX spike definition: 1-day spike > +2.5 pts or 5-day spike > +5.0 pts
+    vix_spike = bool(vix_1d_change >= 2.5 or vix_5d_change >= 5.0)
 
     # 2. Moving average status for NIFTY 50
     ema20 = float(compute_ema(nifty_df["close"], 20).iloc[-1]) if not nifty_df.empty else nifty_close
@@ -35,18 +103,11 @@ def evaluate_market_regime() -> Dict[str, Any]:
     nifty_above_50ema = bool(nifty_close > ema50)
     nifty_above_200sma = bool(nifty_close > sma200)
 
-    # 3. Macro Regime Classification Rules with Two-Close Hysteresis (Section 18.2)
-    def _classify_raw(c: float, e20: float, e50: float, vx: float) -> str:
-        if vx > 24.0 or (c < e50 and vx > 20.0):
-            return "RED"
-        elif vx > 18.0 or c < e20:
-            return "AMBER"
-        return "GREEN"
+    # 3. Macro Regime Classification Rules with Asymmetric Two-Close Hysteresis
+    today_regime = classify_raw_regime(nifty_close, ema20, ema50, vix_level, breadth_pct=breadth_pct)
 
-    today_regime = _classify_raw(nifty_close, ema20, ema50, vix_level)
-
-    # Two-close hysteresis: check previous trading bar
-    prev_regime = today_regime
+    # Historical bar for hysteresis evaluation
+    prev_day_raw = today_regime
     if len(nifty_df) >= 2 and len(vix_df) >= 2:
         prev_c = float(nifty_df["close"].iloc[-2])
         prev_vx = float(vix_df["close"].iloc[-2])
@@ -54,15 +115,17 @@ def evaluate_market_regime() -> Dict[str, Any]:
         e50_s = compute_ema(nifty_df["close"], 50)
         prev_e20 = float(e20_s.iloc[-2]) if len(e20_s) >= 2 else prev_c
         prev_e50 = float(e50_s.iloc[-2]) if len(e50_s) >= 2 else prev_c
-        prev_regime = _classify_raw(prev_c, prev_e20, prev_e50, prev_vx)
+        prev_day_raw = classify_raw_regime(prev_c, prev_e20, prev_e50, prev_vx, breadth_pct=breadth_pct)
 
-    # Require two consecutive closes to change regime state to avoid single-day whipsaw
-    if today_regime == prev_regime:
-        regime_label = today_regime
-    else:
-        # Retain previous confirmed regime until 2nd confirming close
-        regime_label = prev_regime
+    initial_state = prev_confirmed_regime or prev_day_raw
+    regime_label = apply_regime_hysteresis(
+        confirmed_prev_regime=initial_state,
+        today_raw=today_regime,
+        prev_day_raw=prev_day_raw,
+        vix_spike=vix_spike,
+    )
 
+    is_shadow_mode = bool(regime_label == "RED")
     if regime_label == "RED":
         sizing_multiplier = 0.0
         regime_description = "Defensive / Bearish: High volatility (VIX > 24) or NIFTY breaking below 50-EMA. Zero new live swing entries (Shadow tracking active)."
@@ -113,6 +176,7 @@ def evaluate_market_regime() -> Dict[str, Any]:
 
     return {
         "regime_label": regime_label,
+        "is_shadow_mode": is_shadow_mode,
         "sizing_multiplier": sizing_multiplier,
         "description": regime_description,
         "nifty_close": round(nifty_close, 2),

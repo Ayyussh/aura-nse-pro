@@ -23,6 +23,7 @@ import {
   Download,
   PieChart,
   Activity,
+  Lock,
 } from "lucide-react";
 
 import { TradingViewChartModal } from "./TradingViewChartModal";
@@ -74,7 +75,15 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
     setExpandedId(expandedId === id ? null : id);
   };
 
+  const isDemoOrPublic = predictions.some(
+    (p: any) => p.is_demo === true || p.audit_hash?.startsWith("demo_") || (p.id >= 100 && p.id <= 105)
+  );
+
   const handleCopyBrokerTicket = (p: any) => {
+    if (isDemoOrPublic) {
+      alert("Order Ticket Locked: Trade tickets and one-click execution are disabled on public preview to comply with SEBI non-broadcast guidelines. Tickets are accessible exclusively on private authenticated single-user deployments.");
+      return;
+    }
     const ticket = `AURA ORDER TICKET:\nBUY ${p.symbol} EQ\nQuantity: ${p.quantity} shares\nEntry Limit: ₹${p.entry_price}\nStop Loss Trigger: ₹${p.stop_loss}\nTarget Limit: ₹${p.target_price}\nZerodha GTT Trigger: ₹${p.stop_loss}\nHorizon: ${p.time_limit_days} Days (Swing)`;
     navigator.clipboard.writeText(ticket);
     setCopiedId(p.id);
@@ -409,19 +418,29 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                         Kite JSON
                       </button>
 
-                      {/* Copy Order Ticket */}
-                      <button
-                        onClick={() => handleCopyBrokerTicket(p)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
-                          isCopied
-                            ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30"
-                            : "bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700"
-                        }`}
-                        title="Copy pre-formatted order ticket for Zerodha Kite / Groww / Dhan"
-                      >
-                        {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                        {isCopied ? "Copied!" : "Copy GTT"}
-                      </button>
+                      {/* Copy Order Ticket (Gated on Public Demo) */}
+                      {isDemoOrPublic ? (
+                        <span
+                          className="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-gray-900 text-gray-500 border border-gray-800 flex items-center gap-1 cursor-not-allowed"
+                          title="Trade ticket generation locked on public preview (SEBI Personal Use Compliance)"
+                        >
+                          <Lock className="w-3.5 h-3.5 text-gray-500" />
+                          Private Lock
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => handleCopyBrokerTicket(p)}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                            isCopied
+                              ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30"
+                              : "bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700"
+                          }`}
+                          title="Copy pre-formatted order ticket for Zerodha Kite / Groww / Dhan"
+                        >
+                          {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                          {isCopied ? "Copied!" : "Copy GTT"}
+                        </button>
+                      )}
 
                       {/* Expand Bull/Bear Audit */}
                       <button

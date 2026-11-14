@@ -39,6 +39,7 @@ class MLPredictor:
         self.sample_size: int = 0
         self.brier_score: float = 0.20
         self.auc_score: float = 0.65
+        self.base_rate: float = 0.50
         self._load_or_initialize_model()
 
     def _load_or_initialize_model(self):
@@ -51,6 +52,7 @@ class MLPredictor:
                 self.model_version = meta.get("model_version", "v1.0.0")
                 self.brier_score = meta.get("brier_score", 0.20)
                 self.auc_score = meta.get("auc_score", 0.65)
+                self.base_rate = meta.get("base_rate", 0.50)
                 self.sample_size = meta.get("training_samples", 500)
                 self.is_trained = True
                 logger.info(f"Loaded persistent Champion model {self.model_version} from disk.")
@@ -80,6 +82,7 @@ class MLPredictor:
         self.model = calibrated
         self.is_trained = True
         self.sample_size = n_samples
+        self.base_rate = float(np.mean(y_synthetic))
         self.brier_score = round(float(brier_score_loss(y_synthetic, calibrated.predict_proba(X_synthetic)[:, 1])), 3)
         try:
             self.auc_score = round(float(roc_auc_score(y_synthetic, logits)), 3)
@@ -131,8 +134,10 @@ class MLPredictor:
         min_ev = self.ml_cfg.get("min_ev_r_threshold", 0.20)
         passed_gate = (prob_win >= min_prob) and (ev_r >= min_ev)
 
-        # Brier Skill Score against no-skill baseline (BSS = 1 - Brier / 0.25)
-        brier_base = 0.25
+        # Brier Skill Score against out-of-sample empirical base rate (Section 18.2 / Item 10)
+        # BSS = 1 - (Brier / Brier_base) where Brier_base = base_rate * (1 - base_rate)
+        base_rate = getattr(self, "base_rate", 0.50)
+        brier_base = max(0.01, base_rate * (1.0 - base_rate))
         brier_skill_score = round(1.0 - (self.brier_score / brier_base), 3) if self.brier_score <= brier_base else -0.1
         suspected_leakage = (self.auc_score > 0.80) or (brier_skill_score > 0.50)
 

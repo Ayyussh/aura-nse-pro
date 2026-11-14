@@ -3,8 +3,8 @@ group_constraints:
     max_open_positions_per_group: 2
     max_group_capital_exposure_pct: 25.0
   PSU:
-    max_open_positions_per_group: 4
-    max_group_capital_exposure_pct: 40.0
+    max_open_positions_per_group: 3
+    max_group_capital_exposure_pct: 30.0
   Standalone_Equities:
     max_open_positions_per_group: 5
     max_group_capital_exposure_pct: 100.0

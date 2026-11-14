@@ -1,6 +1,6 @@
 {
-  "model_version": "v1.14.0",
-  "promoted_at": "2026-11-14T13:21:29.523612",
+  "model_version": "v1.18.0",
+  "promoted_at": "2026-11-14T18:08:01.066286",
   "brier_score": 0.0434,
   "auc_score": 0.9928,
   "training_samples": 400,

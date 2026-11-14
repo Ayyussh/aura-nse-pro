@@ -205,8 +205,12 @@ class RiskGuardEngine:
                     symbol_group = grp_name
                     break
 
+            # Default unmapped symbols to Standalone_Equities (Item 10)
+            if not symbol_group:
+                symbol_group = "Standalone_Equities"
+
             if symbol_group:
-                # Group-specific limits (PSU cluster has looser caps)
+                # Group-specific limits (PSU cluster has looser caps: 3 positions / 30%)
                 grp_rules = constraints.get(symbol_group, constraints.get("default", {}))
                 max_group_trades = grp_rules.get("max_open_positions_per_group", 2)
                 max_group_capital_pct = grp_rules.get("max_group_capital_exposure_pct", 25.0)

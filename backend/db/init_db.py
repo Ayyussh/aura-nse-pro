@@ -92,6 +92,13 @@ def init_database():
                     SELECT RAISE(ABORT, 'IMMUTABLE_PREDICTIONS: DELETE is strictly prohibited on predictions ledger.');
                 END;
             """))
+            conn.execute(text("""
+                CREATE TRIGGER IF NOT EXISTS abort_tamper_prediction_audit
+                BEFORE UPDATE OF audit_hash, prev_hash, entry_price, stop_loss, target_price, quantity ON predictions
+                BEGIN
+                    SELECT RAISE(ABORT, 'IMMUTABLE_PREDICTION_AUDIT: Tampering with trade entry levels or cryptographic hashes is strictly prohibited.');
+                END;
+            """))
 
         # Log system initialization event
         audit = SystemAuditLog(
