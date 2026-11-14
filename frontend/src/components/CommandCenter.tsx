@@ -20,7 +20,13 @@ import {
   Check,
   Calculator,
   Search,
+  Download,
+  PieChart,
+  Activity,
 } from "lucide-react";
+
+import { TradingViewChartModal } from "./TradingViewChartModal";
+import { downloadKiteBasketJson } from "../utils/kiteBasket";
 
 interface CommandCenterProps {
   predictions: any[];
@@ -30,6 +36,7 @@ interface CommandCenterProps {
   fiiDii?: any;
   accuracyTracker?: any;
   telegramAlerts?: any[];
+  sectorMatrix?: any;
   onRefreshScan: () => void;
   isLoading: boolean;
   onCopyTicket?: (ticket: string) => void;
@@ -43,13 +50,16 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
   fiiDii,
   accuracyTracker,
   telegramAlerts = [],
+  sectorMatrix,
   onRefreshScan,
   isLoading,
 }) => {
-  const [activeTab, setActiveTab] = useState<"approved" | "rejected" | "accuracy" | "alerts">("approved");
+  const [activeTab, setActiveTab] = useState<"approved" | "rejected" | "accuracy" | "alerts" | "sectors">("approved");
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [showFiiDiiModal, setShowFiiDiiModal] = useState<boolean>(false);
   const [showCalculatorModal, setShowCalculatorModal] = useState<boolean>(false);
+  const [showSectorModal, setShowSectorModal] = useState<boolean>(false);
+  const [selectedChartCandidate, setSelectedChartCandidate] = useState<any | null>(null);
   const [copiedId, setCopiedId] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -173,17 +183,23 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
           </div>
         </div>
 
-        {/* Leading Sectors */}
-        <div className="aura-card p-4 border border-gray-800/80">
-          <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">Leading Sectors</div>
-          <div className="text-sm font-semibold text-cyan-400 mt-1 truncate">
-            {regime?.top_leading_sectors?.join(", ") || "Banking, IT, Auto"}
+        {/* Leading Sectors & RS Matrix Trigger */}
+        <div
+          onClick={() => setShowSectorModal(true)}
+          className="aura-card p-4 border border-gray-800/80 cursor-pointer hover:border-indigo-500/50 transition-all group"
+        >
+          <div className="flex items-center justify-between">
+            <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">NSE Sector RS</div>
+            <span className="text-[10px] text-indigo-400 group-hover:underline">Heatmap &rarr;</span>
           </div>
-          <div className="text-[11px] text-gray-400 mt-0.5">Outperforming NIFTY 50</div>
+          <div className="text-sm font-semibold text-cyan-400 mt-1 truncate">
+            {sectorMatrix?.top_leading?.join(", ") || regime?.top_leading_sectors?.join(", ") || "Banking, IT, Auto"}
+          </div>
+          <div className="text-[11px] text-gray-400 mt-0.5">Mansfield RS Leaders vs NIFTY</div>
         </div>
       </div>
 
-      {/* Action Header & Tabs & Quick Search */}
+      {/* Action Header & Tabs & Quick Tools */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-b border-gray-800 pb-4">
         <div className="flex flex-wrap items-center gap-2">
           <button
@@ -195,6 +211,17 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
             }`}
           >
             Today's Approved Setups ({predictions.length})
+          </button>
+          <button
+            onClick={() => setActiveTab("sectors")}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+              activeTab === "sectors"
+                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
+                : "bg-gray-800/80 text-gray-400 hover:text-white"
+            }`}
+          >
+            <PieChart className="w-3.5 h-3.5 text-indigo-400" />
+            Sector RS Heatmap
           </button>
           <button
             onClick={() => setActiveTab("rejected")}
@@ -230,18 +257,30 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
           </button>
         </div>
 
-        <div className="flex items-center gap-2.5 w-full lg:w-auto">
+        <div className="flex flex-wrap items-center gap-2.5 w-full lg:w-auto">
           {/* Quick Search */}
-          <div className="relative flex-1 sm:w-48">
+          <div className="relative flex-1 sm:w-44">
             <Search className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Filter symbol..."
+              placeholder="Filter ticker..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-gray-900 border border-gray-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500"
             />
           </div>
+
+          {/* Export All Approved to Kite Basket JSON */}
+          {predictions.length > 0 && (
+            <button
+              onClick={() => downloadKiteBasketJson(predictions)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-indigo-950/80 hover:bg-indigo-900 text-indigo-300 border border-indigo-700/60 transition-all shadow-md"
+              title="Download official Zerodha Kite Basket JSON file for 1-click import into Kite"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Export Kite Basket</span>
+            </button>
+          )}
 
           {/* Sizing Tool Modal Trigger */}
           <button
@@ -316,8 +355,8 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                       </div>
                       <div className="text-xs text-gray-400 mt-1">
                         Time Horizon: <strong>{p.time_limit_days} Trading Days</strong> | Quantity:{" "}
-                        <strong className="text-white">{p.quantity} Shares</strong> | Audit Hash:{" "}
-                        <code className="text-[10px] text-gray-500">{p.audit_hash?.slice(0, 16)}...</code>
+                        <strong className="text-white">{p.quantity} Shares</strong> | Capital:{" "}
+                        <strong className="text-white">₹{p.capital_required?.toLocaleString("en-IN")}</strong>
                       </div>
                     </div>
 
@@ -343,8 +382,29 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                       </div>
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex items-center gap-2 self-end lg:self-center">
+                    {/* Action Buttons: Live Chart, Kite Export, Copy, Expand */}
+                    <div className="flex flex-wrap items-center gap-2 self-end lg:self-center">
+                      {/* Live TradingView Chart Modal Trigger */}
+                      <button
+                        onClick={() => setSelectedChartCandidate(p)}
+                        className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-950/80 hover:bg-indigo-900 text-indigo-300 border border-indigo-700/60 flex items-center gap-1.5 transition-all shadow-sm"
+                        title="Open interactive TradingView candlestick chart"
+                      >
+                        <Activity className="w-3.5 h-3.5 text-indigo-400" />
+                        Live Chart
+                      </button>
+
+                      {/* Download Individual Kite Basket JSON */}
+                      <button
+                        onClick={() => downloadKiteBasketJson([p], `${p.symbol.replace(".NS","")}_kite_basket.json`)}
+                        className="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 flex items-center gap-1 transition-all"
+                        title="Download Zerodha Kite Basket JSON for this stock"
+                      >
+                        <Download className="w-3.5 h-3.5 text-amber-400" />
+                        Kite JSON
+                      </button>
+
+                      {/* Copy Order Ticket */}
                       <button
                         onClick={() => handleCopyBrokerTicket(p)}
                         className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
@@ -355,14 +415,15 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                         title="Copy pre-formatted order ticket for Zerodha Kite / Groww / Dhan"
                       >
                         {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                        {isCopied ? "Copied Ticket!" : "Copy Zerodha GTT"}
+                        {isCopied ? "Copied!" : "Copy GTT"}
                       </button>
 
+                      {/* Expand Bull/Bear Audit */}
                       <button
                         onClick={() => toggleExpand(p.id)}
                         className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-gray-300 flex items-center gap-1.5 transition-all"
                       >
-                        {isExpanded ? "Hide Audit" : "Bull/Bear Audit"}
+                        {isExpanded ? "Hide Audit" : "Audit"}
                         {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                       </button>
                     </div>
@@ -471,6 +532,92 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
               );
             })
           )}
+        </div>
+      )}
+
+      {/* Tab: Sector Heatmap & Mansfield Relative Strength Matrix */}
+      {activeTab === "sectors" && (
+        <div className="space-y-5 animate-in fade-in">
+          <div className="aura-card p-5 border border-gray-800 space-y-3">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-gray-800 pb-3">
+              <div>
+                <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                  <PieChart className="w-4 h-4 text-indigo-400" />
+                  NSE Sector Relative Strength Matrix vs NIFTY 50
+                </h3>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  Mansfield Relative Strength isolates institutional capital rotation. Prefer longs exclusively in LEADING sectors.
+                </p>
+              </div>
+              <div className="text-xs text-gray-400 bg-gray-900 px-3 py-1.5 rounded-lg border border-gray-800">
+                NIFTY 50: <strong className="text-white">₹{sectorMatrix?.benchmark?.close ?? 25144}</strong> (1D: {sectorMatrix?.benchmark?.change_1d_pct ?? 0.35}%)
+              </div>
+            </div>
+
+            {/* Sector Heatmap Tiles Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 pt-2">
+              {(sectorMatrix?.sectors || []).map((sec: any) => {
+                const isLeading = sec.status === "LEADING";
+                const isImproving = sec.status === "IMPROVING";
+                const isWeakening = sec.status === "WEAKENING";
+                const isLagging = sec.status === "LAGGING";
+
+                const cardBorder = isLeading
+                  ? "border-emerald-700/60 bg-emerald-950/20"
+                  : isImproving
+                  ? "border-cyan-700/60 bg-cyan-950/20"
+                  : isWeakening
+                  ? "border-amber-700/60 bg-amber-950/20"
+                  : "border-rose-700/60 bg-rose-950/20";
+
+                const statusColor = isLeading
+                  ? "text-emerald-400 bg-emerald-950 border-emerald-800"
+                  : isImproving
+                  ? "text-cyan-400 bg-cyan-950 border-cyan-800"
+                  : isWeakening
+                  ? "text-amber-400 bg-amber-950 border-amber-800"
+                  : "text-rose-400 bg-rose-950 border-rose-800";
+
+                return (
+                  <div
+                    key={sec.sector}
+                    onClick={() => {
+                      setSearchQuery(sec.constituents?.[0] || sec.sector);
+                      setActiveTab("approved");
+                    }}
+                    className={`p-4 rounded-xl border ${cardBorder} hover:scale-[1.02] transition-all cursor-pointer space-y-2`}
+                    title={`Click to filter stocks in ${sec.sector}`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-white text-sm">{sec.sector}</span>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${statusColor}`}>
+                        {sec.status}
+                      </span>
+                    </div>
+
+                    <div className="flex items-baseline justify-between pt-1">
+                      <div>
+                        <div className="text-[10px] text-gray-400">1-Day Return</div>
+                        <div className={`text-sm font-bold ${sec.change_1d_pct >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
+                          {sec.change_1d_pct >= 0 ? `+${sec.change_1d_pct}%` : `${sec.change_1d_pct}%`}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-[10px] text-gray-400">Mansfield RS</div>
+                        <div className="text-sm font-bold text-cyan-300">
+                          {sec.relative_strength >= 0 ? `+${sec.relative_strength}` : `${sec.relative_strength}`}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="text-[10px] text-gray-400 pt-1.5 border-t border-gray-800 truncate">
+                      Top: {sec.constituents?.slice(0, 3).join(", ") || "Constituents mapped"}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       )}
 
@@ -673,6 +820,19 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
             </div>
           )}
         </div>
+      )}
+
+      {/* TradingView Interactive Candlestick Chart Modal */}
+      {selectedChartCandidate && (
+        <TradingViewChartModal
+          symbol={selectedChartCandidate.symbol}
+          setupTag={selectedChartCandidate.setup_tag}
+          entryPrice={selectedChartCandidate.entry_price}
+          stopLoss={selectedChartCandidate.stop_loss}
+          targetPrice={selectedChartCandidate.target_price}
+          onClose={() => setSelectedChartCandidate(null)}
+          onCopyTicket={() => handleCopyBrokerTicket(selectedChartCandidate)}
+        />
       )}
 
       {/* FII / DII Institutional Breakdown Modal */}
@@ -909,6 +1069,73 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                 className="px-4 py-2 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-white"
               >
                 Close Calculator
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sector Heatmap & RS Modal (when clicked from top bar) */}
+      {showSectorModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in">
+          <div className="aura-card max-w-4xl w-full p-6 border border-gray-800 shadow-2xl relative space-y-5 bg-[#0d121c]">
+            <div className="flex items-center justify-between border-b border-gray-800 pb-3">
+              <div>
+                <h3 className="text-base font-bold text-white flex items-center gap-2">
+                  <PieChart className="w-5 h-5 text-indigo-400" />
+                  NSE Sector Relative Strength (RS) Matrix
+                </h3>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  Sector momentum relative to NIFTY 50. Prioritize stocks from LEADING sectors.
+                </p>
+              </div>
+              <button
+                onClick={() => setShowSectorModal(false)}
+                className="text-gray-400 hover:text-white p-1 rounded hover:bg-gray-800"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {(sectorMatrix?.sectors || []).map((sec: any) => (
+                <div
+                  key={sec.sector}
+                  onClick={() => {
+                    setSearchQuery(sec.constituents?.[0] || sec.sector);
+                    setShowSectorModal(false);
+                    setActiveTab("approved");
+                  }}
+                  className={`p-3.5 rounded-lg border cursor-pointer hover:scale-105 transition-all ${
+                    sec.status === "LEADING"
+                      ? "border-emerald-600/60 bg-emerald-950/30"
+                      : sec.status === "IMPROVING"
+                      ? "border-cyan-600/60 bg-cyan-950/30"
+                      : sec.status === "WEAKENING"
+                      ? "border-amber-600/60 bg-amber-950/30"
+                      : "border-rose-600/60 bg-rose-950/30"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-white text-xs">{sec.sector}</span>
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-black/40">
+                      {sec.status}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-baseline mt-2">
+                    <span className="text-[11px] text-gray-400">1D: {sec.change_1d_pct}%</span>
+                    <span className="text-xs font-bold text-cyan-300">RS: {sec.relative_strength}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-right">
+              <button
+                onClick={() => setShowSectorModal(false)}
+                className="px-4 py-2 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-white"
+              >
+                Close Heatmap
               </button>
             </div>
           </div>

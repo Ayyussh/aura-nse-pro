@@ -633,6 +633,16 @@ def api_market_fii_dii():
     return fii_dii_tracker.fetch_live_flows()
 
 
+# --- Sector Heatmap & Mansfield Relative Strength Matrix ---
+
+@router.get("/market/sector-matrix")
+def api_market_sector_matrix():
+    """Return real-time NSE Sector Heatmap and Mansfield Relative Strength (RS) Matrix."""
+    from backend.data.sector_matrix import sector_matrix_engine
+    return sector_matrix_engine.get_sector_matrix()
+
+
+
 # --- Prediction Accuracy & Walk-Forward Improvement Tracker ---
 
 @router.get("/predictions/accuracy-tracker")

@@ -61,4 +61,5 @@ declare module 'lucide-react' {
   export const Calculator: Icon;
   export const Sliders: Icon;
   export const Search: Icon;
+  export const X: Icon;
 }

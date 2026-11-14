@@ -35,6 +35,7 @@ import {
   DEMO_FII_DII,
   DEMO_TELEGRAM_ALERTS,
   DEMO_VOICE_BRIEFING,
+  DEMO_SECTOR_MATRIX,
 } from "./utils/demoData";
 
 export function App() {
@@ -56,6 +57,7 @@ export function App() {
   const [fiiDiiData, setFiiDiiData] = useState<any>(DEMO_FII_DII);
   const [accuracyTracker, setAccuracyTracker] = useState<any>(DEMO_ACCURACY_TRACKER);
   const [telegramAlerts, setTelegramAlerts] = useState<any[]>(DEMO_TELEGRAM_ALERTS);
+  const [sectorMatrix, setSectorMatrix] = useState<any>(DEMO_SECTOR_MATRIX);
 
   const [isLoadingScan, setIsLoadingScan] = useState<boolean>(false);
   const [isValidatingKeys, setIsValidatingKeys] = useState<boolean>(false);
@@ -103,6 +105,7 @@ export function App() {
     fetchFiiDiiData();
     fetchAccuracyTracker();
     fetchTelegramAlerts();
+    fetchSectorMatrix();
 
     // WebSocket setup
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
@@ -266,6 +269,16 @@ export function App() {
     }
   };
 
+  const fetchSectorMatrix = async () => {
+    try {
+      const res = await fetch("/api/market/sector-matrix");
+      if (res.ok) setSectorMatrix(await res.json());
+      else setSectorMatrix(DEMO_SECTOR_MATRIX);
+    } catch {
+      setSectorMatrix(DEMO_SECTOR_MATRIX);
+    }
+  };
+
   const handleRunScanNow = async () => {
     setIsLoadingScan(true);
     setAuraState("Scanning");
@@ -301,6 +314,7 @@ export function App() {
       fetchAccuracyTracker();
       fetchTelegramAlerts();
       fetchFiiDiiData();
+      fetchSectorMatrix();
     }
   };
 
@@ -518,6 +532,7 @@ export function App() {
             fiiDii={fiiDiiData}
             accuracyTracker={accuracyTracker}
             telegramAlerts={telegramAlerts}
+            sectorMatrix={sectorMatrix}
             onRefreshScan={handleRunScanNow}
             isLoading={isLoadingScan}
           />
