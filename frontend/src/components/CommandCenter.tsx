@@ -16,6 +16,10 @@ import {
   ArrowDownRight,
   Layers,
   Send,
+  Copy,
+  Check,
+  Calculator,
+  Search,
 } from "lucide-react";
 
 interface CommandCenterProps {
@@ -28,6 +32,7 @@ interface CommandCenterProps {
   telegramAlerts?: any[];
   onRefreshScan: () => void;
   isLoading: boolean;
+  onCopyTicket?: (ticket: string) => void;
 }
 
 export const CommandCenter: React.FC<CommandCenterProps> = ({
@@ -44,9 +49,26 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
   const [activeTab, setActiveTab] = useState<"approved" | "rejected" | "accuracy" | "alerts">("approved");
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [showFiiDiiModal, setShowFiiDiiModal] = useState<boolean>(false);
+  const [showCalculatorModal, setShowCalculatorModal] = useState<boolean>(false);
+  const [copiedId, setCopiedId] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Position Sizing Calculator State
+  const [calcCapital, setCalcCapital] = useState<number>(100000);
+  const [calcRiskPct, setCalcRiskPct] = useState<number>(1.0);
+  const [calcEntry, setCalcEntry] = useState<number>(1500);
+  const [calcStop, setCalcStop] = useState<number>(1465);
+  const [calcTarget, setCalcTarget] = useState<number>(1575);
 
   const toggleExpand = (id: number) => {
     setExpandedId(expandedId === id ? null : id);
+  };
+
+  const handleCopyBrokerTicket = (p: any) => {
+    const ticket = `AURA ORDER TICKET:\nBUY ${p.symbol} EQ\nQuantity: ${p.quantity} shares\nEntry Limit: ₹${p.entry_price}\nStop Loss Trigger: ₹${p.stop_loss}\nTarget Limit: ₹${p.target_price}\nZerodha GTT Trigger: ₹${p.stop_loss}\nHorizon: ${p.time_limit_days} Days (Swing)`;
+    navigator.clipboard.writeText(ticket);
+    setCopiedId(p.id);
+    setTimeout(() => setCopiedId(null), 2500);
   };
 
   const fiiNet = fiiDii?.fii?.net_cr ?? 5736.55;
@@ -54,12 +76,29 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
   const combinedNet = fiiDii?.combined_net_cr ?? (fiiNet + diiNet);
   const isNetPositive = combinedNet >= 0;
 
+  // Filtered lists
+  const filteredPredictions = predictions.filter((p) =>
+    p.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  const filteredRejected = rejectedCandidates.filter((r) =>
+    r.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Calculator computations
+  const riskAmount = (calcCapital * calcRiskPct) / 100;
+  const riskPerShare = Math.max(0.05, calcEntry - calcStop);
+  const targetGainPerShare = Math.max(0.05, calcTarget - calcEntry);
+  const calcShares = Math.max(1, Math.floor(riskAmount / riskPerShare));
+  const calcTotalInvested = calcShares * calcEntry;
+  const calcRR = (targetGainPerShare / riskPerShare).toFixed(2);
+  const calcTotalPotentialProfit = calcShares * targetGainPerShare;
+
   return (
     <div className="space-y-6">
       {/* Top Status & Institutional Macro Bar */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* Market Status */}
-        <div className="aura-card p-4 border flex items-center justify-between">
+        <div className="aura-card p-4 border border-gray-800/80 flex items-center justify-between">
           <div>
             <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">NSE Session</div>
             <div className="text-base font-bold text-white mt-0.5 flex items-center gap-2">
@@ -75,7 +114,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
         </div>
 
         {/* NIFTY 50 */}
-        <div className="aura-card p-4 border">
+        <div className="aura-card p-4 border border-gray-800/80">
           <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">NIFTY 50 Benchmark</div>
           <div className="text-lg font-bold text-white mt-0.5">
             ₹{regime?.nifty_close ? Number(regime.nifty_close).toLocaleString("en-IN") : "25,144"}
@@ -87,15 +126,15 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
         </div>
 
         {/* India VIX */}
-        <div className="aura-card p-4 border">
+        <div className="aura-card p-4 border border-gray-800/80">
           <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">India VIX Volatility</div>
           <div className="text-lg font-bold text-white mt-0.5 flex items-center gap-2">
             {regime?.india_vix || "14.8"}
             <span
               className={`text-xs px-2 py-0.5 rounded font-semibold ${
                 Number(regime?.india_vix || 15) > 18
-                  ? "bg-amber-950 text-amber-400"
-                  : "bg-emerald-950 text-emerald-400"
+                  ? "bg-amber-950 text-amber-400 border border-amber-800"
+                  : "bg-emerald-950 text-emerald-400 border border-emerald-800"
               }`}
             >
               {Number(regime?.india_vix || 15) > 18 ? "ELEVATED" : "SUBDUED"}
@@ -109,7 +148,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
         {/* FII / DII Daily Institutional Flow */}
         <div
           onClick={() => setShowFiiDiiModal(true)}
-          className="aura-card p-4 border cursor-pointer hover:border-cyan-500/50 transition-all group"
+          className="aura-card p-4 border border-gray-800/80 cursor-pointer hover:border-cyan-500/50 transition-all group"
         >
           <div className="flex items-center justify-between">
             <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">FII / DII Net Flow</div>
@@ -121,7 +160,9 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
             </span>
             <span
               className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${
-                isNetPositive ? "bg-emerald-950 text-emerald-400" : "bg-rose-950 text-rose-400"
+                isNetPositive
+                  ? "bg-emerald-950 text-emerald-400 border border-emerald-800"
+                  : "bg-rose-950 text-rose-400 border border-rose-800"
               }`}
             >
               {fiiDii?.institutional_sentiment?.replace(/_/g, " ") || (isNetPositive ? "BULLISH" : "BEARISH")}
@@ -133,7 +174,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
         </div>
 
         {/* Leading Sectors */}
-        <div className="aura-card p-4 border">
+        <div className="aura-card p-4 border border-gray-800/80">
           <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">Leading Sectors</div>
           <div className="text-sm font-semibold text-cyan-400 mt-1 truncate">
             {regime?.top_leading_sectors?.join(", ") || "Banking, IT, Auto"}
@@ -142,15 +183,15 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
         </div>
       </div>
 
-      {/* Action Header & Tabs */}
+      {/* Action Header & Tabs & Quick Search */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-b border-gray-800 pb-4">
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setActiveTab("approved")}
             className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
               activeTab === "approved"
                 ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
-                : "bg-gray-800 text-gray-400 hover:text-white"
+                : "bg-gray-800/80 text-gray-400 hover:text-white"
             }`}
           >
             Today's Approved Setups ({predictions.length})
@@ -160,7 +201,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
             className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
               activeTab === "rejected"
                 ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
-                : "bg-gray-800 text-gray-400 hover:text-white"
+                : "bg-gray-800/80 text-gray-400 hover:text-white"
             }`}
           >
             Screened Out & Why Not ({rejectedCandidates.length})
@@ -170,7 +211,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
               activeTab === "accuracy"
                 ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
-                : "bg-gray-800 text-gray-400 hover:text-white"
+                : "bg-gray-800/80 text-gray-400 hover:text-white"
             }`}
           >
             <Target className="w-3.5 h-3.5 text-cyan-400" />
@@ -181,7 +222,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
               activeTab === "alerts"
                 ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
-                : "bg-gray-800 text-gray-400 hover:text-white"
+                : "bg-gray-800/80 text-gray-400 hover:text-white"
             }`}
           >
             <Bell className="w-3.5 h-3.5 text-amber-400" />
@@ -189,21 +230,46 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
           </button>
         </div>
 
-        <button
-          onClick={onRefreshScan}
-          disabled={isLoading}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition-all disabled:opacity-50"
-        >
-          <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
-          {isLoading ? "Running Pre-Market Screen..." : "Run 9:00 AM Scan Now"}
-        </button>
+        <div className="flex items-center gap-2.5 w-full lg:w-auto">
+          {/* Quick Search */}
+          <div className="relative flex-1 sm:w-48">
+            <Search className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Filter symbol..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-gray-900 border border-gray-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500"
+            />
+          </div>
+
+          {/* Sizing Tool Modal Trigger */}
+          <button
+            onClick={() => setShowCalculatorModal(true)}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-cyan-400 border border-cyan-800/40 transition-all"
+            title="Open Position Sizing Calculator"
+          >
+            <Calculator className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Risk Calc</span>
+          </button>
+
+          {/* Pre-Market Scan Trigger */}
+          <button
+            onClick={onRefreshScan}
+            disabled={isLoading}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition-all disabled:opacity-50 shadow-lg shadow-emerald-600/20"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
+            {isLoading ? "Running Screen..." : "Run 9:00 AM Scan"}
+          </button>
+        </div>
       </div>
 
       {/* Tab: Approved Predictions */}
       {activeTab === "approved" && (
         <div className="space-y-4">
-          {predictions.length === 0 ? (
-            <div className="aura-card p-12 text-center border">
+          {filteredPredictions.length === 0 ? (
+            <div className="aura-card p-12 text-center border border-gray-800/80">
               <CheckCircle2 className="w-12 h-12 text-indigo-400 mx-auto mb-3 opacity-60" />
               <h3 className="text-base font-bold text-white mb-1">NO TRADE TODAY Ruling</h3>
               <p className="text-xs text-gray-400 max-w-md mx-auto mb-4">
@@ -218,15 +284,20 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
               </button>
             </div>
           ) : (
-            predictions.map((p) => {
+            filteredPredictions.map((p) => {
               const isExpanded = expandedId === p.id;
+              const isCopied = copiedId === p.id;
+              const riskPerShare = Math.max(0.1, p.entry_price - p.stop_loss);
+              const rewardPerShare = Math.max(0.1, p.target_price - p.entry_price);
+              const rrRatio = (rewardPerShare / riskPerShare).toFixed(2);
+
               return (
-                <div key={p.id} className="aura-card p-5 border aura-card-hover transition-all">
+                <div key={p.id} className="aura-card p-5 border border-gray-800/80 aura-card-hover transition-all">
                   <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
                     {/* Symbol & Horizon */}
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-lg font-bold text-white tracking-wide">{p.symbol}</span>
+                        <span className="text-xl font-bold text-white tracking-wide">{p.symbol}</span>
                         <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-950 text-cyan-400 border border-cyan-800">
                           {p.horizon}
                         </span>
@@ -244,26 +315,27 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                         </span>
                       </div>
                       <div className="text-xs text-gray-400 mt-1">
-                        Time Horizon: <strong>{p.time_limit_days} Trading Days</strong> | Audit Hash:{" "}
+                        Time Horizon: <strong>{p.time_limit_days} Trading Days</strong> | Quantity:{" "}
+                        <strong className="text-white">{p.quantity} Shares</strong> | Audit Hash:{" "}
                         <code className="text-[10px] text-gray-500">{p.audit_hash?.slice(0, 16)}...</code>
                       </div>
                     </div>
 
                     {/* Trade Levels */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-                      <div className="bg-gray-900/60 p-2.5 rounded-lg border border-gray-800">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                      <div className="bg-gray-900/80 p-2.5 rounded-lg border border-gray-800">
                         <div className="text-[10px] text-gray-400 uppercase font-semibold">Entry (Limit)</div>
                         <div className="text-sm font-bold text-white mt-0.5">₹{p.entry_price}</div>
                       </div>
-                      <div className="bg-gray-900/60 p-2.5 rounded-lg border border-gray-800">
+                      <div className="bg-gray-900/80 p-2.5 rounded-lg border border-gray-800">
                         <div className="text-[10px] text-rose-400 uppercase font-semibold">Stop Loss</div>
                         <div className="text-sm font-bold text-rose-400 mt-0.5">₹{p.stop_loss}</div>
                       </div>
-                      <div className="bg-gray-900/60 p-2.5 rounded-lg border border-gray-800">
+                      <div className="bg-gray-900/80 p-2.5 rounded-lg border border-gray-800">
                         <div className="text-[10px] text-emerald-400 uppercase font-semibold">Target (1.8R+)</div>
                         <div className="text-sm font-bold text-emerald-400 mt-0.5">₹{p.target_price}</div>
                       </div>
-                      <div className="bg-gray-900/60 p-2.5 rounded-lg border border-gray-800">
+                      <div className="bg-gray-900/80 p-2.5 rounded-lg border border-gray-800">
                         <div className="text-[10px] text-cyan-400 uppercase font-semibold">Win Prob (ML)</div>
                         <div className="text-sm font-bold text-cyan-400 mt-0.5">
                           {(p.win_probability * 100).toFixed(1)}%
@@ -271,17 +343,54 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                       </div>
                     </div>
 
-                    {/* Action Button */}
-                    <button
-                      onClick={() => toggleExpand(p.id)}
-                      className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-gray-300 flex items-center gap-1.5 transition-all self-end lg:self-center"
-                    >
-                      {isExpanded ? "Hide Institutional Audit" : "View Bull/Bear Audit"}
-                      {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                    </button>
+                    {/* Action Buttons */}
+                    <div className="flex items-center gap-2 self-end lg:self-center">
+                      <button
+                        onClick={() => handleCopyBrokerTicket(p)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                          isCopied
+                            ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30"
+                            : "bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700"
+                        }`}
+                        title="Copy pre-formatted order ticket for Zerodha Kite / Groww / Dhan"
+                      >
+                        {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                        {isCopied ? "Copied Ticket!" : "Copy Zerodha GTT"}
+                      </button>
+
+                      <button
+                        onClick={() => toggleExpand(p.id)}
+                        className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-gray-300 flex items-center gap-1.5 transition-all"
+                      >
+                        {isExpanded ? "Hide Audit" : "Bull/Bear Audit"}
+                        {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                      </button>
+                    </div>
                   </div>
 
-                  {/* Expanded Audit Card */}
+                  {/* VISUAL RISK:REWARD GAUGE BAR */}
+                  <div className="mt-4 pt-3 border-t border-gray-800/60">
+                    <div className="flex items-center justify-between text-[11px] mb-1.5 text-gray-400">
+                      <span className="flex items-center gap-1 text-rose-400 font-medium">
+                        Stop: ₹{p.stop_loss} (-₹{riskPerShare.toFixed(1)} / -1.0R)
+                      </span>
+                      <span className="px-2 py-0.5 rounded bg-gray-900 border border-gray-700 text-cyan-300 font-bold">
+                        R:R = 1 : {rrRatio}R
+                      </span>
+                      <span className="flex items-center gap-1 text-emerald-400 font-medium">
+                        Target: ₹{p.target_price} (+₹{rewardPerShare.toFixed(1)} / +{rrRatio}R)
+                      </span>
+                    </div>
+
+                    {/* Gradient Progress Bar */}
+                    <div className="w-full h-2.5 rounded-full bg-gray-950 border border-gray-800 flex overflow-hidden">
+                      <div className="h-full bg-rose-500/80 w-[30%]" title="Risk zone" />
+                      <div className="h-full w-1.5 bg-sky-400 shadow-[0_0_8px_#38bdf8]" title="Entry Price" />
+                      <div className="h-full bg-emerald-500/80 flex-1" title="Reward zone" />
+                    </div>
+                  </div>
+
+                  {/* Expanded Institutional Audit Card */}
                   {isExpanded && (
                     <div className="mt-5 pt-5 border-t border-gray-800 space-y-4 text-xs animate-in fade-in">
                       {/* Bull / Bear Debate Arguments */}
@@ -309,10 +418,10 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                         </div>
                       </div>
 
-                      {/* Itemized Indian Charges Breakdown */}
+                      {/* Itemized Indian Statutory Deductions */}
                       <div className="p-3.5 rounded-lg bg-gray-900/70 border border-gray-800">
                         <div className="font-semibold text-gray-300 mb-2 flex items-center gap-1.5">
-                          <Info className="w-3.5 h-3.5 text-cyan-400" /> Statutory & Brokerage Deductions
+                          <Info className="w-3.5 h-3.5 text-cyan-400" /> Statutory & Brokerage Deductions Breakdown
                         </div>
                         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-center text-[11px]">
                           <div className="p-2 bg-gray-950 rounded border border-gray-800">
@@ -368,13 +477,13 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
       {/* Tab: Screened Out / Rejected Candidates */}
       {activeTab === "rejected" && (
         <div className="space-y-3">
-          {rejectedCandidates.length === 0 ? (
-            <div className="aura-card p-8 text-center border text-xs text-gray-400">
+          {filteredRejected.length === 0 ? (
+            <div className="aura-card p-8 text-center border border-gray-800 text-xs text-gray-400">
               No screened candidates currently logged. Run the 9:00 AM scan to view full quantitative disqualification audits.
             </div>
           ) : (
-            rejectedCandidates.map((r, i) => (
-              <div key={i} className="aura-card p-3.5 border flex items-center justify-between text-xs">
+            filteredRejected.map((r, i) => (
+              <div key={i} className="aura-card p-3.5 border border-gray-800 flex items-center justify-between text-xs">
                 <div className="flex items-center gap-3">
                   <XCircle className="w-4 h-4 text-rose-500 flex-shrink-0" />
                   <span className="font-bold text-white">{r.symbol}</span>
@@ -391,7 +500,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
         <div className="space-y-6">
           {/* Accuracy Scorecards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="aura-card p-4 border">
+            <div className="aura-card p-4 border border-gray-800">
               <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">True Prediction Rate</div>
               <div className="text-2xl font-bold text-emerald-400 mt-1">
                 {accuracyTracker?.true_prediction_rate_pct ?? 0}%
@@ -401,7 +510,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
               </div>
             </div>
 
-            <div className="aura-card p-4 border">
+            <div className="aura-card p-4 border border-gray-800">
               <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">False Prediction Rate</div>
               <div className="text-2xl font-bold text-rose-400 mt-1">
                 {accuracyTracker?.false_prediction_rate_pct ?? 0}%
@@ -411,7 +520,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
               </div>
             </div>
 
-            <div className="aura-card p-4 border">
+            <div className="aura-card p-4 border border-gray-800">
               <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">Expectancy per Trade</div>
               <div className="text-2xl font-bold text-cyan-400 mt-1">
                 {accuracyTracker?.avg_expectancy_r > 0 ? `+${accuracyTracker?.avg_expectancy_r}R` : `${accuracyTracker?.avg_expectancy_r ?? 0}R`}
@@ -419,7 +528,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
               <div className="text-[11px] text-gray-400 mt-1">Average Return per Unit of Rupee Risked</div>
             </div>
 
-            <div className="aura-card p-4 border">
+            <div className="aura-card p-4 border border-gray-800">
               <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">Model Improvement Rate</div>
               <div className="text-2xl font-bold text-indigo-400 mt-1 flex items-center gap-1">
                 {accuracyTracker?.improvement_rate_pct > 0 ? `+${accuracyTracker?.improvement_rate_pct}%` : `${accuracyTracker?.improvement_rate_pct ?? 0}%`}
@@ -434,7 +543,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
           </div>
 
           {/* Graded Trades Table */}
-          <div className="aura-card p-5 border space-y-4">
+          <div className="aura-card p-5 border border-gray-800 space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-sm font-bold text-white flex items-center gap-2">
@@ -480,9 +589,9 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                           <span
                             className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                               row.status === "TARGET_HIT"
-                                ? "bg-emerald-950 text-emerald-400"
+                                ? "bg-emerald-950 text-emerald-400 border border-emerald-800"
                                 : row.status === "STOP_LOSS_HIT"
-                                ? "bg-rose-950 text-rose-400"
+                                ? "bg-rose-950 text-rose-400 border border-rose-800"
                                 : "bg-gray-800 text-gray-400"
                             }`}
                           >
@@ -526,7 +635,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
 
       {/* Tab: Telegram Live Alerts Stream */}
       {activeTab === "alerts" && (
-        <div className="aura-card p-5 border space-y-4">
+        <div className="aura-card p-5 border border-gray-800 space-y-4">
           <div className="flex items-center justify-between border-b border-gray-800 pb-3">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center">
@@ -568,8 +677,8 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
 
       {/* FII / DII Institutional Breakdown Modal */}
       {showFiiDiiModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in">
-          <div className="aura-card max-w-xl w-full p-6 border shadow-2xl relative space-y-5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 animate-in fade-in">
+          <div className="aura-card max-w-xl w-full p-6 border border-gray-800 shadow-2xl relative space-y-5">
             <div className="flex items-center justify-between border-b border-gray-800 pb-3">
               <div>
                 <h3 className="text-base font-bold text-white flex items-center gap-2">
@@ -596,7 +705,9 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                   <span>FII / FPI Cash</span>
                   <span
                     className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${
-                      fiiNet >= 0 ? "bg-emerald-950 text-emerald-400" : "bg-rose-950 text-rose-400"
+                      fiiNet >= 0
+                        ? "bg-emerald-950 text-emerald-400 border border-emerald-800"
+                        : "bg-rose-950 text-rose-400 border border-rose-800"
                     }`}
                   >
                     {fiiDii?.fii?.action || (fiiNet >= 0 ? "NET BUYER" : "NET SELLER")}
@@ -623,7 +734,9 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                   <span>DII Domestic Cash</span>
                   <span
                     className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${
-                      diiNet >= 0 ? "bg-emerald-950 text-emerald-400" : "bg-rose-950 text-rose-400"
+                      diiNet >= 0
+                        ? "bg-emerald-950 text-emerald-400 border border-emerald-800"
+                        : "bg-rose-950 text-rose-400 border border-rose-800"
                     }`}
                   >
                     {fiiDii?.dii?.action || (diiNet >= 0 ? "NET BUYER" : "NET SELLER")}
@@ -680,6 +793,122 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                 className="px-4 py-2 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-white"
               >
                 Close Window
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Position Sizing & Margin Simulator Modal */}
+      {showCalculatorModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 animate-in fade-in">
+          <div className="aura-card max-w-xl w-full p-6 border border-gray-800 shadow-2xl relative space-y-5">
+            <div className="flex items-center justify-between border-b border-gray-800 pb-3">
+              <div>
+                <h3 className="text-base font-bold text-white flex items-center gap-2">
+                  <Calculator className="w-4 h-4 text-cyan-400" />
+                  Institutional Position Sizing Simulator
+                </h3>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  Calculate exact share sizing, rupee risk, and statutory charges before entering any trade.
+                </p>
+              </div>
+              <button
+                onClick={() => setShowCalculatorModal(false)}
+                className="text-gray-400 hover:text-white p-1 rounded hover:bg-gray-800"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Inputs */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div>
+                <label className="text-gray-400 block mb-1 font-medium">Total Trading Capital (₹)</label>
+                <input
+                  type="number"
+                  value={calcCapital}
+                  onChange={(e) => setCalcCapital(Number(e.target.value))}
+                  className="w-full bg-gray-900 border border-gray-800 rounded-lg p-2 text-white font-bold"
+                />
+              </div>
+              <div>
+                <label className="text-gray-400 block mb-1 font-medium">Max Risk per Trade (%)</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={calcRiskPct}
+                  onChange={(e) => setCalcRiskPct(Number(e.target.value))}
+                  className="w-full bg-gray-900 border border-gray-800 rounded-lg p-2 text-white font-bold"
+                />
+              </div>
+              <div>
+                <label className="text-gray-400 block mb-1 font-medium">Entry Price (₹)</label>
+                <input
+                  type="number"
+                  step="0.5"
+                  value={calcEntry}
+                  onChange={(e) => setCalcEntry(Number(e.target.value))}
+                  className="w-full bg-gray-900 border border-gray-800 rounded-lg p-2 text-white font-bold"
+                />
+              </div>
+              <div>
+                <label className="text-gray-400 block mb-1 font-medium">Stop Loss Price (₹)</label>
+                <input
+                  type="number"
+                  step="0.5"
+                  value={calcStop}
+                  onChange={(e) => setCalcStop(Number(e.target.value))}
+                  className="w-full bg-gray-900 border border-gray-800 rounded-lg p-2 text-white font-bold"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="text-gray-400 block mb-1 font-medium">Target Price (₹)</label>
+                <input
+                  type="number"
+                  step="0.5"
+                  value={calcTarget}
+                  onChange={(e) => setCalcTarget(Number(e.target.value))}
+                  className="w-full bg-gray-900 border border-gray-800 rounded-lg p-2 text-white font-bold"
+                />
+              </div>
+            </div>
+
+            {/* Outputs */}
+            <div className="p-4 rounded-lg bg-gray-950 border border-gray-800 space-y-3">
+              <div className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
+                Computed Sizing Metrics:
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                <div className="p-2.5 bg-gray-900 rounded border border-gray-800">
+                  <span className="text-gray-400 block text-[10px]">Exact Shares</span>
+                  <span className="text-base font-bold text-white">{calcShares}</span>
+                </div>
+                <div className="p-2.5 bg-gray-900 rounded border border-gray-800">
+                  <span className="text-gray-400 block text-[10px]">Capital Req.</span>
+                  <span className="text-base font-bold text-cyan-400">₹{calcTotalInvested.toLocaleString("en-IN")}</span>
+                </div>
+                <div className="p-2.5 bg-gray-900 rounded border border-gray-800">
+                  <span className="text-gray-400 block text-[10px]">Rupee Risk (1R)</span>
+                  <span className="text-base font-bold text-rose-400">₹{(calcShares * riskPerShare).toFixed(0)}</span>
+                </div>
+                <div className="p-2.5 bg-gray-900 rounded border border-gray-800">
+                  <span className="text-gray-400 block text-[10px]">Potential Profit</span>
+                  <span className="text-base font-bold text-emerald-400">₹{calcTotalPotentialProfit.toFixed(0)}</span>
+                </div>
+              </div>
+              <div className="text-[11px] text-gray-400 flex items-center justify-between pt-1">
+                <span>Calculated Risk-to-Reward: <strong className="text-cyan-400">1 : {calcRR}R</strong></span>
+                <span>Est. Statutory STT/Charges: <strong className="text-amber-400">~₹{(calcTotalInvested * 0.0022).toFixed(1)}</strong></span>
+              </div>
+            </div>
+
+            <div className="text-right">
+              <button
+                onClick={() => setShowCalculatorModal(false)}
+                className="px-4 py-2 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-white"
+              >
+                Close Calculator
               </button>
             </div>
           </div>

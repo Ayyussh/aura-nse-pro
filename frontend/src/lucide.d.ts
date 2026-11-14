@@ -56,4 +56,9 @@ declare module 'lucide-react' {
   export const Target: Icon;
   export const Layers: Icon;
   export const ArrowDownRight: Icon;
+  export const Copy: Icon;
+  export const Check: Icon;
+  export const Calculator: Icon;
+  export const Sliders: Icon;
+  export const Search: Icon;
 }

@@ -159,6 +159,16 @@ export const AuraAvatar: React.FC<AuraAvatarProps> = ({ state, briefingScript, r
               {isPlaying ? "Pause Spoken Briefing" : "Play 9:00 AM Voice Briefing (en-IN)"}
             </button>
 
+            {isPlaying && (
+              <div className="flex items-center gap-1 h-5 px-2 bg-gray-900/80 rounded-md border border-gray-700">
+                <span className="w-1 bg-emerald-400 rounded-full animate-pulse h-4" />
+                <span className="w-1 bg-cyan-400 rounded-full animate-bounce h-3" />
+                <span className="w-1 bg-indigo-400 rounded-full animate-pulse h-5" />
+                <span className="w-1 bg-emerald-400 rounded-full animate-bounce h-2" />
+                <span className="text-[10px] text-cyan-300 font-bold ml-1">AUDIO ACTIVE</span>
+              </div>
+            )}
+
             <div className="flex items-center gap-1.5 bg-gray-800/80 px-2.5 py-1.5 rounded-lg border border-gray-700 text-xs text-gray-300">
               <span className="text-[11px] text-gray-400">Rate:</span>
               <button
