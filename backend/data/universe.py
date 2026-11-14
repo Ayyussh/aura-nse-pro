@@ -7,55 +7,72 @@ ASM/GSM filters, EQ series validation, and traded liquidity gates.
 from __future__ import annotations
 from typing import Dict, List, Set
 
-# Representative high-liquidity NIFTY 500 constituent universe across sectors
+# Representative high-liquidity NIFTY 500 constituent universe across sectors (191 Stocks)
 NIFTY_500_SYMBOLS: List[str] = [
-    # Information Technology
+    # Information Technology & Internet Platforms
     "TCS.NS", "INFY.NS", "HCLTECH.NS", "WIPRO.NS", "LTIM.NS", "TECHM.NS",
-    "PERSISTENT.NS", "COFORGE.NS", "MPHASIS.NS", "TATAELXSI.NS", "TATATECH.NS",
+    "PERSISTENT.NS", "COFORGE.NS", "MPHASIS.NS", "TATAELXSI.NS", "TATATECH.NS", "NAUKRI.NS",
 
-    # Banking & Financial Services
+    # New-Age Consumer Tech & Platforms
+    "ETERNAL.NS", "SWIGGY.NS", "POLICYBZR.NS",
+
+    # Banking (Private & PSU)
     "HDFCBANK.NS", "ICICIBANK.NS", "SBIN.NS", "KOTAKBANK.NS", "AXISBANK.NS",
     "INDUSINDBK.NS", "BANKBARODA.NS", "PNB.NS", "CANBK.NS", "UNIONBANK.NS", "INDIANB.NS",
+    "FEDERALBNK.NS", "IDFCFIRSTB.NS", "AUBANK.NS",
+
+    # NBFC, Housing Finance & Wealth Management
     "BAJFINANCE.NS", "BAJAJFINSV.NS", "BAJAJHLDNG.NS", "BAJAJHFL.NS",
     "CHOLAFIN.NS", "SHRIRAMFIN.NS", "MUTHOOTFIN.NS",
-    "PFC.NS", "RECLTD.NS", "IRFC.NS", "CDSL.NS",
+    "PFC.NS", "RECLTD.NS", "IRFC.NS", "MOTILALOFS.NS", "ANANDRATHI.NS",
+
+    # Market Infrastructure, Exchanges & Ratings
+    "BSE.NS", "MCX.NS", "CDSL.NS", "CAMS.NS", "CRISIL.NS", "IEX.NS",
+
+    # Insurance
     "HDFCLIFE.NS", "SBILIFE.NS", "ICICIPRULI.NS", "ICICIGI.NS",
 
     # Energy, Oil & Gas
     "RELIANCE.NS", "ONGC.NS", "IOC.NS", "BPCL.NS", "HINDPETRO.NS", "OIL.NS", "GAIL.NS",
 
-    # Power & Utilities
+    # Power, Renewables & Utilities
     "NTPC.NS", "POWERGRID.NS", "ADANIGREEN.NS", "TATAPOWER.NS", "ADANIPOWER.NS",
-    "ADANIENSOL.NS", "NHPC.NS", "SJVN.NS",
+    "ADANIENSOL.NS", "NHPC.NS", "SJVN.NS", "SUZLON.NS",
 
     # Automobiles & Auto Ancillaries
     "TATAMOTORS.NS", "M&M.NS", "MARUTI.NS", "BAJAJ-AUTO.NS", "HEROMOTOCO.NS",
     "EICHERMOT.NS", "TVSMOTOR.NS", "BHARATFORG.NS", "BOSCHLTD.NS",
+    "SONACOMS.NS", "MOTHERSON.NS", "UNOMINDA.NS", "TIINDIA.NS", "EXIDEIND.NS",
 
-    # FMCG & Beverages
+    # FMCG, QSR & Beverages
     "HINDUNILVR.NS", "ITC.NS", "NESTLEIND.NS", "BRITANNIA.NS", "TATACONSUM.NS",
     "DABUR.NS", "MARICO.NS", "GODREJCP.NS", "VBL.NS", "COLPAL.NS", "PGHH.NS",
     "EMAMILTD.NS", "PATANJALI.NS", "JYOTHYLAB.NS", "BIKAJI.NS",
-    "RADICO.NS", "UBL.NS", "UNITDSPR.NS",
+    "JUBLFOOD.NS", "DEVYANI.NS", "WESTLIFE.NS",
+    "RADICO.NS", "UBL.NS", "UNITDSPR.NS", "AWL.NS",
 
     # Paints
     "ASIANPAINT.NS", "BERGEPAINT.NS",
 
-    # Retail, Footwear & Apparel
-    "TITAN.NS", "TRENT.NS", "DMART.NS", "RELAXO.NS", "PAGEIND.NS",
+    # Retail, Footwear, Jewelry & Apparel
+    "TITAN.NS", "TRENT.NS", "DMART.NS", "KALYANKJIL.NS",
+    "RELAXO.NS", "METROBRAND.NS", "PAGEIND.NS", "MANYAVAR.NS",
 
-    # Consumer Durables & Electronics
-    "VOLTAS.NS", "DIXON.NS", "BAJAJELEC.NS",
+    # Consumer Durables, Electronics & EMS
+    "VOLTAS.NS", "DIXON.NS", "KAYNES.NS", "BAJAJELEC.NS",
+
+    # Hospitality & Aviation
+    "INDHOTEL.NS", "INDIGO.NS",
 
     # Metals & Mining
     "TATASTEEL.NS", "JSWSTEEL.NS", "HINDALCO.NS", "VEDL.NS", "COALINDIA.NS",
     "JINDALSTEL.NS", "NMDC.NS", "SAIL.NS", "NATIONALUM.NS", "HINDZINC.NS",
 
-    # Adani Flagship & Multi-Industry
-    "ADANIENT.NS", "ADANIPORTS.NS", "ATGL.NS", "AWL.NS",
+    # Adani Flagship & Infrastructure
+    "ADANIENT.NS", "ADANIPORTS.NS", "ATGL.NS",
 
-    # Defense & Aerospace
-    "HAL.NS", "BEL.NS", "BDL.NS", "COCHINSHIP.NS", "MAZDOCK.NS",
+    # Defense, Aerospace & Explosives
+    "HAL.NS", "BEL.NS", "BDL.NS", "COCHINSHIP.NS", "MAZDOCK.NS", "SOLARINDS.NS",
 
     # Railways & Logistics
     "RVNL.NS", "IRCTC.NS", "CONCOR.NS", "RAILTEL.NS",
@@ -63,13 +80,15 @@ NIFTY_500_SYMBOLS: List[str] = [
     # Pharmaceuticals & Healthcare
     "SUNPHARMA.NS", "DRREDDY.NS", "CIPLA.NS", "DIVISLAB.NS", "APOLLOHOSP.NS",
     "LUPIN.NS", "TORNTPHARM.NS", "ZYDUSLIFE.NS", "MAXHEALTH.NS",
+    "MANKIND.NS", "IPCALAB.NS", "MEDANTA.NS", "NH.NS", "FORTIS.NS", "LALPATHLAB.NS",
 
     # Infrastructure, Capital Goods & Industrials
-    "LT.NS", "SIEMENS.NS", "ABB.NS", "BHEL.NS", "CUMMINSIND.NS", "POLYCAB.NS", "KEI.NS",
+    "LT.NS", "SIEMENS.NS", "ABB.NS", "BHEL.NS", "CUMMINSIND.NS",
+    "POLYCAB.NS", "KEI.NS", "THERMAX.NS", "AIAENG.NS",
 
-    # Chemicals & Agriculture
+    # Chemicals & Specialty Materials
     "PIDILITIND.NS", "SRF.NS", "AARTIIND.NS", "DEEPAKNTR.NS", "TATACHEM.NS",
-    "GUJGASLTD.NS", "RALLIS.NS",
+    "GUJGASLTD.NS", "RALLIS.NS", "PIIND.NS", "FLUOROCHEM.NS", "CLEAN.NS",
 
     # Cement & Construction Materials
     "ULTRACEMCO.NS", "GRASIM.NS", "AMBUJACEM.NS", "SHREECEM.NS", "ACC.NS",
@@ -83,20 +102,29 @@ NIFTY_500_SYMBOLS: List[str] = [
 
 # Sector classification mapping
 SYMBOL_SECTOR_MAP: Dict[str, str] = {
-    # IT
+    # IT & Internet Platforms
     "TCS.NS": "IT", "INFY.NS": "IT", "HCLTECH.NS": "IT", "WIPRO.NS": "IT", "LTIM.NS": "IT",
     "TECHM.NS": "IT", "PERSISTENT.NS": "IT", "COFORGE.NS": "IT", "MPHASIS.NS": "IT",
-    "TATAELXSI.NS": "IT", "TATATECH.NS": "IT",
+    "TATAELXSI.NS": "IT", "TATATECH.NS": "IT", "NAUKRI.NS": "IT",
+
+    # New-Age Consumer Tech & Platforms
+    "ETERNAL.NS": "Consumer Tech", "SWIGGY.NS": "Consumer Tech", "POLICYBZR.NS": "Financial Services",
 
     # Banking
     "HDFCBANK.NS": "Banking", "ICICIBANK.NS": "Banking", "SBIN.NS": "Banking", "KOTAKBANK.NS": "Banking",
     "AXISBANK.NS": "Banking", "INDUSINDBK.NS": "Banking", "BANKBARODA.NS": "Banking", "PNB.NS": "Banking",
     "CANBK.NS": "Banking", "UNIONBANK.NS": "Banking", "INDIANB.NS": "Banking",
+    "FEDERALBNK.NS": "Banking", "IDFCFIRSTB.NS": "Banking", "AUBANK.NS": "Banking",
 
-    # NBFC & Financial Services
+    # NBFC, Wealth & Financial Services
     "BAJFINANCE.NS": "NBFC", "BAJAJFINSV.NS": "NBFC", "BAJAJHLDNG.NS": "NBFC", "BAJAJHFL.NS": "NBFC",
     "CHOLAFIN.NS": "NBFC", "SHRIRAMFIN.NS": "NBFC", "MUTHOOTFIN.NS": "NBFC",
-    "PFC.NS": "NBFC", "RECLTD.NS": "NBFC", "IRFC.NS": "NBFC", "CDSL.NS": "Financial Services",
+    "PFC.NS": "NBFC", "RECLTD.NS": "NBFC", "IRFC.NS": "NBFC",
+    "MOTILALOFS.NS": "Financial Services", "ANANDRATHI.NS": "Financial Services",
+
+    # Market Infrastructure, Exchanges & Ratings
+    "BSE.NS": "Financial Services", "MCX.NS": "Financial Services", "CDSL.NS": "Financial Services",
+    "CAMS.NS": "Financial Services", "CRISIL.NS": "Financial Services", "IEX.NS": "Financial Services",
 
     # Insurance
     "HDFCLIFE.NS": "Insurance", "SBILIFE.NS": "Insurance", "ICICIPRULI.NS": "Insurance", "ICICIGI.NS": "Insurance",
@@ -107,29 +135,37 @@ SYMBOL_SECTOR_MAP: Dict[str, str] = {
 
     # Power & Utilities
     "NTPC.NS": "Power", "POWERGRID.NS": "Power", "ADANIGREEN.NS": "Power", "TATAPOWER.NS": "Power",
-    "ADANIPOWER.NS": "Power", "ADANIENSOL.NS": "Power", "NHPC.NS": "Power", "SJVN.NS": "Power",
+    "ADANIPOWER.NS": "Power", "ADANIENSOL.NS": "Power", "NHPC.NS": "Power", "SJVN.NS": "Power", "SUZLON.NS": "Power",
 
     # Auto & Auto Ancillaries
     "TATAMOTORS.NS": "Auto", "M&M.NS": "Auto", "MARUTI.NS": "Auto", "BAJAJ-AUTO.NS": "Auto",
     "HEROMOTOCO.NS": "Auto", "EICHERMOT.NS": "Auto", "TVSMOTOR.NS": "Auto",
     "BHARATFORG.NS": "Auto Ancillary", "BOSCHLTD.NS": "Auto Ancillary",
+    "SONACOMS.NS": "Auto Ancillary", "MOTHERSON.NS": "Auto Ancillary", "UNOMINDA.NS": "Auto Ancillary",
+    "TIINDIA.NS": "Auto Ancillary", "EXIDEIND.NS": "Auto Ancillary",
 
     # FMCG & Beverages
     "HINDUNILVR.NS": "FMCG", "ITC.NS": "FMCG", "NESTLEIND.NS": "FMCG", "BRITANNIA.NS": "FMCG",
     "TATACONSUM.NS": "FMCG", "DABUR.NS": "FMCG", "MARICO.NS": "FMCG", "GODREJCP.NS": "FMCG",
     "VBL.NS": "FMCG", "COLPAL.NS": "FMCG", "PGHH.NS": "FMCG", "EMAMILTD.NS": "FMCG",
     "PATANJALI.NS": "FMCG", "JYOTHYLAB.NS": "FMCG", "BIKAJI.NS": "FMCG",
+    "JUBLFOOD.NS": "FMCG", "DEVYANI.NS": "FMCG", "WESTLIFE.NS": "FMCG",
     "RADICO.NS": "FMCG", "UBL.NS": "FMCG", "UNITDSPR.NS": "FMCG", "AWL.NS": "FMCG",
 
     # Paints
     "ASIANPAINT.NS": "Paints", "BERGEPAINT.NS": "Paints",
 
-    # Retail, Footwear & Apparel
-    "TITAN.NS": "Consumer Goods", "TRENT.NS": "Retail", "DMART.NS": "Retail",
-    "RELAXO.NS": "Consumer Goods", "PAGEIND.NS": "Textiles & Apparel",
+    # Retail, Footwear, Jewelry & Apparel
+    "TITAN.NS": "Consumer Goods", "TRENT.NS": "Retail", "DMART.NS": "Retail", "KALYANKJIL.NS": "Consumer Goods",
+    "RELAXO.NS": "Consumer Goods", "METROBRAND.NS": "Consumer Goods",
+    "PAGEIND.NS": "Textiles & Apparel", "MANYAVAR.NS": "Textiles & Apparel",
 
-    # Consumer Durables & Electronics
-    "VOLTAS.NS": "Consumer Durables", "DIXON.NS": "Electronics", "BAJAJELEC.NS": "Consumer Durables",
+    # Consumer Durables, Electronics & EMS
+    "VOLTAS.NS": "Consumer Durables", "DIXON.NS": "Electronics", "KAYNES.NS": "Electronics",
+    "BAJAJELEC.NS": "Consumer Durables",
+
+    # Hospitality & Aviation
+    "INDHOTEL.NS": "Hospitality", "INDIGO.NS": "Aviation",
 
     # Metals & Mining
     "TATASTEEL.NS": "Metals", "JSWSTEEL.NS": "Metals", "HINDALCO.NS": "Metals", "VEDL.NS": "Metals",
@@ -139,9 +175,9 @@ SYMBOL_SECTOR_MAP: Dict[str, str] = {
     # Adani Flagship & Infrastructure
     "ADANIENT.NS": "Diversified", "ADANIPORTS.NS": "Infrastructure", "ATGL.NS": "Gas Distribution",
 
-    # Defense & Aerospace
+    # Defense, Aerospace & Explosives
     "HAL.NS": "Defense", "BEL.NS": "Defense", "BDL.NS": "Defense",
-    "COCHINSHIP.NS": "Defense", "MAZDOCK.NS": "Defense",
+    "COCHINSHIP.NS": "Defense", "MAZDOCK.NS": "Defense", "SOLARINDS.NS": "Defense",
 
     # Railways & Logistics
     "RVNL.NS": "Railways", "IRCTC.NS": "Railways", "CONCOR.NS": "Logistics", "RAILTEL.NS": "Telecom",
@@ -150,16 +186,19 @@ SYMBOL_SECTOR_MAP: Dict[str, str] = {
     "SUNPHARMA.NS": "Pharma", "DRREDDY.NS": "Pharma", "CIPLA.NS": "Pharma", "DIVISLAB.NS": "Pharma",
     "APOLLOHOSP.NS": "Healthcare", "LUPIN.NS": "Pharma", "TORNTPHARM.NS": "Pharma",
     "ZYDUSLIFE.NS": "Pharma", "MAXHEALTH.NS": "Healthcare",
+    "MANKIND.NS": "Pharma", "IPCALAB.NS": "Pharma",
+    "MEDANTA.NS": "Healthcare", "NH.NS": "Healthcare", "FORTIS.NS": "Healthcare", "LALPATHLAB.NS": "Healthcare",
 
     # Capital Goods & Electricals
     "LT.NS": "Capital Goods", "SIEMENS.NS": "Capital Goods", "ABB.NS": "Capital Goods",
     "BHEL.NS": "Capital Goods", "CUMMINSIND.NS": "Capital Goods",
     "POLYCAB.NS": "Cables & Electricals", "KEI.NS": "Cables & Electricals",
+    "THERMAX.NS": "Capital Goods", "AIAENG.NS": "Capital Goods",
 
-    # Chemicals
+    # Chemicals & Specialty Materials
     "PIDILITIND.NS": "Chemicals", "SRF.NS": "Chemicals", "AARTIIND.NS": "Chemicals",
     "DEEPAKNTR.NS": "Chemicals", "TATACHEM.NS": "Chemicals", "GUJGASLTD.NS": "Gas Distribution",
-    "RALLIS.NS": "Chemicals",
+    "RALLIS.NS": "Chemicals", "PIIND.NS": "Chemicals", "FLUOROCHEM.NS": "Chemicals", "CLEAN.NS": "Chemicals",
 
     # Cement
     "ULTRACEMCO.NS": "Cement", "GRASIM.NS": "Cement", "AMBUJACEM.NS": "Cement",
