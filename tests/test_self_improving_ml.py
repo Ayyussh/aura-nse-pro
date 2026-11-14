@@ -41,8 +41,15 @@ def test_retraining_and_promotion_cycle():
     and handles promotion or champion retention gracefully.
     """
     engine = SelfImprovingMLEngine()
-    result = engine.retrain_and_evaluate_candidate()
 
+    # 1. Guard validation: with < 20 live trades, promotion is skipped to prevent synthetic overfitting
+    guard_res = engine.retrain_and_evaluate_candidate()
+    assert guard_res["status"] == "SKIPPED"
+    assert guard_res["decision"] == "RETAINED_CHAMPION"
+    assert "Insufficient" in guard_res["reason"] or "Need >=" in guard_res["reason"]
+
+    # 2. Cycle evaluation: passing min_live_trades=0 tests candidate training & metric evaluation
+    result = engine.retrain_and_evaluate_candidate(min_live_trades=0)
     assert result["status"] == "SUCCESS"
     assert result["decision"] in ["PROMOTED", "RETAINED_CHAMPION"]
     assert "candidate_metrics" in result

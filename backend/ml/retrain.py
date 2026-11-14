@@ -103,19 +103,67 @@ class SelfImprovingMLEngine:
         y = (logits > 0).astype(int)
         return X, y
 
-    def retrain_and_evaluate_candidate(self) -> Dict[str, Any]:
+    MIN_LIVE_TRADES_FOR_PROMOTION = 20  # Class constant for testability
+
+    def retrain_and_evaluate_candidate(self, min_live_trades: Optional[int] = None) -> Dict[str, Any]:
         """Execute weekly walk-forward retraining run:
 
         1. Ingest live trade outcomes.
-        2. Merge with historical knowledge base.
-        3. Train candidate classifier with probability calibration.
-        4. Benchmark candidate vs champion.
-        5. Promote or retain with full audit trail.
+        2. Guard: skip promotion if insufficient real trade data.
+        3. Merge with historical knowledge base.
+        4. Train candidate classifier with probability calibration.
+        5. Benchmark candidate vs champion.
+        6. Promote or retain with full audit trail.
         """
         logger.info("Executing Self-Improving Model Retraining Cycle...")
+        required_live = self.MIN_LIVE_TRADES_FOR_PROMOTION if min_live_trades is None else min_live_trades
 
         # 1. Gather Experience Replay
         X_live, y_live, live_count = self.extract_closed_trade_experience()
+
+        # ── GUARD C1: Never promote a model trained purely on synthetic priors ──
+        # Until we have required_live real trade outcomes the
+        # synthetic distribution is circular (we invented the priors ourselves).
+        # Retraining runs for metric-tracking purposes, but promotion is BLOCKED.
+        if live_count < required_live:
+            msg = (
+                f"MODEL_PROMOTION_SKIPPED: Need >= {required_live} "
+                f"real closed trade outcomes for a sound out-of-sample gate. "
+                f"Only {live_count} available. Champion retained untouched."
+            )
+            logger.warning(msg)
+
+            # Still distill mistake rules (safe, read-only)
+            mistake_rules = self.distill_dynamic_mistake_rules()
+
+            db = SessionLocal()
+            try:
+                audit = SystemAuditLog(
+                    event_type="MODEL_SKIPPED_INSUFFICIENT_DATA",
+                    details_json=json.dumps({
+                        "decision": "SKIPPED",
+                        "reason": msg,
+                        "live_trades_available": live_count,
+                        "required_live_trades": required_live,
+                        "active_version": ml_predictor.model_version,
+                        "mistake_rules_count": len(mistake_rules),
+                    }),
+                )
+                db.add(audit)
+                db.commit()
+            finally:
+                db.close()
+
+            return {
+                "status": "SKIPPED",
+                "decision": "RETAINED_CHAMPION",
+                "reason": msg,
+                "active_version": ml_predictor.model_version,
+                "live_trades_ingested": live_count,
+                "required_live_trades": required_live,
+                "active_mistake_rules": mistake_rules,
+            }
+
         X_base, y_base = self.generate_baseline_historical_dataset(n_samples=500)
 
         if live_count > 0:

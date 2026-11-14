@@ -20,7 +20,7 @@ from sqlalchemy.orm import Session
 
 from backend.api.auth import get_current_user, UserProfile
 from backend.core.config import settings, encrypt_secret, mask_secret
-from backend.core.pipeline import run_pre_market_pipeline, run_open_check_pipeline, run_post_market_grading
+from backend.core.pipeline import run_pre_market_pipeline, run_open_check_pipeline, run_post_market_grading, refresh_portfolio_prices, run_midday_stop_check
 from backend.costs.charges import charges_engine
 from backend.data.holiday_calendar import get_market_status, get_ist_now
 from backend.db.session import get_db
@@ -433,4 +433,160 @@ def api_system_health():
         "status": "HEALTHY",
         "system_time_ist": get_ist_now().isoformat(),
         "job_history": JOB_EXECUTION_HISTORY[:15],
+    }
+
+
+# --- ML Model Status & Retraining ---
+
+@router.get("/ml/model-status")
+def api_ml_model_status():
+    """Return current champion model version, Brier score, AUC, and live trade count. (L1)"""
+    import json as _json
+    from backend.ml.predictor import ml_predictor
+    from backend.ml.retrain import CHAMPION_META_FILE
+
+    meta = {}
+    if CHAMPION_META_FILE.exists():
+        with open(CHAMPION_META_FILE) as f:
+            meta = _json.load(f)
+
+    return {
+        "model_version": ml_predictor.model_version,
+        "brier_score": ml_predictor.brier_score,
+        "auc_score": ml_predictor.auc_score,
+        "sample_size": ml_predictor.sample_size,
+        "live_trade_experiences": meta.get("live_trade_experiences", 0),
+        "promoted_at": meta.get("promoted_at"),
+        "min_live_trades_for_promotion": 20,
+        "compliance_note": "Educational decision support, not investment advice.",
+    }
+
+
+@router.post("/ml/trigger-retrain")
+def api_trigger_retrain(user: UserProfile = Depends(get_current_user)):
+    """Manually trigger the self-improving ML retraining cycle. (L1)"""
+    from backend.ml.retrain import self_improving_engine
+    result = self_improving_engine.retrain_and_evaluate_candidate()
+    return {"status": "SUCCESS", "retraining_result": result}
+
+
+# --- Prediction Audit Trail ---
+
+@router.get("/predictions/{prediction_id}/audit")
+def api_prediction_audit(prediction_id: int, db: Session = Depends(get_db)):
+    """Return full append-only audit record for a single prediction. (L1)"""
+    p = db.query(Prediction).filter(Prediction.id == prediction_id).first()
+    if not p:
+        raise HTTPException(status_code=404, detail="Prediction not found.")
+    return {
+        "id": p.id,
+        "symbol": p.symbol,
+        "config_hash": p.config_hash,
+        "model_version": p.model_version,
+        "data_snapshot_id": p.data_snapshot_id,
+        "setup_tag": p.setup_tag,
+        "status": p.status,
+        "entry_price": p.entry_price,
+        "planned_entry_price": p.planned_entry_price,
+        "stop_loss": p.stop_loss,
+        "target_price": p.target_price,
+        "quantity": p.quantity,
+        "win_probability": p.win_probability,
+        "win_prob_lower": p.win_prob_lower,
+        "win_prob_upper": p.win_prob_upper,
+        "ev_r": p.ev_r,
+        "llm_verdict": p.llm_verdict,
+        "llm_confidence": p.llm_confidence,
+        "llm_reasoning": json.loads(p.llm_reasoning_json) if p.llm_reasoning_json else {},
+        "indicators": json.loads(p.indicators_json) if p.indicators_json else {},
+        "news_citations": json.loads(p.news_citations_json) if p.news_citations_json else [],
+        "audit_hash": p.audit_hash,
+        "exit_price": p.exit_price,
+        "exit_reason": p.exit_reason,
+        "gross_pnl_rupees": p.gross_pnl_rupees,
+        "net_pnl_rupees": p.net_pnl_rupees,
+        "tax_estimated_rupees": p.tax_estimated_rupees,
+        "entry_date": p.entry_date.isoformat(),
+        "closed_at": p.closed_at.isoformat() if p.closed_at else None,
+        "compliance_note": "Educational decision support, not investment advice. Backtests and paper results do not guarantee future returns.",
+    }
+
+
+# --- Tax Summary ---
+
+@router.get("/tax/summary")
+def api_tax_summary(db: Session = Depends(get_db)):
+    """Return FY tax summary across all closed trades. (L1)"""
+    from backend.tax.capital_gains import tax_engine
+
+    closed_trades = db.query(Prediction).filter(
+        Prediction.status.in_(["TARGET_HIT", "STOP_LOSS_HIT", "TIME_EXPIRED"])
+    ).order_by(Prediction.closed_at.asc()).all()
+
+    total_stcg = 0.0
+    total_ltcg = 0.0
+    total_tax = 0.0
+    total_net_pnl = 0.0
+    trade_count = len(closed_trades)
+
+    for p in closed_trades:
+        if p.tax_estimated_rupees:
+            total_tax += p.tax_estimated_rupees
+        if p.net_pnl_rupees:
+            total_net_pnl += p.net_pnl_rupees
+
+    return {
+        "fy": "FY2026-27",
+        "closed_trades": trade_count,
+        "total_net_pnl_rupees": round(total_net_pnl, 2),
+        "total_estimated_tax_rupees": round(total_tax, 2),
+        "note": "All positions are swing trades (held < 1 year) — STCG at 20% per FA 2024.",
+        "compliance_note": "Consult a CA for tax filing. This is an estimate only.",
+    }
+
+
+# --- Portfolio Price Refresh ---
+
+@router.post("/portfolio/refresh-prices")
+def api_refresh_portfolio_prices(user: UserProfile = Depends(get_current_user)):
+    """Refresh current_price, current_value, and unrealized_pnl for all portfolio holdings. (C2)"""
+    result = refresh_portfolio_prices()
+    return result
+
+
+# --- Run-Gate Status ---
+
+@router.get("/data/run-gate-status")
+def api_run_gate_status():
+    """Return the latest reconciliation run-gate result. (L1)"""
+    from backend.db.session import SessionLocal as _SL
+    from backend.db.models import SystemAuditLog as _SAL
+    db = _SL()
+    try:
+        log = (
+            db.query(_SAL)
+            .filter(_SAL.event_type.like("RECONCILE%"))
+            .order_by(_SAL.created_at.desc())
+            .first()
+        )
+        if not log:
+            return {"status": "NO_DATA", "message": "No reconciliation runs recorded yet."}
+        return {
+            "last_run_at": log.created_at.isoformat(),
+            "event_type": log.event_type,
+            "details": json.loads(log.details_json) if log.details_json else {},
+        }
+    finally:
+        db.close()
+
+
+# --- Alert History ---
+
+@router.get("/alerts/history")
+def api_alerts_history(limit: int = 30):
+    """Return recent scheduler job execution history as alert log. (L1)"""
+    return {
+        "count": min(limit, len(JOB_EXECUTION_HISTORY)),
+        "alerts": JOB_EXECUTION_HISTORY[:limit],
+        "compliance_note": "Educational decision support, not investment advice.",
     }

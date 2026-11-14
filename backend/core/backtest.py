@@ -90,16 +90,32 @@ class StressTestEngine:
                 "drawdown_pct": round(dd_pct, 2),
             })
 
-        # Sharpe and Sortino (daily / trade-by-trade returns vs Risk-Free Rate)
-        rf_per_trade = (risk_free_rate_pct / 100.0) / 50.0  # approximate per-trade risk-free benchmark
-        returns = np.array([t.get("net_pnl_rupees", 0.0) / initial_capital for t in trades])
-        excess_returns = returns - rf_per_trade
-        std_dev = np.std(returns) if len(returns) > 1 else 1e-6
-        downside_returns = returns[returns < 0]
-        downside_std = np.std(downside_returns) if len(downside_returns) > 1 else 1e-6
+        # Sharpe and Sortino (H5: daily return series when dates exist, trade-by-trade fallback)
+        daily_pnl: Dict[str, float] = {}
+        for t in trades:
+            date_key = t.get("closed_at") or t.get("date") or t.get("entry_date")
+            if date_key:
+                d_str = str(date_key)[:10]
+                daily_pnl[d_str] = daily_pnl.get(d_str, 0.0) + t.get("net_pnl_rupees", 0.0)
 
-        sharpe_ratio = round(float(np.mean(excess_returns) / std_dev * np.sqrt(50)), 2) if std_dev > 0 else 0.0
-        sortino_ratio = round(float(np.mean(excess_returns) / downside_std * np.sqrt(50)), 2) if downside_std > 0 else 0.0
+        if len(daily_pnl) >= 2:
+            daily_returns = np.array(list(daily_pnl.values())) / initial_capital
+            daily_rf = (risk_free_rate_pct / 100.0) / 252.0
+            excess_daily = daily_returns - daily_rf
+            std_dev = float(np.std(daily_returns)) if len(daily_returns) > 1 else 1e-6
+            downside_returns = daily_returns[daily_returns < 0]
+            downside_std = float(np.std(downside_returns)) if len(downside_returns) > 1 else 1e-6
+            sharpe_ratio = round(float(np.mean(excess_daily) / std_dev * np.sqrt(252)), 2) if std_dev > 0 else 0.0
+            sortino_ratio = round(float(np.mean(excess_daily) / downside_std * np.sqrt(252)), 2) if downside_std > 0 else 0.0
+        else:
+            rf_per_trade = (risk_free_rate_pct / 100.0) / 50.0  # approximate per-trade risk-free benchmark
+            returns = np.array([t.get("net_pnl_rupees", 0.0) / initial_capital for t in trades])
+            excess_returns = returns - rf_per_trade
+            std_dev = float(np.std(returns)) if len(returns) > 1 else 1e-6
+            downside_returns = returns[returns < 0]
+            downside_std = float(np.std(downside_returns)) if len(downside_returns) > 1 else 1e-6
+            sharpe_ratio = round(float(np.mean(excess_returns) / std_dev * np.sqrt(50)), 2) if std_dev > 0 else 0.0
+            sortino_ratio = round(float(np.mean(excess_returns) / downside_std * np.sqrt(50)), 2) if downside_std > 0 else 0.0
 
         # Longest losing streak
         longest_loss_streak = 0

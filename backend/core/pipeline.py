@@ -65,7 +65,40 @@ def run_pre_market_pipeline(universe_limit: int = 15) -> Dict[str, Any]:
     regime = evaluate_market_regime()
     logger.info(f"Macro Regime evaluated: {regime['regime_label']} (Size Multiplier: {regime['sizing_multiplier']})")
 
-    # 2. Benchmark data
+    # 2. Run-Gate Check (C4): Validate data reconciliation before screening
+    # Import lazily to avoid circular imports at module load time
+    try:
+        from backend.data.reconciliation import reconciliation_engine
+        symbols_for_gate = get_universe_symbols(limit=universe_limit)
+        gate_result = reconciliation_engine.evaluate_run_gate(symbols_for_gate, today)
+        gate_ok = gate_result.get("can_run", True)
+        gate_pct = gate_result.get("match_pct", 100.0)
+        if not gate_ok:
+            msg = (
+                f"🚦 *AURA 9:00 AM Pre-Market — HELD*\n"
+                f"📅 *Date:* {today.isoformat()} | *Regime:* {regime['regime_label']}\n"
+                f"⚠️ Data reconciliation gate FAILED: {gate_pct:.1f}% match "
+                f"(minimum 98% required).\n"
+                f"Pipeline HELD to prevent decisions on stale/mismatched data.\n"
+                f"_Educational decision support, not investment advice._"
+            )
+            logger.warning(f"Run-gate FAILED ({gate_pct:.1f}%). Pipeline held for {today}.")
+            send_telegram_alert(msg)
+            return {
+                "status": "HELD",
+                "reason": "run_gate_failed",
+                "gate_match_pct": gate_pct,
+                "date": today.isoformat(),
+                "regime": regime,
+                "approved_count": 0,
+                "approved_candidates": [],
+                "rejected_count": 0,
+                "rejected_candidates": [],
+            }
+    except ImportError:
+        logger.warning("reconciliation_engine not available; skipping run-gate check.")
+
+    # 3. Benchmark data
     nifty_df = data_provider.fetch_history("^NSEI", period="1y", interval="1d")
 
     symbols = get_universe_symbols(limit=universe_limit)
@@ -261,7 +294,7 @@ def run_pre_market_pipeline(universe_limit: int = 15) -> Dict[str, Any]:
                 f"Our ruling today is NO TRADE TODAY. Cash is a valid position during market uncertainty."
             )
 
-        # Dispatch Telegram Alert if configured
+        # Dispatch Telegram Alert — ALWAYS send at 9:00 AM (M3 fix: no silent runs)
         if approved_candidates:
             tg_text = (
                 f"🚀 *AURA-NSE Pro 9:00 AM Pre-Market Signals*\n"
@@ -276,7 +309,17 @@ def run_pre_market_pipeline(universe_limit: int = 15) -> Dict[str, Any]:
                     f"   Win Prob: {p['win_probability_pct']}% | EV: +{p['ev_r']}R | Verdict: {p['verdict']}\n\n"
                 )
             tg_text += "_Educational decision support only. Backtests do not guarantee future returns._"
-            send_telegram_alert(tg_text)
+        else:
+            # M3: Always notify — user must know pipeline ran and found nothing
+            tg_text = (
+                f"📊 *AURA 9:00 AM — Pipeline Completed*\n"
+                f"📅 *Date:* {today.isoformat()} | *Regime:* {regime['regime_label']}\n"
+                f"📈 *NIFTY 50:* {regime.get('nifty_close', 'N/A')} | *VIX:* {regime.get('india_vix', 'N/A')}\n"
+                f"🔍 *Screened:* {len(symbols)} stocks | *Approved:* 0\n"
+                f"🚫 *Decision:* NO TRADE TODAY — No setup passed all institutional gates.\n"
+                f"_Educational decision support only. Backtests do not guarantee future returns._"
+            )
+        send_telegram_alert(tg_text)
 
         return {
             "status": "SUCCESS",
@@ -390,22 +433,128 @@ def run_post_market_grading() -> Dict[str, Any]:
                 pred.tax_estimated_rupees = res["tax_estimated_rupees"]
                 graded_count += 1
 
-                # If trade ended in loss, log mistake candidate
+                # If trade ended in loss, log mistake candidate with LLM post-mortem (C3)
                 if res["net_pnl_rupees"] < 0:
+                    inds = json.loads(pred.indicators_json) if pred.indicators_json else {}
+                    regime = evaluate_market_regime()
+                    post_mortem = aura_analyst.conduct_loss_post_mortem(
+                        symbol=pred.symbol,
+                        entry_price=pred.entry_price,
+                        exit_price=res["exit_price"],
+                        stop_loss=pred.stop_loss,
+                        target_price=pred.target_price,
+                        exit_reason=res["exit_reason"],
+                        net_pnl_rupees=res["net_pnl_rupees"],
+                        net_pnl_r=res["net_pnl_r"],
+                        indicators=inds,
+                        macro_regime=regime,
+                    )
                     mistake = MistakeLog(
                         prediction_id=pred.id,
                         symbol=pred.symbol,
-                        loss_category="Stop Loss Triggered",
+                        loss_category=post_mortem["loss_category"],
                         loss_rupees=abs(res["net_pnl_rupees"]),
                         loss_r=abs(res["net_pnl_r"]),
-                        diagnosis_narrative=f"Trade exited at {res['exit_price']} due to {res['exit_reason']}",
-                        proposed_guardrail="Review sector relative strength and tighten stop on high VIX days.",
+                        diagnosis_narrative=post_mortem["diagnosis_narrative"],
+                        proposed_guardrail=post_mortem["proposed_guardrail"],
                         status="PENDING_REVIEW",
                     )
                     db.add(mistake)
 
         db.commit()
         return {"status": "SUCCESS", "trades_graded": graded_count}
+    finally:
+        db.close()
+
+
+def run_midday_stop_check() -> Dict[str, Any]:
+    """13:00 IST: Check OPEN positions against latest intraday price. Alert if breaching stop. (H3)"""
+    db = SessionLocal()
+    alerts_sent = 0
+    checked = 0
+    breaches: List[Dict[str, Any]] = []
+    try:
+        open_preds = db.query(Prediction).filter(Prediction.status == "OPEN").all()
+        for pred in open_preds:
+            try:
+                # Fetch intraday 5-min data to get latest price
+                df_5m = data_provider.fetch_history(pred.symbol, period="1d", interval="5m", force_refresh=True)
+                if df_5m.empty:
+                    # Fall back to daily data
+                    df_5m = data_provider.fetch_history(pred.symbol, period="5d", interval="1d", force_refresh=True)
+                if df_5m.empty:
+                    continue
+
+                latest_price = float(df_5m["close"].iloc[-1])
+                checked += 1
+
+                if latest_price <= pred.stop_loss:
+                    pct_below = ((pred.stop_loss - latest_price) / pred.stop_loss) * 100.0
+                    msg = (
+                        f"⚠️ *AURA Mid-Day Stop Alert — 13:00 IST*\n"
+                        f"🔴 *{pred.symbol}* has breached its stop loss!\n"
+                        f"📉 *Current Price:* ₹{latest_price:.2f} | *Stop Loss:* ₹{pred.stop_loss:.2f}\n"
+                        f"📊 *Below Stop By:* {pct_below:.2f}%\n"
+                        f"🎯 *Entry:* ₹{pred.entry_price:.2f} | *Target:* ₹{pred.target_price:.2f}\n"
+                        f"ℹ️ Review position immediately. Grading runs at 15:45 IST.\n"
+                        f"_Educational decision support only. Not investment advice._"
+                    )
+                    send_telegram_alert(msg)
+                    alerts_sent += 1
+                    breaches.append({
+                        "symbol": pred.symbol,
+                        "current_price": latest_price,
+                        "stop_loss": pred.stop_loss,
+                        "pct_below_stop": round(pct_below, 2),
+                    })
+                    logger.warning(f"Mid-day stop breach: {pred.symbol} at ₹{latest_price} (stop ₹{pred.stop_loss})")
+            except Exception as e:
+                logger.warning(f"Mid-day check failed for {pred.symbol}: {e}")
+
+        return {
+            "status": "SUCCESS",
+            "open_positions_checked": checked,
+            "stop_breaches_alerted": alerts_sent,
+            "breaches": breaches,
+            "checked_at_ist": get_ist_now().isoformat(),
+        }
+    finally:
+        db.close()
+
+
+def refresh_portfolio_prices() -> Dict[str, Any]:
+    """15:50 IST: Refresh current_price, current_value, unrealized_pnl for all portfolio holdings. (C2)"""
+    from backend.db.models import PortfolioHolding
+    db = SessionLocal()
+    updated = 0
+    errors = 0
+    try:
+        holdings = db.query(PortfolioHolding).all()
+        for h in holdings:
+            try:
+                df = data_provider.fetch_history(h.symbol, period="5d", interval="1d", force_refresh=True)
+                if df.empty:
+                    logger.warning(f"No price data for portfolio holding {h.symbol}")
+                    errors += 1
+                    continue
+
+                latest_price = float(df["close"].iloc[-1])
+                h.current_price = round(latest_price, 2)
+                h.current_value = round(latest_price * h.quantity, 2)
+                h.unrealized_pnl = round(h.current_value - h.invested_amount, 2)
+                updated += 1
+            except Exception as e:
+                logger.warning(f"Failed to refresh price for {h.symbol}: {e}")
+                errors += 1
+
+        db.commit()
+        logger.info(f"Portfolio refresh complete: {updated} updated, {errors} errors.")
+        return {
+            "status": "SUCCESS",
+            "holdings_updated": updated,
+            "errors": errors,
+            "refreshed_at_ist": get_ist_now().isoformat(),
+        }
     finally:
         db.close()
 
@@ -426,12 +575,73 @@ def run_bhavcopy_reconciliation() -> Dict[str, Any]:
         db.close()
 
 
+def calculate_weekly_performance_summary(db: Any) -> Dict[str, Any]:
+    """Calculate trailing 7-day performance metrics across all closed trades (M6)."""
+    seven_days_ago = get_ist_now().date() - datetime.timedelta(days=7)
+    trades = (
+        db.query(Prediction)
+        .filter(
+            Prediction.status.in_(["TARGET_HIT", "STOP_LOSS_HIT", "TIME_EXPIRED", "TIME_LIMIT_EXIT"]),
+            Prediction.entry_date >= seven_days_ago,
+        )
+        .all()
+    )
+    if not trades:
+        return {
+            "total_trades": 0,
+            "wins": 0,
+            "losses": 0,
+            "win_rate_pct": 0.0,
+            "net_pnl_rupees": 0.0,
+            "gross_pnl_rupees": 0.0,
+            "avg_r_multiple": 0.0,
+            "best_trade": None,
+            "worst_trade": None,
+        }
+
+    wins = [t for t in trades if (t.net_pnl_rupees or 0.0) > 0]
+    losses = [t for t in trades if (t.net_pnl_rupees or 0.0) <= 0]
+    total_net = sum(t.net_pnl_rupees or 0.0 for t in trades)
+    total_gross = sum(t.gross_pnl_rupees or 0.0 for t in trades)
+    r_multiples = [t.net_pnl_r for t in trades if t.net_pnl_r is not None]
+    avg_r = (sum(r_multiples) / len(r_multiples)) if r_multiples else 0.0
+
+    best_trade = max(trades, key=lambda t: t.net_pnl_rupees or 0.0)
+    worst_trade = min(trades, key=lambda t: t.net_pnl_rupees or 0.0)
+
+    best_str = (
+        f"{best_trade.symbol} (+₹{best_trade.net_pnl_rupees:.0f})"
+        if best_trade and (best_trade.net_pnl_rupees or 0) > 0
+        else None
+    )
+    worst_str = (
+        f"{worst_trade.symbol} (₹{worst_trade.net_pnl_rupees:.0f})"
+        if worst_trade and (worst_trade.net_pnl_rupees or 0) < 0
+        else None
+    )
+
+    return {
+        "total_trades": len(trades),
+        "wins": len(wins),
+        "losses": len(losses),
+        "win_rate_pct": round(len(wins) / len(trades) * 100.0, 1),
+        "net_pnl_rupees": round(total_net, 2),
+        "gross_pnl_rupees": round(total_gross, 2),
+        "avg_r_multiple": round(avg_r, 2),
+        "best_trade": best_str,
+        "worst_trade": worst_str,
+    }
+
+
 def run_weekly_mistake_audit() -> Dict[str, Any]:
-    """Saturday 10:00 IST: Mistake audit categorizer and self-improving ML retraining."""
+    """Saturday 10:00 IST: Mistake audit categorizer, weekly P&L summary, and self-improving ML retraining."""
     from backend.ml.retrain import self_improving_engine
 
     db = SessionLocal()
     try:
+        # Calculate weekly P&L and trade performance (M6)
+        weekly_perf = calculate_weekly_performance_summary(db)
+
         pending_mistakes = db.query(MistakeLog).filter(MistakeLog.status == "PENDING_REVIEW").all()
         categories = {
             "High VIX Trap": 0,
@@ -456,20 +666,52 @@ def run_weekly_mistake_audit() -> Dict[str, Any]:
         # Run Self-Improving ML Retraining & Promotion
         retrain_res = self_improving_engine.retrain_and_evaluate_candidate()
 
-        # Send Telegram Summary
-        tg_text = (
-            f"🧠 *AURA Saturday Self-Improvement Audit*\n"
-            f"📅 *Date:* {get_ist_now().date().isoformat()}\n"
-            f"📊 *Mistakes Categorized:* {len(pending_mistakes)}\n"
-            f"🤖 *ML Decision:* {retrain_res['decision']}\n"
-            f"🏷️ *Active Model Version:* `{retrain_res['active_version']}`\n"
-            f"🎯 *Brier Score:* {retrain_res['candidate_metrics']['brier_score']} | *AUC:* {retrain_res['candidate_metrics']['auc']}\n"
-            f"📚 *Mistake Rules Extracted:* {len(retrain_res['active_mistake_rules'])}\n"
+        # Build Telegram summary — include weekly P&L (M6) and ML decision
+        ml_decision = retrain_res.get("decision", "UNKNOWN")
+        active_version = retrain_res.get("active_version", ml_predictor.model_version)
+
+        perf_section = (
+            f"📊 *Weekly P&L Summary:*\n"
+            f"   Closed Trades: {weekly_perf['total_trades']} (Win Rate: {weekly_perf['win_rate_pct']}%)\n"
+            f"   Net P&L: ₹{weekly_perf['net_pnl_rupees']:+,.0f} | Avg R: {weekly_perf['avg_r_multiple']:+.2f}R\n"
         )
+        if weekly_perf.get("best_trade"):
+            perf_section += f"   Best Trade: {weekly_perf['best_trade']}\n"
+        if weekly_perf.get("worst_trade"):
+            perf_section += f"   Worst Trade: {weekly_perf['worst_trade']}\n"
+
+        if retrain_res.get("status") == "SKIPPED":
+            live_count = retrain_res.get("live_trades_ingested", 0)
+            required = retrain_res.get("required_live_trades", 20)
+            tg_text = (
+                f"🧠 *AURA Saturday Performance & Learning Audit*\n"
+                f"📅 *Date:* {get_ist_now().date().isoformat()}\n\n"
+                f"{perf_section}\n"
+                f"🔍 *Mistakes Diagnosed:* {len(pending_mistakes)}\n"
+                f"⏳ *ML Retraining:* PROMOTION SKIPPED\n"
+                f"📉 *Live Trades:* {live_count} / {required} required for out-of-sample promotion\n"
+                f"🏷️ *Active Model:* `{active_version}` (Champion retained)\n"
+                f"📚 *Mistake Rules in Force:* {len(retrain_res.get('active_mistake_rules', []))}\n\n"
+                f"_Educational decision support, not investment advice._"
+            )
+        else:
+            cand_metrics = retrain_res.get("candidate_metrics", {})
+            tg_text = (
+                f"🧠 *AURA Saturday Performance & Learning Audit*\n"
+                f"📅 *Date:* {get_ist_now().date().isoformat()}\n\n"
+                f"{perf_section}\n"
+                f"🔍 *Mistakes Diagnosed:* {len(pending_mistakes)}\n"
+                f"🤖 *ML Retraining:* {ml_decision}\n"
+                f"🏷️ *Active Model:* `{active_version}`\n"
+                f"🎯 *Brier Score:* {cand_metrics.get('brier_score', 'N/A')} | *AUC:* {cand_metrics.get('auc', 'N/A')}\n"
+                f"📚 *Mistake Rules in Force:* {len(retrain_res.get('active_mistake_rules', []))}\n\n"
+                f"_Educational decision support, not investment advice._"
+            )
         send_telegram_alert(tg_text)
 
         return {
             "status": "SUCCESS",
+            "weekly_performance": weekly_perf,
             "categorized": len(pending_mistakes),
             "category_breakdown": categories,
             "retraining_report": retrain_res,

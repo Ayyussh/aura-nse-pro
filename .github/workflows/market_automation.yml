@@ -6,8 +6,12 @@ on:
     - cron: '30 3 * * 1-5'
     # 09:15 AM IST (03:45 UTC) Mon-Fri: Market Open Anti-Chase Gap Verification
     - cron: '45 3 * * 1-5'
+    # 13:00 PM IST (07:30 UTC) Mon-Fri: Mid-Day Intraday Stop Loss Monitoring
+    - cron: '30 7 * * 1-5'
     # 15:45 PM IST (10:15 UTC) Mon-Fri: Post-Market Trade Grading & P&L Attribution
     - cron: '15 10 * * 1-5'
+    # 15:50 PM IST (10:20 UTC) Mon-Fri: Portfolio Holding Price Refresh
+    - cron: '20 10 * * 1-5'
     # 18:30 PM IST (13:00 UTC) Mon-Fri: EOD Official Bhavcopy Reconciliation
     - cron: '0 13 * * 1-5'
     # 10:00 AM IST (04:30 UTC) Saturday: Weekly Mistake Audit & Self-Improving ML Retraining
@@ -22,7 +26,9 @@ on:
         options:
           - premarket
           - open_check
+          - midday
           - postmarket
+          - refresh_portfolio
           - eod_recon
           - retrain
           - full_cycle
@@ -97,8 +103,18 @@ jobs:
                 echo "limit=25" >> $GITHUB_OUTPUT
                 echo "force=false" >> $GITHUB_OUTPUT
                 ;;
+              "30 7 * * 1-5")
+                echo "mode=midday" >> $GITHUB_OUTPUT
+                echo "limit=25" >> $GITHUB_OUTPUT
+                echo "force=false" >> $GITHUB_OUTPUT
+                ;;
               "15 10 * * 1-5")
                 echo "mode=postmarket" >> $GITHUB_OUTPUT
+                echo "limit=25" >> $GITHUB_OUTPUT
+                echo "force=false" >> $GITHUB_OUTPUT
+                ;;
+              "20 10 * * 1-5")
+                echo "mode=refresh_portfolio" >> $GITHUB_OUTPUT
                 echo "limit=25" >> $GITHUB_OUTPUT
                 echo "force=false" >> $GITHUB_OUTPUT
                 ;;

@@ -121,6 +121,47 @@ def job_1830_bhavcopy_reconciliation():
         record_job_execution("18:30_reconciliation", "FAILED", str(e))
 
 
+def job_1300_midday_stop_check():
+    """13:00 IST: Check OPEN positions against latest intraday price. Alert if breaching stop. (H3)"""
+    today = get_ist_now().date()
+    if not is_trading_day(today):
+        return
+
+    logger.info("Executing 13:00 IST Mid-Day Stop Check...")
+    try:
+        from backend.core.pipeline import run_midday_stop_check
+        result = run_midday_stop_check()
+        record_job_execution(
+            "13:00_midday_stop_check",
+            "SUCCESS",
+            f"Checked {result.get('open_positions_checked', 0)} positions; "
+            f"{result.get('stop_breaches_alerted', 0)} stop-breach alerts sent.",
+        )
+    except Exception as e:
+        logger.error(f"Error in 13:00 midday stop check: {e}")
+        record_job_execution("13:00_midday_stop_check", "FAILED", str(e))
+
+
+def job_1550_portfolio_refresh():
+    """15:50 IST: Refresh portfolio current prices after market close. (C2)"""
+    today = get_ist_now().date()
+    if not is_trading_day(today):
+        return
+
+    logger.info("Executing 15:50 IST Portfolio Price Refresh...")
+    try:
+        from backend.core.pipeline import refresh_portfolio_prices
+        result = refresh_portfolio_prices()
+        record_job_execution(
+            "15:50_portfolio_refresh",
+            "SUCCESS",
+            f"Updated {result.get('holdings_updated', 0)} holdings.",
+        )
+    except Exception as e:
+        logger.error(f"Error in 15:50 portfolio refresh: {e}")
+        record_job_execution("15:50_portfolio_refresh", "FAILED", str(e))
+
+
 def job_saturday_mistake_audit():
     """Saturday 10:00 IST: Weekly Mistake Audit & Model Retraining Proposal."""
     logger.info("Executing Saturday 10:00 IST Mistake Audit...")
@@ -139,7 +180,9 @@ def start_scheduler():
         scheduler.add_job(job_0830_data_refresh, CronTrigger(hour=8, minute=30, timezone=IST), id="0830_data_refresh", replace_existing=True)
         scheduler.add_job(job_0900_pre_market_plan, CronTrigger(hour=9, minute=0, timezone=IST), id="0900_pre_market_plan", replace_existing=True)
         scheduler.add_job(job_0915_open_check, CronTrigger(hour=9, minute=18, timezone=IST), id="0915_open_check", replace_existing=True)
+        scheduler.add_job(job_1300_midday_stop_check, CronTrigger(hour=13, minute=0, timezone=IST), id="1300_midday_stop_check", replace_existing=True)
         scheduler.add_job(job_1545_post_market_grading, CronTrigger(hour=15, minute=45, timezone=IST), id="1545_post_market_grading", replace_existing=True)
+        scheduler.add_job(job_1550_portfolio_refresh, CronTrigger(hour=15, minute=50, timezone=IST), id="1550_portfolio_refresh", replace_existing=True)
         scheduler.add_job(job_1830_bhavcopy_reconciliation, CronTrigger(hour=18, minute=30, timezone=IST), id="1830_reconciliation", replace_existing=True)
         scheduler.add_job(job_saturday_mistake_audit, CronTrigger(day_of_week="sat", hour=10, minute=0, timezone=IST), id="saturday_mistake_audit", replace_existing=True)
         scheduler.start()
@@ -152,7 +195,9 @@ def run_job_now(job_name: str) -> dict:
         "0830_data_refresh": job_0830_data_refresh,
         "0900_pre_market_plan": job_0900_pre_market_plan,
         "0915_open_check": job_0915_open_check,
+        "1300_midday_stop_check": job_1300_midday_stop_check,
         "1545_post_market_grading": job_1545_post_market_grading,
+        "1550_portfolio_refresh": job_1550_portfolio_refresh,
         "1830_reconciliation": job_1830_bhavcopy_reconciliation,
         "saturday_mistake_audit": job_saturday_mistake_audit,
     }

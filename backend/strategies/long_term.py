@@ -7,7 +7,7 @@ fair-value bands, 3-tranche staggered allocations, and thesis-break triggers.
 
 from __future__ import annotations
 import datetime
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, field
 from typing import Dict, Any, Optional, List
 import pandas as pd
 
@@ -34,6 +34,7 @@ class LongTermPick:
     tax_12m_flag_date: str
     fundamentals: Dict[str, Any]
     rejection_reasons: List[str]
+    unverified_badges: List[str] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -71,10 +72,11 @@ class LongTermStrategyEngine:
                 rejection_reasons.append(f"Price ₹{c_last:.2f} is below 200-day SMA ₹{sma200_last:.2f} (long-term downtrend).")
 
         # 2. Market Cap Floor (>= ₹2,000 Cr)
+        unverified_badges: List[str] = []
         mcap = fundamentals.get("market_cap_cr")
         min_mcap = self.lt_cfg.get("market_cap_min_cr", 2000.0)
         if mcap == "UNKNOWN":
-            rejection_reasons.append("Market cap is UNKNOWN from primary source.")
+            unverified_badges.append("⚠️ Market Cap Unverified")
         elif isinstance(mcap, (int, float)) and mcap < min_mcap:
             rejection_reasons.append(f"Market Cap ₹{mcap:,.0f} Cr is below minimum ₹{min_mcap:,.0f} Cr.")
 
@@ -82,7 +84,7 @@ class LongTermStrategyEngine:
         roe = fundamentals.get("roe_pct")
         min_roe = self.lt_cfg.get("roe_min_pct", 15.0)
         if roe == "UNKNOWN":
-            rejection_reasons.append("ROE is UNKNOWN from primary source.")
+            unverified_badges.append("⚠️ ROE Unverified")
         elif isinstance(roe, (int, float)) and roe < min_roe:
             rejection_reasons.append(f"ROE {roe:.1f}% below institutional minimum of {min_roe}%.")
 
@@ -91,7 +93,7 @@ class LongTermStrategyEngine:
             de = fundamentals.get("debt_to_equity")
             max_de = self.lt_cfg.get("debt_to_equity_max", 0.8)
             if de == "UNKNOWN":
-                pass  # flag for review
+                unverified_badges.append("⚠️ Debt/Equity Unverified")
             elif isinstance(de, (int, float)) and de > max_de:
                 rejection_reasons.append(f"Debt-to-Equity {de:.2f} exceeds conservative ceiling {max_de}.")
 
@@ -99,7 +101,7 @@ class LongTermStrategyEngine:
         pe = fundamentals.get("pe_ratio")
         max_pe_cap = self.lt_cfg.get("pe_max_cap", 35.0)
         if pe == "UNKNOWN":
-            rejection_reasons.append("P/E ratio is UNKNOWN.")
+            unverified_badges.append("⚠️ P/E Unverified")
         elif isinstance(pe, (int, float)):
             if pe <= 0:
                 rejection_reasons.append("Negative P/E (loss-making company).")
@@ -165,6 +167,7 @@ class LongTermStrategyEngine:
             tax_12m_flag_date=tax_12m_date,
             fundamentals=fundamentals,
             rejection_reasons=rejection_reasons,
+            unverified_badges=unverified_badges,
         )
 
 

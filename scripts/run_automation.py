@@ -23,7 +23,9 @@ from backend.data.holiday_calendar import is_trading_day, get_ist_now
 from backend.core.pipeline import (
     run_pre_market_pipeline,
     run_open_check_pipeline,
+    run_midday_stop_check,
     run_post_market_grading,
+    refresh_portfolio_prices,
     run_bhavcopy_reconciliation,
     run_weekly_mistake_audit,
 )
@@ -53,7 +55,7 @@ def main():
     parser = argparse.ArgumentParser(description="AURA-NSE Pro Headless Automation Engine")
     parser.add_argument(
         "--mode",
-        choices=["premarket", "open_check", "postmarket", "eod_recon", "retrain", "full_cycle"],
+        choices=["premarket", "open_check", "midday", "postmarket", "refresh_portfolio", "eod_recon", "retrain", "full_cycle"],
         required=True,
         help="Automation phase to execute",
     )
@@ -95,10 +97,20 @@ def main():
             res = run_open_check_pipeline()
             logger.info(f"Open Check Complete: {res.get('summary')}")
 
+        elif args.mode == "midday":
+            logger.info("Running 13:00 PM IST Mid-Day Stop Loss Monitoring...")
+            res = run_midday_stop_check()
+            logger.info(f"Mid-Day Check Complete: {res.get('open_positions_checked', 0)} checked, {res.get('stop_breaches_alerted', 0)} alerts sent.")
+
         elif args.mode == "postmarket":
             logger.info("Running 15:45 PM IST Post-Market Trade Grading...")
             res = run_post_market_grading()
             logger.info(f"Grading Complete: {res.get('trades_graded', 0)} trades resolved.")
+
+        elif args.mode == "refresh_portfolio":
+            logger.info("Running 15:50 PM IST Portfolio Holding Price Refresh...")
+            res = refresh_portfolio_prices()
+            logger.info(f"Portfolio Refresh Complete: {res.get('holdings_updated', 0)} holdings updated.")
 
         elif args.mode == "eod_recon":
             logger.info("Running 18:30 IST Official Bhavcopy Reconciliation...")
@@ -119,7 +131,9 @@ def main():
             logger.info("Running full end-to-end pipeline cycle...")
             run_pre_market_pipeline(universe_limit=args.limit)
             run_open_check_pipeline()
+            run_midday_stop_check()
             run_post_market_grading()
+            refresh_portfolio_prices()
             run_weekly_mistake_audit()
             logger.info("Full Cycle Completed successfully.")
 

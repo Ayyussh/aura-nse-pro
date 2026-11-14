@@ -164,9 +164,9 @@ class LLMRouter:
 
         last_error = ""
         for entry in keys:
-            plain_key = decrypt_secret(entry.encrypted_key)
-            t_start = time.time()
             try:
+                plain_key = decrypt_secret(entry.encrypted_key)
+                t_start = time.time()
                 if entry.provider == "gemini":
                     raw_json = self.call_gemini(plain_key, entry.model_name, prompt, system_prompt)
                 elif entry.provider == "groq":
@@ -245,6 +245,66 @@ class LLMRouter:
                 "plain_language_summary": "Quantitative screening passed; LLM qualitative debate was not audited due to API key exhaustion.",
             },
         }
+
+    def complete_json_prompt(self, prompt: str, system_prompt: str) -> Optional[Dict[str, Any]]:
+        """Dispatch a general JSON prompt across active keys with seamless failover."""
+        keys = self.get_active_vault_entries()
+        if not keys:
+            return None
+
+        for entry in keys:
+            try:
+                plain_key = decrypt_secret(entry.encrypted_key)
+                t_start = time.time()
+                if entry.provider == "gemini":
+                    raw_json = self.call_gemini(plain_key, entry.model_name, prompt, system_prompt)
+                elif entry.provider in ("groq", "openrouter", "openai"):
+                    base_url = (
+                        "https://api.groq.com/openai/v1" if entry.provider == "groq"
+                        else "https://openrouter.ai/api/v1" if entry.provider == "openrouter"
+                        else "https://api.openai.com/v1"
+                    )
+                    raw_json = self.call_openai_compatible(
+                        base_url,
+                        plain_key,
+                        entry.model_name,
+                        prompt,
+                        system_prompt,
+                    )
+                elif entry.provider == "ollama":
+                    raw_json = self.call_openai_compatible(
+                        settings.OLLAMA_BASE_URL + "/v1",
+                        "",
+                        entry.model_name,
+                        prompt,
+                        system_prompt,
+                    )
+                else:
+                    continue
+
+                latency_ms = (time.time() - t_start) * 1000.0
+                self.mark_key_success(entry.id, latency_ms)
+                # Try parsing response as JSON
+                # Clean code fences if present
+                clean = raw_json.strip()
+                if clean.startswith("```json"):
+                    clean = clean[7:]
+                if clean.startswith("```"):
+                    clean = clean[3:]
+                if clean.endswith("```"):
+                    clean = clean[:-3]
+                parsed = json.loads(clean.strip())
+                if isinstance(parsed, dict):
+                    return parsed
+            except Exception as e:
+                err_msg = str(e)
+                logger.warning(f"complete_json_prompt error on {entry.key_label}: {err_msg}")
+                if "429" in err_msg or "ResourceExhausted" in err_msg:
+                    self.mark_key_cooldown(entry.id, duration_seconds=180, reason="429 Rate Limit")
+                elif "401" in err_msg or "403" in err_msg:
+                    self.mark_key_cooldown(entry.id, duration_seconds=86400, reason="Invalid API Key")
+
+        return None
 
     def _fallback_algorithmic_audit(self) -> Dict[str, Any]:
         """Deterministic fallback when no external LLM keys are configured."""

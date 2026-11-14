@@ -94,5 +94,107 @@ Required JSON Schema:
         audit_res = llm_router.complete_audit(user_prompt, AURA_SYSTEM_PROMPT)
         return audit_res
 
+    def conduct_loss_post_mortem(
+        self,
+        symbol: str,
+        entry_price: float,
+        exit_price: float,
+        stop_loss: float,
+        target_price: float,
+        exit_reason: str,
+        net_pnl_rupees: float,
+        net_pnl_r: float,
+        indicators: Optional[Dict[str, Any]] = None,
+        macro_regime: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, str]:
+        """Conduct an LLM-driven forensic post-mortem on a closed losing trade.
+
+        Identifies the failure mode (e.g., False Breakout, Gap-Through-Stop, High VIX Trap,
+        Sector Weakness, Stop Too Tight) and synthesizes a concrete guardrail for Mistake Lab.
+        """
+        system_prompt = (
+            "You are AURA Chief Risk Auditor. Analyze this failed Indian equity trade and diagnose "
+            "the precise structural flaw that caused the loss. Respond strictly in valid JSON with keys: "
+            "'loss_category' (one of 'False Breakout', 'High VIX Trap', 'Sector Weakness', 'Gap-Through-Stop', 'Stop Too Tight'), "
+            "'diagnosis_narrative' (2-3 sentences on failure mechanics), "
+            "'proposed_guardrail' (1 concrete, quantitative rule to filter similar setups in future)."
+        )
+
+        facts = {
+            "symbol": symbol,
+            "entry_price": entry_price,
+            "exit_price": exit_price,
+            "stop_loss": stop_loss,
+            "target_price": target_price,
+            "exit_reason": exit_reason,
+            "loss_rupees": abs(net_pnl_rupees),
+            "loss_r": abs(net_pnl_r),
+            "indicators": indicators or {},
+            "macro_regime": macro_regime or {},
+        }
+
+        user_prompt = f"Failed Trade Facts:\n{json.dumps(facts, indent=2)}"
+
+        res = llm_router.complete_json_prompt(user_prompt, system_prompt)
+        if (
+            res
+            and "loss_category" in res
+            and "diagnosis_narrative" in res
+            and "proposed_guardrail" in res
+        ):
+            return {
+                "loss_category": str(res["loss_category"]),
+                "diagnosis_narrative": str(res["diagnosis_narrative"]),
+                "proposed_guardrail": str(res["proposed_guardrail"]),
+            }
+
+        # Deterministic fallback when LLM is unavailable
+        inds = indicators or {}
+        reg = macro_regime or {}
+        vix = float(reg.get("india_vix", 14.0)) if isinstance(reg, dict) else 14.0
+        rs = float(inds.get("rs_vs_nifty_20d", 0.0))
+        vol_ratio = float(inds.get("vol_ratio_20d", 1.0))
+
+        if exit_price < stop_loss or "gap" in exit_reason.lower():
+            cat = "Gap-Through-Stop"
+            diag = (
+                f"{symbol} suffered an overnight adverse gap, opening below stop loss at ₹{exit_price:.2f} "
+                f"(stop was ₹{stop_loss:.2f})."
+            )
+            guard = "Enforce max overnight gap threshold (2.5%) and avoid holding into earnings/major events."
+        elif vix > 18.0:
+            cat = "High VIX Trap"
+            diag = (
+                f"Trade entered during elevated macro volatility (India VIX {vix:.1f}). "
+                f"Broader market chop triggered the stop loss prematurely."
+            )
+            guard = "Halve position size or raise minimum setup threshold when India VIX is above 18."
+        elif rs < 0:
+            cat = "Sector Weakness"
+            diag = (
+                f"{symbol} exhibited negative relative strength vs NIFTY 50 (RS: {rs:.2f}%), "
+                f"causing it to underperform its sector peers and hit stop."
+            )
+            guard = "Require positive 20-day Relative Strength vs NIFTY before entering long swing setups."
+        elif vol_ratio < 1.2:
+            cat = "False Breakout"
+            diag = (
+                f"Breakout lacked institutional volume participation (volume ratio was only {vol_ratio:.2f}x). "
+                f"Momentum quickly faded into a bull trap."
+            )
+            guard = "Require minimum 1.2x 20-day average volume confirmation on breakout entry."
+        else:
+            cat = "Stop Too Tight"
+            diag = (
+                f"{symbol} was stopped out at ₹{exit_price:.2f} due to normal intraday noise before trend continuation."
+            )
+            guard = "Maintain minimum stop distance of 1.5 * ATR(14) below recent swing swing low."
+
+        return {
+            "loss_category": cat,
+            "diagnosis_narrative": diag,
+            "proposed_guardrail": guard,
+        }
+
 
 aura_analyst = HumanoidAnalyst()
