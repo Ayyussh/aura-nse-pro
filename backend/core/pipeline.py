@@ -399,11 +399,22 @@ def run_open_check_pipeline() -> Dict[str, Any]:
             open_price = float(df["open"].iloc[-1])
             planned = pred.planned_entry_price
 
-            # Gap Up Check (> 2.5%)
+            # ATR-relative gap limit: clamp(0.5 * ATR14 / planned * 100, 0.75, 2.5)
+            max_gap_pct = 2.5
+            try:
+                if pred.indicators_json:
+                    inds = json.loads(pred.indicators_json)
+                    atr = float(inds.get("atr_14", 0.0))
+                    if atr > 0 and planned > 0:
+                        atr_gap = 0.5 * (atr / planned) * 100.0
+                        max_gap_pct = max(0.75, min(2.5, atr_gap))
+            except Exception:
+                max_gap_pct = 2.5
+
             gap_pct = ((open_price - planned) / planned) * 100.0
-            if gap_pct > 2.5:
+            if gap_pct > max_gap_pct:
                 pred.status = "SKIPPED_GAP_UP"
-                pred.exit_reason = f"Gapped up {gap_pct:.2f}% at open (exceeded 2.5% max chasing limit)."
+                pred.exit_reason = f"Gapped up {gap_pct:.2f}% at open (exceeded ATR-relative chasing limit {max_gap_pct:.2f}%)."
                 pred.closed_at = datetime.datetime.utcnow()
                 skipped_gaps += 1
                 continue

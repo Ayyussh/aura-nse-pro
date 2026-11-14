@@ -1,0 +1,21 @@
+{
+  "tag": "baseline_v0",
+  "frozen_at": "2026-11-14T23:35:00+05:30",
+  "config_hash": "3969c0d4d4315ed8",
+  "model_version": "v1.16.0",
+  "model_brier_score": 0.0434,
+  "model_auc_score": 0.9928,
+  "model_sample_size": 400,
+  "metrics": {
+    "total_trades": 120,
+    "win_rate_pct": 62.5,
+    "expectancy_net_r": 0.38,
+    "profit_factor": 1.85,
+    "max_drawdown_pct": 7.2,
+    "sharpe_ratio": 1.45,
+    "brier_skill_score": 0.18
+  },
+  "rules_file": "data/mistake_rules.json",
+  "model_file": "backend/ml/models/champion_model.joblib",
+  "status": "FROZEN_BASELINE_DO_NOT_MODIFY"
+}

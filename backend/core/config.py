@@ -105,12 +105,21 @@ def get_tax_config() -> Dict[str, Any]:
     return load_yaml_config("tax.yaml")
 
 
+def get_groups_config() -> Dict[str, Any]:
+    file_path = CONFIG_DIR / "groups.yaml"
+    if not file_path.exists():
+        return {}
+    with open(file_path, "r", encoding="utf-8") as f:
+        return yaml.safe_load(f) or {}
+
+
 def compute_config_hash() -> str:
     """Compute deterministic SHA-256 hash of all configuration files."""
     combined = {
         "strategy": get_strategy_config(),
         "charges": get_charges_config(),
         "tax": get_tax_config(),
+        "groups": get_groups_config(),
     }
     encoded = json.dumps(combined, sort_keys=True).encode("utf-8")
     return hashlib.sha256(encoded).hexdigest()[:16]

@@ -168,6 +168,7 @@ def grade_trade_outcome(
 
     # Initial planned rupee risk
     planned_rupee_risk = max(1.0, (entry_price - stop_loss) * quantity)
+    gross_r = round(gross_pnl / planned_rupee_risk, 2)
     net_r = round(net_pnl / planned_rupee_risk, 2)
 
     # Estimated capital gains tax
@@ -179,6 +180,7 @@ def grade_trade_outcome(
         "exit_reason": exit_reason,
         "exit_date": exit_date.isoformat() if exit_date else None,
         "gross_pnl_rupees": gross_pnl,
+        "gross_pnl_r": gross_r,
         "charges_rupees": charges.total_charges_and_brokerage,
         "net_pnl_rupees": net_pnl,
         "net_pnl_r": net_r,

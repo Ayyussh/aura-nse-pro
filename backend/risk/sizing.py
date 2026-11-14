@@ -192,6 +192,64 @@ class RiskGuardEngine:
                 notes=notes,
             )
 
+        # 5b. Check Promoter Group Constraints (config/groups.yaml: Max 2 trades, max 25% exposure per group)
+        try:
+            from backend.core.config import get_groups_config
+            groups_cfg = get_groups_config()
+            group_map = groups_cfg.get("groups", {})
+            constraints = groups_cfg.get("group_constraints", {})
+            max_group_trades = constraints.get("max_open_positions_per_group", 2)
+            max_group_capital_pct = constraints.get("max_group_capital_exposure_pct", 25.0)
+
+            symbol_group = None
+            for grp_name, grp_syms in group_map.items():
+                if symbol in grp_syms:
+                    symbol_group = grp_name
+                    break
+
+            if symbol_group:
+                group_open = [
+                    p for p in open_positions
+                    if p.get("symbol") in group_map.get(symbol_group, [])
+                ]
+                if len(group_open) >= max_group_trades:
+                    notes.append(f"Promoter group '{symbol_group}' already has {len(group_open)} open trades (max {max_group_trades}).")
+                    return SizingDecision(
+                        allowed=False,
+                        status="SKIPPED_GROUP_CAP",
+                        quantity=0,
+                        entry_price=entry_price,
+                        stop_loss=stop_loss,
+                        target_price=target_price,
+                        risk_per_share=risk_per_share,
+                        total_risk_rupees=0.0,
+                        capital_required=0.0,
+                        capital_allocation_pct=0.0,
+                        regime_multiplier_applied=regime_mult,
+                        drawdown_multiplier_applied=drawdown_mult,
+                        notes=notes,
+                    )
+                group_capital = sum(p.get("quantity", 0) * p.get("entry_price", 0.0) for p in group_open)
+                if total_capital > 0 and (group_capital / total_capital) * 100.0 >= max_group_capital_pct:
+                    notes.append(f"Promoter group '{symbol_group}' capital exposure exceeds {max_group_capital_pct}%.")
+                    return SizingDecision(
+                        allowed=False,
+                        status="SKIPPED_GROUP_CAP",
+                        quantity=0,
+                        entry_price=entry_price,
+                        stop_loss=stop_loss,
+                        target_price=target_price,
+                        risk_per_share=risk_per_share,
+                        total_risk_rupees=0.0,
+                        capital_required=0.0,
+                        capital_allocation_pct=0.0,
+                        regime_multiplier_applied=regime_mult,
+                        drawdown_multiplier_applied=drawdown_mult,
+                        notes=notes,
+                    )
+        except Exception:
+            pass
+
         # 6. Base Risk Calculation
         risk_pct = self.risk_cfg.get("default_risk_per_trade_pct", 1.5)
         base_risk_rupees = total_capital * (risk_pct / 100.0)

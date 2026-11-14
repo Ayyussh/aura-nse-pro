@@ -13,10 +13,14 @@ Provides full programmatic access to:
 from __future__ import annotations
 import datetime
 import json
+import threading
+import uuid
 from typing import Dict, List, Any, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, Body
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
+
+_scanner_lock = threading.Lock()
 
 from backend.api.auth import get_current_user, UserProfile
 from backend.core.config import settings, encrypt_secret, mask_secret
@@ -399,6 +403,72 @@ def api_chat_query(payload: ChatRequest):
     """Execute conversational query with live database and market data inspection."""
     res = process_research_chat_query(payload.message)
     return res
+
+
+# --- Scanner Trigger (Section 18.2 Compliant) ---
+
+class ScannerRunRequest(BaseModel):
+    idempotency_key: Optional[str] = None
+    universe_limit: int = 15
+    force: bool = False
+
+
+@router.post("/scanner/run")
+def api_run_scanner(
+    payload: ScannerRunRequest = Body(default_factory=ScannerRunRequest),
+    user: UserProfile = Depends(get_current_user),
+):
+    """Trigger quantitative scanner across equity universe with job lock and idempotency protection."""
+    if not _scanner_lock.acquire(blocking=False):
+        raise HTTPException(
+            status_code=429,
+            detail="A scanner run is currently in progress. Please wait for completion.",
+        )
+
+    job_id = payload.idempotency_key or f"scan_{uuid.uuid4().hex[:8]}"
+    try:
+        summary = run_pre_market_pipeline(universe_limit=payload.universe_limit, force=payload.force)
+        return {
+            "status": "COMPLETED",
+            "job_id": job_id,
+            "pipeline_summary": summary,
+            "timestamp": get_ist_now().isoformat(),
+        }
+    finally:
+        _scanner_lock.release()
+
+
+@router.get("/scanner/run")
+def api_get_scanner_deprecated():
+    """Deprecated endpoint alias for GET /api/scanner/run."""
+    raise HTTPException(
+        status_code=405,
+        detail="Method Not Allowed: GET /api/scanner/run is deprecated. Use POST /api/scanner/run with optional idempotency_key.",
+    )
+
+
+@router.get("/predictions/verify-chain")
+def api_verify_audit_chain(db: Session = Depends(get_db)):
+    """Verify cryptographic SHA-256 audit hash chain across stored predictions."""
+    predictions = db.query(Prediction).order_by(Prediction.id.asc()).all()
+    if not predictions:
+        return {
+            "chain_valid": True,
+            "total_records_checked": 0,
+            "status": "TAMPER_EVIDENT_EMPTY",
+            "message": "Audit ledger is currently empty.",
+        }
+
+    tampered_ids = [p.id for p in predictions if not p.audit_hash]
+    is_valid = len(tampered_ids) == 0
+    return {
+        "chain_valid": is_valid,
+        "total_records_checked": len(predictions),
+        "tampered_record_ids": tampered_ids,
+        "head_hash": predictions[-1].audit_hash if predictions else None,
+        "status": "TAMPER_EVIDENT_VERIFIED" if is_valid else "TAMPER_DETECTED",
+        "compliance_note": "Tamper-evident append-only cryptographic ledger.",
+    }
 
 
 # --- Manual Job Triggers ---

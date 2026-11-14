@@ -1,0 +1,103 @@
+# AURA-NSE Pro Promoter & Conglomerate Group Mapping
+# Version: 1.0.0 (Effective 2026-11-14)
+# Caps each promoter group at max 2 open swing positions or 25% total capital exposure.
+
+group_constraints:
+  max_open_positions_per_group: 2
+  max_group_capital_exposure_pct: 25.0
+
+groups:
+  Tata:
+    - "TCS.NS"
+    - "TATAMOTORS.NS"
+    - "TATASTEEL.NS"
+    - "TATACONSUM.NS"
+    - "TATAPOWER.NS"
+    - "TATACHEM.NS"
+    - "TATACOMM.NS"
+    - "TITAN.NS"
+    - "TRENT.NS"
+    - "VOLTAS.NS"
+    - "TATAELXSI.NS"
+    - "TATATECH.NS"
+    - "TEJASNET.NS"
+    - "RALLIS.NS"
+    - "NELCO.NS"
+    - "INDHOTEL.NS"
+
+  Adani:
+    - "ADANIENT.NS"
+    - "ADANIPORTS.NS"
+    - "ADANIPOWER.NS"
+    - "ADANIGREEN.NS"
+    - "ATGL.NS"
+    - "ADANIENSOL.NS"
+    - "AWL.NS"
+    - "AMBUJACEM.NS"
+    - "ACC.NS"
+    - "NDTV.NS"
+
+  Bajaj:
+    - "BAJFINANCE.NS"
+    - "BAJAJFINSV.NS"
+    - "BAJAJ-AUTO.NS"
+    - "BAJAJHLDNG.NS"
+    - "BAJAJELEC.NS"
+    - "BAJAJHFL.NS"
+
+  ICICI:
+    - "ICICIBANK.NS"
+    - "ICICIPRULI.NS"
+    - "ICICIGI.NS"
+
+  HDFC:
+    - "HDFCBANK.NS"
+    - "HDFCLIFE.NS"
+
+  PSU:
+    - "SBIN.NS"
+    - "BANKBARODA.NS"
+    - "PNB.NS"
+    - "CANBK.NS"
+    - "UNIONBANK.NS"
+    - "INDIANB.NS"
+    - "NTPC.NS"
+    - "POWERGRID.NS"
+    - "PFC.NS"
+    - "RECLTD.NS"
+    - "IRFC.NS"
+    - "NHPC.NS"
+    - "SJVN.NS"
+    - "RVNL.NS"
+    - "IRCTC.NS"
+    - "CONCOR.NS"
+    - "RAILTEL.NS"
+    - "HAL.NS"
+    - "BEL.NS"
+    - "BDL.NS"
+    - "COCHINSHIP.NS"
+    - "MAZDOCK.NS"
+    - "ONGC.NS"
+    - "IOC.NS"
+    - "BPCL.NS"
+    - "HINDPETRO.NS"
+    - "GAIL.NS"
+    - "OIL.NS"
+    - "COALINDIA.NS"
+    - "NMDC.NS"
+    - "SAIL.NS"
+    - "NATIONALUM.NS"
+    - "HINDZINC.NS"
+    - "BHEL.NS"
+
+  Birla:
+    - "GRASIM.NS"
+    - "ULTRACEMCO.NS"
+    - "HINDALCO.NS"
+
+  Murugappa:
+    - "TIINDIA.NS"
+    - "CHOLAFIN.NS"
+
+  Reliance:
+    - "RELIANCE.NS"
