@@ -163,6 +163,46 @@ class ReconciliationEngine:
 
         cache_key = f"{symbol}_{date.isoformat()}"
         self.reconciled_cache[cache_key] = reconciled
+
+        # Persist to price_truth table (Section 18.3 & 19.3)
+        try:
+            from backend.db.session import SessionLocal
+            from backend.db.models import PriceTruth
+            import json
+            db = SessionLocal()
+            try:
+                existing = db.query(PriceTruth).filter(PriceTruth.symbol == symbol, PriceTruth.date == date).first()
+                if existing:
+                    existing.open = reconciled.open
+                    existing.high = reconciled.high
+                    existing.low = reconciled.low
+                    existing.close = reconciled.close
+                    existing.volume = reconciled.volume
+                    existing.confidence_grade = reconciled.confidence_grade
+                    existing.source_set = json.dumps(reconciled.source_set)
+                    existing.discrepancies = json.dumps(reconciled.discrepancies)
+                    existing.is_tradable = reconciled.is_tradable
+                else:
+                    record = PriceTruth(
+                        symbol=symbol,
+                        date=date,
+                        open=reconciled.open,
+                        high=reconciled.high,
+                        low=reconciled.low,
+                        close=reconciled.close,
+                        volume=reconciled.volume,
+                        confidence_grade=reconciled.confidence_grade,
+                        source_set=json.dumps(reconciled.source_set),
+                        discrepancies=json.dumps(reconciled.discrepancies),
+                        is_tradable=reconciled.is_tradable,
+                    )
+                    db.add(record)
+                db.commit()
+            finally:
+                db.close()
+        except Exception:
+            pass
+
         return reconciled
 
     def evaluate_run_gate(self, universe_symbols: List[str], date: datetime.date) -> Tuple[bool, str, Dict[str, Any]]:

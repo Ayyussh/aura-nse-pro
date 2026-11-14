@@ -95,18 +95,28 @@ class MLPredictor:
         cost_r: float = 0.08,
         target_r: Optional[float] = None,
         stop_r: float = 1.0,
+        expected_r_expired: float = 0.385,
     ) -> Dict[str, Any]:
-        """Predict calibrated win probability, confidence intervals, and EV_R.
+        """Predict calibrated probabilities, three-outcome expected value, and confidence intervals.
 
-        Formula:
-        EV_R = (p * target_r) - ((1 - p) * stop_r) - cost_r
+        Three-Outcome Formulation (Section 19.1 & 19.2 / Decision 007):
+        1. Target Hit (p_T): setup reaches +target_R (default +2.0R)
+        2. Stop Loss Hit (p_S): setup hits stop loss -stop_R (default -1.0R)
+        3. Time Expiration (p_E): setup exits on Day 10 at close with conditional expected return E[R_E]
+        EV_R = (p_T * target_r) - (p_S * stop_r) + (p_E * E[R_E]) - cost_r
         """
         if not self.is_trained or self.model is None:
             return {
                 "win_probability": 0.50,
                 "win_prob_lower": 0.42,
                 "win_prob_upper": 0.58,
+                "p_target": 0.25,
+                "p_stop": 0.35,
+                "p_expired": 0.40,
+                "expected_r_expired": expected_r_expired,
                 "ev_r": 0.0,
+                "ev_r_lower": -0.10,
+                "ev_r_upper": 0.10,
                 "passed_ev_gate": False,
                 "model_version": self.model_version,
                 "sample_size": 0,
@@ -116,23 +126,46 @@ class MLPredictor:
         # Vectorize features
         x_vec = np.array([[features.get(col, 0.0) for col in FEATURE_COLUMNS]])
 
-        # Predict calibrated probability
+        # Predict calibrated probability of winning setup
         prob_win = float(self.model.predict_proba(x_vec)[0, 1])
 
-        # Bootstrap 95% Confidence Band
-        margin_error = 1.96 * np.sqrt((prob_win * (1.0 - prob_win)) / max(1, self.sample_size)) * 1.5
+        # Bootstrap/Normal 95% Confidence Band for probability
+        margin_error = 1.96 * np.sqrt((prob_win * (1.0 - prob_win)) / max(1, self.sample_size))
         prob_lower = max(0.01, round(prob_win - margin_error, 3))
         prob_upper = min(0.99, round(prob_win + margin_error, 3))
 
-        # Expected Value in R: Target gives +target_r, Stop loss gives -stop_r, minus realistic costs
+        # Three-outcome probabilities:
+        # In baseline diagnostics, of non-target trades (~78%), ~37% hit stop and ~63% time-expire
+        p_target = prob_win
+        p_target_lower = prob_lower
+        p_target_upper = prob_upper
+
+        stop_share = 0.372  # 35 stops / (35 stops + 59 time expired)
+        p_stop = round((1.0 - p_target) * stop_share, 3)
+        p_stop_lower = round((1.0 - p_target_upper) * stop_share, 3)
+        p_stop_upper = round((1.0 - p_target_lower) * stop_share, 3)
+
+        p_expired = round(max(0.0, 1.0 - p_target - p_stop), 3)
+        p_expired_lower = round(max(0.0, 1.0 - p_target_upper - p_stop_upper), 3)
+        p_expired_upper = round(max(0.0, 1.0 - p_target_lower - p_stop_lower), 3)
+
         if target_r is None:
             target_r = self.ml_cfg.get("target_r", 2.0)
-        ev_r = (prob_win * target_r) - ((1.0 - prob_win) * stop_r) - cost_r
+
+        # Three-outcome expected value calculation:
+        ev_r = (p_target * target_r) - (p_stop * stop_r) + (p_expired * expected_r_expired) - cost_r
         ev_r = round(ev_r, 3)
+
+        ev_r_lower = (p_target_lower * target_r) - (p_stop_upper * stop_r) + (p_expired_lower * expected_r_expired) - cost_r
+        ev_r_lower = round(ev_r_lower, 3)
+
+        ev_r_upper = (p_target_upper * target_r) - (p_stop_lower * stop_r) + (p_expired_upper * expected_r_expired) - cost_r
+        ev_r_upper = round(ev_r_upper, 3)
 
         min_prob = self.ml_cfg.get("min_probability_threshold", 0.45)
         min_ev = self.ml_cfg.get("min_ev_r_threshold", 0.20)
-        passed_gate = (prob_win >= min_prob) and (ev_r >= min_ev)
+        # Passed gate requires probability >= 0.45, EV_R >= 0.20, and CI lower bound > 0
+        passed_gate = (prob_win >= min_prob) and (ev_r >= min_ev) and (ev_r_lower > 0.0)
 
         # Brier Skill Score against out-of-sample empirical base rate (Section 18.2 / Item 10)
         # BSS = 1 - (Brier / Brier_base) where Brier_base = base_rate * (1 - base_rate)
@@ -157,7 +190,14 @@ class MLPredictor:
             "win_probability_pct": round(prob_win * 100.0, 1),
             "win_prob_lower": prob_lower,
             "win_prob_upper": prob_upper,
+            "p_target": p_target,
+            "p_stop": p_stop,
+            "p_expired": p_expired,
+            "expected_r_expired": expected_r_expired,
             "ev_r": ev_r,
+            "ev_r_lower": ev_r_lower,
+            "ev_r_upper": ev_r_upper,
+            "three_outcome_model": True,
             "cost_drag_r": round(cost_r, 3),
             "passed_ev_gate": passed_gate,
             "model_version": self.model_version,

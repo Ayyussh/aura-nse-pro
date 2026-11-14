@@ -43,3 +43,17 @@
 - Gemini model suite prioritizes `gemini-2.5-flash`, `gemini-2.5-pro`, and current Gemini 3.x models, with runtime verification via provider model-list endpoints.
 - Auto-cooling for 429 quota exhaustion, retry on transient errors, and fallback to secondary providers (Groq, OpenRouter, OpenAI, Ollama).
 - If all providers are unavailable, status defaults to `NOT_AUDITED` and trade is safely skipped or halved based on strategy config.
+
+## Decision 007: Three-Outcome EV Model Formulation (Section 19.1 & 19.2)
+- **Empirical Baseline Finding:** Analysis of the 120 stored historical trades revealed that **63.01% of total portfolio net R** originates from `TIME_EXPIRED` exits (trades exiting at market close on Day 10 above entry price after statutory charges), whereas full target hits accounted for only 21.67% of trade outcomes.
+- **Divergence of Win Definitions:** Target-hit rate is 21.67% (+4 ATR reach), while profitable-trade rate is 55.00% (net R > 0).
+- **Mathematical Correction:** The legacy binary expectation formula $EV_R = (p \times \text{target\_R}) - ((1 - p) \times \text{stop\_R}) - \text{cost\_R}$ misclassifies profitable time-expired trades as binary losses.
+- **Three-Outcome Expectancy Equation:**
+  $$EV_R = (p_T \times target\_R) - (p_S \times stop\_R) + (p_E \times E[R_E]) - cost\_R$$
+  where:
+  - $p_T$: Probability of hitting target (+4 ATR) before stop or expiry.
+  - $p_S$: Probability of hitting stop loss (-2 ATR).
+  - $p_E$: Probability of time expiration on Day 10 ($p_E = 1 - p_T - p_S$).
+  - $E[R_E]$: Empirical conditional expected net R for time-expired trades (+0.385 R in baseline).
+  - $cost\_R$: Brokerage and statutory charges drag (~0.056 R).
+- **Execution Gate:** Requires both calibrated $p_T + p_E \ge 0.45$, $EV_R \ge 0.20$, and the 95% confidence interval lower bound $EV_{R,\text{lower}} > 0$.

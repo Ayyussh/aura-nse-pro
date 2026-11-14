@@ -147,13 +147,27 @@ def dispatch_external_daily_anchor(
     )
 
     sent = False
+    max_retries = 3
     if channel in ["telegram", "all"]:
         from backend.core.pipeline import send_telegram_alert
-        sent = send_telegram_alert(dispatch_msg)
+        for attempt in range(1, max_retries + 1):
+            try:
+                sent = send_telegram_alert(dispatch_msg)
+                if sent:
+                    break
+            except Exception as e:
+                logger.warning(f"Audit anchor dispatch attempt {attempt} failed: {e}")
+            if attempt < max_retries:
+                import time
+                time.sleep(0.1 * (2 ** (attempt - 1)))
+
+        if not sent:
+            logger.error(f"CRITICAL_ALERT: Failed to dispatch external daily audit anchor after {max_retries} attempts.")
 
     anchor_entry["dispatched_channel"] = channel
     anchor_entry["dispatched_outside_machine"] = bool(sent)
-    anchor_entry["dispatch_status"] = "TRANSMITTED_TELEGRAM" if sent else "TRANSMISSION_ATTEMPTED"
+    anchor_entry["dispatch_status"] = "TRANSMITTED_TELEGRAM" if sent else "TRANSMISSION_FAILED_ALERTED"
+    anchor_entry["retry_count"] = max_retries if not sent else 1
     return anchor_entry
 
 

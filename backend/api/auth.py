@@ -111,3 +111,34 @@ def get_current_user(credentials: Optional[HTTPAuthorizationCredentials] = Depen
 def get_user_me(user: UserProfile = Depends(get_current_user)):
     """Return active user profile."""
     return user
+
+
+def require_authenticated_user(credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)) -> UserProfile:
+    """Strictly enforce token authentication on order execution and scanner routes (Section 19.2).
+    Returns HTTP 401 if missing, invalid, or expired.
+    """
+    if not credentials:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication token required. Unauthorized access prohibited.",
+        )
+
+    token = credentials.credentials
+    expected = hashlib.sha256(f"{settings.ADMIN_USERNAME}:{settings.APP_SECRET_KEY}".encode()).hexdigest()
+    if token == expected:
+        return UserProfile(username=settings.ADMIN_USERNAME, is_authenticated=True)
+
+    if token not in ACTIVE_TOKENS:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Session expired or invalid token.",
+        )
+
+    if datetime.datetime.utcnow() > ACTIVE_TOKENS[token]:
+        del ACTIVE_TOKENS[token]
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token has expired. Please log in again.",
+        )
+
+    return UserProfile(username=settings.ADMIN_USERNAME, is_authenticated=True)

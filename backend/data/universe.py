@@ -218,9 +218,33 @@ EXCLUDED_SURVEILLANCE_SYMBOLS: Set[str] = {
 }
 
 
+# Symbol Master & Historical Alias Registry (Section 18.3 & 19.3)
+SYMBOL_MASTER_ALIASES: Dict[str, str] = {
+    "ZOMATO.NS": "ETERNAL.NS",
+    "ZOMATO": "ETERNAL.NS",
+    "LTI.NS": "LTIM.NS",
+    "MINDTREE.NS": "LTIM.NS",
+    "TATAMTRDVR.NS": "TATAMOTORS.NS",
+}
+
+
+def resolve_symbol_master(symbol: str) -> str:
+    """Resolve symbol through Symbol Master to active corporate ticker ensuring historical continuity."""
+    clean = symbol.strip().upper()
+    if clean in SYMBOL_MASTER_ALIASES:
+        return SYMBOL_MASTER_ALIASES[clean]
+    base = clean.replace(".NS", "")
+    if base in SYMBOL_MASTER_ALIASES:
+        return SYMBOL_MASTER_ALIASES[base]
+    if not clean.endswith(".NS"):
+        clean = f"{clean}.NS"
+    return SYMBOL_MASTER_ALIASES.get(clean, clean)
+
+
 def get_sector_for_symbol(symbol: str) -> str:
     """Retrieve normalized sector for an equity ticker."""
-    clean = symbol.upper()
+    resolved = resolve_symbol_master(symbol)
+    clean = resolved.upper()
     return SYMBOL_SECTOR_MAP.get(clean, "Diversified/Other")
 
 

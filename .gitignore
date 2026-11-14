@@ -40,3 +40,7 @@ Thumbs.db
 desktop.ini
 *.db-shm
 *.db-wal
+*.duckdb
+data/historical/
+backend/*.db
+data/audit_anchor_history.jsonl

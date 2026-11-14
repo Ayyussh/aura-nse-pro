@@ -22,7 +22,7 @@ from sqlalchemy.orm import Session
 
 _scanner_lock = threading.Lock()
 
-from backend.api.auth import get_current_user, UserProfile
+from backend.api.auth import get_current_user, require_authenticated_user, UserProfile
 from backend.core.config import settings, encrypt_secret, mask_secret
 from backend.core.pipeline import run_pre_market_pipeline, run_open_check_pipeline, run_post_market_grading, refresh_portfolio_prices, run_midday_stop_check
 from backend.costs.charges import charges_engine
@@ -416,7 +416,7 @@ class ScannerRunRequest(BaseModel):
 @router.post("/scanner/run")
 def api_run_scanner(
     payload: ScannerRunRequest = Body(default_factory=ScannerRunRequest),
-    user: UserProfile = Depends(get_current_user),
+    user: UserProfile = Depends(require_authenticated_user),
 ):
     """Trigger quantitative scanner across equity universe with job lock and idempotency protection."""
     if not _scanner_lock.acquire(blocking=False):
@@ -492,6 +492,7 @@ class TicketGenerationRequest(BaseModel):
 def api_generate_broker_ticket(
     payload: TicketGenerationRequest,
     db: Session = Depends(get_db),
+    user: UserProfile = Depends(require_authenticated_user),
 ):
     """Generate authenticated execution ticket on demand.
     Strictly blocked for demo data, shadow mode, or un-entered trades.
@@ -527,6 +528,7 @@ class KiteBasketExportRequest(BaseModel):
 def api_export_kite_basket(
     payload: KiteBasketExportRequest,
     db: Session = Depends(get_db),
+    user: UserProfile = Depends(require_authenticated_user),
 ):
     """Server-side gated Zerodha Kite basket generator (Section 18.2 & Item 10).
 

@@ -75,63 +75,116 @@ def verify_and_sanitize_audit_verdict(
         }
 
     verdict_data = audit_res.get("verdict", {})
+    red_flags = list(verdict_data.get("red_flags", []))
 
-    # 1. Enforce EXACTLY 3 Bull and 3 Bear points
+    # 1. Prompt Injection Defense (Section 19.2)
+    injection_patterns = [
+        r"ignore\s+(?:all\s+)?(?:previous|prior)\s+instructions",
+        r"system\s+prompt\s+override",
+        r"disregard\s+(?:risk|safety|rules|stop)",
+        r"approve\s+(?:this\s+)?trade\s+(?:immediately|unconditionally|with\s+100%)",
+        r"override\s+(?:safety|risk|regime)\s+policy",
+        r"jailbreak",
+    ]
+    all_news_text = " ".join([str(n.get("title", "")) + " " + str(n.get("summary", "")) for n in news_items])
+    for pat in injection_patterns:
+        if re.search(pat, all_news_text, re.IGNORECASE) or re.search(pat, str(verdict_data), re.IGNORECASE):
+            red_flags.append("PROMPT_INJECTION_DETECTED: Adversarial instruction detected in qualitative input.")
+            verdict_data["verdict"] = "REJECTED"
+
+    # 2. Enforce EXACTLY 3 Bull and 3 Bear points (No Padding Allowed - Section 19.2)
     bulls = verdict_data.get("bull_arguments", [])
     bears = verdict_data.get("bear_arguments", [])
     if not isinstance(bulls, list):
-        bulls = [str(bulls)]
+        bulls = [str(bulls)] if bulls else []
     if not isinstance(bears, list):
-        bears = [str(bears)]
+        bears = [str(bears)] if bears else []
+
+    if len(bulls) < 3 or len(bears) < 3:
+        red_flags.append(
+            f"INSUFFICIENT_ARGUMENTS: Required exactly 3 bull and 3 bear points, received {len(bulls)} bull and {len(bears)} bear. Padding prohibited."
+        )
+        verdict_data["verdict"] = "NOT_AUDITED"
 
     if len(bulls) > 3:
         bulls = bulls[:3]
-    while len(bulls) < 3:
-        bulls.append("Quantitative volume expansion and momentum criteria satisfied.")
-
     if len(bears) > 3:
         bears = bears[:3]
-    while len(bears) < 3:
-        bears.append("Downside risk strictly bounded by exchange-tick stop loss.")
 
     verdict_data["bull_arguments"] = bulls
     verdict_data["bear_arguments"] = bears
 
-    # 2. Number Checks Against Data Layer (Anti-Hallucination Guard)
-    red_flags = list(verdict_data.get("red_flags", []))
+    # 3. Number Checks Against Data Layer (Anti-Hallucination Guard - Section 19.2)
     all_text = " ".join(bulls + bears + [verdict_data.get("plain_language_summary", "")])
 
-    # Check RSI if quoted
+    # Check Entry, Stop, and Target Prices (0.5% relative tolerance)
+    entry_price = float(prompt_data.get("entry_price_inr", 0.0))
+    stop_loss = float(prompt_data.get("stop_loss_inr", 0.0))
+    target_price = float(prompt_data.get("target_price_inr", 0.0))
+
+    if entry_price > 0:
+        entry_matches = re.findall(r"entry\s*(?:of|is|at|[:=])?\s*(?:₹|rs\.?)?\s*(\d+(?:\.\d+)?)", all_text, re.IGNORECASE)
+        for em in entry_matches:
+            try:
+                val = float(em)
+                if abs(val - entry_price) / entry_price > 0.005:
+                    red_flags.append(f"UNGROUNDED_NUMBER_HALLUCINATION: Quoted entry ₹{val} deviates > 0.5% from data layer ₹{entry_price}")
+                    verdict_data["verdict"] = "NOT_AUDITED"
+            except Exception:
+                pass
+
+    if stop_loss > 0:
+        stop_matches = re.findall(r"stop(?:\s*loss)?\s*(?:of|is|at|[:=])?\s*(?:₹|rs\.?)?\s*(\d+(?:\.\d+)?)", all_text, re.IGNORECASE)
+        for sm in stop_matches:
+            try:
+                val = float(sm)
+                if abs(val - stop_loss) / stop_loss > 0.005:
+                    red_flags.append(f"UNGROUNDED_NUMBER_HALLUCINATION: Quoted stop ₹{val} deviates > 0.5% from data layer ₹{stop_loss}")
+                    verdict_data["verdict"] = "NOT_AUDITED"
+            except Exception:
+                pass
+
+    if target_price > 0:
+        target_matches = re.findall(r"target\s*(?:of|is|at|[:=])?\s*(?:₹|rs\.?)?\s*(\d+(?:\.\d+)?)", all_text, re.IGNORECASE)
+        for tm in target_matches:
+            try:
+                val = float(tm)
+                if abs(val - target_price) / target_price > 0.005:
+                    red_flags.append(f"UNGROUNDED_NUMBER_HALLUCINATION: Quoted target ₹{val} deviates > 0.5% from data layer ₹{target_price}")
+                    verdict_data["verdict"] = "NOT_AUDITED"
+            except Exception:
+                pass
+
+    # Check RSI (tightened to 2.0 pts tolerance)
     actual_rsi = float(prompt_data.get("technical_indicators", {}).get("rsi_14", 55.0))
     rsi_matches = re.findall(r"rsi\s*(?:of|is|at|[:=])?\s*(\d+(?:\.\d+)?)", all_text, re.IGNORECASE)
     for rm in rsi_matches:
         try:
             val = float(rm)
-            if abs(val - actual_rsi) > 6.0:  # Quoted RSI contradicts data layer by > 6 points
+            if abs(val - actual_rsi) > 2.0:  # Quoted RSI contradicts data layer by > 2 points
                 red_flags.append(f"UNGROUNDED_NUMBER_HALLUCINATION: RSI quoted as {val} vs actual {actual_rsi}")
                 verdict_data["verdict"] = "NOT_AUDITED"
         except Exception:
             pass
 
-    # Check India VIX if quoted
+    # Check India VIX (tightened to 1.0 pt tolerance)
     actual_vix = float(prompt_data.get("india_vix", 15.0))
     vix_matches = re.findall(r"vix\s*(?:of|is|at|[:=])?\s*(\d+(?:\.\d+)?)", all_text, re.IGNORECASE)
     for vm in vix_matches:
         try:
             val = float(vm)
-            if abs(val - actual_vix) > 4.0:
+            if abs(val - actual_vix) > 1.0:  # Quoted VIX contradicts data layer by > 1 point
                 red_flags.append(f"UNGROUNDED_NUMBER_HALLUCINATION: VIX quoted as {val} vs actual {actual_vix}")
                 verdict_data["verdict"] = "NOT_AUDITED"
         except Exception:
             pass
 
-    # 3. No Changes to Numbers (Mathematical levels are strictly immutable)
+    # 4. No Changes to Numbers (Mathematical levels are strictly immutable)
     verdict_data["verified_entry_price"] = prompt_data["entry_price_inr"]
     verdict_data["verified_stop_loss"] = prompt_data["stop_loss_inr"]
     verdict_data["verified_target_price"] = prompt_data["target_price_inr"]
 
-    # 4. Untrusted News Handling
-    valid_news_ids = {str(n.get("id")) for n in news_items if n.get("id")}
+    # 5. Untrusted News Handling
     for n in news_items:
         if n.get("untrusted") or "rumor" in str(n.get("source", "")).lower():
             red_flags.append(f"UNTRUSTED_NEWS_SOURCE: {n.get('source')} flagged as unverified.")
@@ -201,6 +254,14 @@ Required JSON Schema:
 }}
 """
         audit_res = llm_router.complete_audit(user_prompt, AURA_SYSTEM_PROMPT)
+        v = audit_res.get("verdict", {})
+        if isinstance(v, dict):
+            b_cnt = len(v.get("bull_arguments", [])) if isinstance(v.get("bull_arguments"), list) else 0
+            br_cnt = len(v.get("bear_arguments", [])) if isinstance(v.get("bear_arguments"), list) else 0
+            if b_cnt < 3 or br_cnt < 3:
+                # Retry once requesting explicitly 3 distinct bull and 3 distinct bear points (Section 19.2)
+                retry_prompt = user_prompt + "\n\nCRITICAL: Your previous response contained fewer than 3 arguments. You MUST provide EXACTLY 3 bull arguments and EXACTLY 3 bear arguments."
+                audit_res = llm_router.complete_audit(retry_prompt, AURA_SYSTEM_PROMPT)
         # Apply strict institutional verification & sanitization
         sanitized = verify_and_sanitize_audit_verdict(audit_res, prompt_data, news_items)
         return sanitized

@@ -77,6 +77,10 @@ def init_database():
                 conn.execute(text("ALTER TABLE predictions ADD COLUMN is_shadow BOOLEAN DEFAULT 0"))
             except Exception:
                 pass
+            try:
+                conn.execute(text("ALTER TABLE predictions ADD COLUMN actual_fill_price FLOAT"))
+            except Exception:
+                pass
 
             # SQLite database triggers to block UPDATE/DELETE on audit ledger
             conn.execute(text("DROP TRIGGER IF EXISTS abort_tamper_prediction_audit"))
@@ -106,7 +110,7 @@ def init_database():
                 BEFORE UPDATE OF
                     audit_hash, prev_hash, hash_version,
                     symbol, series, horizon, setup_tag,
-                    entry_price, planned_entry_price, stop_loss, target_price,
+                    entry_price, planned_entry_price, actual_fill_price, stop_loss, target_price,
                     quantity, time_limit_days,
                     win_probability, win_prob_lower, win_prob_upper, ev_r,
                     model_version, config_hash, data_snapshot_id,

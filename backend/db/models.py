@@ -7,6 +7,7 @@ mistake logs, API key vault, and system audit logs.
 from __future__ import annotations
 import datetime
 from sqlalchemy import (
+    BigInteger,
     Boolean,
     Column,
     Date,
@@ -41,6 +42,7 @@ class Prediction(Base):
 
     planned_entry_price = Column(Float, nullable=False)
     entry_price = Column(Float, nullable=False)
+    actual_fill_price = Column(Float, nullable=True)
     stop_loss = Column(Float, nullable=False)
     target_price = Column(Float, nullable=False)
     quantity = Column(Integer, nullable=False)
@@ -167,3 +169,26 @@ class SystemAuditLog(Base):
     event_type = Column(String(64), nullable=False)
     details_json = Column(Text, nullable=False)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+
+
+class PriceTruth(Base):
+    """Reconciled 3-way multi-source price truth ledger (Section 17.1 & 18.3).
+
+    Stores reconciled daily OHLCV bars across Tier 1 (NSE Bhavcopy), Tier 2 (Upstox v3),
+    and Tier 3 (yfinance) with assigned Confidence Grades (A, B, C).
+    """
+    __tablename__ = "price_truth"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    symbol = Column(String(32), nullable=False, index=True)
+    date = Column(Date, nullable=False, index=True)
+    open = Column(Float, nullable=False)
+    high = Column(Float, nullable=False)
+    low = Column(Float, nullable=False)
+    close = Column(Float, nullable=False)
+    volume = Column(BigInteger, nullable=False, default=0)
+    confidence_grade = Column(String(4), nullable=False)  # "A", "B", "C"
+    source_set = Column(Text, nullable=True)  # JSON list of responding sources
+    discrepancies = Column(Text, nullable=True)  # JSON list of price discrepancies
+    is_tradable = Column(Boolean, default=True, nullable=False)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)

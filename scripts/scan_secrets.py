@@ -8,6 +8,7 @@ patterns = {
     "GitHub Personal Access Token": r"ghp_[a-zA-Z0-9]{36}",
     "Telegram Bot Token": r"[0-9]{9,10}:[a-zA-Z0-9_-]{35}",
     "Private Key Header": r"-----BEGIN (?:RSA |EC )?PRIVATE KEY-----",
+    "JSON Web Token (JWT)": r"ey[A-Za-z0-9_-]{10,}\.[A-Za-z0-9._-]{10,}\.[A-Za-z0-9._-]{10,}",
     "Generic Hardcoded Secret": r"(?i)(?:api_key|secret_key|private_key|auth_token)\s*=\s*['\"][a-zA-Z0-9_\-]{16,}['\"]",
 }
 
