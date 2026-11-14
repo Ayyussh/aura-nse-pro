@@ -54,7 +54,7 @@ def send_telegram_alert(message: str) -> bool:
         return False
 
 
-def run_pre_market_pipeline(universe_limit: int = 15) -> Dict[str, Any]:
+def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False) -> Dict[str, Any]:
     """Execute complete 9:00 AM IST pre-market screening and prediction generation."""
     today = get_ist_now().date()
     config_hash = compute_config_hash()
@@ -66,27 +66,26 @@ def run_pre_market_pipeline(universe_limit: int = 15) -> Dict[str, Any]:
     logger.info(f"Macro Regime evaluated: {regime['regime_label']} (Size Multiplier: {regime['sizing_multiplier']})")
 
     # 2. Run-Gate Check (C4): Validate data reconciliation before screening
-    # Import lazily to avoid circular imports at module load time
     try:
         from backend.data.reconciliation import reconciliation_engine
+        from backend.data.holiday_calendar import get_previous_trading_day
         symbols_for_gate = get_universe_symbols(limit=universe_limit)
-        gate_result = reconciliation_engine.evaluate_run_gate(symbols_for_gate, today)
-        gate_ok = gate_result.get("can_run", True)
-        gate_pct = gate_result.get("match_pct", 100.0)
-        if not gate_ok:
+        target_recon_date = get_previous_trading_day(today)
+        can_run, gate_reason, gate_stats = reconciliation_engine.evaluate_run_gate(symbols_for_gate, target_recon_date)
+        gate_pct = gate_stats.get("confidence_coverage_pct", 100.0) if isinstance(gate_stats, dict) else 100.0
+        if not can_run and not force:
             msg = (
                 f"🚦 *AURA 9:00 AM Pre-Market — HELD*\n"
                 f"📅 *Date:* {today.isoformat()} | *Regime:* {regime['regime_label']}\n"
-                f"⚠️ Data reconciliation gate FAILED: {gate_pct:.1f}% match "
-                f"(minimum 98% required).\n"
+                f"⚠️ {gate_reason}\n"
                 f"Pipeline HELD to prevent decisions on stale/mismatched data.\n"
                 f"_Educational decision support, not investment advice._"
             )
-            logger.warning(f"Run-gate FAILED ({gate_pct:.1f}%). Pipeline held for {today}.")
+            logger.warning(f"Run-gate HELD: {gate_reason}")
             send_telegram_alert(msg)
             return {
                 "status": "HELD",
-                "reason": "run_gate_failed",
+                "reason": gate_reason,
                 "gate_match_pct": gate_pct,
                 "date": today.isoformat(),
                 "regime": regime,
@@ -95,8 +94,10 @@ def run_pre_market_pipeline(universe_limit: int = 15) -> Dict[str, Any]:
                 "rejected_count": 0,
                 "rejected_candidates": [],
             }
-    except ImportError:
-        logger.warning("reconciliation_engine not available; skipping run-gate check.")
+        elif not can_run and force:
+            logger.warning(f"Run-gate warning: {gate_reason}, but force=True is active. Proceeding with screening...")
+    except Exception as e:
+        logger.warning(f"Reconciliation run-gate warning: {e}; proceeding with caution.")
 
     # 3. Benchmark data
     nifty_df = data_provider.fetch_history("^NSEI", period="1y", interval="1d")

@@ -87,7 +87,7 @@ def main():
     try:
         if args.mode == "premarket":
             logger.info(f"Running 09:00 AM IST Pre-Market Screening on top {args.limit} candidates...")
-            res = run_pre_market_pipeline(universe_limit=args.limit)
+            res = run_pre_market_pipeline(universe_limit=args.limit, force=args.force)
             logger.info(f"Pre-Market Run Complete: {res.get('approved_count', 0)} Approved Setups, Regime: {res.get('regime', {}).get('regime_label')}")
             print("\n--- AURA Spoken Briefing ---")
             print(res.get("briefing_script", "No briefing generated."))
@@ -129,7 +129,7 @@ def main():
 
         elif args.mode == "full_cycle":
             logger.info("Running full end-to-end pipeline cycle...")
-            run_pre_market_pipeline(universe_limit=args.limit)
+            run_pre_market_pipeline(universe_limit=args.limit, force=args.force)
             run_open_check_pipeline()
             run_midday_stop_check()
             run_post_market_grading()
