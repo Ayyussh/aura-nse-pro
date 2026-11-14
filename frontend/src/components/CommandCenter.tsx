@@ -79,15 +79,28 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
     (p: any) => p.is_demo === true || p.audit_hash?.startsWith("demo_") || (p.id >= 100 && p.id <= 105)
   );
 
-  const handleCopyBrokerTicket = (p: any) => {
+  const handleCopyBrokerTicket = async (p: any) => {
     if (isDemoOrPublic) {
       alert("Order Ticket Locked: Trade tickets and one-click execution are disabled on public preview to comply with SEBI non-broadcast guidelines. Tickets are accessible exclusively on private authenticated single-user deployments.");
       return;
     }
-    const ticket = `AURA ORDER TICKET:\nBUY ${p.symbol} EQ\nQuantity: ${p.quantity} shares\nEntry Limit: ₹${p.entry_price}\nStop Loss Trigger: ₹${p.stop_loss}\nTarget Limit: ₹${p.target_price}\nZerodha GTT Trigger: ₹${p.stop_loss}\nHorizon: ${p.time_limit_days} Days (Swing)`;
-    navigator.clipboard.writeText(ticket);
-    setCopiedId(p.id);
-    setTimeout(() => setCopiedId(null), 2500);
+    try {
+      const res = await fetch("/api/orders/generate-ticket", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prediction_id: p.id }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        navigator.clipboard.writeText(data.ticket);
+        setCopiedId(p.id);
+        setTimeout(() => setCopiedId(null), 2500);
+      } else {
+        alert("Failed to generate order ticket from authenticated backend.");
+      }
+    } catch {
+      alert("Backend unreachable. Cannot generate order ticket.");
+    }
   };
 
   const fiiNet = fiiDii?.fii?.net_cr ?? 5736.55;

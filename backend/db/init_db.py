@@ -69,8 +69,17 @@ def init_database():
                 conn.execute(text("ALTER TABLE predictions ADD COLUMN hash_version VARCHAR(16) DEFAULT 'v2'"))
             except Exception:
                 pass
+            try:
+                conn.execute(text("ALTER TABLE predictions ADD COLUMN source VARCHAR(16) DEFAULT 'LIVE'"))
+            except Exception:
+                pass
+            try:
+                conn.execute(text("ALTER TABLE predictions ADD COLUMN is_shadow BOOLEAN DEFAULT 0"))
+            except Exception:
+                pass
 
             # SQLite database triggers to block UPDATE/DELETE on audit ledger
+            conn.execute(text("DROP TRIGGER IF EXISTS abort_tamper_prediction_audit"))
             conn.execute(text("""
                 CREATE TRIGGER IF NOT EXISTS abort_update_system_audit_logs
                 BEFORE UPDATE ON system_audit_logs
@@ -93,8 +102,16 @@ def init_database():
                 END;
             """))
             conn.execute(text("""
-                CREATE TRIGGER IF NOT EXISTS abort_tamper_prediction_audit
-                BEFORE UPDATE OF audit_hash, prev_hash, entry_price, stop_loss, target_price, quantity ON predictions
+                CREATE TRIGGER abort_tamper_prediction_audit
+                BEFORE UPDATE OF
+                    audit_hash, prev_hash, hash_version,
+                    symbol, series, horizon, setup_tag,
+                    entry_price, planned_entry_price, stop_loss, target_price,
+                    quantity, time_limit_days,
+                    win_probability, win_prob_lower, win_prob_upper, ev_r,
+                    model_version, config_hash, data_snapshot_id,
+                    entry_date, created_at
+                ON predictions
                 BEGIN
                     SELECT RAISE(ABORT, 'IMMUTABLE_PREDICTION_AUDIT: Tampering with trade entry levels or cryptographic hashes is strictly prohibited.');
                 END;

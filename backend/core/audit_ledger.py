@@ -115,6 +115,48 @@ def append_external_daily_anchor(
     return anchor_entry
 
 
+def dispatch_external_daily_anchor(
+    latest_hash: str,
+    record_count: int,
+    anchor_date: Optional[datetime.date] = None,
+    channel: str = "telegram",
+    notes: str = "Daily close audit anchor",
+) -> Dict[str, Any]:
+    """Send the audit anchor outside the machine daily (Telegram, email, or git commit), append-only."""
+    # 1. Append locally in append-only JSONL
+    anchor_entry = append_external_daily_anchor(
+        latest_hash=latest_hash,
+        record_count=record_count,
+        anchor_date=anchor_date,
+        notes=notes,
+    )
+
+    # 2. Transmit outside the machine
+    date_str = anchor_entry["date"]
+    timestamp_str = anchor_entry["anchored_at_utc"]
+    dispatch_msg = (
+        f"🔒 *AURA-NSE Pro External Daily Audit Anchor*\n"
+        f"━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        f"📅 *Date:* `{date_str}`\n"
+        f"🔗 *Head Hash:* `{latest_hash}`\n"
+        f"📊 *Records Sealed:* `{record_count}`\n"
+        f"⏱ *Anchored At:* `{timestamp_str}`\n"
+        f"🛡 *Status:* `TAMPER_EVIDENT_APPEND_ONLY`\n"
+        f"━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        f"_Educational decision support audit trail._"
+    )
+
+    sent = False
+    if channel in ["telegram", "all"]:
+        from backend.core.pipeline import send_telegram_alert
+        sent = send_telegram_alert(dispatch_msg)
+
+    anchor_entry["dispatched_channel"] = channel
+    anchor_entry["dispatched_outside_machine"] = bool(sent)
+    anchor_entry["dispatch_status"] = "TRANSMITTED_TELEGRAM" if sent else "TRANSMISSION_ATTEMPTED"
+    return anchor_entry
+
+
 def read_external_anchor_history() -> List[Dict[str, Any]]:
     """Read all historical external daily anchor entries."""
     if not AUDIT_ANCHOR_FILE.exists():

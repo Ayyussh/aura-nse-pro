@@ -6,3 +6,12 @@
 {"anchor_version": "v1", "date": "2026-11-14", "head_hash": "test_head_hash_abcdef1234567890", "record_count": 42, "anchored_at_utc": "2026-11-14T18:53:29.254Z", "notes": "Automated test daily anchor"}
 {"anchor_version": "v1", "date": "2026-11-14", "head_hash": "test_head_hash_abcdef1234567890", "record_count": 42, "anchored_at_utc": "2026-11-14T18:53:47.834Z", "notes": "Automated test daily anchor"}
 {"anchor_version": "v1", "date": "2026-11-14", "head_hash": "test_head_hash_abcdef1234567890", "record_count": 42, "anchored_at_utc": "2026-11-14T18:54:26.118Z", "notes": "Automated test daily anchor"}
+{"anchor_version": "v1", "date": "2026-11-14", "head_hash": "test_head_hash_abcdef1234567890", "record_count": 42, "anchored_at_utc": "2026-11-14T18:55:44.540Z", "notes": "Automated test daily anchor"}
+{"anchor_version": "v1", "date": "2026-11-14", "head_hash": "test_head_hash_abcdef1234567890", "record_count": 42, "anchored_at_utc": "2026-11-14T19:07:50.265Z", "notes": "Automated test daily anchor"}
+{"anchor_version": "v1", "date": "2026-11-14", "head_hash": "anchor_hash_ext_test_998877", "record_count": 55, "anchored_at_utc": "2026-11-14T19:07:50.303Z", "notes": "Automated test external dispatch"}
+{"anchor_version": "v1", "date": "2026-11-14", "head_hash": "test_head_hash_abcdef1234567890", "record_count": 42, "anchored_at_utc": "2026-11-14T19:08:42.188Z", "notes": "Automated test daily anchor"}
+{"anchor_version": "v1", "date": "2026-11-14", "head_hash": "anchor_hash_ext_test_998877", "record_count": 55, "anchored_at_utc": "2026-11-14T19:08:42.229Z", "notes": "Automated test external dispatch"}
+{"anchor_version": "v1", "date": "2026-11-14", "head_hash": "test_head_hash_abcdef1234567890", "record_count": 42, "anchored_at_utc": "2026-11-14T19:08:54.703Z", "notes": "Automated test daily anchor"}
+{"anchor_version": "v1", "date": "2026-11-14", "head_hash": "anchor_hash_ext_test_998877", "record_count": 55, "anchored_at_utc": "2026-11-14T19:08:54.749Z", "notes": "Automated test external dispatch"}
+{"anchor_version": "v1", "date": "2026-11-14", "head_hash": "test_head_hash_abcdef1234567890", "record_count": 42, "anchored_at_utc": "2026-11-14T19:12:07.418Z", "notes": "Automated test daily anchor"}
+{"anchor_version": "v1", "date": "2026-11-14", "head_hash": "anchor_hash_ext_test_998877", "record_count": 55, "anchored_at_utc": "2026-11-14T19:12:07.456Z", "notes": "Automated test external dispatch"}

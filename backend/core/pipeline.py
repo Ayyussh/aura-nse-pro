@@ -670,7 +670,7 @@ def run_bhavcopy_reconciliation() -> Dict[str, Any]:
 def calculate_weekly_performance_summary(db: Any) -> Dict[str, Any]:
     """Calculate trailing 7-day performance metrics across all closed trades (M6)."""
     seven_days_ago = get_ist_now().date() - datetime.timedelta(days=7)
-    trades = (
+    trades_raw = (
         db.query(Prediction)
         .filter(
             Prediction.status.in_(["TARGET_HIT", "STOP_LOSS_HIT", "TIME_EXPIRED", "TIME_LIMIT_EXIT"]),
@@ -678,6 +678,11 @@ def calculate_weekly_performance_summary(db: Any) -> Dict[str, Any]:
         )
         .all()
     )
+    # Exclude SHADOW trades from live performance summary
+    trades = [
+        t for t in trades_raw
+        if getattr(t, "source", "") != "SHADOW" and not getattr(t, "is_shadow", False)
+    ]
     if not trades:
         return {
             "total_trades": 0,

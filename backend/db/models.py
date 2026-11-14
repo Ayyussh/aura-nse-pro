@@ -72,6 +72,8 @@ class Prediction(Base):
     audit_hash = Column(String(64), nullable=True) # Hash-chain link
     prev_hash = Column(String(64), nullable=True, default="GENESIS_AURA_HASH")
     hash_version = Column(String(16), nullable=False, default="v2")
+    source = Column(String(16), default="LIVE", nullable=True) # LIVE or SHADOW
+    is_shadow = Column(Boolean, default=False, nullable=True)
 
     executions = relationship("TradeExecution", back_populates="prediction", cascade="all, delete-orphan")
     mistakes = relationship("MistakeLog", back_populates="prediction")

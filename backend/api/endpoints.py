@@ -484,6 +484,137 @@ def api_verify_audit_chain(db: Session = Depends(get_db)):
     }
 
 
+class TicketGenerationRequest(BaseModel):
+    prediction_id: int
+
+
+@router.post("/orders/generate-ticket")
+def api_generate_broker_ticket(
+    payload: TicketGenerationRequest,
+    db: Session = Depends(get_db),
+):
+    """Generate authenticated execution ticket on demand.
+    Strictly blocked for demo data, shadow mode, or un-entered trades.
+    """
+    pred = db.query(Prediction).filter(Prediction.id == payload.prediction_id).first()
+    if not pred:
+        raise HTTPException(status_code=404, detail="Prediction not found")
+    if getattr(pred, "is_demo", False) or (pred.audit_hash and pred.audit_hash.startswith("demo_")):
+        raise HTTPException(status_code=403, detail="Trade tickets locked on demo data.")
+    if getattr(pred, "source", "") == "SHADOW" or getattr(pred, "is_shadow", False):
+        raise HTTPException(status_code=403, detail="Trade tickets locked for shadow mode.")
+    if pred.status != "OPEN":
+        raise HTTPException(status_code=400, detail="Only confirmed entered OPEN trades can generate execution tickets.")
+
+    ticket = (
+        f"AURA ORDER TICKET:\n"
+        f"BUY {pred.symbol} EQ\n"
+        f"Quantity: {pred.quantity} shares\n"
+        f"Entry Limit: ₹{pred.entry_price:.2f}\n"
+        f"Stop Loss Trigger: ₹{pred.stop_loss:.2f}\n"
+        f"Target Limit: ₹{pred.target_price:.2f}\n"
+        f"Zerodha GTT Trigger: ₹{pred.stop_loss:.2f}\n"
+        f"Horizon: {pred.time_limit_days} Days (Swing)"
+    )
+    return {"status": "SUCCESS", "ticket": ticket}
+
+
+class KiteBasketExportRequest(BaseModel):
+    prediction_ids: List[int]
+
+
+@router.post("/orders/kite-basket")
+def api_export_kite_basket(
+    payload: KiteBasketExportRequest,
+    db: Session = Depends(get_db),
+):
+    """Server-side gated Zerodha Kite basket generator (Section 18.2 & Item 10).
+
+    CRITICAL SAFETY RULES:
+    1. Only ENTERED trades (status == 'OPEN') post-gap-check can be exported.
+    2. Trades with status PENDING_OPEN_CHECK, SKIPPED_*, CANCELLED, or CLOSED are strictly rejected.
+    3. Shadow trades (RED regime or source == 'SHADOW') are strictly rejected.
+    4. Demo data (is_demo == True or audit_hash starting with 'demo_') is strictly rejected.
+    """
+    if not payload.prediction_ids:
+        raise HTTPException(status_code=400, detail="No prediction IDs provided for basket export.")
+
+    preds = db.query(Prediction).filter(Prediction.id.in_(payload.prediction_ids)).all()
+    if len(preds) != len(payload.prediction_ids):
+        found_ids = {p.id for p in preds}
+        missing_ids = [pid for pid in payload.prediction_ids if pid not in found_ids]
+        raise HTTPException(status_code=404, detail=f"Predictions {missing_ids} not found in database.")
+
+    # Validate each prediction
+    invalid_trades = []
+    for p in preds:
+        # Check demo data
+        if getattr(p, "is_demo", False) or (p.audit_hash and p.audit_hash.startswith("demo_")):
+            invalid_trades.append({"id": p.id, "symbol": p.symbol, "reason": "DEMO_DATA_BLOCKED"})
+            continue
+
+        # Check shadow mode
+        if getattr(p, "is_shadow", False) or getattr(p, "source", "") == "SHADOW":
+            invalid_trades.append({"id": p.id, "symbol": p.symbol, "reason": "SHADOW_MODE_BLOCKED"})
+            continue
+
+        # Check status: strictly only ENTERED trades (status == 'OPEN')
+        if p.status != "OPEN":
+            invalid_trades.append({
+                "id": p.id,
+                "symbol": p.symbol,
+                "reason": f"TRADE_NOT_ENTERED (Status: {p.status}). Must pass 09:15 open gap check.",
+            })
+
+    if invalid_trades:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "error": "SERVER_SIDE_BASKET_EXPORT_REJECTED",
+                "message": "Only confirmed ENTERED trades post-gap-check can be exported into broker basket orders.",
+                "invalid_trades": invalid_trades,
+            },
+        )
+
+    # Format official Zerodha Kite Basket JSON schema
+    basket_items = []
+    for p in preds:
+        clean_symbol = p.symbol.replace(".NS", "").replace(".BO", "")
+        basket_items.append({
+            "variety": "regular",
+            "tradingsymbol": clean_symbol,
+            "exchange": "NSE",
+            "transaction_type": "BUY",
+            "order_type": "LIMIT",
+            "product": "CNC",
+            "quantity": int(p.quantity),
+            "price": float(p.entry_price),
+            "trigger_price": 0.0,
+            "tag": "AURA_SWING",
+        })
+
+    # Log to audit trail
+    try:
+        audit = SystemAuditLog(
+            event_type="BASKET_EXPORTED",
+            details_json=json.dumps({
+                "prediction_ids": payload.prediction_ids,
+                "symbols": [p.symbol for p in preds],
+                "total_orders": len(basket_items),
+            }),
+        )
+        db.add(audit)
+        db.commit()
+    except Exception:
+        pass
+
+    return {
+        "status": "SUCCESS",
+        "basket_count": len(basket_items),
+        "basket": basket_items,
+    }
+
+
 # --- Manual Job Triggers ---
 
 class RunJobRequest(BaseModel):
@@ -732,8 +863,24 @@ def api_market_sector_matrix():
 def api_predictions_accuracy_tracker(db: Session = Depends(get_db)):
     """Calculate True vs. False prediction rates, accuracy %, and model improvement."""
     all_preds = db.query(Prediction).order_by(Prediction.created_at.asc()).all()
-    closed = [p for p in all_preds if p.status in ("TARGET_HIT", "STOP_LOSS_HIT", "TIME_EXPIRED")]
-    open_trades = [p for p in all_preds if p.status == "OPEN"]
+    # Section 18.2: Filter out SHADOW trades from live accuracy tracking
+    closed = [
+        p for p in all_preds
+        if p.status in ("TARGET_HIT", "STOP_LOSS_HIT", "TIME_EXPIRED")
+        and getattr(p, "source", "") != "SHADOW"
+        and not getattr(p, "is_shadow", False)
+    ]
+    shadow_closed = [
+        p for p in all_preds
+        if p.status in ("TARGET_HIT", "STOP_LOSS_HIT", "TIME_EXPIRED")
+        and (getattr(p, "source", "") == "SHADOW" or getattr(p, "is_shadow", False))
+    ]
+    open_trades = [
+        p for p in all_preds
+        if p.status == "OPEN"
+        and getattr(p, "source", "") != "SHADOW"
+        and not getattr(p, "is_shadow", False)
+    ]
 
     total_graded = len(closed)
     true_predictions = [p for p in closed if p.status == "TARGET_HIT" or (p.net_pnl_rupees and p.net_pnl_rupees > 0)]

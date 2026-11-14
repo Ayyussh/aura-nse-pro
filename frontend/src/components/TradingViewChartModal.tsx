@@ -121,7 +121,7 @@ export const TradingViewChartModal: React.FC<TradingViewChartModalProps> = ({
                 onClick={onCopyTicket}
                 className="text-cyan-400 hover:underline font-semibold flex items-center gap-1"
               >
-                <Copy className="w-3 h-3" /> Copy Order Ticket
+                <Copy className="w-3 h-3" /> Setup Levels
               </button>
             )}
             <button

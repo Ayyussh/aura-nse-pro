@@ -61,7 +61,11 @@ class RiskGuardEngine:
     ) -> SizingDecision:
         """Calculate exact whole-share quantity and validate portfolio constraints."""
         notes: List[str] = []
-        open_positions = open_positions or []
+        # Filter out SHADOW trades: shadow trades never count toward live positions, caps, or heat
+        open_positions = [
+            p for p in (open_positions or [])
+            if p.get("source") != "SHADOW" and not p.get("is_shadow")
+        ]
 
         # 1. Basic price sanity
         if entry_price <= stop_loss:

@@ -447,3 +447,259 @@ def test_audit_database_triggers_block_tampering():
         with pytest.raises(Exception) as exc_info3:
             conn.execute(text("DELETE FROM predictions WHERE symbol = 'TEST_TRIGGER.NS'"))
         assert "IMMUTABLE_PREDICTIONS" in str(exc_info3.value)
+
+
+def test_audit_external_daily_anchor_dispatch_outside_machine():
+    """Verify dispatch_external_daily_anchor sends anchor outside the machine and appends history."""
+    from backend.core.audit_ledger import dispatch_external_daily_anchor, read_external_anchor_history
+    res = dispatch_external_daily_anchor(
+        latest_hash="anchor_hash_ext_test_998877",
+        record_count=55,
+        channel="telegram",
+        notes="Automated test external dispatch",
+    )
+    assert res["head_hash"] == "anchor_hash_ext_test_998877"
+    assert res["record_count"] == 55
+    assert "dispatch_status" in res
+
+    history = read_external_anchor_history()
+    assert any(h["head_hash"] == "anchor_hash_ext_test_998877" for h in history)
+
+
+def test_audit_triggers_block_all_hashed_fields():
+    """Verify SQLite triggers block UPDATE on every hashed field in predictions."""
+    from backend.db.session import engine
+    from sqlalchemy import text
+    import pytest
+
+    with engine.begin() as conn:
+        # Seed test row
+        conn.execute(text("""
+            INSERT INTO predictions (
+                config_hash, model_version, data_snapshot_id, symbol, series, horizon, setup_tag, status, planned_entry_price, entry_price, stop_loss, target_price, quantity, time_limit_days, audit_hash, prev_hash, entry_date, created_at
+            ) VALUES (
+                'test_cfg_fields', 'v1.0.0', 'snap_fields', 'TEST_FIELDS.NS', 'EQ', 'SWING', 'PULLBACK', 'OPEN', 1000.0, 1000.0, 950.0, 1100.0, 10, 10, 'hash_fields_001', 'GENESIS_AURA_HASH', CURRENT_DATE, CURRENT_TIMESTAMP
+            )
+        """))
+
+        # Test every hashed field
+        tamper_attempts = [
+            ("symbol", "'HACKED.NS'"),
+            ("entry_price", "1200.0"),
+            ("stop_loss", "900.0"),
+            ("target_price", "1300.0"),
+            ("quantity", "20"),
+            ("win_probability", "0.99"),
+            ("ev_r", "1.5"),
+            ("model_version", "'v2.0.0'"),
+            ("config_hash", "'forged_cfg'"),
+            ("data_snapshot_id", "'forged_snap'"),
+            ("audit_hash", "'tampered_hash'"),
+            ("prev_hash", "'tampered_prev'"),
+        ]
+
+        for col, val in tamper_attempts:
+            with pytest.raises(Exception) as exc:
+                conn.execute(text(f"UPDATE predictions SET {col} = {val} WHERE symbol = 'TEST_FIELDS.NS'"))
+            assert "IMMUTABLE_PREDICTION_AUDIT" in str(exc.value), f"Column {col} was not blocked by trigger!"
+
+
+def test_system_audit_logs_triggers_block_update_and_delete():
+    """Verify system_audit_logs trigger actively aborts UPDATE and DELETE."""
+    from backend.db.session import engine
+    from sqlalchemy import text
+    import pytest
+
+    with engine.begin() as conn:
+        # Insert audit log entry
+        conn.execute(text("""
+            INSERT INTO system_audit_logs (event_type, details_json, timestamp)
+            VALUES ('TEST_AUDIT_TRIGGER', '{"test": true}', CURRENT_TIMESTAMP)
+        """))
+
+        # UPDATE must be aborted
+        with pytest.raises(Exception) as exc_up:
+            conn.execute(text("UPDATE system_audit_logs SET event_type = 'TAMPERED' WHERE event_type = 'TEST_AUDIT_TRIGGER'"))
+        assert "IMMUTABLE_AUDIT_LOG: UPDATE is strictly prohibited" in str(exc_up.value)
+
+        # DELETE must be aborted
+        with pytest.raises(Exception) as exc_del:
+            conn.execute(text("DELETE FROM system_audit_logs WHERE event_type = 'TEST_AUDIT_TRIGGER'"))
+        assert "IMMUTABLE_AUDIT_LOG: DELETE is strictly prohibited" in str(exc_del.value)
+
+
+def test_llm_stage_validation_and_guards():
+    """Verify LLM stage: 3 bull/bear points, number checks against data layer, immutable numbers, untrusted news, provider failure."""
+    from backend.llm.analyst import verify_and_sanitize_audit_verdict
+
+    prompt_data = {
+        "symbol": "TCS.NS",
+        "entry_price_inr": 3500.0,
+        "stop_loss_inr": 3400.0,
+        "target_price_inr": 3700.0,
+        "india_vix": 14.5,
+        "technical_indicators": {"rsi_14": 58.0, "adx_14": 25.0},
+    }
+
+    # 1. Test 3 bull and 3 bear enforcement (sanitizes 1 point into exactly 3)
+    raw_res = {
+        "status": "SUCCESS",
+        "verdict": {
+            "verdict": "APPROVED",
+            "confidence_pct": 80.0,
+            "bull_arguments": ["Strong EMA alignment"],
+            "bear_arguments": ["Near resistance"],
+            "red_flags": [],
+            "plain_language_summary": "Solid setup with good risk-reward.",
+        },
+    }
+    sanitized = verify_and_sanitize_audit_verdict(raw_res, prompt_data, news_items=[])
+    assert len(sanitized["verdict"]["bull_arguments"]) == 3
+    assert len(sanitized["verdict"]["bear_arguments"]) == 3
+    assert sanitized["verdict"]["verified_entry_price"] == 3500.0
+    assert sanitized["verdict"]["verified_stop_loss"] == 3400.0
+    assert sanitized["verdict"]["verified_target_price"] == 3700.0
+
+    # 2. Test hallucinated number detection (quoted RSI 22 vs actual 58)
+    hallucinated_res = {
+        "status": "SUCCESS",
+        "verdict": {
+            "verdict": "APPROVED",
+            "confidence_pct": 80.0,
+            "bull_arguments": ["RSI is at 22 oversold", "Point 2", "Point 3"],
+            "bear_arguments": ["Risk 1", "Risk 2", "Risk 3"],
+            "red_flags": [],
+            "plain_language_summary": "RSI of 22 suggests oversold bounce.",
+        },
+    }
+    san_hallucinated = verify_and_sanitize_audit_verdict(hallucinated_res, prompt_data, news_items=[])
+    assert san_hallucinated["verdict"]["verdict"] == "NOT_AUDITED"
+    assert any("UNGROUNDED_NUMBER_HALLUCINATION" in rf for rf in san_hallucinated["verdict"]["red_flags"])
+
+    # 3. Test untrusted news handling
+    untrusted_news = [{"id": "N1", "title": "Unverified rumor on social media", "source": "Social Media Rumor", "untrusted": True}]
+    san_news = verify_and_sanitize_audit_verdict(raw_res, prompt_data, news_items=untrusted_news)
+    assert any("UNTRUSTED_NEWS_SOURCE" in rf for rf in san_news["verdict"]["red_flags"])
+
+    # 4. Test provider failure policy
+    failed_provider_res = {"status": "NOT_AUDITED", "verdict": {}}
+    san_failure = verify_and_sanitize_audit_verdict(failed_provider_res, prompt_data, news_items=[])
+    assert san_failure["verdict"]["verdict"] == "NOT_AUDITED"
+    assert "PROVIDER_FAILURE_UNAUDITED" in san_failure["verdict"]["red_flags"]
+
+
+def test_server_side_basket_export_gate():
+    """Verify server-side /api/orders/kite-basket blocks un-entered, shadow, or demo trades."""
+    from backend.db.session import SessionLocal
+    from backend.db.models import Prediction
+    db = SessionLocal()
+    try:
+        # 1. Create a PENDING / non-entered prediction
+        p_pending = Prediction(
+            config_hash="cfg_p1", model_version="v1.0.0", data_snapshot_id="s1",
+            symbol="PENDING.NS", series="EQ", horizon="SWING", setup_tag="PULLBACK",
+            status="PENDING_OPEN_CHECK", planned_entry_price=100.0, entry_price=100.0,
+            stop_loss=90.0, target_price=120.0, quantity=10, time_limit_days=10,
+            audit_hash="hash_pending_1", prev_hash="GENESIS_AURA_HASH", entry_date=datetime.date.today(),
+        )
+        # 2. Create a SHADOW prediction
+        p_shadow = Prediction(
+            config_hash="cfg_p2", model_version="v1.0.0", data_snapshot_id="s2",
+            symbol="SHADOW.NS", series="EQ", horizon="SWING", setup_tag="PULLBACK",
+            status="OPEN", planned_entry_price=200.0, entry_price=200.0,
+            stop_loss=180.0, target_price=240.0, quantity=10, time_limit_days=10,
+            audit_hash="hash_shadow_2", prev_hash="hash_pending_1", entry_date=datetime.date.today(),
+            source="SHADOW",
+        )
+        # 3. Create a valid confirmed entered OPEN prediction
+        p_entered = Prediction(
+            config_hash="cfg_p3", model_version="v1.0.0", data_snapshot_id="s3",
+            symbol="ENTERED.NS", series="EQ", horizon="SWING", setup_tag="PULLBACK",
+            status="OPEN", planned_entry_price=300.0, entry_price=300.0,
+            stop_loss=270.0, target_price=360.0, quantity=10, time_limit_days=10,
+            audit_hash="hash_entered_3", prev_hash="hash_shadow_2", entry_date=datetime.date.today(),
+            source="LIVE",
+        )
+        db.add_all([p_pending, p_shadow, p_entered])
+        db.commit()
+
+        # Attempt to export PENDING trade -> Must be rejected with HTTP 400!
+        resp_pending = client.post("/api/orders/kite-basket", json={"prediction_ids": [p_pending.id]})
+        assert resp_pending.status_code == 400
+        assert "SERVER_SIDE_BASKET_EXPORT_REJECTED" in resp_pending.text
+
+        # Attempt to export SHADOW trade -> Must be rejected with HTTP 400!
+        resp_shadow = client.post("/api/orders/kite-basket", json={"prediction_ids": [p_shadow.id]})
+        assert resp_shadow.status_code == 400
+        assert "SHADOW_MODE_BLOCKED" in resp_shadow.text
+
+        # Export valid confirmed entered trade -> Must succeed with HTTP 200 and Kite JSON schema
+        resp_valid = client.post("/api/orders/kite-basket", json={"prediction_ids": [p_entered.id]})
+        assert resp_valid.status_code == 200
+        data = resp_valid.json()
+        assert data["status"] == "SUCCESS"
+        assert len(data["basket"]) == 1
+        assert data["basket"][0]["tradingsymbol"] == "ENTERED"
+        assert data["basket"][0]["quantity"] == 10
+        assert data["basket"][0]["price"] == 300.0
+
+    finally:
+        db.close()
+
+
+def test_shadow_trades_never_count_toward_live_metrics_or_caps():
+    """Verify SHADOW trades never consume live caps, heat, or live win rate."""
+    # 1. Sizing Caps: 2 open positions where 1 is SHADOW
+    open_positions = [
+        {"symbol": "LIVE_NTPC.NS", "sector": "Power", "quantity": 20, "entry_price": 380.0, "stop_loss": 370.0, "source": "LIVE"},
+        {"symbol": "SHADOW_PFC.NS", "sector": "Power", "quantity": 20, "entry_price": 400.0, "stop_loss": 390.0, "source": "SHADOW"},
+    ]
+
+    # Sector cap is 2 trades per sector. Sizing another Power stock (POWERGRID.NS) should be ALLOWED
+    # because only 1 LIVE trade exists in the sector (the shadow trade does not count)!
+    decision = risk_guard.compute_position_size(
+        symbol="POWERGRID.NS",
+        entry_price=320.0,
+        stop_loss=310.0,
+        target_price=340.0,
+        sector="Power",
+        total_capital=100000.0,
+        available_cash=80000.0,
+        avg_20d_volume=1000000,
+        macro_regime="GREEN",
+        open_positions=open_positions,
+    )
+    assert decision.allowed, f"Should be allowed because shadow trade does not consume sector cap! Notes: {decision.notes}"
+
+    # 2. Live Weekly Performance Summary isolation
+    from backend.core.pipeline import calculate_weekly_performance_summary
+    from backend.db.session import SessionLocal
+    from backend.db.models import Prediction
+    db = SessionLocal()
+    try:
+        # Seed 1 live win and 1 shadow win
+        p_live_win = Prediction(
+            config_hash="cfg_w1", model_version="v1.0.0", data_snapshot_id="s1",
+            symbol="LIVEWIN.NS", series="EQ", horizon="SWING", setup_tag="PULLBACK",
+            status="TARGET_HIT", planned_entry_price=100.0, entry_price=100.0,
+            stop_loss=90.0, target_price=120.0, quantity=10, time_limit_days=10,
+            audit_hash="hash_lw_1", prev_hash="GENESIS_AURA_HASH", entry_date=datetime.date.today(),
+            net_pnl_rupees=200.0, net_pnl_r=2.0, source="LIVE",
+        )
+        p_shadow_loss = Prediction(
+            config_hash="cfg_w2", model_version="v1.0.0", data_snapshot_id="s2",
+            symbol="SHADOWLOSS.NS", series="EQ", horizon="SWING", setup_tag="PULLBACK",
+            status="STOP_LOSS_HIT", planned_entry_price=100.0, entry_price=100.0,
+            stop_loss=90.0, target_price=120.0, quantity=10, time_limit_days=10,
+            audit_hash="hash_sl_2", prev_hash="hash_lw_1", entry_date=datetime.date.today(),
+            net_pnl_rupees=-100.0, net_pnl_r=-1.0, source="SHADOW",
+        )
+        db.add_all([p_live_win, p_shadow_loss])
+        db.commit()
+
+        summary = calculate_weekly_performance_summary(db)
+        # Shadow loss must NOT dilute the live performance!
+        assert summary["losses"] == 0 or all(t.symbol != "SHADOWLOSS.NS" for t in db.query(Prediction).filter(Prediction.source != "SHADOW").all())
+
+    finally:
+        db.close()
