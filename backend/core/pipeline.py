@@ -33,10 +33,11 @@ logger = logging.getLogger("aura.pipeline")
 
 
 def send_telegram_alert(message: str) -> bool:
-    """Send alert to owner's private Telegram chat."""
+    """Send alert to owner's private Telegram chat with Markdown and plain-text fallback."""
     token = settings.TELEGRAM_BOT_TOKEN
     chat_id = settings.TELEGRAM_CHAT_ID
     if not token or not chat_id:
+        logger.warning("Telegram alert skipped: TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not configured in settings/env.")
         return False
 
     url = f"https://api.telegram.org/bot{token}/sendMessage"
@@ -46,11 +47,27 @@ def send_telegram_alert(message: str) -> bool:
         "parse_mode": "Markdown",
     }
     try:
-        with httpx.Client(timeout=8.0) as client:
+        with httpx.Client(timeout=10.0) as client:
             resp = client.post(url, json=payload)
-            return resp.status_code == 200
+            if resp.status_code == 200:
+                logger.info("Telegram alert successfully sent.")
+                return True
+
+            # If Markdown parsing failed (e.g. unescaped underscores/asterisks), fallback to plain text
+            logger.warning(f"Telegram Markdown send returned HTTP {resp.status_code}: {resp.text}. Retrying plain-text fallback...")
+            plain_payload = {
+                "chat_id": chat_id,
+                "text": message.replace("*", "").replace("_", "").replace("`", ""),
+            }
+            resp_plain = client.post(url, json=plain_payload)
+            if resp_plain.status_code == 200:
+                logger.info("Telegram plain-text alert successfully sent.")
+                return True
+            else:
+                logger.error(f"Telegram alert delivery failed (HTTP {resp_plain.status_code}): {resp_plain.text}")
+                return False
     except Exception as e:
-        logger.warning(f"Could not send Telegram alert: {e}")
+        logger.error(f"Could not send Telegram alert due to connection error: {e}")
         return False
 
 
