@@ -52,4 +52,8 @@ declare module 'lucide-react' {
   export const Database: Icon;
   export const Calendar: Icon;
   export const Download: Icon;
+  export const Bell: Icon;
+  export const Target: Icon;
+  export const Layers: Icon;
+  export const ArrowDownRight: Icon;
 }

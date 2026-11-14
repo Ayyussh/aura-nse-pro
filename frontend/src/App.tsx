@@ -37,6 +37,9 @@ export function App() {
   const [portfolio, setPortfolio] = useState<any>(null);
   const [mistakes, setMistakes] = useState<any[]>([]);
   const [vaultKeys, setVaultKeys] = useState<any[]>([]);
+  const [fiiDiiData, setFiiDiiData] = useState<any>(null);
+  const [accuracyTracker, setAccuracyTracker] = useState<any>(null);
+  const [telegramAlerts, setTelegramAlerts] = useState<any[]>([]);
   const [isLoadingScan, setIsLoadingScan] = useState<boolean>(false);
   const [isValidatingKeys, setIsValidatingKeys] = useState<boolean>(false);
   const [wsConnected, setWsConnected] = useState<boolean>(false);
@@ -50,6 +53,9 @@ export function App() {
     fetchMistakes();
     fetchVaultKeys();
     fetchVoiceBriefing();
+    fetchFiiDiiData();
+    fetchAccuracyTracker();
+    fetchTelegramAlerts();
 
     // WebSocket setup
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
@@ -156,6 +162,36 @@ export function App() {
     }
   };
 
+  const fetchFiiDiiData = async () => {
+    try {
+      const res = await fetch("/api/market/fii-dii");
+      if (res.ok) setFiiDiiData(await res.json());
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const fetchAccuracyTracker = async () => {
+    try {
+      const res = await fetch("/api/predictions/accuracy-tracker");
+      if (res.ok) setAccuracyTracker(await res.json());
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const fetchTelegramAlerts = async () => {
+    try {
+      const res = await fetch("/api/alerts/history?limit=50");
+      if (res.ok) {
+        const data = await res.json();
+        setTelegramAlerts(data.alerts || []);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const handleRunScanNow = async () => {
     setIsLoadingScan(true);
     setAuraState("Scanning");
@@ -179,6 +215,9 @@ export function App() {
     } finally {
       setIsLoadingScan(false);
       fetchStressMetrics();
+      fetchAccuracyTracker();
+      fetchTelegramAlerts();
+      fetchFiiDiiData();
     }
   };
 
@@ -369,6 +408,9 @@ export function App() {
             rejectedCandidates={rejectedCandidates}
             marketStatus={marketStatus}
             regime={regime}
+            fiiDii={fiiDiiData}
+            accuracyTracker={accuracyTracker}
+            telegramAlerts={telegramAlerts}
             onRefreshScan={handleRunScanNow}
             isLoading={isLoadingScan}
           />

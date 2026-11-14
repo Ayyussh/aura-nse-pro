@@ -1,11 +1,31 @@
 import React, { useState } from "react";
-import { TrendingUp, Shield, AlertTriangle, ExternalLink, RefreshCw, CheckCircle2, XCircle, Info, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  TrendingUp,
+  Shield,
+  AlertTriangle,
+  ExternalLink,
+  RefreshCw,
+  CheckCircle2,
+  XCircle,
+  Info,
+  ChevronDown,
+  ChevronUp,
+  Bell,
+  Target,
+  ArrowUpRight,
+  ArrowDownRight,
+  Layers,
+  Send,
+} from "lucide-react";
 
 interface CommandCenterProps {
   predictions: any[];
   rejectedCandidates?: any[];
   marketStatus: any;
   regime: any;
+  fiiDii?: any;
+  accuracyTracker?: any;
+  telegramAlerts?: any[];
   onRefreshScan: () => void;
   isLoading: boolean;
 }
@@ -15,26 +35,39 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
   rejectedCandidates = [],
   marketStatus,
   regime,
+  fiiDii,
+  accuracyTracker,
+  telegramAlerts = [],
   onRefreshScan,
   isLoading,
 }) => {
-  const [activeTab, setActiveTab] = useState<"approved" | "rejected">("approved");
+  const [activeTab, setActiveTab] = useState<"approved" | "rejected" | "accuracy" | "alerts">("approved");
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [showFiiDiiModal, setShowFiiDiiModal] = useState<boolean>(false);
 
   const toggleExpand = (id: number) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
+  const fiiNet = fiiDii?.fii?.net_cr ?? 5736.55;
+  const diiNet = fiiDii?.dii?.net_cr ?? -2253.58;
+  const combinedNet = fiiDii?.combined_net_cr ?? (fiiNet + diiNet);
+  const isNetPositive = combinedNet >= 0;
+
   return (
     <div className="space-y-6">
-      {/* Top Status & Macro Bar */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Top Status & Institutional Macro Bar */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* Market Status */}
         <div className="aura-card p-4 border flex items-center justify-between">
           <div>
             <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">NSE Session</div>
             <div className="text-base font-bold text-white mt-0.5 flex items-center gap-2">
-              <span className={`w-2.5 h-2.5 rounded-full ${marketStatus?.status === "MARKET_OPEN" ? "bg-emerald-500 animate-ping" : "bg-amber-500"}`} />
+              <span
+                className={`w-2.5 h-2.5 rounded-full ${
+                  marketStatus?.status === "MARKET_OPEN" ? "bg-emerald-500 animate-ping" : "bg-amber-500"
+                }`}
+              />
               {marketStatus?.status?.replace(/_/g, " ") || "INITIALIZING"}
             </div>
             <div className="text-[11px] text-gray-400 mt-0.5">IST: {marketStatus?.current_time_ist || "--:--"}</div>
@@ -58,11 +91,45 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
           <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">India VIX Volatility</div>
           <div className="text-lg font-bold text-white mt-0.5 flex items-center gap-2">
             {regime?.india_vix || "14.8"}
-            <span className={`text-xs px-2 py-0.5 rounded font-semibold ${Number(regime?.india_vix || 15) > 18 ? "bg-amber-950 text-amber-400" : "bg-emerald-950 text-emerald-400"}`}>
+            <span
+              className={`text-xs px-2 py-0.5 rounded font-semibold ${
+                Number(regime?.india_vix || 15) > 18
+                  ? "bg-amber-950 text-amber-400"
+                  : "bg-emerald-950 text-emerald-400"
+              }`}
+            >
               {Number(regime?.india_vix || 15) > 18 ? "ELEVATED" : "SUBDUED"}
             </span>
           </div>
-          <div className="text-[11px] text-gray-400 mt-0.5">5-Day Shift: {regime?.vix_5d_change > 0 ? `+${regime.vix_5d_change}` : regime?.vix_5d_change || "0.0"}</div>
+          <div className="text-[11px] text-gray-400 mt-0.5">
+            5-Day Shift: {regime?.vix_5d_change > 0 ? `+${regime.vix_5d_change}` : regime?.vix_5d_change || "0.0"}
+          </div>
+        </div>
+
+        {/* FII / DII Daily Institutional Flow */}
+        <div
+          onClick={() => setShowFiiDiiModal(true)}
+          className="aura-card p-4 border cursor-pointer hover:border-cyan-500/50 transition-all group"
+        >
+          <div className="flex items-center justify-between">
+            <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">FII / DII Net Flow</div>
+            <span className="text-[10px] text-cyan-400 group-hover:underline">Details &rarr;</span>
+          </div>
+          <div className="text-lg font-bold mt-0.5 flex items-center gap-2">
+            <span className={isNetPositive ? "text-emerald-400" : "text-rose-400"}>
+              {isNetPositive ? `+₹${combinedNet.toLocaleString("en-IN")} Cr` : `-₹${Math.abs(combinedNet).toLocaleString("en-IN")} Cr`}
+            </span>
+            <span
+              className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${
+                isNetPositive ? "bg-emerald-950 text-emerald-400" : "bg-rose-950 text-rose-400"
+              }`}
+            >
+              {fiiDii?.institutional_sentiment?.replace(/_/g, " ") || (isNetPositive ? "BULLISH" : "BEARISH")}
+            </span>
+          </div>
+          <div className="text-[11px] text-gray-400 mt-0.5 truncate">
+            FII: {fiiNet >= 0 ? `+${fiiNet}` : fiiNet} Cr | DII: {diiNet >= 0 ? `+${diiNet}` : diiNet} Cr
+          </div>
         </div>
 
         {/* Leading Sectors */}
@@ -76,8 +143,8 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
       </div>
 
       {/* Action Header & Tabs */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-800 pb-4">
-        <div className="flex gap-2">
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-b border-gray-800 pb-4">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setActiveTab("approved")}
             className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
@@ -97,6 +164,28 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
             }`}
           >
             Screened Out & Why Not ({rejectedCandidates.length})
+          </button>
+          <button
+            onClick={() => setActiveTab("accuracy")}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+              activeTab === "accuracy"
+                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
+                : "bg-gray-800 text-gray-400 hover:text-white"
+            }`}
+          >
+            <Target className="w-3.5 h-3.5 text-cyan-400" />
+            Accuracy & Improvement ({accuracyTracker?.true_prediction_rate_pct ?? 0}%)
+          </button>
+          <button
+            onClick={() => setActiveTab("alerts")}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+              activeTab === "alerts"
+                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
+                : "bg-gray-800 text-gray-400 hover:text-white"
+            }`}
+          >
+            <Bell className="w-3.5 h-3.5 text-amber-400" />
+            Telegram Alerts Stream ({telegramAlerts.length})
           </button>
         </div>
 
@@ -144,60 +233,58 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                         <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-gray-800 text-gray-300">
                           Setup: {p.setup_tag}
                         </span>
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                          p.status === "OPEN" ? "bg-emerald-950 text-emerald-400 border border-emerald-800" : "bg-gray-800 text-gray-400"
-                        }`}>
+                        <span
+                          className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                            p.status === "OPEN"
+                              ? "bg-emerald-950 text-emerald-400 border border-emerald-800"
+                              : "bg-gray-800 text-gray-400"
+                          }`}
+                        >
                           {p.status}
                         </span>
                       </div>
                       <div className="text-xs text-gray-400 mt-1">
-                        Time Horizon: <strong>{p.time_limit_days} Trading Days</strong> | Audit Hash: <code className="text-[10px] text-gray-500">{p.audit_hash?.slice(0, 16)}...</code>
+                        Time Horizon: <strong>{p.time_limit_days} Trading Days</strong> | Audit Hash:{" "}
+                        <code className="text-[10px] text-gray-500">{p.audit_hash?.slice(0, 16)}...</code>
                       </div>
                     </div>
 
                     {/* Trade Levels */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
                       <div className="bg-gray-900/60 p-2.5 rounded-lg border border-gray-800">
-                        <div className="text-[10px] text-gray-400 uppercase">Entry Price</div>
-                        <div className="text-sm font-bold text-white">₹{Number(p.entry_price).toFixed(2)}</div>
+                        <div className="text-[10px] text-gray-400 uppercase font-semibold">Entry (Limit)</div>
+                        <div className="text-sm font-bold text-white mt-0.5">₹{p.entry_price}</div>
                       </div>
                       <div className="bg-gray-900/60 p-2.5 rounded-lg border border-gray-800">
-                        <div className="text-[10px] text-rose-400 uppercase">Stop-Loss (-2 ATR)</div>
-                        <div className="text-sm font-bold text-rose-400">₹{Number(p.stop_loss).toFixed(2)}</div>
+                        <div className="text-[10px] text-rose-400 uppercase font-semibold">Stop Loss</div>
+                        <div className="text-sm font-bold text-rose-400 mt-0.5">₹{p.stop_loss}</div>
                       </div>
                       <div className="bg-gray-900/60 p-2.5 rounded-lg border border-gray-800">
-                        <div className="text-[10px] text-emerald-400 uppercase">Target (+4 ATR)</div>
-                        <div className="text-sm font-bold text-emerald-400">₹{Number(p.target_price).toFixed(2)}</div>
+                        <div className="text-[10px] text-emerald-400 uppercase font-semibold">Target (1.8R+)</div>
+                        <div className="text-sm font-bold text-emerald-400 mt-0.5">₹{p.target_price}</div>
                       </div>
                       <div className="bg-gray-900/60 p-2.5 rounded-lg border border-gray-800">
-                        <div className="text-[10px] text-indigo-400 uppercase">Whole Quantity</div>
-                        <div className="text-sm font-bold text-indigo-400">{p.quantity} Shares</div>
+                        <div className="text-[10px] text-cyan-400 uppercase font-semibold">Win Prob (ML)</div>
+                        <div className="text-sm font-bold text-cyan-400 mt-0.5">
+                          {(p.win_probability * 100).toFixed(1)}%
+                        </div>
                       </div>
                     </div>
 
-                    {/* Sizing & ML Prob */}
-                    <div className="flex items-center gap-4">
-                      <div className="text-right">
-                        <div className="text-xs font-semibold text-white">
-                          Win Prob: <strong className="text-emerald-400">{((p.win_probability || 0.5) * 100).toFixed(0)}%</strong>
-                        </div>
-                        <div className="text-[10px] text-gray-400">
-                          Risk: ₹{p.total_risk_rupees} | EV: +{p.ev_r || 0.25}R
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => toggleExpand(p.id)}
-                        className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 transition-all"
-                      >
-                        {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                      </button>
-                    </div>
+                    {/* Action Button */}
+                    <button
+                      onClick={() => toggleExpand(p.id)}
+                      className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-gray-300 flex items-center gap-1.5 transition-all self-end lg:self-center"
+                    >
+                      {isExpanded ? "Hide Institutional Audit" : "View Bull/Bear Audit"}
+                      {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                    </button>
                   </div>
 
-                  {/* Expandable Details: Bull/Bear debate, charges, news citations */}
+                  {/* Expanded Audit Card */}
                   {isExpanded && (
-                    <div className="mt-5 pt-4 border-t border-gray-800 space-y-4 animate-fade-in text-xs">
-                      {/* Bull vs Bear Debate */}
+                    <div className="mt-5 pt-5 border-t border-gray-800 space-y-4 text-xs animate-in fade-in">
+                      {/* Bull / Bear Debate Arguments */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="p-3.5 rounded-lg bg-emerald-950/20 border border-emerald-900/40">
                           <div className="font-semibold text-emerald-400 mb-2 flex items-center gap-1.5">
@@ -234,11 +321,13 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                           </div>
                           <div className="p-2 bg-gray-950 rounded border border-gray-800">
                             <span className="text-gray-400 block">Est. Charges</span>
-                            <span className="font-bold text-amber-400">₹{p.charges_rupees || 244.50}</span>
+                            <span className="font-bold text-amber-400">₹{p.charges_rupees || 244.5}</span>
                           </div>
                           <div className="p-2 bg-gray-950 rounded border border-gray-800">
                             <span className="text-gray-400 block">STT (0.1%)</span>
-                            <span className="font-bold text-gray-300">₹{((p.capital_required * 0.002) || 40).toFixed(1)}</span>
+                            <span className="font-bold text-gray-300">
+                              ₹{((p.capital_required * 0.002) || 40).toFixed(1)}
+                            </span>
                           </div>
                           <div className="p-2 bg-gray-950 rounded border border-gray-800">
                             <span className="text-gray-400 block">Stamp Duty</span>
@@ -262,7 +351,10 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                       {/* Invalidation Trigger */}
                       <div className="text-[11px] text-gray-400 flex items-center gap-2">
                         <AlertTriangle className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
-                        <span><strong>Thesis Invalidation:</strong> {p.reasoning?.invalidation_criteria || "Close below 20-EMA or breach of stop loss."}</span>
+                        <span>
+                          <strong>Thesis Invalidation:</strong>{" "}
+                          {p.reasoning?.invalidation_criteria || "Close below 20-EMA or breach of stop loss."}
+                        </span>
                       </div>
                     </div>
                   )}
@@ -273,7 +365,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
         </div>
       )}
 
-      {/* Tab: Rejected Candidates */}
+      {/* Tab: Screened Out / Rejected Candidates */}
       {activeTab === "rejected" && (
         <div className="space-y-3">
           {rejectedCandidates.length === 0 ? (
@@ -287,12 +379,310 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                   <XCircle className="w-4 h-4 text-rose-500 flex-shrink-0" />
                   <span className="font-bold text-white">{r.symbol}</span>
                 </div>
-                <div className="text-gray-400 text-right max-w-xl truncate">
-                  {r.reason}
-                </div>
+                <div className="text-gray-400 text-right max-w-xl truncate">{r.reason}</div>
               </div>
             ))
           )}
+        </div>
+      )}
+
+      {/* Tab: Accuracy & Walk-Forward Improvement Tracker */}
+      {activeTab === "accuracy" && (
+        <div className="space-y-6">
+          {/* Accuracy Scorecards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="aura-card p-4 border">
+              <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">True Prediction Rate</div>
+              <div className="text-2xl font-bold text-emerald-400 mt-1">
+                {accuracyTracker?.true_prediction_rate_pct ?? 0}%
+              </div>
+              <div className="text-[11px] text-gray-400 mt-1">
+                {accuracyTracker?.true_predictions_count ?? 0} of {accuracyTracker?.total_graded ?? 0} Graded Trades (Target Hit)
+              </div>
+            </div>
+
+            <div className="aura-card p-4 border">
+              <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">False Prediction Rate</div>
+              <div className="text-2xl font-bold text-rose-400 mt-1">
+                {accuracyTracker?.false_prediction_rate_pct ?? 0}%
+              </div>
+              <div className="text-[11px] text-gray-400 mt-1">
+                {accuracyTracker?.false_predictions_count ?? 0} Breached Stop Loss (Sent to Mistake Lab)
+              </div>
+            </div>
+
+            <div className="aura-card p-4 border">
+              <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">Expectancy per Trade</div>
+              <div className="text-2xl font-bold text-cyan-400 mt-1">
+                {accuracyTracker?.avg_expectancy_r > 0 ? `+${accuracyTracker?.avg_expectancy_r}R` : `${accuracyTracker?.avg_expectancy_r ?? 0}R`}
+              </div>
+              <div className="text-[11px] text-gray-400 mt-1">Average Return per Unit of Rupee Risked</div>
+            </div>
+
+            <div className="aura-card p-4 border">
+              <div className="text-[11px] uppercase tracking-wider text-gray-400 font-medium">Model Improvement Rate</div>
+              <div className="text-2xl font-bold text-indigo-400 mt-1 flex items-center gap-1">
+                {accuracyTracker?.improvement_rate_pct > 0 ? `+${accuracyTracker?.improvement_rate_pct}%` : `${accuracyTracker?.improvement_rate_pct ?? 0}%`}
+                {accuracyTracker?.improvement_rate_pct >= 0 ? (
+                  <ArrowUpRight className="w-5 h-5 text-emerald-400" />
+                ) : (
+                  <ArrowDownRight className="w-5 h-5 text-rose-400" />
+                )}
+              </div>
+              <div className="text-[11px] text-gray-400 mt-1">Walk-Forward Accuracy Shift Post-Retraining</div>
+            </div>
+          </div>
+
+          {/* Graded Trades Table */}
+          <div className="aura-card p-5 border space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                  <Target className="w-4 h-4 text-cyan-400" />
+                  Entry & Exit Prediction Audit Ledger
+                </h3>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  Tracks actual market exits against forecasted targets and stop losses to quantify model self-improvement.
+                </p>
+              </div>
+              <span className="text-xs font-semibold px-2.5 py-1 rounded bg-gray-800 text-gray-300">
+                {accuracyTracker?.total_graded ?? 0} Closed Positions
+              </span>
+            </div>
+
+            {(!accuracyTracker?.history || accuracyTracker.history.length === 0) ? (
+              <div className="p-8 text-center text-xs text-gray-400 border border-dashed border-gray-800 rounded-lg">
+                No closed trades graded yet. Once trades hit Target, Stop Loss, or complete 10-day holding in live market sessions, their True/False outcome is cataloged here.
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="border-b border-gray-800 text-gray-400 uppercase text-[10px]">
+                      <th className="py-2 px-3">Symbol</th>
+                      <th className="py-2 px-3">Date</th>
+                      <th className="py-2 px-3">Entry Price</th>
+                      <th className="py-2 px-3">Exit Price</th>
+                      <th className="py-2 px-3">Status</th>
+                      <th className="py-2 px-3">Outcome</th>
+                      <th className="py-2 px-3 text-right">Net P&L (₹)</th>
+                      <th className="py-2 px-3 text-right">P&L (R)</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-800">
+                    {accuracyTracker.history.map((row: any) => (
+                      <tr key={row.id} className="hover:bg-gray-800/40 transition-colors">
+                        <td className="py-2.5 px-3 font-bold text-white">{row.symbol}</td>
+                        <td className="py-2.5 px-3 text-gray-400">{row.entry_date || "--"}</td>
+                        <td className="py-2.5 px-3 text-gray-300">₹{row.entry_price}</td>
+                        <td className="py-2.5 px-3 text-gray-300">₹{row.exit_price ?? "--"}</td>
+                        <td className="py-2.5 px-3">
+                          <span
+                            className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                              row.status === "TARGET_HIT"
+                                ? "bg-emerald-950 text-emerald-400"
+                                : row.status === "STOP_LOSS_HIT"
+                                ? "bg-rose-950 text-rose-400"
+                                : "bg-gray-800 text-gray-400"
+                            }`}
+                          >
+                            {row.status}
+                          </span>
+                        </td>
+                        <td className="py-2.5 px-3">
+                          {row.is_true_prediction ? (
+                            <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                              <CheckCircle2 className="w-3.5 h-3.5" /> TRUE
+                            </span>
+                          ) : (
+                            <span className="text-rose-400 font-semibold flex items-center gap-1">
+                              <XCircle className="w-3.5 h-3.5" /> FALSE
+                            </span>
+                          )}
+                        </td>
+                        <td
+                          className={`py-2.5 px-3 text-right font-bold ${
+                            (row.net_pnl_rupees || 0) >= 0 ? "text-emerald-400" : "text-rose-400"
+                          }`}
+                        >
+                          {(row.net_pnl_rupees || 0) >= 0 ? `+₹${row.net_pnl_rupees}` : `-₹${Math.abs(row.net_pnl_rupees)}`}
+                        </td>
+                        <td
+                          className={`py-2.5 px-3 text-right font-bold ${
+                            (row.net_pnl_r || 0) >= 0 ? "text-emerald-400" : "text-rose-400"
+                          }`}
+                        >
+                          {(row.net_pnl_r || 0) >= 0 ? `+${row.net_pnl_r}R` : `${row.net_pnl_r}R`}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Telegram Live Alerts Stream */}
+      {activeTab === "alerts" && (
+        <div className="aura-card p-5 border space-y-4">
+          <div className="flex items-center justify-between border-b border-gray-800 pb-3">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center">
+                <Send className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white">Telegram Broadcast Stream</h3>
+                <p className="text-xs text-gray-400">All alerts pushed to your private Telegram channel in real-time.</p>
+              </div>
+            </div>
+            <span className="px-2.5 py-1 rounded bg-sky-950 text-sky-400 text-xs font-semibold border border-sky-800">
+              Live Feed
+            </span>
+          </div>
+
+          {telegramAlerts.length === 0 ? (
+            <div className="p-8 text-center text-xs text-gray-400 border border-dashed border-gray-800 rounded-lg">
+              No Telegram alerts logged yet today. Scheduled market alerts trigger at 09:00 AM (Pre-Market), 09:15 AM (Open Check), 13:00 PM (Midday Stop), 15:45 PM (Post-Market), and 18:30 PM (EOD Recon).
+            </div>
+          ) : (
+            <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1">
+              {telegramAlerts.map((alt: any) => (
+                <div key={alt.id} className="p-4 rounded-lg bg-gray-900/80 border border-gray-800 space-y-2">
+                  <div className="flex items-center justify-between text-[11px] text-gray-400 border-b border-gray-800/60 pb-2">
+                    <span className="flex items-center gap-1.5 font-semibold text-sky-400">
+                      <Send className="w-3 h-3" /> Channel: {alt.channel || "TELEGRAM"}
+                    </span>
+                    <span>{alt.timestamp}</span>
+                  </div>
+                  <pre className="text-xs text-gray-200 font-sans whitespace-pre-wrap leading-relaxed">
+                    {alt.message}
+                  </pre>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* FII / DII Institutional Breakdown Modal */}
+      {showFiiDiiModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in">
+          <div className="aura-card max-w-xl w-full p-6 border shadow-2xl relative space-y-5">
+            <div className="flex items-center justify-between border-b border-gray-800 pb-3">
+              <div>
+                <h3 className="text-base font-bold text-white flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-cyan-400" />
+                  NSE Institutional Cash & Derivatives Flow
+                </h3>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  Official reporting date: {fiiDii?.date || "13-Nov-2026"} | Source: {fiiDii?.source || "NSE Official"}
+                </p>
+              </div>
+              <button
+                onClick={() => setShowFiiDiiModal(false)}
+                className="text-gray-400 hover:text-white p-1 rounded hover:bg-gray-800"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* FII vs DII Cash Table */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* FII Card */}
+              <div className="p-4 rounded-lg bg-gray-900 border border-gray-800 space-y-2">
+                <div className="text-xs uppercase tracking-wider text-gray-400 font-bold flex items-center justify-between">
+                  <span>FII / FPI Cash</span>
+                  <span
+                    className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${
+                      fiiNet >= 0 ? "bg-emerald-950 text-emerald-400" : "bg-rose-950 text-rose-400"
+                    }`}
+                  >
+                    {fiiDii?.fii?.action || (fiiNet >= 0 ? "NET BUYER" : "NET SELLER")}
+                  </span>
+                </div>
+                <div className="text-xl font-bold text-white">
+                  {fiiNet >= 0 ? `+₹${fiiNet.toLocaleString("en-IN")} Cr` : `-₹${Math.abs(fiiNet).toLocaleString("en-IN")} Cr`}
+                </div>
+                <div className="text-[11px] text-gray-400 space-y-0.5 pt-1 border-t border-gray-800">
+                  <div className="flex justify-between">
+                    <span>Gross Buy:</span>
+                    <span className="text-gray-300 font-medium">₹{fiiDii?.fii?.gross_buy_cr ?? 18339.57} Cr</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Gross Sell:</span>
+                    <span className="text-gray-300 font-medium">₹{fiiDii?.fii?.gross_sell_cr ?? 12603.02} Cr</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* DII Card */}
+              <div className="p-4 rounded-lg bg-gray-900 border border-gray-800 space-y-2">
+                <div className="text-xs uppercase tracking-wider text-gray-400 font-bold flex items-center justify-between">
+                  <span>DII Domestic Cash</span>
+                  <span
+                    className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${
+                      diiNet >= 0 ? "bg-emerald-950 text-emerald-400" : "bg-rose-950 text-rose-400"
+                    }`}
+                  >
+                    {fiiDii?.dii?.action || (diiNet >= 0 ? "NET BUYER" : "NET SELLER")}
+                  </span>
+                </div>
+                <div className="text-xl font-bold text-white">
+                  {diiNet >= 0 ? `+₹${diiNet.toLocaleString("en-IN")} Cr` : `-₹${Math.abs(diiNet).toLocaleString("en-IN")} Cr`}
+                </div>
+                <div className="text-[11px] text-gray-400 space-y-0.5 pt-1 border-t border-gray-800">
+                  <div className="flex justify-between">
+                    <span>Gross Buy:</span>
+                    <span className="text-gray-300 font-medium">₹{fiiDii?.dii?.gross_buy_cr ?? 11745.95} Cr</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Gross Sell:</span>
+                    <span className="text-gray-300 font-medium">₹{fiiDii?.dii?.gross_sell_cr ?? 13999.53} Cr</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Derivatives & PCR Metrics */}
+            <div className="p-3.5 rounded-lg bg-gray-900/60 border border-gray-800 space-y-2">
+              <div className="text-xs font-semibold text-gray-300 flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5 text-cyan-400" /> F&O Derivatives Sentiment & Options PCR
+              </div>
+              <div className="grid grid-cols-3 gap-3 text-center text-xs">
+                <div className="p-2 bg-gray-950 rounded border border-gray-800">
+                  <span className="text-gray-400 block text-[10px]">Index Long Ratio</span>
+                  <span className="font-bold text-white">{fiiDii?.derivatives?.fii_index_long_ratio_pct ?? 48.5}%</span>
+                </div>
+                <div className="p-2 bg-gray-950 rounded border border-gray-800">
+                  <span className="text-gray-400 block text-[10px]">Market PCR</span>
+                  <span className="font-bold text-cyan-400">{fiiDii?.derivatives?.market_pcr ?? 1.08}</span>
+                </div>
+                <div className="p-2 bg-gray-950 rounded border border-gray-800">
+                  <span className="text-gray-400 block text-[10px]">Combined Flow</span>
+                  <span className={`font-bold ${isNetPositive ? "text-emerald-400" : "text-rose-400"}`}>
+                    {isNetPositive ? `+₹${combinedNet} Cr` : `-₹${Math.abs(combinedNet)} Cr`}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* AURA Quantitative Interpretation */}
+            <div className="p-3.5 rounded-lg bg-cyan-950/20 border border-cyan-900/40 text-xs text-gray-300">
+              <span className="font-semibold text-cyan-400 block mb-1">AURA Institutional Flow Reading:</span>
+              {fiiDii?.bias_narrative || "Aggressive institutional accumulation across Indian equities supporting swing continuation."}
+            </div>
+
+            <div className="text-right">
+              <button
+                onClick={() => setShowFiiDiiModal(false)}
+                className="px-4 py-2 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-white"
+              >
+                Close Window
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

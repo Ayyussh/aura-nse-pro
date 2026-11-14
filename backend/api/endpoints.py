@@ -580,13 +580,127 @@ def api_run_gate_status():
         db.close()
 
 
-# --- Alert History ---
+# --- Alert History & Multi-Channel Feed ---
 
 @router.get("/alerts/history")
-def api_alerts_history(limit: int = 30):
-    """Return recent scheduler job execution history as alert log. (L1)"""
+def api_alerts_history(limit: int = 50, db: Session = Depends(get_db)):
+    """Return recent alert messages pushed to Telegram / SystemAuditLog."""
+    logs = (
+        db.query(SystemAuditLog)
+        .filter(SystemAuditLog.event_type == "TELEGRAM_ALERT")
+        .order_by(SystemAuditLog.id.desc())
+        .limit(limit)
+        .all()
+    )
+    alerts = []
+    for log in logs:
+        try:
+            details = json.loads(log.details_json)
+        except Exception:
+            details = {"message": log.details_json, "timestamp_ist": log.timestamp.isoformat()}
+        alerts.append({
+            "id": log.id,
+            "timestamp": details.get("timestamp_ist", log.timestamp.isoformat()),
+            "message": details.get("message", ""),
+            "channel": details.get("channel", "TELEGRAM"),
+            "date": details.get("date", ""),
+        })
+
+    # If no DB alerts exist yet, provide recent scheduler job execution history as fallback
+    if not alerts and JOB_EXECUTION_HISTORY:
+        for idx, job in enumerate(JOB_EXECUTION_HISTORY[:limit]):
+            alerts.append({
+                "id": idx + 1,
+                "timestamp": job.get("scheduled_time", ""),
+                "message": f"[{job.get('job_name')}] Status: {job.get('status')} | {job.get('execution_time_seconds', 0)}s",
+                "channel": "SYSTEM",
+                "date": get_ist_now().date().isoformat(),
+            })
+
     return {
-        "count": min(limit, len(JOB_EXECUTION_HISTORY)),
-        "alerts": JOB_EXECUTION_HISTORY[:limit],
+        "count": len(alerts),
+        "alerts": alerts,
         "compliance_note": "Educational decision support, not investment advice.",
+    }
+
+
+# --- FII / DII Daily Institutional Flow Tracker ---
+
+@router.get("/market/fii-dii")
+def api_market_fii_dii():
+    """Return latest official NSE FII / DII cash & derivatives flow tracker."""
+    from backend.data.fii_dii import fii_dii_tracker
+    return fii_dii_tracker.fetch_live_flows()
+
+
+# --- Prediction Accuracy & Walk-Forward Improvement Tracker ---
+
+@router.get("/predictions/accuracy-tracker")
+def api_predictions_accuracy_tracker(db: Session = Depends(get_db)):
+    """Calculate True vs. False prediction rates, accuracy %, and model improvement."""
+    all_preds = db.query(Prediction).order_by(Prediction.created_at.asc()).all()
+    closed = [p for p in all_preds if p.status in ("TARGET_HIT", "STOP_LOSS_HIT", "TIME_EXPIRED")]
+    open_trades = [p for p in all_preds if p.status == "OPEN"]
+
+    total_graded = len(closed)
+    true_predictions = [p for p in closed if p.status == "TARGET_HIT" or (p.net_pnl_rupees and p.net_pnl_rupees > 0)]
+    false_predictions = [p for p in closed if p.status == "STOP_LOSS_HIT" or (p.net_pnl_rupees and p.net_pnl_rupees < 0)]
+    time_expired = [p for p in closed if p.status == "TIME_EXPIRED" and (not p.net_pnl_rupees or p.net_pnl_rupees == 0)]
+
+    true_count = len(true_predictions)
+    false_count = len(false_predictions)
+    expired_count = len(time_expired)
+
+    true_rate_pct = round((true_count / total_graded * 100.0), 2) if total_graded > 0 else 0.0
+    false_rate_pct = round((false_count / total_graded * 100.0), 2) if total_graded > 0 else 0.0
+
+    r_multiples = [p.net_pnl_r for p in closed if p.net_pnl_r is not None]
+    avg_r = round(float(sum(r_multiples) / len(r_multiples)), 2) if r_multiples else 0.0
+
+    # Calculate Walk-Forward Improvement Trend (Comparing first half vs second half)
+    improvement_rate_pct = 0.0
+    if total_graded >= 10:
+        midpoint = total_graded // 2
+        first_half = closed[:midpoint]
+        second_half = closed[midpoint:]
+        first_true_pct = (sum(1 for p in first_half if p.status == "TARGET_HIT") / len(first_half)) * 100.0
+        second_true_pct = (sum(1 for p in second_half if p.status == "TARGET_HIT") / len(second_half)) * 100.0
+        improvement_rate_pct = round(second_true_pct - first_true_pct, 2)
+
+    # Detailed history list for frontend table
+    history = []
+    for p in reversed(closed):
+        history.append({
+            "id": p.id,
+            "symbol": p.symbol,
+            "setup_tag": p.setup_tag,
+            "entry_date": p.entry_date.isoformat() if p.entry_date else None,
+            "entry_price": p.entry_price,
+            "exit_price": p.exit_price,
+            "stop_loss": p.stop_loss,
+            "target_price": p.target_price,
+            "quantity": p.quantity,
+            "status": p.status,
+            "is_true_prediction": p.status == "TARGET_HIT" or (p.net_pnl_rupees and p.net_pnl_rupees > 0),
+            "net_pnl_rupees": p.net_pnl_rupees,
+            "net_pnl_r": p.net_pnl_r,
+            "win_probability": p.win_probability,
+            "ev_r": p.ev_r,
+        })
+
+    return {
+        "total_predictions": len(all_preds),
+        "open_trades_count": len(open_trades),
+        "total_graded": total_graded,
+        "true_predictions_count": true_count,
+        "false_predictions_count": false_count,
+        "neutral_expired_count": expired_count,
+        "true_prediction_rate_pct": true_rate_pct,
+        "false_prediction_rate_pct": false_rate_pct,
+        "avg_expectancy_r": avg_r,
+        "improvement_rate_pct": improvement_rate_pct,
+        "has_sufficient_sample": total_graded >= 30,
+        "status_summary": f"{true_count} True / {false_count} False ({true_rate_pct}% Accuracy)" if total_graded > 0 else "No closed trades graded yet (Awaiting first market resolution)",
+        "history": history,
+        "compliance_note": "Educational decision support, not investment advice. Past performance does not guarantee future results.",
     }

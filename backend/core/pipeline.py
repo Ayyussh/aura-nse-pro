@@ -32,8 +32,32 @@ from backend.strategies.swing import swing_engine
 logger = logging.getLogger("aura.pipeline")
 
 
+def log_alert_to_audit(message: str, channel: str = "TELEGRAM") -> None:
+    """Persist alert to SystemAuditLog so frontend and audit trail can view it."""
+    try:
+        db = SessionLocal()
+        audit_record = SystemAuditLog(
+            event_type="TELEGRAM_ALERT",
+            details_json=json.dumps({
+                "message": message,
+                "channel": channel,
+                "timestamp_ist": get_ist_now().strftime("%Y-%m-%d %H:%M:%S IST"),
+                "date": get_ist_now().date().isoformat(),
+            }),
+            timestamp=datetime.datetime.utcnow(),
+        )
+        db.add(audit_record)
+        db.commit()
+        db.close()
+    except Exception as e:
+        logger.warning(f"Could not persist alert to SystemAuditLog: {e}")
+
+
 def send_telegram_alert(message: str) -> bool:
     """Send alert to owner's private Telegram chat with Markdown and plain-text fallback."""
+    # Always log to internal audit feed so it appears on frontend
+    log_alert_to_audit(message)
+
     token = settings.TELEGRAM_BOT_TOKEN
     chat_id = settings.TELEGRAM_CHAT_ID
     if not token or not chat_id:
