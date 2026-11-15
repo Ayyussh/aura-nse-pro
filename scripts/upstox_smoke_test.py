@@ -22,13 +22,14 @@ def run_smoke_test():
     print("AURA-NSE Pro — Upstox API v3 Data Layer Smoke Test")
     print("=" * 65)
 
-    token = os.getenv("UPSTOX_ANALYTICS_TOKEN")
+    token = os.getenv("UPSTOX_ACCESS_TOKEN") or os.getenv("UPSTOX_ANALYTICS_TOKEN")
     if not token:
-        print("[INFO] UPSTOX_ANALYTICS_TOKEN not set in environment or vault.")
+        print("[STATUS: BLOCKED (TOKEN_PENDING)]")
+        print("[INFO] UPSTOX_ACCESS_TOKEN / UPSTOX_ANALYTICS_TOKEN not set in environment or vault.")
         print("       To enable Tier-2 Upstox verification:")
-        print("       1. Log into account.upstox.com/developer/apps")
-        print("       2. Generate a free 1-Year read-only Analytics Token")
-        print("       3. Paste into .env as UPSTOX_ANALYTICS_TOKEN=<token>\n")
+        print("       1. Log into Upstox Developer Portal (account.upstox.com/developer/apps)")
+        print("       2. Generate your API Key, Secret, and Access Token")
+        print("       3. Add UPSTOX_ACCESS_TOKEN to GitHub Secrets and local .env\n")
         print("Testing Client Fallback & Contract Verification...")
 
     # 1. Test Market Status Endpoint

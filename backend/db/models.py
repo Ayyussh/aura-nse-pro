@@ -192,3 +192,21 @@ class PriceTruth(Base):
     discrepancies = Column(Text, nullable=True)  # JSON list of price discrepancies
     is_tradable = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+
+
+class TradeFillEvent(Base):
+    """Separate append-only chained event table for trade fill prices (Section 19.3 / Housekeeping)."""
+    __tablename__ = "trade_fill_events"
+
+    id = Column(Integer, primary_key=True, index=True)
+    prediction_id = Column(Integer, ForeignKey("predictions.id"), nullable=False)
+    symbol = Column(String(32), nullable=False)
+    order_side = Column(String(8), nullable=False, default="BUY")  # BUY / SELL
+    planned_price = Column(Float, nullable=False)
+    fill_price = Column(Float, nullable=False)
+    slippage_rupees = Column(Float, nullable=False, default=0.0)
+    quantity = Column(Integer, nullable=False)
+    fill_timestamp = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+    event_hash = Column(String(64), nullable=False)
+    prev_event_hash = Column(String(64), nullable=False, default="GENESIS_FILL_EVENT")
+

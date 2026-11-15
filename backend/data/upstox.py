@@ -61,7 +61,7 @@ class UpstoxClient:
     BASE_URL = "https://api.upstox.com/v2"
 
     def __init__(self, token: Optional[str] = None):
-        self.token = token or os.getenv("UPSTOX_ANALYTICS_TOKEN", "")
+        self.token = token or os.getenv("UPSTOX_ACCESS_TOKEN") or os.getenv("UPSTOX_ANALYTICS_TOKEN", "")
         self.rate_limiter = TokenBucketRateLimiter(rate_per_second=20.0)
         self.token_generated_at = os.getenv("UPSTOX_TOKEN_GENERATED_AT", "2026-01-01")
         self.last_latency_ms: float = 0.0

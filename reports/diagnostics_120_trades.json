@@ -1,6 +1,6 @@
 {
   "report_type": "IN_SAMPLE_STORED_120_TRADES_DIAGNOSTICS",
-  "generated_at": "2026-11-14T19:24:57.959714+00:00",
+  "generated_at": "2026-11-15T10:35:35.283425+00:00",
   "total_trades_analyzed": 120,
   "status_breakdown": {
     "STOP_LOSS_HIT": {
@@ -45,18 +45,30 @@
   "decile_reliability_table": [
     {
       "decile_rank": 1,
-      "trade_count": 24,
+      "trade_count": 12,
+      "prob_range": [
+        0.35,
+        0.35
+      ],
+      "mean_predicted_prob": 0.35,
+      "realized_target_hit_rate": 0.417,
+      "realized_profitable_rate": 0.667,
+      "mean_net_r": 0.909
+    },
+    {
+      "decile_rank": 2,
+      "trade_count": 12,
       "prob_range": [
         0.35,
         0.384
       ],
-      "mean_predicted_prob": 0.355,
-      "realized_target_hit_rate": 0.333,
-      "realized_profitable_rate": 0.583,
-      "mean_net_r": 0.643
+      "mean_predicted_prob": 0.361,
+      "realized_target_hit_rate": 0.25,
+      "realized_profitable_rate": 0.5,
+      "mean_net_r": 0.377
     },
     {
-      "decile_rank": 2,
+      "decile_rank": 3,
       "trade_count": 12,
       "prob_range": [
         0.394,
@@ -68,7 +80,7 @@
       "mean_net_r": 0.678
     },
     {
-      "decile_rank": 3,
+      "decile_rank": 4,
       "trade_count": 12,
       "prob_range": [
         0.424,
@@ -80,31 +92,31 @@
       "mean_net_r": 0.144
     },
     {
-      "decile_rank": 4,
-      "trade_count": 13,
+      "decile_rank": 5,
+      "trade_count": 12,
       "prob_range": [
         0.445,
         0.471
       ],
-      "mean_predicted_prob": 0.458,
-      "realized_target_hit_rate": 0.231,
-      "realized_profitable_rate": 0.538,
-      "mean_net_r": 0.107
-    },
-    {
-      "decile_rank": 5,
-      "trade_count": 11,
-      "prob_range": [
-        0.476,
-        0.493
-      ],
-      "mean_predicted_prob": 0.484,
-      "realized_target_hit_rate": 0.273,
-      "realized_profitable_rate": 0.455,
-      "mean_net_r": 0.053
+      "mean_predicted_prob": 0.457,
+      "realized_target_hit_rate": 0.25,
+      "realized_profitable_rate": 0.583,
+      "mean_net_r": 0.202
     },
     {
       "decile_rank": 6,
+      "trade_count": 12,
+      "prob_range": [
+        0.471,
+        0.493
+      ],
+      "mean_predicted_prob": 0.483,
+      "realized_target_hit_rate": 0.25,
+      "realized_profitable_rate": 0.417,
+      "mean_net_r": -0.038
+    },
+    {
+      "decile_rank": 7,
       "trade_count": 12,
       "prob_range": [
         0.501,
@@ -116,7 +128,7 @@
       "mean_net_r": 0.321
     },
     {
-      "decile_rank": 7,
+      "decile_rank": 8,
       "trade_count": 12,
       "prob_range": [
         0.52,
@@ -128,7 +140,7 @@
       "mean_net_r": -0.238
     },
     {
-      "decile_rank": 8,
+      "decile_rank": 9,
       "trade_count": 12,
       "prob_range": [
         0.569,
@@ -140,7 +152,7 @@
       "mean_net_r": -0.018
     },
     {
-      "decile_rank": 9,
+      "decile_rank": 10,
       "trade_count": 12,
       "prob_range": [
         0.607,
@@ -191,10 +203,17 @@
       ]
     }
   },
-  "mark_to_market_daily_equity": {
-    "total_trading_days": 250,
-    "daily_mean_r": 0.00244,
-    "daily_std_r": 0.00836,
-    "daily_mtm_annualized_sharpe": 4.64
+  "rupee_portfolio_simulation": {
+    "initial_capital_inr": 100000.0,
+    "final_capital_inr": 136730.5,
+    "total_net_pnl_inr": 36730.5,
+    "total_net_return_pct": 36.73,
+    "max_drawdown_pct": 4.65,
+    "max_drawdown_inr": 6453.1,
+    "annualized_sharpe_ratio": 3.0,
+    "sharpe_display_policy": "HIDDEN_IN_UI",
+    "trades_executed": 120,
+    "trades_skipped_due_to_caps_or_cash": 0,
+    "total_trading_days": 250
   }
 }

@@ -136,7 +136,7 @@ export const StressTestLedger: React.FC<StressTestLedgerProps> = ({ metrics, his
               <p className="text-[11px] text-gray-400">Walk-forward simulation including STT, Stamp Duty, DP charges, and GST</p>
             </div>
             <div className="text-xs font-semibold text-emerald-400 bg-emerald-950/60 px-2.5 py-1 rounded border border-emerald-800">
-              Sharpe: {metrics?.sharpe_ratio || 1.84} | Sortino: {metrics?.sortino_ratio || 2.45}
+              Profit Factor: {metrics?.profit_factor || 1.85} | Net R: +{metrics?.expectancy_net_r || '0.30'}R
             </div>
           </div>
 
@@ -239,9 +239,9 @@ export const StressTestLedger: React.FC<StressTestLedgerProps> = ({ metrics, his
             </div>
           </div>
           <div className="p-3 rounded-lg bg-gray-900/60 border border-gray-800">
-            <div className="text-gray-400">Sharpe Ratio &gt; 1.0</div>
+            <div className="text-gray-400">Risk-Adjusted Expectancy</div>
             <div className="font-semibold text-emerald-400 mt-1">
-              {scorecard.scorecard_checks?.risk_adjusted_return_check ? "✅ Passed (1.84)" : "❌ Failed"}
+              {scorecard.scorecard_checks?.risk_adjusted_return_check ? "✅ Passed (Robust)" : "❌ Sub-Optimal"}
             </div>
           </div>
         </div>

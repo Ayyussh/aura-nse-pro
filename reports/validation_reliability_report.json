@@ -1,0 +1,271 @@
+{
+  "evaluation_timestamp": "2026-11-15T10:40:59.236851+00:00",
+  "dataset_type": "OUT_OF_SAMPLE_VALIDATION",
+  "sample_size": 60,
+  "empirical_base_rate": 0.2333,
+  "validation_brier_score": 0.2405,
+  "reference_brier_score": 0.1789,
+  "brier_skill_score_bss": -0.3443,
+  "spearman_rank_correlation": {
+    "rho": 0.0887,
+    "p_value": 0.50011,
+    "statistically_significant": false
+  },
+  "model_skill_badge": "MODEL_SKILL_NOT_DEMONSTRATED",
+  "model_skill_demonstrated": false,
+  "decile_reliability_table": [
+    {
+      "decile_rank": 1,
+      "trade_count": 6,
+      "prob_range": [
+        0.3,
+        0.361
+      ],
+      "mean_predicted_prob": 0.333,
+      "realized_win_rate": 0.167,
+      "realized_net_r": 0.307
+    },
+    {
+      "decile_rank": 2,
+      "trade_count": 6,
+      "prob_range": [
+        0.366,
+        0.384
+      ],
+      "mean_predicted_prob": 0.374,
+      "realized_win_rate": 0.167,
+      "realized_net_r": 0.232
+    },
+    {
+      "decile_rank": 3,
+      "trade_count": 6,
+      "prob_range": [
+        0.385,
+        0.425
+      ],
+      "mean_predicted_prob": 0.405,
+      "realized_win_rate": 0.167,
+      "realized_net_r": 0.02
+    },
+    {
+      "decile_rank": 4,
+      "trade_count": 6,
+      "prob_range": [
+        0.428,
+        0.46
+      ],
+      "mean_predicted_prob": 0.447,
+      "realized_win_rate": 0.5,
+      "realized_net_r": 0.762
+    },
+    {
+      "decile_rank": 5,
+      "trade_count": 6,
+      "prob_range": [
+        0.467,
+        0.479
+      ],
+      "mean_predicted_prob": 0.476,
+      "realized_win_rate": 0.167,
+      "realized_net_r": -0.32
+    },
+    {
+      "decile_rank": 6,
+      "trade_count": 6,
+      "prob_range": [
+        0.48,
+        0.508
+      ],
+      "mean_predicted_prob": 0.492,
+      "realized_win_rate": 0.167,
+      "realized_net_r": -0.567
+    },
+    {
+      "decile_rank": 7,
+      "trade_count": 6,
+      "prob_range": [
+        0.51,
+        0.523
+      ],
+      "mean_predicted_prob": 0.517,
+      "realized_win_rate": 0.167,
+      "realized_net_r": 0.063
+    },
+    {
+      "decile_rank": 8,
+      "trade_count": 6,
+      "prob_range": [
+        0.524,
+        0.541
+      ],
+      "mean_predicted_prob": 0.529,
+      "realized_win_rate": 0.167,
+      "realized_net_r": 0.21
+    },
+    {
+      "decile_rank": 9,
+      "trade_count": 6,
+      "prob_range": [
+        0.551,
+        0.646
+      ],
+      "mean_predicted_prob": 0.585,
+      "realized_win_rate": 0.167,
+      "realized_net_r": 0.172
+    },
+    {
+      "decile_rank": 10,
+      "trade_count": 6,
+      "prob_range": [
+        0.65,
+        0.7
+      ],
+      "mean_predicted_prob": 0.674,
+      "realized_win_rate": 0.5,
+      "realized_net_r": 1.42
+    }
+  ],
+  "setup_level_empirical_priors": {
+    "pullback_ema": {
+      "p_target": 0.28,
+      "p_target_ci_95": [
+        0.2,
+        0.36
+      ],
+      "p_stop": 0.32,
+      "p_stop_ci_95": [
+        0.24,
+        0.4
+      ],
+      "p_expired": 0.4,
+      "p_expired_ci_95": [
+        0.31,
+        0.49
+      ],
+      "expected_r_expired": 0.36,
+      "expected_r_expired_ci_95": [
+        0.18,
+        0.54
+      ],
+      "cost_r": 0.065,
+      "cost_r_ci_95": [
+        0.05,
+        0.08
+      ],
+      "sample_size": 250
+    },
+    "breakout_vcp": {
+      "p_target": 0.31,
+      "p_target_ci_95": [
+        0.22,
+        0.4
+      ],
+      "p_stop": 0.35,
+      "p_stop_ci_95": [
+        0.26,
+        0.44
+      ],
+      "p_expired": 0.34,
+      "p_expired_ci_95": [
+        0.25,
+        0.43
+      ],
+      "expected_r_expired": 0.32,
+      "expected_r_expired_ci_95": [
+        0.12,
+        0.52
+      ],
+      "cost_r": 0.06,
+      "cost_r_ci_95": [
+        0.048,
+        0.075
+      ],
+      "sample_size": 220
+    },
+    "mean_reversion": {
+      "p_target": 0.24,
+      "p_target_ci_95": [
+        0.16,
+        0.32
+      ],
+      "p_stop": 0.3,
+      "p_stop_ci_95": [
+        0.22,
+        0.38
+      ],
+      "p_expired": 0.46,
+      "p_expired_ci_95": [
+        0.37,
+        0.55
+      ],
+      "expected_r_expired": 0.39,
+      "expected_r_expired_ci_95": [
+        0.21,
+        0.57
+      ],
+      "cost_r": 0.068,
+      "cost_r_ci_95": [
+        0.052,
+        0.084
+      ],
+      "sample_size": 180
+    },
+    "compounder": {
+      "p_target": 0.26,
+      "p_target_ci_95": [
+        0.18,
+        0.34
+      ],
+      "p_stop": 0.28,
+      "p_stop_ci_95": [
+        0.2,
+        0.36
+      ],
+      "p_expired": 0.46,
+      "p_expired_ci_95": [
+        0.37,
+        0.55
+      ],
+      "expected_r_expired": 0.41,
+      "expected_r_expired_ci_95": [
+        0.23,
+        0.59
+      ],
+      "cost_r": 0.055,
+      "cost_r_ci_95": [
+        0.042,
+        0.068
+      ],
+      "sample_size": 190
+    },
+    "default": {
+      "p_target": 0.27,
+      "p_target_ci_95": [
+        0.19,
+        0.35
+      ],
+      "p_stop": 0.31,
+      "p_stop_ci_95": [
+        0.23,
+        0.39
+      ],
+      "p_expired": 0.42,
+      "p_expired_ci_95": [
+        0.33,
+        0.51
+      ],
+      "expected_r_expired": 0.37,
+      "expected_r_expired_ci_95": [
+        0.19,
+        0.55
+      ],
+      "cost_r": 0.062,
+      "cost_r_ci_95": [
+        0.048,
+        0.076
+      ],
+      "sample_size": 840
+    }
+  },
+  "policy_action": "Model skill not demonstrated out-of-sample (BSS <= 0). Tickets display 'MODEL_SKILL_NOT_DEMONSTRATED' and use empirical setup-level base rates with 95% bootstrap intervals."
+}

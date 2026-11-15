@@ -1,0 +1,79 @@
+{
+  "version": "1.0.0",
+  "source": "NSE_OFFICIAL_CIRCULARS_AND_CORPORATE_FILINGS",
+  "last_updated": "2026-11-15T00:00:00Z",
+  "symbol_changes": [
+    {
+      "old_symbol": "ZOMATO",
+      "new_symbol": "ETERNAL",
+      "isin": "INE758T01015",
+      "company_name": "Eternal Limited (formerly Zomato Limited)",
+      "effective_date": "2024-07-25",
+      "nse_circular_ref": "NSE/CML/2024/75",
+      "notes": "Name and symbol change approved by ROC and NSE"
+    },
+    {
+      "old_symbol": "LTI",
+      "new_symbol": "LTIM",
+      "isin": "INE214T01019",
+      "company_name": "LTIMindtree Limited",
+      "effective_date": "2022-12-05",
+      "nse_circular_ref": "NSE/CML/2022/104",
+      "notes": "Amalgamation of Mindtree into L&T Infotech"
+    },
+    {
+      "old_symbol": "CADILAHC",
+      "new_symbol": "ZYDUSLIFE",
+      "isin": "INE010B01027",
+      "company_name": "Zydus Lifesciences Limited",
+      "effective_date": "2022-03-07",
+      "nse_circular_ref": "NSE/CML/2022/18",
+      "notes": "Name change from Cadila Healthcare"
+    },
+    {
+      "old_symbol": "MOTHERSUMI",
+      "new_symbol": "MOTHERSON",
+      "isin": "INE775A01035",
+      "company_name": "Samvardhana Motherson International Limited",
+      "effective_date": "2022-06-09",
+      "nse_circular_ref": "NSE/CML/2022/45",
+      "notes": "Group restructuring and name change"
+    },
+    {
+      "old_symbol": "TATAMTRDVR",
+      "new_symbol": "TATAMOTORS",
+      "isin": "IN9155A01020",
+      "company_name": "Tata Motors Limited (DVR Cancellation / Capital Reduction)",
+      "effective_date": "2024-09-01",
+      "nse_circular_ref": "NSE/CML/2024/92",
+      "notes": "DVR shares cancelled with ordinary share issuance"
+    },
+    {
+      "old_symbol": "IDFC",
+      "new_symbol": "IDFCFIRSTB",
+      "isin": "INE092T01019",
+      "company_name": "IDFC FIRST Bank Limited",
+      "effective_date": "2024-10-01",
+      "nse_circular_ref": "NSE/CML/2024/110",
+      "notes": "Reverse merger of IDFC Limited into IDFC FIRST Bank"
+    },
+    {
+      "old_symbol": "HDFC",
+      "new_symbol": "HDFCBANK",
+      "isin": "INE040A01034",
+      "company_name": "HDFC Bank Limited",
+      "effective_date": "2023-07-13",
+      "nse_circular_ref": "NSE/CML/2023/58",
+      "notes": "Mega-merger of HDFC Limited into HDFC Bank"
+    },
+    {
+      "old_symbol": "SRTRANSFIN",
+      "new_symbol": "SHRIRAMFIN",
+      "isin": "INE721A01013",
+      "company_name": "Shriram Finance Limited",
+      "effective_date": "2022-11-30",
+      "nse_circular_ref": "NSE/CML/2022/99",
+      "notes": "Merger of Shriram City Union Finance into Shriram Transport Finance"
+    }
+  ]
+}

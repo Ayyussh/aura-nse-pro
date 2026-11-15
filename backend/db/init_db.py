@@ -9,6 +9,7 @@ from backend.db.models import (
     ApiKeyVault,
     SystemAuditLog,
     PriceTruth,
+    TradeFillEvent,
 )
 from backend.core.config import settings, encrypt_secret
 import datetime
@@ -111,6 +112,20 @@ def init_database():
                 BEFORE DELETE ON predictions
                 BEGIN
                     SELECT RAISE(ABORT, 'IMMUTABLE_PREDICTIONS: DELETE is strictly prohibited on predictions ledger.');
+                END;
+            """))
+            conn.execute(text("""
+                CREATE TRIGGER IF NOT EXISTS abort_update_trade_fill_events
+                BEFORE UPDATE ON trade_fill_events
+                BEGIN
+                    SELECT RAISE(ABORT, 'IMMUTABLE_FILL_EVENTS: UPDATE is strictly prohibited on trade fill events.');
+                END;
+            """))
+            conn.execute(text("""
+                CREATE TRIGGER IF NOT EXISTS abort_delete_trade_fill_events
+                BEFORE DELETE ON trade_fill_events
+                BEGIN
+                    SELECT RAISE(ABORT, 'IMMUTABLE_FILL_EVENTS: DELETE is strictly prohibited on trade fill events.');
                 END;
             """))
             conn.execute(text("""

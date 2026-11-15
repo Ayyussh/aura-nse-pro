@@ -115,18 +115,17 @@ def run_diagnostics() -> Dict[str, Any]:
     time_expired_profitable = sum(1 for gt in graded_trades if gt["status"] == "TIME_EXPIRED" and gt["profitable_win"] == 1)
 
     # 3. Decile Reliability Table
-    # Sort by predicted probability and create decile bins
+    # Sort deterministically by predicted probability and assign exactly 12 trades per decile
     df_trades = pd.DataFrame([{
+        "trade_id": gt["trade_id"],
         "predicted_prob": gt["predicted_prob"],
         "target_win": gt["target_win"],
         "profitable_win": gt["profitable_win"],
         "net_pnl_r": gt["net_pnl_r"],
-    } for gt in graded_trades]).sort_values("predicted_prob")
+    } for gt in graded_trades]).sort_values(by=["predicted_prob", "trade_id"]).reset_index(drop=True)
 
-    try:
-        df_trades["decile"] = pd.qcut(df_trades["predicted_prob"], q=10, labels=False, duplicates="drop")
-    except Exception:
-        df_trades["decile"] = pd.cut(df_trades["predicted_prob"], bins=10, labels=False)
+    n_total = len(df_trades)
+    df_trades["decile"] = [min(9, i // (n_total // 10)) for i in range(n_total)]
 
     decile_table = []
     for d, group in df_trades.groupby("decile"):
@@ -139,6 +138,8 @@ def run_diagnostics() -> Dict[str, Any]:
             "realized_profitable_rate": round(float(group["profitable_win"].mean()), 3),
             "mean_net_r": round(float(group["net_pnl_r"].mean()), 3),
         })
+
+    assert sum(r["trade_count"] for r in decile_table) == 120, "Decile table trade count must sum strictly to 120!"
 
     # 4. Week-Level Block-Bootstrap 95% Confidence Intervals (1,000 blocks)
     # Group trades by calendar entry week (5-day blocks) to preserve temporal correlation
@@ -213,31 +214,153 @@ def run_diagnostics() -> Dict[str, Any]:
         },
     }
 
-    # 5. Mark-to-Market Daily Equity Curve & Sharpe Ratio
-    # Build daily portfolio P&L across all unique dates
+    # 5. Rupee Portfolio Equity Curve (Actual Sizing, Caps, and Concurrent Positions)
+    # Applied constraints: Initial Capital ₹1,00,000, 1.5% Risk, 20% Max Pos, Max 5 Concurrent, Max 2 Sector, Group Caps
+    from backend.data.universe import get_sector_for_symbol
+    from backend.core.config import get_groups_config
+    from backend.costs.charges import charges_engine
+
+    groups_cfg = get_groups_config()
+    group_map = groups_cfg.get("groups", {})
+    sym_to_group = {}
+    for grp_name, syms in group_map.items():
+        for s in syms:
+            sym_to_group[s.upper()] = grp_name
+
+    initial_capital = 100000.0
+    cash = initial_capital
+    max_concurrent = 5
+    max_per_sector = 2
+    risk_budget_pct = 0.015
+    max_pos_capital_pct = 0.20
+
     all_dates = set()
     for t in trades:
         for d in t["history_df"].index:
             all_dates.add(pd.Timestamp(d).date())
     sorted_dates = sorted(list(all_dates))
 
-    daily_portfolio_r = {d: 0.0 for d in sorted_dates}
-    for gt, t in zip(graded_trades, trades):
-        hdf = t["history_df"]
-        entry_p = t["entry_price"]
-        planned_risk = max(1.0, (t["entry_price"] - t["stop_loss"]) * t["quantity"])
-        for i in range(1, len(hdf)):
-            prev_close = hdf["close"].iloc[i - 1]
-            cur_close = hdf["close"].iloc[i]
-            d = pd.Timestamp(hdf.index[i]).date()
-            if d in daily_portfolio_r:
-                daily_pnl = (cur_close - prev_close) * t["quantity"]
-                daily_portfolio_r[d] += (daily_pnl / planned_risk) / len(trades)
+    trades_by_entry: Dict[datetime.date, List[Any]] = {}
+    for t, gt in zip(trades, graded_trades):
+        e_date = t["entry_date"]
+        trades_by_entry.setdefault(e_date, []).append((t, gt))
 
-    daily_r_series = pd.Series([daily_portfolio_r[d] for d in sorted_dates])
-    mean_d = float(daily_r_series.mean())
-    std_d = float(daily_r_series.std())
-    daily_mtm_sharpe = round(float(mean_d / std_d * np.sqrt(252)), 2) if std_d > 0 else 0.0
+    open_positions: List[Dict[str, Any]] = []
+    rupee_equity_curve: List[Dict[str, Any]] = []
+    trades_executed = 0
+    trades_skipped_caps = 0
+
+    for cur_date in sorted_dates:
+        # A. Process trade exits at start of cur_date
+        still_open = []
+        for pos in open_positions:
+            t = pos["trade"]
+            gt = pos["graded"]
+            exit_date = pd.Timestamp(gt["exit_date"]).date()
+            if cur_date >= exit_date:
+                exit_price = gt["exit_price"]
+                qty = pos["quantity"]
+                charges = charges_engine.calculate_delivery_charges(
+                    buy_price=pos["entry_price"],
+                    sell_price=exit_price,
+                    quantity=qty,
+                )
+                net_proceeds = (exit_price * qty) - charges.charges_in_rupees
+                cash += net_proceeds
+            else:
+                still_open.append(pos)
+        open_positions = still_open
+
+        # Current portfolio equity prior to new entries
+        mtm_pos_val = 0.0
+        for pos in open_positions:
+            hdf = pos["trade"]["history_df"]
+            p_close = float(hdf.loc[hdf.index.date == cur_date, "close"].iloc[-1]) if cur_date in hdf.index.date else pos["entry_price"]
+            mtm_pos_val += pos["quantity"] * p_close
+        current_equity = cash + mtm_pos_val
+
+        # B. Evaluate candidates entering on cur_date against portfolio caps
+        if cur_date in trades_by_entry:
+            for t, gt in trades_by_entry[cur_date]:
+                # 1. Max concurrent swing positions (5)
+                if len(open_positions) >= max_concurrent:
+                    trades_skipped_caps += 1
+                    continue
+
+                # 2. Max open trades per sector (2)
+                sym = t["symbol"]
+                sector = get_sector_for_symbol(sym)
+                if sum(1 for p in open_positions if p["sector"] == sector) >= max_per_sector:
+                    trades_skipped_caps += 1
+                    continue
+
+                # 3. Promoter group cap (PSU: 3, Others: 2)
+                group_name = sym_to_group.get(sym.upper())
+                if group_name and group_name != "Standalone_Equities":
+                    max_grp_pos = 3 if group_name == "PSU" else 2
+                    if sum(1 for p in open_positions if p.get("group") == group_name) >= max_grp_pos:
+                        trades_skipped_caps += 1
+                        continue
+
+                # 4. Sizing with cash budget
+                planned_risk = current_equity * risk_budget_pct
+                risk_per_share = max(0.5, t["entry_price"] - t["stop_loss"])
+                raw_shares = int(planned_risk / risk_per_share)
+                max_shares = int((current_equity * max_pos_capital_pct) / t["entry_price"])
+                qty = max(1, min(raw_shares, max_shares))
+                cost = qty * t["entry_price"]
+
+                if cost > cash:
+                    trades_skipped_caps += 1
+                    continue
+
+                # Execute entry
+                cash -= cost
+                open_positions.append({
+                    "trade": t,
+                    "graded": gt,
+                    "symbol": sym,
+                    "sector": sector,
+                    "group": group_name,
+                    "quantity": qty,
+                    "entry_price": t["entry_price"],
+                    "cost": cost,
+                })
+                trades_executed += 1
+
+        # C. Mark-to-market portfolio value at end of cur_date
+        mtm_pos_val = 0.0
+        for pos in open_positions:
+            hdf = pos["trade"]["history_df"]
+            p_close = float(hdf.loc[hdf.index.date == cur_date, "close"].iloc[-1]) if cur_date in hdf.index.date else pos["entry_price"]
+            mtm_pos_val += pos["quantity"] * p_close
+
+        eod_equity = round(cash + mtm_pos_val, 2)
+        rupee_equity_curve.append({
+            "date": cur_date.isoformat(),
+            "cash": round(cash, 2),
+            "invested": round(mtm_pos_val, 2),
+            "equity": eod_equity,
+            "open_positions": len(open_positions),
+        })
+
+    # Portfolio metrics recomputed from Rupee equity curve
+    equity_series = pd.Series([pt["equity"] for pt in rupee_equity_curve])
+    daily_returns = equity_series.pct_change().dropna()
+    final_equity = equity_series.iloc[-1]
+    total_rupee_profit = round(float(final_equity - initial_capital), 2)
+    total_return_pct = round(float((final_equity - initial_capital) / initial_capital * 100.0), 2)
+
+    # Max Drawdown
+    cummax = equity_series.cummax()
+    drawdown_series = (equity_series - cummax) / cummax
+    max_drawdown_pct = round(float(abs(drawdown_series.min()) * 100.0), 2)
+    max_drawdown_rupees = round(float(abs((equity_series - cummax).min())), 2)
+
+    # Sharpe ratio (Kept hidden from user-facing UI per quantitative policy)
+    mean_ret = float(daily_returns.mean())
+    std_ret = float(daily_returns.std())
+    annualized_sharpe = round(float((mean_ret / std_ret) * np.sqrt(252)), 2) if std_ret > 0 else 0.0
 
     diagnostics_payload = {
         "report_type": "IN_SAMPLE_STORED_120_TRADES_DIAGNOSTICS",
@@ -260,11 +383,18 @@ def run_diagnostics() -> Dict[str, Any]:
         },
         "decile_reliability_table": decile_table,
         "week_level_block_bootstrap_ci_95": block_bootstrap_ci,
-        "mark_to_market_daily_equity": {
+        "rupee_portfolio_simulation": {
+            "initial_capital_inr": initial_capital,
+            "final_capital_inr": final_equity,
+            "total_net_pnl_inr": total_rupee_profit,
+            "total_net_return_pct": total_return_pct,
+            "max_drawdown_pct": max_drawdown_pct,
+            "max_drawdown_inr": max_drawdown_rupees,
+            "annualized_sharpe_ratio": annualized_sharpe,
+            "sharpe_display_policy": "HIDDEN_IN_UI",
+            "trades_executed": trades_executed,
+            "trades_skipped_due_to_caps_or_cash": trades_skipped_caps,
             "total_trading_days": len(sorted_dates),
-            "daily_mean_r": round(mean_d, 5),
-            "daily_std_r": round(std_d, 5),
-            "daily_mtm_annualized_sharpe": daily_mtm_sharpe,
         },
     }
 
@@ -273,10 +403,12 @@ def run_diagnostics() -> Dict[str, Any]:
 
     print(f"Successfully saved diagnostics to {DIAGNOSTICS_FILE}")
     print(f"Total Trades: {len(graded_trades)}")
+    print(f"Decile Table Count: {sum(r['trade_count'] for r in decile_table)} (across {len(decile_table)} deciles)")
     print(f"Target Hit Rate: {target_hit_rate_pct}% | Profitable Trade Rate: {profitable_rate_pct}%")
     print(f"Time-Expired % of Net R: {time_expired_pct_of_net}%")
     print(f"Block Bootstrap Net R: {block_bootstrap_ci['net_expectancy_r']['mean']} (95% CI: {block_bootstrap_ci['net_expectancy_r']['ci_95']})")
-    print(f"MTM Daily Sharpe: {daily_mtm_sharpe}")
+    print(f"Rupee Final Equity: ₹{final_equity:,.2f} | Net Return: {total_return_pct}% | Max DD: {max_drawdown_pct}% (₹{max_drawdown_rupees:,.2f})")
+    print(f"Annualized Sharpe (Hidden in UI): {annualized_sharpe}")
     return diagnostics_payload
 
 

@@ -54,7 +54,10 @@ def api_market_regime():
 # --- Predictions & Spoken Voice Briefing ---
 
 @router.get("/predictions/today")
-def api_todays_predictions(db: Session = Depends(get_db)):
+def api_todays_predictions(
+    user: UserProfile = Depends(require_authenticated_user),
+    db: Session = Depends(get_db),
+):
     """Fetch today's 9:00 AM approved and rejected trade candidates."""
     today = get_ist_now().date()
     preds = db.query(Prediction).filter(Prediction.entry_date == today).all()
@@ -101,6 +104,7 @@ def api_todays_predictions(db: Session = Depends(get_db)):
 def api_prediction_history(
     status: Optional[str] = None,
     limit: int = 50,
+    user: UserProfile = Depends(require_authenticated_user),
     db: Session = Depends(get_db),
 ):
     """Fetch full append-only paper-trading prediction ledger."""

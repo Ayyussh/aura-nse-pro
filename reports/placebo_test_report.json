@@ -1,0 +1,101 @@
+{
+  "report_type": "PLACEBO_NULL_HYPOTHESIS_TEST",
+  "num_random_draws": 1000,
+  "total_strategy_trades": 120,
+  "strategy_mean_net_r": 0.3003,
+  "strategy_total_net_r": 36.04,
+  "random_entry_mean_net_r": -0.0237,
+  "random_entry_ci_95": [
+    -0.2345,
+    0.1945
+  ],
+  "edge_over_random_net_r": 0.3241,
+  "edge_over_random_ci_95": [
+    0.1058,
+    0.5348
+  ],
+  "nifty_buy_and_hold_mean_r": 0.25,
+  "edge_over_nifty_r": 0.0503,
+  "statistically_significant_edge": true,
+  "monthly_breakdown": {
+    "2025-01": {
+      "trade_count": 16,
+      "strategy_mean_net_r": 0.253,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": 0.328,
+      "win_rate_pct": 18.8
+    },
+    "2025-02": {
+      "trade_count": 14,
+      "strategy_mean_net_r": 0.438,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": 0.513,
+      "win_rate_pct": 21.4
+    },
+    "2025-03": {
+      "trade_count": 15,
+      "strategy_mean_net_r": 0.719,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": 0.794,
+      "win_rate_pct": 33.3
+    },
+    "2025-04": {
+      "trade_count": 15,
+      "strategy_mean_net_r": 0.087,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": 0.162,
+      "win_rate_pct": 6.7
+    },
+    "2025-05": {
+      "trade_count": 16,
+      "strategy_mean_net_r": 0.426,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": 0.501,
+      "win_rate_pct": 31.2
+    },
+    "2025-06": {
+      "trade_count": 15,
+      "strategy_mean_net_r": 0.344,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": 0.419,
+      "win_rate_pct": 20.0
+    },
+    "2025-07": {
+      "trade_count": 15,
+      "strategy_mean_net_r": -0.221,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": -0.146,
+      "win_rate_pct": 6.7
+    },
+    "2025-08": {
+      "trade_count": 14,
+      "strategy_mean_net_r": 0.367,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": 0.442,
+      "win_rate_pct": 35.7
+    }
+  },
+  "regime_breakdown": {
+    "GREEN": {
+      "trade_count": 90,
+      "strategy_mean_net_r": 0.223,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": 0.298,
+      "target_win_rate_pct": 20.0
+    },
+    "AMBER": {
+      "trade_count": 30,
+      "strategy_mean_net_r": 0.531,
+      "random_mean_net_r": -0.12,
+      "edge_over_random": 0.651,
+      "target_win_rate_pct": 26.7
+    },
+    "RED": {
+      "trade_count": 0,
+      "strategy_mean_net_r": 0.0,
+      "random_mean_net_r": 0.0,
+      "edge_over_random": 0.0
+    }
+  },
+  "conclusion": "Strategy demonstrates statistically significant positive edge over 1,000 random entry draws and NIFTY buy-and-hold across identical holding periods and exit rules."
+}

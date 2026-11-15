@@ -1,0 +1,23 @@
+{
+  "report_type": "MULTI_SOURCE_RECONCILIATION_MISMATCH_AUDIT",
+  "generated_at": "2026-11-15T10:43:23.025111+00:00",
+  "audit_target_date": "2026-11-13",
+  "total_symbols_audited": 100,
+  "confidence_grades": {
+    "A": 100,
+    "B": 0,
+    "C": 0
+  },
+  "confidence_coverage_a_b_pct": 100.0,
+  "gate_g1_status": "PASSED",
+  "gate_g1_threshold_pct": 98.0,
+  "source_participation": {
+    "NSE_BHAVCOPY": 100,
+    "UPSTOX_V3": 0,
+    "YFINANCE": 100
+  },
+  "total_discrepancies_detected": 0,
+  "discrepancy_details": [],
+  "symbol_master_active_records": 8,
+  "summary": "Gate G1 Data Quality Contract PASSED: 100.0% of universe reached Grade A/B confidence with zero unhandled price discrepancies."
+}

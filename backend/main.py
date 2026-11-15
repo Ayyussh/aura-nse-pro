@@ -154,4 +154,5 @@ async def websocket_endpoint(websocket: WebSocket):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("backend.main:app", host=settings.HOST, port=settings.PORT, reload=True)
+    # Institutional security binding: strictly localhost loopback 127.0.0.1
+    uvicorn.run("backend.main:app", host="127.0.0.1", port=settings.PORT, reload=True)

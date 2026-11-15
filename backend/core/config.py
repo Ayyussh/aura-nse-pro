@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = f"sqlite:///{PROJECT_ROOT / 'backend' / 'aura_nse.db'}"
     TIMEZONE: str = "Asia/Kolkata"
     PORT: int = 8000
-    HOST: str = "0.0.0.0"
+    HOST: str = "127.0.0.1"
 
     ADMIN_USERNAME: str = "investor"
     ADMIN_PASSWORD: str = "aura_nse_secure_pass_2026"
