@@ -1,0 +1,220 @@
+{
+  "report_type": "IN_SAMPLE_STORED_120_TRADES_DIAGNOSTICS",
+  "generated_at": "2026-11-15T10:35:35.283425+00:00",
+  "total_trades_analyzed": 120,
+  "status_breakdown": {
+    "STOP_LOSS_HIT": {
+      "count": 35,
+      "pct_of_trades": 29.17,
+      "total_gross_r": -36.77,
+      "avg_gross_r": -1.051,
+      "total_net_r": -38.85,
+      "avg_net_r": -1.11
+    },
+    "TARGET_HIT": {
+      "count": 26,
+      "pct_of_trades": 21.67,
+      "total_gross_r": 53.86,
+      "avg_gross_r": 2.072,
+      "total_net_r": 52.18,
+      "avg_net_r": 2.007
+    },
+    "TIME_EXPIRED": {
+      "count": 59,
+      "pct_of_trades": 49.17,
+      "total_gross_r": 25.64,
+      "avg_gross_r": 0.435,
+      "total_net_r": 22.71,
+      "avg_net_r": 0.385
+    }
+  },
+  "time_expired_analysis": {
+    "total_time_expired_trades": 59,
+    "profitable_time_expired_trades": 40,
+    "time_expired_net_r": 22.71,
+    "total_portfolio_net_r": 36.04,
+    "percentage_of_net_r_from_time_expired": 63.01,
+    "inference": "Significant share of net R comes from time-expired exits. A binary target/stop formulation mismodels this contribution, proving necessity of three-outcome (p_T, p_S, p_E) model."
+  },
+  "dual_win_definition": {
+    "target_hit_rate_pct": 21.67,
+    "profitable_trade_rate_pct": 55.0,
+    "divergence_pct": 33.33,
+    "explanation": "Target-hit rate reflects setups reaching +4 ATR without hitting stop. Profitable-trade rate includes setups exiting on Day 10 above entry after statutory costs."
+  },
+  "decile_reliability_table": [
+    {
+      "decile_rank": 1,
+      "trade_count": 12,
+      "prob_range": [
+        0.35,
+        0.35
+      ],
+      "mean_predicted_prob": 0.35,
+      "realized_target_hit_rate": 0.417,
+      "realized_profitable_rate": 0.667,
+      "mean_net_r": 0.909
+    },
+    {
+      "decile_rank": 2,
+      "trade_count": 12,
+      "prob_range": [
+        0.35,
+        0.384
+      ],
+      "mean_predicted_prob": 0.361,
+      "realized_target_hit_rate": 0.25,
+      "realized_profitable_rate": 0.5,
+      "mean_net_r": 0.377
+    },
+    {
+      "decile_rank": 3,
+      "trade_count": 12,
+      "prob_range": [
+        0.394,
+        0.422
+      ],
+      "mean_predicted_prob": 0.409,
+      "realized_target_hit_rate": 0.25,
+      "realized_profitable_rate": 0.833,
+      "mean_net_r": 0.678
+    },
+    {
+      "decile_rank": 4,
+      "trade_count": 12,
+      "prob_range": [
+        0.424,
+        0.444
+      ],
+      "mean_predicted_prob": 0.434,
+      "realized_target_hit_rate": 0.083,
+      "realized_profitable_rate": 0.5,
+      "mean_net_r": 0.144
+    },
+    {
+      "decile_rank": 5,
+      "trade_count": 12,
+      "prob_range": [
+        0.445,
+        0.471
+      ],
+      "mean_predicted_prob": 0.457,
+      "realized_target_hit_rate": 0.25,
+      "realized_profitable_rate": 0.583,
+      "mean_net_r": 0.202
+    },
+    {
+      "decile_rank": 6,
+      "trade_count": 12,
+      "prob_range": [
+        0.471,
+        0.493
+      ],
+      "mean_predicted_prob": 0.483,
+      "realized_target_hit_rate": 0.25,
+      "realized_profitable_rate": 0.417,
+      "mean_net_r": -0.038
+    },
+    {
+      "decile_rank": 7,
+      "trade_count": 12,
+      "prob_range": [
+        0.501,
+        0.519
+      ],
+      "mean_predicted_prob": 0.511,
+      "realized_target_hit_rate": 0.25,
+      "realized_profitable_rate": 0.5,
+      "mean_net_r": 0.321
+    },
+    {
+      "decile_rank": 8,
+      "trade_count": 12,
+      "prob_range": [
+        0.52,
+        0.558
+      ],
+      "mean_predicted_prob": 0.533,
+      "realized_target_hit_rate": 0.083,
+      "realized_profitable_rate": 0.417,
+      "mean_net_r": -0.238
+    },
+    {
+      "decile_rank": 9,
+      "trade_count": 12,
+      "prob_range": [
+        0.569,
+        0.604
+      ],
+      "mean_predicted_prob": 0.585,
+      "realized_target_hit_rate": 0.0,
+      "realized_profitable_rate": 0.417,
+      "mean_net_r": -0.018
+    },
+    {
+      "decile_rank": 10,
+      "trade_count": 12,
+      "prob_range": [
+        0.607,
+        0.75
+      ],
+      "mean_predicted_prob": 0.667,
+      "realized_target_hit_rate": 0.333,
+      "realized_profitable_rate": 0.667,
+      "mean_net_r": 0.664
+    }
+  ],
+  "week_level_block_bootstrap_ci_95": {
+    "num_bootstrap_replications": 1000,
+    "num_temporal_week_blocks": 35,
+    "target_win_rate_pct": {
+      "mean": 21.59,
+      "ci_95": [
+        14.75,
+        29.27
+      ]
+    },
+    "profitable_win_rate_pct": {
+      "mean": 55.05,
+      "ci_95": [
+        47.46,
+        63.12
+      ]
+    },
+    "net_expectancy_r": {
+      "mean": 0.299,
+      "ci_95": [
+        0.111,
+        0.507
+      ]
+    },
+    "gross_expectancy_r": {
+      "mean": 0.355,
+      "ci_95": [
+        0.165,
+        0.562
+      ]
+    },
+    "profit_factor": {
+      "mean": 1.87,
+      "ci_95": [
+        1.27,
+        2.75
+      ]
+    }
+  },
+  "rupee_portfolio_simulation": {
+    "initial_capital_inr": 100000.0,
+    "final_capital_inr": 136730.5,
+    "total_net_pnl_inr": 36730.5,
+    "total_net_return_pct": 36.73,
+    "max_drawdown_pct": 4.65,
+    "max_drawdown_inr": 6453.1,
+    "annualized_sharpe_ratio": 3.0,
+    "sharpe_display_policy": "HIDDEN_IN_UI",
+    "trades_executed": 120,
+    "trades_skipped_due_to_caps_or_cash": 0,
+    "total_trading_days": 250
+  },
+  "snapshot_updated_at": "2026-11-15 17:01:45 IST"
+}

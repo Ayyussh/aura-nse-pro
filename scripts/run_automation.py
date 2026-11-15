@@ -137,6 +137,14 @@ def main():
             run_weekly_mistake_audit()
             logger.info("Full Cycle Completed successfully.")
 
+        # Always export latest static snapshots for serverless GitHub Pages dashboard
+        try:
+            from backend.data.static_exporter import export_all_static_snapshots
+            export_all_static_snapshots()
+            logger.info("Static GitOps analytics snapshots updated successfully.")
+        except Exception as e:
+            logger.warning(f"Could not export static snapshots: {e}")
+
         # Heartbeat success ping
         ping_heartbeat(heartbeat_url, status="ok", message=f"Mode {args.mode} executed successfully on {today}")
         logger.info("Automation task finished successfully.")

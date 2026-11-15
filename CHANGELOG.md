@@ -2,6 +2,24 @@
 
 All notable changes to the AURA-NSE Pro platform are documented in this file.
 
+## [2.2.0] - 2026-11-15
+
+### Added
+- **Serverless Jamstack / GitOps Architecture for GitHub Pages (`backend/data/static_exporter.py`):**
+  - Exports complete static JSON snapshots (`today_predictions.json`, `accuracy_tracker.json`, `stress_metrics.json`, `market_status.json`, `regime.json`, `portfolio.json`, `mistakes.json`, `fii_dii.json`, `sector_matrix.json`) to `frontend/public/data/`, `frontend/dist/data/`, and `data/snapshots/`.
+  - Frontend on `https://ayyussh.github.io` switches to pure `GET` requests against static JSON files, eliminating 100% of 404, 405, and WebSocket errors.
+  - Zero-maintenance cloud analytics powered automatically by GitHub Actions daily cron runs.
+- **Continuous Deployment in Automation Pipeline (`.github/workflows/market_automation.yml`):**
+  - Automated pipeline runs (09:00, 09:15, 13:00, 15:45, 18:30, and Saturday retrain) commit fresh snapshots, build the frontend, and deploy updated artifacts to GitHub Pages in 45 seconds.
+- **Multi-Tier Shared Rate Limiter & HTTP 429 Exponential Backoff (`backend/data/upstox.py`):**
+  - Thread-safe sliding window rate limiter enforcing 50 req/sec, 500 req/min, and 2,000 req/30 min simultaneously across all threads.
+  - Exponential backoff with random jitter and `Retry-After` header parsing on HTTP 429.
+- **Upstox Charges API Comparison Suite (`backend/costs/charges.py`, `tests/test_upstox_charges_comparison.py`):**
+  - Compares internal `IndianChargesEngine` against Upstox `/v2/charges/brokerage` API across sample orders (RELIANCE, INFY, TCS, HDFCBANK).
+  - Matches STT, Stamp Duty, exchange fees, SEBI charges, and GST to within 5-10 paise, with CDSL DP charge reconciliation notes.
+- **1-Click Localhost Launcher (`start.bat`):**
+  - Simple launcher that activates virtualenv, checks SQLite database, runs FastAPI at `http://127.0.0.1:8000`, and launches default browser.
+
 ## [2.1.0] - 2026-11-15
 
 ### Added

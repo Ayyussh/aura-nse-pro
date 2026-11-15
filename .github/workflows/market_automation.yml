@@ -46,6 +46,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   run-aura-automation:
@@ -149,11 +151,38 @@ jobs:
             --limit ${{ steps.select-mode.outputs.limit }} \
             $EXTRA_FLAGS
 
-      - name: "Persist Trading Ledger, Model Weights & Mistake Rules"
+      - name: "Persist Trading Ledger, Snapshots & Model Updates"
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add backend/aura_nse.db backend/ml/models/ data/
-          git commit -m "chore(automation): persist trade ledger and champion model updates [skip ci]" || echo "No state changes to commit."
+          git add backend/aura_nse.db backend/ml/models/ data/ frontend/public/data/
+          git commit -m "chore(automation): persist trade ledger, static snapshots and champion models [skip ci]" || echo "No state changes to commit."
           git pull --rebase origin main || true
           git push origin main || echo "Push skipped or branch up-to-date."
+
+      - name: "Set up Node.js for Frontend Deployment"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: "Build Production Frontend with Fresh Snapshots"
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: "Setup GitHub Pages"
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: "Upload Pages Artifact"
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist
+
+      - name: "Deploy to GitHub Pages"
+        id: deployment
+        uses: actions/deploy-pages@v4

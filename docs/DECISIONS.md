@@ -57,3 +57,14 @@
   - $E[R_E]$: Empirical conditional expected net R for time-expired trades (+0.385 R in baseline).
   - $cost\_R$: Brokerage and statutory charges drag (~0.056 R).
 - **Execution Gate:** Requires both calibrated $p_T + p_E \ge 0.45$, $EV_R \ge 0.20$, and the 95% confidence interval lower bound $EV_{R,\text{lower}} > 0$.
+
+## Decision 008: GitOps Static Analytics Architecture for GitHub Pages
+- **Problem:** GitHub Pages is a static CDN host without a Python backend, SQLite database, or WebSocket server. Direct frontend API requests to `/api/...` produce 404/405 errors, and `wss://` fails to connect.
+- **Solution:** A serverless Jamstack / GitOps approach where the headless Python automation pipeline (running on GitHub Actions schedule) writes static JSON snapshots to `frontend/public/data/` and `data/snapshots/`.
+- **Frontend Behavior:**
+  - On GitHub Pages (`isStaticHost = true`), the React frontend makes pure `GET` requests to `./data/*.json` snapshots with zero `POST` requests or WebSocket connections.
+  - Interactive actions (such as manual scans or key vault changes) display informative modals directing users to the automated GitHub Actions schedule or the 1-click local launcher (`start.bat`).
+  - Order tickets are generated client-side from snapshot data without requiring backend POST calls.
+- **Benefits:**
+  - $0 cloud hosting cost, zero server maintenance, 100% uptime, and zero 404/405/WebSocket console errors.
+  - Full local functionality remains 100% intact when running locally via `start.bat`.

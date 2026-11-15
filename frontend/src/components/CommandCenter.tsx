@@ -84,6 +84,34 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
       alert("Order Ticket Locked: Trade tickets and one-click execution are disabled on public preview to comply with SEBI non-broadcast guidelines. Tickets are accessible exclusively on private authenticated single-user deployments.");
       return;
     }
+
+    const isStatic = typeof window !== "undefined" && (
+      window.location.hostname.includes("github.io") ||
+      window.location.hostname.includes("pages.dev")
+    );
+
+    if (isStatic) {
+      const ticket = [
+        "AURA ORDER TICKET (Decision Support):",
+        `BUY ${p.symbol} EQ`,
+        `Quantity: ${p.quantity || 1} shares`,
+        `Entry Limit: ₹${Number(p.entry_price || p.planned_entry_price || 0).toFixed(2)}`,
+        `Stop Loss Trigger: ₹${Number(p.stop_loss || 0).toFixed(2)}`,
+        `Target Limit: ₹${Number(p.target_price || 0).toFixed(2)}`,
+        `Zerodha GTT Trigger: ₹${Number(p.stop_loss || 0).toFixed(2)}`,
+        `Horizon: ${p.time_limit_days || 10} Days (Swing)`,
+        `Note: Educational decision support only. Not financial advice.`,
+      ].join("\n");
+      try {
+        await navigator.clipboard.writeText(ticket);
+        setCopiedId(p.id);
+        setTimeout(() => setCopiedId(null), 2500);
+      } catch {
+        alert("Clipboard permission denied.");
+      }
+      return;
+    }
+
     try {
       const res = await fetch("/api/orders/generate-ticket", {
         method: "POST",
