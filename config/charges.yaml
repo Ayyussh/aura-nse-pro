@@ -37,6 +37,11 @@ broker_profiles:
     delivery_brokerage_buy: 20.0
     delivery_brokerage_sell: 20.0
     flat_order_fee: 20.0
+  upstox_delivery:
+    name: "Upstox Standard Delivery (Flat ₹20 per executed order)"
+    delivery_brokerage_buy: 20.0
+    delivery_brokerage_sell: 20.0
+    flat_order_fee: 20.0
   traditional_percentage:
     name: "Traditional Percentage Broker (0.1% or min ₹25)"
     percentage_rate: 0.001

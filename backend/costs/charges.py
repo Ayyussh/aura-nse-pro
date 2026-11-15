@@ -140,5 +140,126 @@ class IndianChargesEngine:
             charges_in_rupees=total_all,
         )
 
+    def calculate_single_order_charges(
+        self,
+        price: float,
+        quantity: int,
+        side: str = "BUY",  # "BUY" or "SELL"
+        broker_profile_name: Optional[str] = None,
+    ) -> Dict[str, float]:
+        """Calculate statutory and brokerage charges for a single order side."""
+        if quantity <= 0 or price <= 0:
+            raise ValueError("Price and quantity must be positive numbers.")
+
+        turnover = round(price * quantity, 2)
+        is_buy = (side.upper() == "BUY")
+
+        # STT: 0.1% on delivery BUY or SELL
+        stt_rate = self.rates.get("stt", {}).get("delivery_buy_rate" if is_buy else "delivery_sell_rate", 0.001)
+        stt = round(turnover * stt_rate, 2)
+
+        # Stamp duty: 0.015% on BUY only
+        stamp_rate = self.rates.get("stamp_duty", {}).get("buy_rate", 0.00015) if is_buy else 0.0
+        stamp_duty = round(turnover * stamp_rate, 2)
+
+        # Exchange txn charge: ~0.00345% of turnover
+        txn_rate = self.rates.get("exchange_txn_charge", {}).get("nse_rate", 0.0000345)
+        exchange_txn = round(turnover * txn_rate, 2)
+
+        # SEBI fee: ₹10 per crore (0.0001%)
+        sebi_rate = self.rates.get("sebi_turnover_fee", {}).get("rate_per_crore", 10.0)
+        sebi_fee = round((turnover / 10000000.0) * sebi_rate, 2)
+
+        # Brokerage
+        profile_key = broker_profile_name or self.default_profile
+        profile = self.broker_profiles.get(profile_key, {})
+        brokerage = float(profile.get("delivery_brokerage_buy" if is_buy else "delivery_brokerage_sell", 0.0))
+
+        # GST: 18% on (Brokerage + Exchange Txn + SEBI)
+        gst_base = brokerage + exchange_txn + sebi_fee
+        gst = round(gst_base * self.rates.get("gst", {}).get("rate", 0.18), 2)
+
+        # DP charge applies only on SELL side for delivery
+        dp_charge = 0.0
+        if not is_buy:
+            dp_cfg = self.rates.get("dp_charges", {})
+            base_dp = dp_cfg.get("flat_per_sell_scrip", 13.50)
+            dp_gst = round(base_dp * dp_cfg.get("gst_rate", 0.18), 2)
+            dp_charge = round(base_dp + dp_gst, 2)
+
+        order_charges = round(stt + stamp_duty + exchange_txn + sebi_fee + brokerage + gst, 2)
+        total_with_dp = round(order_charges + dp_charge, 2)
+
+        return {
+            "turnover": turnover,
+            "stt": stt,
+            "stamp_duty": stamp_duty,
+            "exchange_txn_charge": exchange_txn,
+            "sebi_fee": sebi_fee,
+            "brokerage": brokerage,
+            "gst": gst,
+            "dp_charge": dp_charge,
+            "order_charges": order_charges,
+            "total_charges": order_charges,
+            "total_charges_with_dp": total_with_dp,
+        }
+
+    def compare_with_upstox_order(
+        self,
+        symbol: str,
+        price: float,
+        quantity: int,
+        upstox_charges: Dict[str, Any],
+        side: str = "BUY",
+        broker_profile_name: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Compare our engine's calculation against Upstox's Charges API and log differences."""
+        our_calc = self.calculate_single_order_charges(price, quantity, side=side, broker_profile_name=broker_profile_name)
+
+        differences = {}
+        comparison_table = {}
+
+        fields = ["turnover", "stt", "stamp_duty", "exchange_txn_charge", "sebi_fee", "brokerage", "gst", "total_charges"]
+        for field in fields:
+            our_val = our_calc.get(field, 0.0)
+            upstox_val = float(upstox_charges.get(field, 0.0))
+            diff = round(our_val - upstox_val, 2)
+            pct_diff = round((diff / upstox_val * 100.0), 2) if upstox_val > 0 else 0.0
+
+            comparison_table[field] = {
+                "our_engine": our_val,
+                "upstox_api": upstox_val,
+                "diff_rupees": diff,
+                "diff_pct": pct_diff,
+            }
+            if abs(diff) > 0.05:  # Tolerance for fractional paise rounding
+                differences[field] = {
+                    "our_engine": our_val,
+                    "upstox_api": upstox_val,
+                    "diff_rupees": diff,
+                }
+
+        is_consistent = len(differences) == 0
+        dp_note = None
+        if side.upper() == "SELL":
+            dp_note = "Upstox /v2/charges/brokerage evaluates order-level charges and excludes DP charges. CDSL/NSDL charges ₹15.93 (₹13.50 + 18% GST) directly upon EOD demat debit."
+
+        return {
+            "symbol": symbol,
+            "side": side.upper(),
+            "price": price,
+            "quantity": quantity,
+            "turnover": our_calc["turnover"],
+            "is_consistent": is_consistent,
+            "comparison_table": comparison_table,
+            "differences": differences,
+            "dp_charge_demat_note": dp_note,
+            "notes": (
+                "Charges match Upstox within 5 paise precision."
+                if is_consistent
+                else f"Differences observed in: {list(differences.keys())}."
+            ),
+        }
+
 
 charges_engine = IndianChargesEngine()
