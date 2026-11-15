@@ -93,8 +93,28 @@ export function App() {
     return () => clearInterval(timer);
   }, []);
 
+  const isStaticHost = typeof window !== "undefined" && (
+    window.location.hostname.includes("github.io") ||
+    window.location.hostname.includes("pages.dev")
+  );
+
   // Initial Data Fetch with Seamless Fallback
   useEffect(() => {
+    if (isStaticHost) {
+      // In static GitHub Pages deployment, initialize demo fixtures without firing 404s
+      setIsDemoMode(true);
+      setMarketStatus(DEMO_MARKET_STATUS);
+      setRegime(DEMO_REGIME);
+      setTodayPredictions(DEMO_APPROVED_PREDICTIONS);
+      setBriefingScript(DEMO_VOICE_BRIEFING);
+      setStressMetrics(DEMO_STRESS_METRICS);
+      setFiiDiiData(DEMO_FII_DII);
+      setAccuracyTracker(DEMO_ACCURACY_TRACKER);
+      setSectorMatrix(DEMO_SECTOR_MATRIX);
+      setWsConnected(false);
+      return;
+    }
+
     fetchMarketData();
     fetchPredictions();
     fetchStressMetrics();
@@ -107,7 +127,7 @@ export function App() {
     fetchTelegramAlerts();
     fetchSectorMatrix();
 
-    // WebSocket setup
+    // WebSocket setup (only on live host)
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     const wsUrl = `${protocol}//${window.location.host}/ws`;
     let ws: WebSocket;
@@ -116,6 +136,7 @@ export function App() {
       ws = new WebSocket(wsUrl);
       ws.onopen = () => setWsConnected(true);
       ws.onclose = () => setWsConnected(false);
+      ws.onerror = () => setWsConnected(false);
       ws.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data);
@@ -403,6 +424,26 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-[#0b0f17] text-gray-100 flex flex-col font-sans">
+      {/* GitHub Pages Static Host Notice */}
+      {isStaticHost && (
+        <div className="bg-amber-950/90 border-b border-amber-700/80 px-4 py-2 text-xs text-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 z-50">
+          <div className="flex items-center gap-2">
+            <span className="font-bold uppercase tracking-wider bg-amber-900/90 border border-amber-600 px-2 py-0.5 rounded text-[10px] text-amber-200">
+              GitHub Pages Static Mode
+            </span>
+            <span>You are viewing the static UI demo on GitHub. Real-time Upstox data and Python ML pipelines run on your local machine.</span>
+          </div>
+          <div className="text-[11px] font-mono text-amber-300 flex items-center gap-2">
+            <span>To run live:</span>
+            <code className="bg-black/60 px-2 py-0.5 rounded border border-amber-700 text-amber-200">.\start.bat</code>
+            <span>and open</span>
+            <a href="http://127.0.0.1:8000" target="_blank" rel="noreferrer" className="underline font-bold text-white hover:text-cyan-300">
+              http://127.0.0.1:8000
+            </a>
+          </div>
+        </div>
+      )}
+
       {/* Institutional Top Navigation Header */}
       <header className="border-b border-gray-800/80 bg-[#0e1420]/95 backdrop-blur-md sticky top-0 z-50 px-4 lg:px-8 py-3">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">

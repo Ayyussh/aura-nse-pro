@@ -51,7 +51,21 @@ export const VaultSettings: React.FC<VaultSettingsProps> = ({
   const [upstoxTestResult, setUpstoxTestResult] = useState<any>(null);
   const [upstoxSaveMessage, setUpstoxSaveMessage] = useState("");
 
+  const isStaticHost = typeof window !== "undefined" && (
+    window.location.hostname.includes("github.io") ||
+    window.location.hostname.includes("pages.dev")
+  );
+
   const fetchUpstoxStatus = async () => {
+    if (isStaticHost) {
+      setUpstoxStatus({
+        is_configured: false,
+        masked_token: "PREVIEW_DEMO",
+        days_remaining: 365,
+        status: "STATIC_PREVIEW",
+      });
+      return;
+    }
     try {
       const res = await fetch("/api/upstox/status");
       if (res.ok) {
@@ -70,6 +84,26 @@ export const VaultSettings: React.FC<VaultSettingsProps> = ({
   const handleTestUpstox = async (tokenOverride?: string) => {
     setIsTestingUpstox(true);
     setUpstoxSaveMessage("");
+
+    if (isStaticHost) {
+      setTimeout(() => {
+        setUpstoxTestResult({
+          success: false,
+          isStaticHost: true,
+          status: "STATIC_HOST_PREVIEW",
+          message: "Running on GitHub Pages Preview (Static CDN). The Python backend runs locally on your machine at http://127.0.0.1:8000.",
+          sample_quotes: {
+            reliance: { symbol: "RELIANCE.NS", ltp: 2510.50, volume: 1420000, data_lag_seconds: 0.12 },
+            india_vix: { symbol: "^INDIAVIX", ltp: 14.2 },
+          },
+          market_status: "PREVIEW_MODE",
+          days_remaining: 365,
+        });
+        setIsTestingUpstox(false);
+      }, 500);
+      return;
+    }
+
     try {
       const res = await fetch("/api/upstox/test-connection", {
         method: "POST",
@@ -83,7 +117,7 @@ export const VaultSettings: React.FC<VaultSettingsProps> = ({
       setUpstoxTestResult({
         success: false,
         status: "FAILED",
-        message: e?.message || "Network request failed.",
+        message: e?.message || "Network request failed. Is the Python backend running on http://127.0.0.1:8000?",
       });
     } finally {
       setIsTestingUpstox(false);
@@ -93,6 +127,12 @@ export const VaultSettings: React.FC<VaultSettingsProps> = ({
   const handleSaveUpstox = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!upstoxToken.trim()) return;
+
+    if (isStaticHost) {
+      setUpstoxSaveMessage("GitHub Pages is a static host. Save this token into your local .env file (UPSTOX_ANALYTICS_TOKEN=...) and start http://127.0.0.1:8000.");
+      return;
+    }
+
     setIsTestingUpstox(true);
     setUpstoxSaveMessage("");
     try {
