@@ -950,3 +950,140 @@ def api_predictions_accuracy_tracker(db: Session = Depends(get_db)):
         "history": history,
         "compliance_note": "Educational decision support, not investment advice. Past performance does not guarantee future results.",
     }
+
+
+# --- Upstox Live Connection & Token Management (Frontend UI Support) ---
+
+class UpstoxTokenPayload(BaseModel):
+    token: str
+
+
+@router.get("/upstox/status")
+def api_upstox_status():
+    """Retrieve current Upstox connection state, rate limiter health, and token status."""
+    from backend.data.upstox import upstox_client, shared_upstox_limiter
+
+    token = upstox_client.token
+    has_token = bool(token)
+    masked = f"{token[:6]}...{token[-4:]}" if has_token and len(token) > 10 else ("CONFIGURED" if has_token else "NOT_CONFIGURED")
+
+    return {
+        "is_configured": has_token,
+        "masked_token": masked,
+        "days_remaining": upstox_client.get_token_days_remaining() if has_token else 0,
+        "rate_limiter_stats": shared_upstox_limiter.get_stats(),
+        "status": "READY" if has_token else "TOKEN_PENDING",
+    }
+
+
+@router.post("/upstox/test-connection")
+def api_upstox_test_connection(payload: Optional[UpstoxTokenPayload] = None):
+    """Test live connectivity against Upstox API v3 and fetch real-time quotes."""
+    from backend.data.upstox import upstox_client
+    import os
+
+    # If new token passed in payload, temporarily or permanently apply it
+    token_to_test = payload.token.strip() if payload and payload.token else (
+        upstox_client.token or os.getenv("UPSTOX_ACCESS_TOKEN") or os.getenv("UPSTOX_ANALYTICS_TOKEN", "")
+    )
+
+    if not token_to_test:
+        return {
+            "success": False,
+            "status": "TOKEN_PENDING",
+            "message": "No Upstox token found. Please provide an Analytics Access Token.",
+        }
+
+    # Test client with the specified token
+    original_token = upstox_client.token
+    try:
+        upstox_client.token = token_to_test
+        upstox_client.is_valid = True
+
+        status_res = upstox_client.get_market_status()
+        quote_rel = upstox_client.get_market_quote("RELIANCE.NS")
+        quote_vix = upstox_client.get_market_quote("^INDIAVIX")
+        days_left = upstox_client.get_token_days_remaining()
+
+        has_error = ("error" in quote_rel) or (status_res.get("status") in ("ERROR", "FAILED"))
+
+        if has_error:
+            err_msg = quote_rel.get("error") or status_res.get("error") or "Authentication failed or token invalid."
+            return {
+                "success": False,
+                "status": "FAILED",
+                "message": err_msg,
+                "market_status": status_res.get("operational_status", "UNKNOWN"),
+                "days_remaining": days_left,
+            }
+
+        return {
+            "success": True,
+            "status": "CONNECTED",
+            "message": "Connected to Upstox API v3 successfully. Real-time market feed active.",
+            "market_status": status_res.get("operational_status", "OPEN"),
+            "latency_ms": upstox_client.last_latency_ms,
+            "days_remaining": days_left,
+            "sample_quotes": {
+                "reliance": {
+                    "symbol": "RELIANCE.NS",
+                    "ltp": quote_rel.get("ltp"),
+                    "volume": quote_rel.get("volume"),
+                    "data_lag_seconds": quote_rel.get("data_lag_seconds"),
+                },
+                "india_vix": {
+                    "symbol": "^INDIAVIX",
+                    "ltp": quote_vix.get("ltp") if "error" not in quote_vix else None,
+                },
+            },
+        }
+    finally:
+        # Keep the valid token if test succeeded, else restore
+        if not (payload and payload.token):
+            upstox_client.token = original_token
+
+
+@router.post("/upstox/save-token")
+def api_upstox_save_token(payload: UpstoxTokenPayload):
+    """Save Upstox Analytics Token into local environment and memory."""
+    from backend.data.upstox import upstox_client
+    from backend.core.config import PROJECT_ROOT
+    import os
+
+    new_token = payload.token.strip()
+    if not new_token:
+        raise HTTPException(status_code=400, detail="Token cannot be empty.")
+
+    # Update in memory
+    upstox_client.token = new_token
+    upstox_client.is_valid = True
+    os.environ["UPSTOX_ANALYTICS_TOKEN"] = new_token
+    os.environ["UPSTOX_ACCESS_TOKEN"] = new_token
+
+    # Persist to .env file
+    env_file = PROJECT_ROOT / ".env"
+    try:
+        content = env_file.read_text(encoding="utf-8") if env_file.exists() else ""
+        if "UPSTOX_ANALYTICS_TOKEN=" in content:
+            import re
+            content = re.sub(r'UPSTOX_ANALYTICS_TOKEN=.*', f'UPSTOX_ANALYTICS_TOKEN="{new_token}"', content)
+        else:
+            content += f'\nUPSTOX_ANALYTICS_TOKEN="{new_token}"\n'
+
+        if "UPSTOX_ACCESS_TOKEN=" in content:
+            import re
+            content = re.sub(r'UPSTOX_ACCESS_TOKEN=.*', f'UPSTOX_ACCESS_TOKEN="{new_token}"', content)
+        else:
+            content += f'UPSTOX_ACCESS_TOKEN="{new_token}"\n'
+
+        env_file.write_text(content, encoding="utf-8")
+    except Exception as e:
+        logger.warning(f"Could not persist token to .env: {e}")
+
+    # Immediately execute verification test
+    test_res = api_upstox_test_connection(payload)
+    return {
+        "saved": True,
+        "token_masked": f"{new_token[:6]}...{new_token[-4:]}",
+        "verification": test_res,
+    }

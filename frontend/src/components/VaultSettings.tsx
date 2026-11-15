@@ -1,19 +1,40 @@
-import React, { useState } from "react";
-import { Key, ShieldCheck, RefreshCw, Send, CheckCircle2, XCircle, AlertCircle, Clock } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import {
+  Key,
+  ShieldCheck,
+  RefreshCw,
+  Send,
+  CheckCircle2,
+  XCircle,
+  AlertCircle,
+  Clock,
+  Wifi,
+  WifiOff,
+  Activity,
+  Zap,
+  TrendingUp,
+  Database,
+  ExternalLink,
+} from "lucide-react";
 
 interface VaultSettingsProps {
-  vaultKeys: any[];
-  onValidateAll: () => void;
-  onAddKey: (keyData: any) => void;
-  isValidating: boolean;
+  keys?: any[];
+  vaultKeys?: any[];
+  onValidateAll?: () => void;
+  onAddKey?: (keyData: any) => void;
+  onSaveKey?: (keyData: any) => void;
+  isValidating?: boolean;
 }
 
 export const VaultSettings: React.FC<VaultSettingsProps> = ({
+  keys,
   vaultKeys,
   onValidateAll,
   onAddKey,
-  isValidating,
+  onSaveKey,
+  isValidating = false,
 }) => {
+  const activeKeys = keys || vaultKeys || [];
   const [showAddModal, setShowAddModal] = useState(false);
   const [provider, setProvider] = useState("gemini");
   const [keyLabel, setKeyLabel] = useState("");
@@ -23,16 +44,90 @@ export const VaultSettings: React.FC<VaultSettingsProps> = ({
   const [telegramChatId, setTelegramChatId] = useState("");
   const [tgSaved, setTgSaved] = useState(false);
 
+  // Upstox Market Data Feed State
+  const [upstoxToken, setUpstoxToken] = useState("");
+  const [upstoxStatus, setUpstoxStatus] = useState<any>(null);
+  const [isTestingUpstox, setIsTestingUpstox] = useState(false);
+  const [upstoxTestResult, setUpstoxTestResult] = useState<any>(null);
+  const [upstoxSaveMessage, setUpstoxSaveMessage] = useState("");
+
+  const fetchUpstoxStatus = async () => {
+    try {
+      const res = await fetch("/api/upstox/status");
+      if (res.ok) {
+        const data = await res.json();
+        setUpstoxStatus(data);
+      }
+    } catch (e) {
+      console.warn("Could not fetch Upstox status", e);
+    }
+  };
+
+  useEffect(() => {
+    fetchUpstoxStatus();
+  }, []);
+
+  const handleTestUpstox = async (tokenOverride?: string) => {
+    setIsTestingUpstox(true);
+    setUpstoxSaveMessage("");
+    try {
+      const res = await fetch("/api/upstox/test-connection", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: tokenOverride !== undefined ? tokenOverride : upstoxToken }),
+      });
+      const data = await res.json();
+      setUpstoxTestResult(data);
+      fetchUpstoxStatus();
+    } catch (e: any) {
+      setUpstoxTestResult({
+        success: false,
+        status: "FAILED",
+        message: e?.message || "Network request failed.",
+      });
+    } finally {
+      setIsTestingUpstox(false);
+    }
+  };
+
+  const handleSaveUpstox = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!upstoxToken.trim()) return;
+    setIsTestingUpstox(true);
+    setUpstoxSaveMessage("");
+    try {
+      const res = await fetch("/api/upstox/save-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: upstoxToken.trim() }),
+      });
+      const data = await res.json();
+      if (data.saved) {
+        setUpstoxSaveMessage("Token securely saved to .env & memory!");
+        setUpstoxTestResult(data.verification);
+        fetchUpstoxStatus();
+        setTimeout(() => setUpstoxSaveMessage(""), 5000);
+      }
+    } catch (e: any) {
+      setUpstoxSaveMessage(`Failed to save: ${e?.message}`);
+    } finally {
+      setIsTestingUpstox(false);
+    }
+  };
+
   const handleAddSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!keyLabel || !apiKey) return;
-    onAddKey({
-      provider,
-      key_label: keyLabel,
-      model_name: modelName,
-      api_key: apiKey,
-      priority_order: vaultKeys.length + 1,
-    });
+    const saveFn = onSaveKey || onAddKey;
+    if (saveFn) {
+      saveFn({
+        provider,
+        key_label: keyLabel,
+        model_name: modelName,
+        api_key: apiKey,
+        priority_order: activeKeys.length + 1,
+      });
+    }
     setKeyLabel("");
     setApiKey("");
     setShowAddModal(false);
@@ -65,14 +160,161 @@ export const VaultSettings: React.FC<VaultSettingsProps> = ({
           >
             + Add Key
           </button>
+          {onValidateAll && (
+            <button
+              onClick={onValidateAll}
+              disabled={isValidating}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 transition-all disabled:opacity-50"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isValidating ? "animate-spin" : ""}`} />
+              {isValidating ? "Pinging Providers..." : "Validate All Keys"}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Upstox Live Market Data Connection Card */}
+      <div className="aura-card p-5 border border-cyan-500/30 bg-gradient-to-br from-gray-900/90 to-cyan-950/20 space-y-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-gray-800">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-lg bg-cyan-950/60 border border-cyan-800/60 text-cyan-400">
+              <Activity className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-bold text-white">Upstox Market Data Feed (Tier-2 Engine)</h3>
+                {upstoxStatus?.is_configured ? (
+                  <span className="flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-400 border border-emerald-800 animate-pulse">
+                    <Wifi className="w-3 h-3" /> FEED CONFIGURED
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-amber-950 text-amber-400 border border-amber-800">
+                    <WifiOff className="w-3 h-3" /> TOKEN PENDING
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-gray-400 mt-0.5">
+                Powers real-time LTP quotes, India VIX readings, and 5-minute intraday candle tie-breakers. Rate limited strictly to 50/s, 500/m, and 2,000/30m.
+              </p>
+            </div>
+          </div>
+
           <button
-            onClick={onValidateAll}
-            disabled={isValidating}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 transition-all disabled:opacity-50"
+            onClick={() => handleTestUpstox()}
+            disabled={isTestingUpstox}
+            className="flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg shadow-cyan-600/30 transition-all disabled:opacity-50"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isValidating ? "animate-spin" : ""}`} />
-            {isValidating ? "Pinging Providers..." : "Validate All Keys"}
+            <RefreshCw className={`w-3.5 h-3.5 ${isTestingUpstox ? "animate-spin" : ""}`} />
+            {isTestingUpstox ? "Testing Upstox..." : "Test Upstox Connection"}
           </button>
+        </div>
+
+        {/* Input Form */}
+        <form onSubmit={handleSaveUpstox} className="grid grid-cols-1 lg:grid-cols-12 gap-3 items-end">
+          <div className="lg:col-span-8">
+            <label className="text-xs text-gray-400 font-medium block mb-1 flex items-center justify-between">
+              <span>Upstox 1-Year Analytics Access Token</span>
+              <span className="text-[10px] text-gray-500">
+                {upstoxStatus?.masked_token ? `Active Token: ${upstoxStatus.masked_token}` : "Not yet set"}
+              </span>
+            </label>
+            <input
+              type="password"
+              value={upstoxToken}
+              onChange={(e) => setUpstoxToken(e.target.value)}
+              placeholder={upstoxStatus?.masked_token ? "Paste new token to replace existing..." : "Paste your Upstox Analytics Token here..."}
+              className="w-full p-2.5 rounded-lg bg-gray-950 border border-gray-700 text-white text-xs font-mono focus:border-cyan-500 focus:outline-none"
+            />
+          </div>
+
+          <div className="lg:col-span-4 flex items-center gap-2">
+            <button
+              type="submit"
+              disabled={isTestingUpstox || !upstoxToken.trim()}
+              className="w-full py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:bg-gray-800 disabled:text-gray-500 text-white text-xs font-semibold transition-all shadow-lg shadow-emerald-600/20"
+            >
+              Save & Connect
+            </button>
+          </div>
+        </form>
+
+        {upstoxSaveMessage && (
+          <div className="p-2.5 rounded bg-emerald-950/60 border border-emerald-800 text-emerald-400 text-xs flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <span>{upstoxSaveMessage}</span>
+          </div>
+        )}
+
+        {/* Live Test Results Panel */}
+        {upstoxTestResult && (
+          <div className={`p-4 rounded-lg border text-xs space-y-3 ${
+            upstoxTestResult.success
+              ? "bg-emerald-950/20 border-emerald-800/60"
+              : "bg-rose-950/20 border-rose-800/60"
+          }`}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {upstoxTestResult.success ? (
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                ) : (
+                  <XCircle className="w-4 h-4 text-rose-400" />
+                )}
+                <span className={`font-bold ${upstoxTestResult.success ? "text-emerald-300" : "text-rose-300"}`}>
+                  {upstoxTestResult.message}
+                </span>
+              </div>
+              {upstoxTestResult.latency_ms && (
+                <span className="text-[11px] text-gray-400 font-mono">
+                  Latency: {upstoxTestResult.latency_ms} ms
+                </span>
+              )}
+            </div>
+
+            {upstoxTestResult.success && upstoxTestResult.sample_quotes && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-gray-800">
+                <div className="p-2.5 rounded bg-gray-950/70 border border-gray-800">
+                  <div className="text-[10px] text-gray-400">Market Status</div>
+                  <div className="text-sm font-bold text-white uppercase">{upstoxTestResult.market_status || "OPEN"}</div>
+                </div>
+
+                <div className="p-2.5 rounded bg-gray-950/70 border border-gray-800">
+                  <div className="text-[10px] text-gray-400">RELIANCE.NS (LTP)</div>
+                  <div className="text-sm font-bold text-cyan-400">
+                    ₹{upstoxTestResult.sample_quotes.reliance?.ltp ? upstoxTestResult.sample_quotes.reliance.ltp.toLocaleString("en-IN") : "--"}
+                  </div>
+                  <div className="text-[9px] text-gray-500 font-mono">
+                    Lag: {upstoxTestResult.sample_quotes.reliance?.data_lag_seconds ?? "0.1"}s
+                  </div>
+                </div>
+
+                <div className="p-2.5 rounded bg-gray-950/70 border border-gray-800">
+                  <div className="text-[10px] text-gray-400">India VIX Quote</div>
+                  <div className="text-sm font-bold text-amber-400">
+                    {upstoxTestResult.sample_quotes.india_vix?.ltp ?? "--"}
+                  </div>
+                </div>
+
+                <div className="p-2.5 rounded bg-gray-950/70 border border-gray-800">
+                  <div className="text-[10px] text-gray-400">Token Remaining</div>
+                  <div className="text-sm font-bold text-emerald-400">
+                    {upstoxTestResult.days_remaining} Days
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Rate Limiting Architecture Note */}
+        <div className="p-3 rounded bg-gray-950/50 border border-gray-800/80 flex flex-wrap items-center justify-between gap-3 text-[11px] text-gray-400">
+          <div className="flex items-center gap-2">
+            <Zap className="w-3.5 h-3.5 text-amber-400" />
+            <span>Shared Multi-Tier Limiter: <strong>50 req/s</strong>, <strong>500 req/min</strong>, <strong>2,000 req/30m</strong> with automatic 429 backoff</span>
+          </div>
+          <div className="flex items-center gap-2 text-cyan-400">
+            <Database className="w-3.5 h-3.5" />
+            <span>Bulk daily history (&gt;15 days) routes to NSE Bhavcopy; Upstox provides live quotes.</span>
+          </div>
         </div>
       </div>
 
@@ -100,52 +342,59 @@ export const VaultSettings: React.FC<VaultSettingsProps> = ({
                 <option value="ollama">Ollama (Local)</option>
               </select>
             </div>
+
             <div>
               <label className="text-gray-400 block mb-1">Key Label</label>
               <input
                 type="text"
                 value={keyLabel}
                 onChange={(e) => setKeyLabel(e.target.value)}
-                placeholder="GEMINI_PRO_2"
+                placeholder="e.g. GEMINI_BACKUP_2"
                 className="w-full p-2 rounded bg-gray-950 border border-gray-700 text-white"
-                required
               />
             </div>
+
             <div>
               <label className="text-gray-400 block mb-1">Model Name</label>
               <input
                 type="text"
                 value={modelName}
                 onChange={(e) => setModelName(e.target.value)}
-                placeholder="gemini-2.5-pro"
                 className="w-full p-2 rounded bg-gray-950 border border-gray-700 text-white"
-                required
               />
             </div>
+
             <div>
-              <label className="text-gray-400 block mb-1">API Key</label>
+              <label className="text-gray-400 block mb-1">Raw Secret Key</label>
               <input
                 type="password"
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
-                placeholder="AIzaSy..."
+                placeholder="Paste API secret..."
                 className="w-full p-2 rounded bg-gray-950 border border-gray-700 text-white"
-                required
               />
             </div>
           </div>
-          <div className="flex gap-2">
-            <button type="submit" className="px-4 py-2 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-semibold">
-              Encrypt & Save
-            </button>
-            <button type="button" onClick={() => setShowAddModal(false)} className="px-4 py-2 rounded bg-gray-800 text-gray-300">
+
+          <div className="flex justify-end gap-2 pt-2">
+            <button
+              type="button"
+              onClick={() => setShowAddModal(false)}
+              className="px-4 py-2 rounded bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold"
+            >
               Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 rounded bg-indigo-600 hover:bg-indigo-500 text-white font-semibold shadow-md shadow-indigo-600/30"
+            >
+              Save Key to Encrypted Vault
             </button>
           </div>
         </form>
       )}
 
-      {/* Vault Keys Table */}
+      {/* Vault Table */}
       <div className="aura-card p-5 border">
         <h3 className="text-sm font-bold text-white mb-3">Registered LLM Keys & Live Cooldown Status</h3>
         <div className="overflow-x-auto">
@@ -162,14 +411,14 @@ export const VaultSettings: React.FC<VaultSettingsProps> = ({
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-800/60">
-              {vaultKeys.length === 0 ? (
+              {activeKeys.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="p-6 text-center text-gray-500">
                     No keys in vault. System will use algorithmic fallback audit or add your Google Gemini keys above.
                   </td>
                 </tr>
               ) : (
-                vaultKeys.map((k, i) => (
+                activeKeys.map((k, i) => (
                   <tr key={k.id || i} className="hover:bg-gray-800/30">
                     <td className="p-2.5 text-gray-400 font-mono">#{k.priority_order || i + 1}</td>
                     <td className="p-2.5 font-bold text-white">{k.key_label}</td>

@@ -21,6 +21,7 @@ from backend.data.upstox import (
     SharedMultiTierRateLimiter,
     shared_upstox_limiter,
     UpstoxClient,
+    upstox_client,
 )
 from backend.data.historical_store import HistoricalDataStore
 
@@ -207,3 +208,39 @@ def test_data_routing_recent_and_intraday_uses_upstox():
         assert len(candles) == 2
         assert candles[0]["source"] == "UPSTOX_V3"
         assert candles[0]["close"] == 2510.0
+
+
+def test_api_upstox_status_and_test_connection_endpoints():
+    """Verify backend endpoints for frontend UI Upstox status and testing."""
+    from fastapi.testclient import TestClient
+    from backend.main import app
+
+    test_client = TestClient(app)
+
+    # 1. GET /api/upstox/status
+    res_status = test_client.get("/api/upstox/status")
+    assert res_status.status_code == 200
+    data = res_status.json()
+    assert "is_configured" in data
+    assert "rate_limiter_stats" in data
+    assert "days_remaining" in data
+
+    # 2. POST /api/upstox/test-connection with dummy token
+    mock_status_resp = {"status": "SUCCESS", "operational_status": "OPEN", "latency_ms": 12.5}
+    mock_quote_resp = {
+        "symbol": "RELIANCE.NS",
+        "ltp": 2510.5,
+        "volume": 1250000,
+        "data_lag_seconds": 0.12,
+        "status": "VALID",
+    }
+    mock_vix_resp = {"symbol": "^INDIAVIX", "ltp": 14.2, "status": "VALID"}
+
+    with patch.object(upstox_client, "get_market_status", return_value=mock_status_resp), \
+         patch.object(upstox_client, "get_market_quote", side_effect=lambda s: mock_quote_resp if "RELIANCE" in s else mock_vix_resp):
+        res_test = test_client.post("/api/upstox/test-connection", json={"token": "test_dummy_token_12345"})
+        assert res_test.status_code == 200
+        test_data = res_test.json()
+        assert test_data["success"] is True
+        assert test_data["status"] == "CONNECTED"
+        assert test_data["sample_quotes"]["reliance"]["ltp"] == 2510.5
