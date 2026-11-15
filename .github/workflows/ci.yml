@@ -32,10 +32,16 @@ jobs:
           python -m backend.db.init_db
 
       - name: "Execute Comprehensive Test Suite (Milestones 2, 3, 4, 5, 6, 17, and Self-Improving ML)"
+        env:
+          UPSTOX_ANALYTICS_TOKEN: ${{ secrets.UPSTOX_ANALYTICS_TOKEN }}
+          UPSTOX_ACCESS_TOKEN: ${{ secrets.UPSTOX_ACCESS_TOKEN }}
         run: |
           pytest -v --tb=short
 
       - name: "Run Upstox Smoke Test"
+        env:
+          UPSTOX_ANALYTICS_TOKEN: ${{ secrets.UPSTOX_ANALYTICS_TOKEN }}
+          UPSTOX_ACCESS_TOKEN: ${{ secrets.UPSTOX_ACCESS_TOKEN }}
         run: |
           python scripts/upstox_smoke_test.py
 
