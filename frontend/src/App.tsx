@@ -101,10 +101,13 @@ export function App() {
     window.location.hostname.includes("pages.dev")
   );
 
-  // Helper to fetch static snapshot or fallback
+  // Helper to fetch static snapshot or fallback with aggressive cache-busting
   const fetchSnapshot = async <T,>(filename: string, fallback: T): Promise<T> => {
     try {
-      const res = await fetch(`./data/${filename}`, { cache: "no-cache" });
+      const res = await fetch(`./data/${filename}?v=${Date.now()}`, {
+        cache: "no-store",
+        headers: { "Pragma": "no-cache", "Cache-Control": "no-cache" },
+      });
       if (res.ok) {
         return await res.json();
       }
