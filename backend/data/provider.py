@@ -166,9 +166,27 @@ class MarketDataProvider:
 
         return True, "Passed all quality gates", metrics
 
-    def fetch_fundamentals(self, symbol: str) -> Dict[str, Any]:
-        """Fetch fundamental metrics with provenance and UNKNOWN fallback."""
+    def fetch_fundamentals(self, symbol: str, force_refresh: bool = False) -> Dict[str, Any]:
+        """Fetch fundamental metrics with persistent disk caching (7-day TTL) and UNKNOWN fallback."""
+        sanitized = symbol.replace("^", "_idx_").replace(".", "_")
+        fund_cache_path = self.cache_dir / f"fundamentals_{sanitized}.json"
+
+        # Check if disk cache is valid (< 7 days old)
+        if not force_refresh and fund_cache_path.exists():
+            try:
+                mtime = datetime.datetime.fromtimestamp(fund_cache_path.stat().st_mtime)
+                age_days = (datetime.datetime.now() - mtime).total_seconds() / 86400.0
+                if age_days < 7.0:
+                    with open(fund_cache_path, "r", encoding="utf-8") as f:
+                        cached = json.load(f)
+                        if cached.get("pe_ratio") != "UNKNOWN":
+                            return cached
+            except Exception as e:
+                logger.debug(f"Failed to read cached fundamentals for {symbol}: {e}")
+
         try:
+            import time
+            time.sleep(0.12)  # Polite throttle to protect against Yahoo HTTP 429
             ticker = yf.Ticker(symbol)
             info = ticker.info or {}
 
@@ -185,7 +203,7 @@ class MarketDataProvider:
             earnings_growth = info.get("earningsGrowth")
             earnings_growth_pct = earnings_growth * 100.0 if earnings_growth is not None else None
 
-            return {
+            result = {
                 "symbol": symbol,
                 "market_cap_cr": market_cap_cr if market_cap_cr else "UNKNOWN",
                 "pe_ratio": round(pe, 2) if pe else "UNKNOWN",
@@ -197,6 +215,15 @@ class MarketDataProvider:
                 "source": "yfinance_info",
                 "as_of_date": get_ist_now().strftime("%Y-%m-%d"),
             }
+
+            # Cache to disk
+            try:
+                with open(fund_cache_path, "w", encoding="utf-8") as f:
+                    json.dump(result, f, indent=2)
+            except Exception:
+                pass
+
+            return result
         except Exception as e:
             logger.warning(f"Could not fetch fundamentals for {symbol}: {e}")
             return {

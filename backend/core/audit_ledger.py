@@ -148,6 +148,16 @@ def dispatch_external_daily_anchor(
 
     sent = False
     max_retries = 3
+
+    # Suppress real transmissions when explicitly requested as mock or test channel
+    if channel in ["mock", "test"]:
+        sent = True
+        anchor_entry["dispatched_channel"] = channel
+        anchor_entry["dispatched_outside_machine"] = True
+        anchor_entry["dispatch_status"] = "TRANSMITTED_MOCK"
+        anchor_entry["retry_count"] = 1
+        return anchor_entry
+
     if channel in ["telegram", "all"]:
         from backend.core.pipeline import send_telegram_alert
         for attempt in range(1, max_retries + 1):

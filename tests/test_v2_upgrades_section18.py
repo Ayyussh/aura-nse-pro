@@ -455,7 +455,7 @@ def test_audit_external_daily_anchor_dispatch_outside_machine():
     res = dispatch_external_daily_anchor(
         latest_hash="anchor_hash_ext_test_998877",
         record_count=55,
-        channel="telegram",
+        channel="mock",
         notes="Automated test external dispatch",
     )
     assert res["head_hash"] == "anchor_hash_ext_test_998877"

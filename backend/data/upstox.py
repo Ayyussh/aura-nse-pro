@@ -388,6 +388,87 @@ class UpstoxClient:
         except Exception as e:
             return {"error": str(e)}
 
+    def get_market_quotes_batch(
+        self,
+        symbols: List[str],
+        chunk_size: int = 100,
+    ) -> Dict[str, Dict[str, Any]]:
+        """Batch fetch live quotes for multiple equities in rate-limited chunks of up to 100."""
+        if not self.token or not symbols:
+            return {}
+
+        results: Dict[str, Dict[str, Any]] = {}
+
+        # Process in chunks to strictly adhere to Upstox API URI limits & rate quotas
+        for i in range(0, len(symbols), chunk_size):
+            chunk = symbols[i : i + chunk_size]
+            key_to_sym: Dict[str, str] = {}
+            keys: List[str] = []
+
+            for s in chunk:
+                k = self.get_instrument_key(s)
+                keys.append(k)
+                key_to_sym[k] = s
+                key_to_sym[k.replace("|", ":")] = s
+                raw_sym = s.replace(".NS", "")
+                key_to_sym[f"NSE_EQ:{raw_sym}"] = s
+                key_to_sym[raw_sym] = s
+
+            keys_param = ",".join(keys)
+            try:
+                resp = self._request_with_retry(
+                    "GET",
+                    "/market-quote/quotes",
+                    params={"instrument_key": keys_param},
+                    timeout=8.0,
+                )
+                if resp.status_code == 200:
+                    data = resp.json().get("data", {})
+                    for k, quote in data.items():
+                        matched_sym = key_to_sym.get(k) or key_to_sym.get(k.replace(":", "|"))
+                        if not matched_sym:
+                            for sym_cand in chunk:
+                                if sym_cand.replace(".NS", "") in k:
+                                    matched_sym = sym_cand
+                                    break
+
+                        if matched_sym:
+                            ohlc = quote.get("ohlc", {}) if isinstance(quote, dict) else {}
+                            last_price = float(quote.get("last_price") or ohlc.get("close") or 0.0)
+                            vol_val = quote.get("volume")
+                            try:
+                                vol_int = int(vol_val) if vol_val is not None else 0
+                            except (ValueError, TypeError):
+                                vol_int = 0
+
+                            results[matched_sym] = {
+                                "symbol": matched_sym,
+                                "instrument_key": k,
+                                "ltp": last_price,
+                                "open": float(ohlc.get("open") or 0.0),
+                                "high": float(ohlc.get("high") or 0.0),
+                                "low": float(ohlc.get("low") or 0.0),
+                                "close": float(ohlc.get("close") or 0.0),
+                                "volume": vol_int,
+                                "source": "upstox_v3_batch",
+                                "status": "VALID",
+                            }
+                else:
+                    logger.debug(f"Upstox batch quote chunk failed with {resp.status_code}, falling back per-symbol.")
+                    # Per-symbol fallback if an instrument key in the batch was rejected
+                    for s in chunk:
+                        single_q = self.get_market_quote(s)
+                        if "error" not in single_q and single_q.get("ltp", 0) > 0:
+                            results[s] = single_q
+            except Exception as e:
+                logger.warning(f"Upstox batch quote error for chunk {i}: {e}")
+
+            # Polite pause between chunks to protect Upstox sliding window
+            if i + chunk_size < len(symbols):
+                time.sleep(0.05)
+
+        return results
+
     def get_historical_candles(
         self,
         symbol: str,

@@ -13,11 +13,15 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+from dotenv import load_dotenv
 from cryptography.fernet import Fernet
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 CONFIG_DIR = PROJECT_ROOT / "config"
+
+# Ensure environment variables are populated from .env across all processes
+load_dotenv(PROJECT_ROOT / ".env", override=False)
 
 
 class Settings(BaseSettings):
@@ -48,6 +52,10 @@ class Settings(BaseSettings):
     TELEGRAM_BOT_TOKEN: str | None = None
     TELEGRAM_CHAT_ID: str | None = None
 
+    # Upstox API
+    UPSTOX_ANALYTICS_TOKEN: str | None = None
+    UPSTOX_ACCESS_TOKEN: str | None = None
+
     # Capital defaults
     INITIAL_CAPITAL: float = 100000.0
     MAX_RISK_PER_TRADE_PCT: float = 1.5
@@ -75,7 +83,10 @@ def decrypt_secret(cipher_text: str) -> str:
     """Decrypt a secret string using Fernet."""
     if not cipher_text:
         return ""
-    return fernet_cipher.decrypt(cipher_text.encode()).decode()
+    try:
+        return fernet_cipher.decrypt(cipher_text.encode()).decode()
+    except Exception:
+        return ""
 
 
 def mask_secret(secret: str | None) -> str:

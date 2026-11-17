@@ -36,6 +36,7 @@ class LongTermPick:
     rejection_reasons: List[str]
     unverified_badges: List[str] = field(default_factory=list)
     conviction_tier: str = "THIN_DISCOUNT"
+    gemini_audit: Optional[Dict[str, Any]] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -121,10 +122,24 @@ class LongTermStrategyEngine:
             rejection_reasons.append(f"YoY Earnings Growth {earnings_growth:.1f}% below {min_earnings_growth}%.")
 
         # Fair Value Band & Margin of Safety
-        # Heuristic DCF/EPS multiplier based on growth rate & ROE
+        # Sector Multiple Bounds to prevent Cyclical Commodity Traps
+        sector_upper = sector.upper() if sector else ""
+        if any(c in sector_upper for c in ("METAL", "STEEL", "MINING", "COMMODIT", "OIL", "ENERGY", "POWER")):
+            pe_min_floor, pe_max_cap = 8.0, 12.0
+        elif any(c in sector_upper for c in ("AUTO", "VEHICLE")):
+            pe_min_floor, pe_max_cap = 12.0, 18.0
+        elif any(c in sector_upper for c in ("BANK", "NBFC", "FINANC", "INSUR")):
+            pe_min_floor, pe_max_cap = 12.0, 22.0
+        elif any(c in sector_upper for c in ("INFRA", "REALTY", "CONSTRUCT", "CEMENT", "CAPITAL GOODS")):
+            pe_min_floor, pe_max_cap = 12.0, 20.0
+        elif any(c in sector_upper for c in ("IT", "TECH", "SOFTWARE", "PHARMA", "HEALTH", "FMCG", "CONSUMER")):
+            pe_min_floor, pe_max_cap = 15.0, 28.0
+        else:
+            pe_min_floor, pe_max_cap = 12.0, 22.0
+
         growth_est = float(earnings_growth) if isinstance(earnings_growth, (int, float)) and earnings_growth > 0 else 12.0
-        fair_multiple = min(30.0, max(15.0, growth_est * 1.2))
-        current_pe = float(pe) if isinstance(pe, (int, float)) and pe > 0 else 22.0
+        fair_multiple = min(pe_max_cap, max(pe_min_floor, growth_est * 1.1))
+        current_pe = float(pe) if isinstance(pe, (int, float)) and pe > 0 else 20.0
         fair_value_mid = round(c_last * (fair_multiple / current_pe), 2) if current_pe > 0 and c_last > 0 else c_last
         fair_value_min = round(fair_value_mid * 0.90, 2)
         fair_value_max = round(fair_value_mid * 1.15, 2)

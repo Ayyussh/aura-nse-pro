@@ -14,6 +14,7 @@ import logging
 from typing import Any, cast
 
 import httpx
+import pandas as pd
 
 from backend.core.config import compute_config_hash, settings
 from backend.costs.charges import charges_engine
@@ -851,16 +852,30 @@ def run_value_investing_scan(universe_limit: int | None = None, mode: str = "all
     from backend.strategies.long_term import long_term_engine
     from backend.data.universe import get_universe_symbols, get_diversified_universe_symbols
     from backend.data.provider import data_provider
+    from backend.data.upstox import upstox_client
+    from backend.llm.analyst import aura_analyst
 
     today = get_ist_now().date()
     logger.info(f"Starting Institutional Value & Intrinsic Worth Screener for {today} (mode={mode}, limit={universe_limit})...")
 
     if mode == "all":
-        symbols = get_universe_symbols(limit=universe_limit, mode="all")
+        # For full-market sweeps, prioritize liquid institutionally tradeable equities
+        # (capped to top 120 liquid equities to guarantee 0 rate-limiting across Upstox & Yahoo)
+        effective_limit = universe_limit or 120
+        symbols = get_universe_symbols(limit=effective_limit, mode="all")
     elif mode == "diversified":
-        symbols = get_diversified_universe_symbols(limit=universe_limit or 40)
+        symbols = get_diversified_universe_symbols(limit=universe_limit or 45)
     else:
         symbols = get_universe_symbols(limit=universe_limit, mode="curated")
+
+    # Step 1: Upstox Batch Live Quotes (Zero-429 Rate Limiter)
+    upstox_quotes: dict[str, dict[str, Any]] = {}
+    if upstox_client.token:
+        try:
+            upstox_quotes = upstox_client.get_market_quotes_batch(symbols, chunk_size=100)
+            logger.info(f"Fetched {len(upstox_quotes)} real-time equity quotes via Upstox API v3.")
+        except Exception as e:
+            logger.warning(f"Upstox batch quote fetch note: {e}")
 
     value_picks: list[dict[str, Any]] = []
     screened_out: list[dict[str, Any]] = []
@@ -871,10 +886,14 @@ def run_value_investing_scan(universe_limit: int | None = None, mode: str = "all
             if df.empty or len(df) < 50:
                 continue
 
+            # Overlay real-time Upstox tick if available
+            c_last = float(df["close"].iloc[-1])
+            if sym in upstox_quotes and upstox_quotes[sym].get("ltp", 0) > 0:
+                c_last = float(upstox_quotes[sym]["ltp"])
+
             # Fast-path check: If price <= 200-SMA, it cannot pass criterion #1
             # Skip fetching fundamental data to accelerate full-universe scans
             if len(df) >= 200:
-                c_last = float(df["close"].iloc[-1])
                 sma200 = df["close"].rolling(200).mean().iloc[-1]
                 if not pd.isna(sma200) and c_last <= sma200:
                     screened_out.append({
@@ -885,17 +904,23 @@ def run_value_investing_scan(universe_limit: int | None = None, mode: str = "all
                     })
                     continue
 
+            # Fetch fundamentals (with 7-day disk cache to eliminate redundant requests)
             fundamentals = data_provider.fetch_fundamentals(sym)
             pick = long_term_engine.evaluate(sym, df, fundamentals)
 
             pick_dict = pick.to_dict()
-            if pick.passed and pick.margin_of_safety_pct > 0:
+            # Ensure current price reflects the live Upstox LTP
+            pick_dict["current_price"] = round(c_last, 2)
+            if pick_dict["fair_value_mid"] > 0:
+                pick_dict["margin_of_safety_pct"] = round(((pick_dict["fair_value_mid"] - c_last) / pick_dict["fair_value_mid"]) * 100.0, 2)
+
+            if pick.passed and pick_dict["margin_of_safety_pct"] > 0:
                 value_picks.append(pick_dict)
             else:
                 screened_out.append({
                     "symbol": sym,
                     "passed": pick.passed,
-                    "margin_of_safety_pct": pick.margin_of_safety_pct,
+                    "margin_of_safety_pct": pick_dict["margin_of_safety_pct"],
                     "reasons": pick.rejection_reasons or ["Trading above fair value (No margin of safety)"],
                 })
         except Exception as e:
@@ -903,6 +928,14 @@ def run_value_investing_scan(universe_limit: int | None = None, mode: str = "all
 
     # Sort value picks by Margin of Safety (highest discount first)
     value_picks.sort(key=lambda x: x.get("margin_of_safety_pct", 0), reverse=True)
+
+    # Step 2: Gemini AI Institutional Audit for Top Candidates
+    for pick in value_picks[:8]:
+        try:
+            ai_res = aura_analyst.audit_value_pick(pick)
+            pick["gemini_audit"] = ai_res
+        except Exception as e:
+            logger.warning(f"Could not audit {pick.get('symbol')} with Gemini: {e}")
 
     result_payload: dict[str, Any] = {
         "scan_date": today.isoformat(),
@@ -913,7 +946,7 @@ def run_value_investing_scan(universe_limit: int | None = None, mode: str = "all
         "screened_out_count": len(screened_out),
         "screened_out": screened_out[:20],
         "investment_horizon": "1 to 3+ Years (Fundamental Value Compounder)",
-        "methodology": "DCF / Sustainable Earnings Growth Multiplier with Quality & Balance Sheet Filters",
+        "methodology": "DCF / Sector-Bounded Earnings Growth Multiplier with Gemini AI Moat Audit",
     }
 
     # Save to snapshots for frontend GitOps
@@ -942,15 +975,21 @@ def run_value_investing_scan(universe_limit: int | None = None, mode: str = "all
         broadcast_picks: list[dict[str, Any]] = []
         for p in value_picks:
             sec = p.get("sector", "Diversified")
+            # If Gemini AI flagged cyclical trap, filter it out from broadcast
+            ai_audit = p.get("gemini_audit", {})
+            if ai_audit.get("verdict") == "REJECTED_CYCLICAL_TRAP":
+                continue
+
             if sector_counts.get(sec, 0) < 2:
                 broadcast_picks.append(p)
                 sector_counts[sec] = sector_counts.get(sec, 0) + 1
             if len(broadcast_picks) >= 6:
                 break
 
+        data_source_badge = "⚡ Upstox Live + AI" if upstox_quotes else "📊 EOD Archive + AI"
         msg_lines = [
-            "💎 *AURA Long-Term Value Screener — Undervalued Compounders*",
-            f"📅 *Date:* {today.isoformat()} | *Universe Scanned:* {len(symbols)} Equities (Sector-Stratified)",
+            f"💎 *AURA Long-Term Value Screener — Undervalued Compounders*",
+            f"📅 *Date:* {today.isoformat()} | *Universe Scanned:* {len(symbols)} Equities ({data_source_badge})",
             f"🎯 *Identified Under-Valued Compounders:* {len(value_picks)} (Broadcasting Top {len(broadcast_picks)})\n",
         ]
 
@@ -970,16 +1009,33 @@ def run_value_investing_scan(universe_limit: int | None = None, mode: str = "all
                 funds = p.get("fundamentals", {})
                 roe = funds.get("roe_pct", "N/A")
                 pe = funds.get("pe_ratio", "N/A")
-                de = funds.get("debt_to_equity", "N/A")
+                raw_de = funds.get("debt_to_equity", "N/A")
+
+                # Institutional financial sector D/E labeling
+                sec_upper = sector.upper()
+                if "BANK" in sec_upper:
+                    de_str = "N/A (Bank)"
+                elif "NBFC" in sec_upper:
+                    de_str = f"N/A (NBFC Lev: {raw_de}x)" if raw_de not in ("UNKNOWN", "N/A") else "N/A (NBFC)"
+                elif "INSUR" in sec_upper:
+                    de_str = "N/A (Insurance)"
+                else:
+                    de_str = str(raw_de)
+
                 tp = p.get("tranche_plan", {})
                 t1 = tp.get("tranche_1_initial", {}).get("price_target", cp)
                 t2 = tp.get("tranche_2_pullback", {}).get("price_target", cp * 0.95)
                 t3 = tp.get("tranche_3_deep_value", {}).get("price_target", cp * 0.90)
 
+                ai_audit = p.get("gemini_audit", {})
+                ai_conviction = ai_audit.get("ai_conviction_pct", 75.0)
+                ai_thesis = ai_audit.get("bull_thesis") or ai_audit.get("moat_assessment", "Secular earnings compounder")
+
                 msg_lines.append(f"*{idx}. {sym}* ({sector}) — {tier_badge}")
                 msg_lines.append(f"💵 *Market Price:* ₹{cp:,.2f} | *Fair Worth:* ₹{fv:,.2f}")
                 msg_lines.append(f"🛡️ *Margin of Safety:* *+{mos:.1f}% Discount*")
-                msg_lines.append(f"📊 *Health:* ROE: {roe}% | P/E: {pe} | D/E: {de}")
+                msg_lines.append(f"📊 *Health:* ROE: {roe}% | P/E: {pe} | D/E: {de_str}")
+                msg_lines.append(f"🤖 *AI Audit:* Conviction: {ai_conviction:.0f}% | _{ai_thesis}_")
                 msg_lines.append(f"📥 *Staggered Plan:* T1: ₹{t1:,.2f} (40%) | T2: ₹{t2:,.2f} (30%) | T3: ₹{t3:,.2f} (30%)\n")
 
         msg_lines.append("📌 *Investment Horizon:* 1 to 3+ Years (Fundamental Value Investing).")

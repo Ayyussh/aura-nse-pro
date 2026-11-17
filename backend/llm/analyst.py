@@ -368,5 +368,77 @@ Required JSON Schema:
             "proposed_guardrail": guard,
         }
 
+    def audit_value_pick(self, pick: Dict[str, Any]) -> Dict[str, Any]:
+        """Audit a long-term value investing pick using Gemini / LLM router.
+        
+        Evaluates business moat, secular growth vs cyclical commodity trap,
+        validates fair multiple sanity, and assigns institutional conviction score.
+        """
+        symbol = pick.get("symbol", "")
+        sector = pick.get("sector", "")
+        price = pick.get("current_price", 0.0)
+        fair_val = pick.get("fair_value_mid", price)
+        mos = pick.get("margin_of_safety_pct", 0.0)
+        funds = pick.get("fundamentals", {})
+
+        prompt_data = {
+            "symbol": symbol,
+            "sector": sector,
+            "current_price": price,
+            "fair_value_mid": fair_val,
+            "margin_of_safety_pct": mos,
+            "roe_pct": funds.get("roe_pct"),
+            "pe_ratio": funds.get("pe_ratio"),
+            "debt_to_equity": funds.get("debt_to_equity"),
+            "rev_growth_yoy_pct": funds.get("rev_growth_yoy_pct"),
+            "earnings_growth_yoy_pct": funds.get("earnings_growth_yoy_pct"),
+        }
+
+        system_prompt = (
+            "You are AURA's Chief Investment Officer & Fundamental Value Auditor. "
+            "You evaluate whether Indian equities qualify as true institutional compounders "
+            "or whether they are cyclical commodity traps, value traps, or overstated multiples. "
+            "Respond in strict valid JSON."
+        )
+
+        user_prompt = f"""Audit this long-term value investing candidate:
+
+{json.dumps(prompt_data, indent=2)}
+
+Return strict JSON matching this schema:
+{{
+  "verdict": "APPROVED_HIGH_CONVICTION" | "APPROVED_QUALITY" | "REJECTED_CYCLICAL_TRAP" | "REVISE_MULTIPLE",
+  "ai_conviction_pct": float,
+  "is_cyclical": boolean,
+  "moat_assessment": "string",
+  "multiple_sanity_verdict": "string",
+  "recommended_pe_cap": float,
+  "bull_thesis": "string",
+  "bear_risk": "string",
+  "summary": "string"
+}}
+"""
+        try:
+            res = llm_router.complete_json_prompt(user_prompt, system_prompt)
+            if res and isinstance(res, dict) and "verdict" in res:
+                return res
+        except Exception as e:
+            logger.warning(f"LLM value audit failed for {symbol}: {e}")
+
+        # Deterministic institutional heuristic fallback if LLM is unavailable or unconfigured
+        is_cyclical = any(c in sector.upper() for c in ("METAL", "STEEL", "MINING", "COMMODIT", "OIL", "ENERGY"))
+        verdict = "REJECTED_CYCLICAL_TRAP" if is_cyclical and mos > 30 else ("APPROVED_HIGH_CONVICTION" if mos >= 15 else "APPROVED_QUALITY")
+        return {
+            "verdict": verdict,
+            "ai_conviction_pct": 80.0 if mos >= 15 else 65.0,
+            "is_cyclical": is_cyclical,
+            "moat_assessment": "Moderate economic moat" if not is_cyclical else "No moat (Commodity cyclical)",
+            "multiple_sanity_verdict": "Checked against sector bounds",
+            "recommended_pe_cap": 12.0 if is_cyclical else 22.0,
+            "bull_thesis": f"Strong balance sheet with {funds.get('roe_pct', 'N/A')}% ROE and +{mos:.1f}% discount to fair worth.",
+            "bear_risk": "Cyclical downturn in sector or quarterly margin contraction." if is_cyclical else "Slower earnings momentum.",
+            "summary": "Algorithmic institutional valuation fallback.",
+        }
+
 
 aura_analyst = HumanoidAnalyst()
