@@ -1,9 +1,72 @@
 {
   "scan_date": "2026-11-17",
-  "scan_timestamp": "2026-11-17 18:20:08 IST",
-  "total_screened": 130,
-  "undervalued_count": 9,
+  "scan_timestamp": "2026-11-17 18:28:10 IST",
+  "total_screened": 750,
+  "undervalued_count": 18,
   "value_picks": [
+    {
+      "symbol": "CHENNPETRO.NS",
+      "passed": true,
+      "sector": "Diversified/Other",
+      "current_price": 1410.4,
+      "sma_200": 1184.98,
+      "fair_value_min": 7609.24,
+      "fair_value_max": 9722.92,
+      "fair_value_mid": 8454.71,
+      "margin_of_safety_pct": 83.32,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 1410.4000244140625,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 1339.88,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 1269.36,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-15",
+      "tax_12m_flag_date": "2027-11-18",
+      "fundamentals": {
+        "symbol": "CHENNPETRO.NS",
+        "market_cap_cr": 21002.4628224,
+        "pe_ratio": 3.67,
+        "pb_ratio": 1.55,
+        "roe_pct": 50.87,
+        "debt_to_equity": 0.16,
+        "rev_growth_yoy_pct": 25.9,
+        "earnings_growth_yoy_pct": 212.4,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": [],
+      "conviction_tier": "HIGH_CONVICTION",
+      "gemini_audit": {
+        "verdict": "APPROVED_HIGH_CONVICTION",
+        "ai_conviction_pct": 80.0,
+        "is_cyclical": false,
+        "moat_assessment": "Moderate economic moat",
+        "multiple_sanity_verdict": "Checked against sector bounds",
+        "recommended_pe_cap": 22.0,
+        "bull_thesis": "Strong balance sheet with 50.87% ROE and +83.3% discount to fair worth.",
+        "bear_risk": "Slower earnings momentum.",
+        "summary": "Algorithmic institutional valuation fallback."
+      }
+    },
     {
       "symbol": "UNIONBANK.NS",
       "passed": true,
@@ -131,6 +194,71 @@
       }
     },
     {
+      "symbol": "BEPL.NS",
+      "passed": true,
+      "sector": "Diversified/Other",
+      "current_price": 111.65,
+      "sma_200": 104.28,
+      "fair_value_min": 176.57,
+      "fair_value_max": 225.62,
+      "fair_value_mid": 196.19,
+      "margin_of_safety_pct": 43.09,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 111.6500015258789,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 106.07,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 100.49,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-15",
+      "tax_12m_flag_date": "2027-11-18",
+      "fundamentals": {
+        "symbol": "BEPL.NS",
+        "market_cap_cr": 2778.5048064,
+        "pe_ratio": 12.52,
+        "pb_ratio": 2.39,
+        "roe_pct": 20.17,
+        "debt_to_equity": "UNKNOWN",
+        "rev_growth_yoy_pct": 24.1,
+        "earnings_growth_yoy_pct": 54.0,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": [
+        "\u26a0\ufe0f Debt/Equity Unverified"
+      ],
+      "conviction_tier": "HIGH_CONVICTION",
+      "gemini_audit": {
+        "verdict": "APPROVED_HIGH_CONVICTION",
+        "ai_conviction_pct": 80.0,
+        "is_cyclical": false,
+        "moat_assessment": "Moderate economic moat",
+        "multiple_sanity_verdict": "Checked against sector bounds",
+        "recommended_pe_cap": 22.0,
+        "bull_thesis": "Strong balance sheet with 20.17% ROE and +43.1% discount to fair worth.",
+        "bear_risk": "Slower earnings momentum.",
+        "summary": "Algorithmic institutional valuation fallback."
+      }
+    },
+    {
       "symbol": "INDIANB.NS",
       "passed": true,
       "sector": "Banking",
@@ -194,15 +322,212 @@
       }
     },
     {
+      "symbol": "BANKPSU.NS",
+      "passed": true,
+      "sector": "Diversified/Other",
+      "current_price": 95.41,
+      "sma_200": 86.22,
+      "fair_value_min": 143.12,
+      "fair_value_max": 182.87,
+      "fair_value_mid": 159.02,
+      "margin_of_safety_pct": 40.0,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 95.41000366210938,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 90.64,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 85.87,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-15",
+      "tax_12m_flag_date": "2027-11-18",
+      "fundamentals": {
+        "symbol": "BANKPSU.NS",
+        "market_cap_cr": "UNKNOWN",
+        "pe_ratio": 8.28,
+        "pb_ratio": "UNKNOWN",
+        "roe_pct": "UNKNOWN",
+        "debt_to_equity": "UNKNOWN",
+        "rev_growth_yoy_pct": "UNKNOWN",
+        "earnings_growth_yoy_pct": "UNKNOWN",
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": [
+        "\u26a0\ufe0f Market Cap Unverified",
+        "\u26a0\ufe0f ROE Unverified",
+        "\u26a0\ufe0f Debt/Equity Unverified"
+      ],
+      "conviction_tier": "HIGH_CONVICTION",
+      "gemini_audit": {
+        "verdict": "APPROVED_HIGH_CONVICTION",
+        "ai_conviction_pct": 80.0,
+        "is_cyclical": false,
+        "moat_assessment": "Moderate economic moat",
+        "multiple_sanity_verdict": "Checked against sector bounds",
+        "recommended_pe_cap": 22.0,
+        "bull_thesis": "Strong balance sheet with UNKNOWN% ROE and +40.0% discount to fair worth.",
+        "bear_risk": "Slower earnings momentum.",
+        "summary": "Algorithmic institutional valuation fallback."
+      }
+    },
+    {
+      "symbol": "DEEPAKFERT.NS",
+      "passed": true,
+      "sector": "Diversified/Other",
+      "current_price": 1443.7,
+      "sma_200": 1297.28,
+      "fair_value_min": 1826.53,
+      "fair_value_max": 2333.9,
+      "fair_value_mid": 2029.48,
+      "margin_of_safety_pct": 28.86,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 1443.699951171875,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 1371.51,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 1299.33,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-15",
+      "tax_12m_flag_date": "2027-11-18",
+      "fundamentals": {
+        "symbol": "DEEPAKFERT.NS",
+        "market_cap_cr": 18243.3611776,
+        "pe_ratio": 15.65,
+        "pb_ratio": 2.66,
+        "roe_pct": "UNKNOWN",
+        "debt_to_equity": 0.76,
+        "rev_growth_yoy_pct": 22.5,
+        "earnings_growth_yoy_pct": 101.6,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": [
+        "\u26a0\ufe0f ROE Unverified"
+      ],
+      "conviction_tier": "HIGH_CONVICTION",
+      "gemini_audit": {
+        "verdict": "APPROVED_HIGH_CONVICTION",
+        "ai_conviction_pct": 80.0,
+        "is_cyclical": false,
+        "moat_assessment": "Moderate economic moat",
+        "multiple_sanity_verdict": "Checked against sector bounds",
+        "recommended_pe_cap": 22.0,
+        "bull_thesis": "Strong balance sheet with UNKNOWN% ROE and +28.9% discount to fair worth.",
+        "bear_risk": "Slower earnings momentum.",
+        "summary": "Algorithmic institutional valuation fallback."
+      }
+    },
+    {
+      "symbol": "CONFIPET.NS",
+      "passed": true,
+      "sector": "Diversified/Other",
+      "current_price": 65.15,
+      "sma_200": 63.06,
+      "fair_value_min": 80.17,
+      "fair_value_max": 102.44,
+      "fair_value_mid": 89.08,
+      "margin_of_safety_pct": 26.86,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 65.1500015258789,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 61.89,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 58.64,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-15",
+      "tax_12m_flag_date": "2027-11-18",
+      "fundamentals": {
+        "symbol": "CONFIPET.NS",
+        "market_cap_cr": 2164.5504512,
+        "pe_ratio": 16.09,
+        "pb_ratio": 1.53,
+        "roe_pct": "UNKNOWN",
+        "debt_to_equity": 0.49,
+        "rev_growth_yoy_pct": 116.6,
+        "earnings_growth_yoy_pct": 204.9,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": [
+        "\u26a0\ufe0f ROE Unverified"
+      ],
+      "conviction_tier": "HIGH_CONVICTION",
+      "gemini_audit": {
+        "verdict": "APPROVED_HIGH_CONVICTION",
+        "ai_conviction_pct": 80.0,
+        "is_cyclical": false,
+        "moat_assessment": "Moderate economic moat",
+        "multiple_sanity_verdict": "Checked against sector bounds",
+        "recommended_pe_cap": 22.0,
+        "bull_thesis": "Strong balance sheet with UNKNOWN% ROE and +26.9% discount to fair worth.",
+        "bear_risk": "Slower earnings momentum.",
+        "summary": "Algorithmic institutional valuation fallback."
+      }
+    },
+    {
       "symbol": "HEROMOTOCO.NS",
       "passed": true,
       "sector": "Auto",
       "current_price": 5329.0,
       "sma_200": 5259.68,
-      "fair_value_min": 6503.18,
-      "fair_value_max": 8309.62,
-      "fair_value_mid": 7225.76,
-      "margin_of_safety_pct": 26.25,
+      "fair_value_min": 6473.93,
+      "fair_value_max": 8272.24,
+      "fair_value_mid": 7193.25,
+      "margin_of_safety_pct": 25.92,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
@@ -232,7 +557,7 @@
       "fundamentals": {
         "symbol": "HEROMOTOCO.NS",
         "market_cap_cr": 106666.2363136,
-        "pe_ratio": 17.7,
+        "pe_ratio": 17.78,
         "pb_ratio": 4.56,
         "roe_pct": 26.93,
         "debt_to_equity": 0.06,
@@ -244,17 +569,7 @@
       "rejection_reasons": [],
       "unverified_badges": [],
       "conviction_tier": "HIGH_CONVICTION",
-      "gemini_audit": {
-        "verdict": "APPROVED_HIGH_CONVICTION",
-        "ai_conviction_pct": 80.0,
-        "is_cyclical": false,
-        "moat_assessment": "Moderate economic moat",
-        "multiple_sanity_verdict": "Checked against sector bounds",
-        "recommended_pe_cap": 22.0,
-        "bull_thesis": "Strong balance sheet with 26.93% ROE and +26.2% discount to fair worth.",
-        "bear_risk": "Slower earnings momentum.",
-        "summary": "Algorithmic institutional valuation fallback."
-      }
+      "gemini_audit": null
     },
     {
       "symbol": "TCS.NS",
@@ -307,17 +622,62 @@
       "rejection_reasons": [],
       "unverified_badges": [],
       "conviction_tier": "HIGH_CONVICTION",
-      "gemini_audit": {
-        "verdict": "APPROVED_HIGH_CONVICTION",
-        "ai_conviction_pct": 80.0,
-        "is_cyclical": false,
-        "moat_assessment": "Moderate economic moat",
-        "multiple_sanity_verdict": "Checked against sector bounds",
-        "recommended_pe_cap": 22.0,
-        "bull_thesis": "Strong balance sheet with 45.57% ROE and +19.4% discount to fair worth.",
-        "bear_risk": "Slower earnings momentum.",
-        "summary": "Algorithmic institutional valuation fallback."
-      }
+      "gemini_audit": null
+    },
+    {
+      "symbol": "ANTELOPUS.NS",
+      "passed": true,
+      "sector": "Diversified/Other",
+      "current_price": 875.05,
+      "sma_200": 794.41,
+      "fair_value_min": 972.28,
+      "fair_value_max": 1242.36,
+      "fair_value_mid": 1080.31,
+      "margin_of_safety_pct": 19.0,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 875.0499877929688,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 831.3,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 787.54,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-15",
+      "tax_12m_flag_date": "2027-11-18",
+      "fundamentals": {
+        "symbol": "ANTELOPUS.NS",
+        "market_cap_cr": 3087.860736,
+        "pe_ratio": 17.82,
+        "pb_ratio": 4.02,
+        "roe_pct": "UNKNOWN",
+        "debt_to_equity": 0.01,
+        "rev_growth_yoy_pct": 116.0,
+        "earnings_growth_yoy_pct": 384.4,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": [
+        "\u26a0\ufe0f ROE Unverified"
+      ],
+      "conviction_tier": "HIGH_CONVICTION",
+      "gemini_audit": null
     },
     {
       "symbol": "ICICIBANK.NS",
@@ -357,7 +717,7 @@
       "tax_12m_flag_date": "2027-11-18",
       "fundamentals": {
         "symbol": "ICICIBANK.NS",
-        "market_cap_cr": 1148002.7103232,
+        "market_cap_cr": 1148525.8448896,
         "pe_ratio": 19.63,
         "pb_ratio": 2.94,
         "roe_pct": 16.49,
@@ -370,17 +730,7 @@
       "rejection_reasons": [],
       "unverified_badges": [],
       "conviction_tier": "HIGH_CONVICTION",
-      "gemini_audit": {
-        "verdict": "APPROVED_HIGH_CONVICTION",
-        "ai_conviction_pct": 80.0,
-        "is_cyclical": false,
-        "moat_assessment": "Moderate economic moat",
-        "multiple_sanity_verdict": "Checked against sector bounds",
-        "recommended_pe_cap": 22.0,
-        "bull_thesis": "Strong balance sheet with 16.49% ROE and +18.2% discount to fair worth.",
-        "bear_risk": "Slower earnings momentum.",
-        "summary": "Algorithmic institutional valuation fallback."
-      }
+      "gemini_audit": null
     },
     {
       "symbol": "JSWSTEEL.NS",
@@ -388,10 +738,10 @@
       "sector": "Metals",
       "current_price": 1332.0,
       "sma_200": 1253.86,
-      "fair_value_min": 1465.79,
-      "fair_value_max": 1872.95,
-      "fair_value_mid": 1628.65,
-      "margin_of_safety_pct": 18.21,
+      "fair_value_min": 1460.68,
+      "fair_value_max": 1866.43,
+      "fair_value_mid": 1622.98,
+      "margin_of_safety_pct": 17.93,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
@@ -421,7 +771,7 @@
       "fundamentals": {
         "symbol": "JSWSTEEL.NS",
         "market_cap_cr": 325258.6020864,
-        "pe_ratio": 11.45,
+        "pe_ratio": 11.49,
         "pb_ratio": 2.87,
         "roe_pct": 31.93,
         "debt_to_equity": 0.62,
@@ -433,17 +783,113 @@
       "rejection_reasons": [],
       "unverified_badges": [],
       "conviction_tier": "HIGH_CONVICTION",
-      "gemini_audit": {
-        "verdict": "APPROVED_HIGH_CONVICTION",
-        "ai_conviction_pct": 80.0,
-        "is_cyclical": true,
-        "moat_assessment": "No moat (Commodity cyclical)",
-        "multiple_sanity_verdict": "Checked against sector bounds",
-        "recommended_pe_cap": 12.0,
-        "bull_thesis": "Strong balance sheet with 31.93% ROE and +18.2% discount to fair worth.",
-        "bear_risk": "Cyclical downturn in sector or quarterly margin contraction.",
-        "summary": "Algorithmic institutional valuation fallback."
-      }
+      "gemini_audit": null
+    },
+    {
+      "symbol": "CEIGALL.NS",
+      "passed": true,
+      "sector": "Diversified/Other",
+      "current_price": 386.3,
+      "sma_200": 337.79,
+      "fair_value_min": 406.2,
+      "fair_value_max": 519.03,
+      "fair_value_mid": 451.33,
+      "margin_of_safety_pct": 14.41,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 386.29998779296875,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 366.98,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 347.67,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-15",
+      "tax_12m_flag_date": "2027-11-18",
+      "fundamentals": {
+        "symbol": "CEIGALL.NS",
+        "market_cap_cr": 6729.5338496,
+        "pe_ratio": 18.83,
+        "pb_ratio": 2.91,
+        "roe_pct": 16.86,
+        "debt_to_equity": 0.76,
+        "rev_growth_yoy_pct": 26.8,
+        "earnings_growth_yoy_pct": 64.3,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": [],
+      "conviction_tier": "QUALITY_COMPOUNDER",
+      "gemini_audit": null
+    },
+    {
+      "symbol": "BANCOINDIA.NS",
+      "passed": true,
+      "sector": "Diversified/Other",
+      "current_price": 700.4,
+      "sma_200": 619.83,
+      "fair_value_min": 716.69,
+      "fair_value_max": 915.77,
+      "fair_value_mid": 796.32,
+      "margin_of_safety_pct": 12.05,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 700.4000244140625,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 665.38,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 630.36,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-15",
+      "tax_12m_flag_date": "2027-11-18",
+      "fundamentals": {
+        "symbol": "BANCOINDIA.NS",
+        "market_cap_cr": 10018.332672,
+        "pe_ratio": 19.35,
+        "pb_ratio": 5.38,
+        "roe_pct": 29.8,
+        "debt_to_equity": 0.28,
+        "rev_growth_yoy_pct": 21.8,
+        "earnings_growth_yoy_pct": 19.1,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": [],
+      "conviction_tier": "QUALITY_COMPOUNDER",
+      "gemini_audit": null
     },
     {
       "symbol": "TECHM.NS",
@@ -483,7 +929,7 @@
       "tax_12m_flag_date": "2027-11-18",
       "fundamentals": {
         "symbol": "TECHM.NS",
-        "market_cap_cr": 172712.132608,
+        "market_cap_cr": 156107.8136832,
         "pe_ratio": 28.32,
         "pb_ratio": 5.26,
         "roe_pct": 19.19,
@@ -496,17 +942,7 @@
       "rejection_reasons": [],
       "unverified_badges": [],
       "conviction_tier": "QUALITY_COMPOUNDER",
-      "gemini_audit": {
-        "verdict": "APPROVED_QUALITY",
-        "ai_conviction_pct": 65.0,
-        "is_cyclical": false,
-        "moat_assessment": "Moderate economic moat",
-        "multiple_sanity_verdict": "Checked against sector bounds",
-        "recommended_pe_cap": 22.0,
-        "bull_thesis": "Strong balance sheet with 19.19% ROE and +5.6% discount to fair worth.",
-        "bear_risk": "Slower earnings momentum.",
-        "summary": "Algorithmic institutional valuation fallback."
-      }
+      "gemini_audit": null
     },
     {
       "symbol": "BAJAJ-AUTO.NS",
@@ -546,7 +982,7 @@
       "tax_12m_flag_date": "2027-11-18",
       "fundamentals": {
         "symbol": "BAJAJ-AUTO.NS",
-        "market_cap_cr": 295963.7479424,
+        "market_cap_cr": 295720.2161664,
         "pe_ratio": 22.97,
         "pb_ratio": 8.11,
         "roe_pct": 35.56,
@@ -560,9 +996,64 @@
       "unverified_badges": [],
       "conviction_tier": "THIN_DISCOUNT",
       "gemini_audit": null
+    },
+    {
+      "symbol": "BALUFORGE.NS",
+      "passed": true,
+      "sector": "Diversified/Other",
+      "current_price": 532.15,
+      "sma_200": 480.23,
+      "fair_value_min": 488.93,
+      "fair_value_max": 624.75,
+      "fair_value_mid": 543.26,
+      "margin_of_safety_pct": 2.05,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 532.1500244140625,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 505.54,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 478.94,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-15",
+      "tax_12m_flag_date": "2027-11-18",
+      "fundamentals": {
+        "symbol": "BALUFORGE.NS",
+        "market_cap_cr": 6459.8704128,
+        "pe_ratio": 21.55,
+        "pb_ratio": 4.05,
+        "roe_pct": "UNKNOWN",
+        "debt_to_equity": 0.1,
+        "rev_growth_yoy_pct": 29.0,
+        "earnings_growth_yoy_pct": 88.0,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": [
+        "\u26a0\ufe0f ROE Unverified"
+      ],
+      "conviction_tier": "THIN_DISCOUNT",
+      "gemini_audit": null
     }
   ],
-  "screened_out_count": 119,
+  "screened_out_count": 715,
   "screened_out": [
     {
       "symbol": "CHOLAFIN.NS",
@@ -610,9 +1101,9 @@
     {
       "symbol": "BSE.NS",
       "passed": false,
-      "margin_of_safety_pct": -115.25,
+      "margin_of_safety_pct": -113.67,
       "reasons": [
-        "P/E ratio 51.7 exceeds hard cap of 35.0."
+        "P/E ratio 51.3 exceeds hard cap of 35.0."
       ]
     },
     {
