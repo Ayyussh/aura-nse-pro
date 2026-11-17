@@ -3,56 +3,58 @@
   "is_shadow_mode": false,
   "sizing_multiplier": 1.0,
   "description": "Favorable / Bullish: NIFTY trading above key short-term EMAs and India VIX remains subdued (<= 18).",
-  "nifty_close": 25445.1,
-  "nifty_20_ema": 24236.92,
-  "nifty_50_ema": 23752.96,
-  "nifty_200_sma": 23993.2,
-  "nifty_above_20ema": true,
-  "nifty_above_50ema": true,
-  "nifty_above_200sma": true,
-  "india_vix": 15.4,
-  "vix_5d_change": -2.02,
+  "nifty_close": 25000.0,
+  "nifty_20_ema": 25000.0,
+  "nifty_50_ema": 25000.0,
+  "nifty_200_sma": 25000.0,
+  "nifty_above_20ema": false,
+  "nifty_above_50ema": false,
+  "nifty_above_200sma": false,
+  "india_vix": 15.0,
+  "vix_5d_change": 0.0,
   "top_leading_sectors": [
-    "Banking"
+    "Banking",
+    "IT",
+    "Auto"
   ],
   "sector_rankings": [
     {
       "sector": "Banking",
-      "monthly_return_pct": 11.65,
-      "relative_strength": 1.72,
+      "monthly_return_pct": 0.0,
+      "relative_strength": 0.0,
+      "is_outperforming": true
+    },
+    {
+      "sector": "IT",
+      "monthly_return_pct": 0.0,
+      "relative_strength": 0.0,
+      "is_outperforming": true
+    },
+    {
+      "sector": "Auto",
+      "monthly_return_pct": 0.0,
+      "relative_strength": 0.0,
       "is_outperforming": true
     },
     {
       "sector": "Pharma",
-      "monthly_return_pct": 9.37,
-      "relative_strength": -0.56,
-      "is_outperforming": false
-    },
-    {
-      "sector": "Auto",
-      "monthly_return_pct": 8.14,
-      "relative_strength": -1.79,
-      "is_outperforming": false
-    },
-    {
-      "sector": "Metals",
-      "monthly_return_pct": 3.27,
-      "relative_strength": -6.66,
-      "is_outperforming": false
+      "monthly_return_pct": 0.0,
+      "relative_strength": 0.0,
+      "is_outperforming": true
     },
     {
       "sector": "Energy",
-      "monthly_return_pct": 2.7,
-      "relative_strength": -7.23,
-      "is_outperforming": false
+      "monthly_return_pct": 0.0,
+      "relative_strength": 0.0,
+      "is_outperforming": true
     },
     {
-      "sector": "IT",
-      "monthly_return_pct": -0.69,
-      "relative_strength": -10.63,
-      "is_outperforming": false
+      "sector": "Metals",
+      "monthly_return_pct": 0.0,
+      "relative_strength": 0.0,
+      "is_outperforming": true
     }
   ],
-  "evaluated_at": "2026-11-17T08:23:51.013271",
-  "snapshot_generated_at": "2026-11-17T13:53:50.820839+05:30"
+  "evaluated_at": "2026-11-17T10:46:58.241331",
+  "snapshot_generated_at": "2026-11-17T16:16:57.857575+05:30"
 }

@@ -1,553 +1,207 @@
 {
   "scan_date": "2026-11-17",
-  "scan_timestamp": "2026-11-17 15:50:39 IST",
-  "total_screened": 35,
-  "undervalued_count": 7,
-  "value_picks": [
-    {
-      "symbol": "JSWSTEEL.NS",
-      "passed": true,
-      "sector": "Metals",
-      "current_price": 1332.0,
-      "sma_200": 1253.86,
-      "fair_value_min": 3140.96,
-      "fair_value_max": 4013.45,
-      "fair_value_mid": 3489.96,
-      "margin_of_safety_pct": 61.83,
-      "target_weight_pct": 5.0,
-      "tranche_plan": {
-        "tranche_1_initial": {
-          "pct": 40.0,
-          "price_target": 1332.0,
-          "trigger": "Immediate on approval"
-        },
-        "tranche_2_pullback": {
-          "pct": 30.0,
-          "price_target": 1265.4,
-          "trigger": "5% dip or 50-EMA test"
-        },
-        "tranche_3_deep_value": {
-          "pct": 30.0,
-          "price_target": 1198.8,
-          "trigger": "10% dip or 200-SMA support"
-        }
-      },
-      "thesis_break_triggers": [
-        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
-        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
-        "ROE drops below 12% on trailing 12-month basis.",
-        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
-      ],
-      "quarterly_review_date": "2027-02-15",
-      "tax_12m_flag_date": "2027-11-18",
-      "fundamentals": {
-        "symbol": "JSWSTEEL.NS",
-        "market_cap_cr": 325258.6020864,
-        "pe_ratio": 11.45,
-        "pb_ratio": 2.87,
-        "roe_pct": 31.93,
-        "debt_to_equity": 0.62,
-        "rev_growth_yoy_pct": 20.7,
-        "earnings_growth_yoy_pct": 225.2,
-        "source": "yfinance_info",
-        "as_of_date": "2026-11-17"
-      },
-      "rejection_reasons": [],
-      "unverified_badges": [],
-      "conviction_tier": "HIGH_CONVICTION"
-    },
-    {
-      "symbol": "HEROMOTOCO.NS",
-      "passed": true,
-      "sector": "Auto",
-      "current_price": 5329.0,
-      "sma_200": 5259.68,
-      "fair_value_min": 8128.98,
-      "fair_value_max": 10387.03,
-      "fair_value_mid": 9032.2,
-      "margin_of_safety_pct": 41.0,
-      "target_weight_pct": 5.0,
-      "tranche_plan": {
-        "tranche_1_initial": {
-          "pct": 40.0,
-          "price_target": 5329.0,
-          "trigger": "Immediate on approval"
-        },
-        "tranche_2_pullback": {
-          "pct": 30.0,
-          "price_target": 5062.55,
-          "trigger": "5% dip or 50-EMA test"
-        },
-        "tranche_3_deep_value": {
-          "pct": 30.0,
-          "price_target": 4796.1,
-          "trigger": "10% dip or 200-SMA support"
-        }
-      },
-      "thesis_break_triggers": [
-        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
-        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
-        "ROE drops below 12% on trailing 12-month basis.",
-        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
-      ],
-      "quarterly_review_date": "2027-02-15",
-      "tax_12m_flag_date": "2027-11-18",
-      "fundamentals": {
-        "symbol": "HEROMOTOCO.NS",
-        "market_cap_cr": 106666.2363136,
-        "pe_ratio": 17.7,
-        "pb_ratio": 4.56,
-        "roe_pct": 26.93,
-        "debt_to_equity": 0.06,
-        "rev_growth_yoy_pct": 22.5,
-        "earnings_growth_yoy_pct": 42.2,
-        "source": "yfinance_info",
-        "as_of_date": "2026-11-17"
-      },
-      "rejection_reasons": [],
-      "unverified_badges": [],
-      "conviction_tier": "HIGH_CONVICTION"
-    },
-    {
-      "symbol": "ICICIBANK.NS",
-      "passed": true,
-      "sector": "Banking",
-      "current_price": 1598.7,
-      "sma_200": 1362.06,
-      "fair_value_min": 1943.85,
-      "fair_value_max": 2483.8,
-      "fair_value_mid": 2159.83,
-      "margin_of_safety_pct": 25.98,
-      "target_weight_pct": 5.0,
-      "tranche_plan": {
-        "tranche_1_initial": {
-          "pct": 40.0,
-          "price_target": 1598.699951171875,
-          "trigger": "Immediate on approval"
-        },
-        "tranche_2_pullback": {
-          "pct": 30.0,
-          "price_target": 1518.76,
-          "trigger": "5% dip or 50-EMA test"
-        },
-        "tranche_3_deep_value": {
-          "pct": 30.0,
-          "price_target": 1438.83,
-          "trigger": "10% dip or 200-SMA support"
-        }
-      },
-      "thesis_break_triggers": [
-        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
-        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
-        "ROE drops below 12% on trailing 12-month basis.",
-        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
-      ],
-      "quarterly_review_date": "2027-02-15",
-      "tax_12m_flag_date": "2027-11-18",
-      "fundamentals": {
-        "symbol": "ICICIBANK.NS",
-        "market_cap_cr": 1148002.7103232,
-        "pe_ratio": 19.63,
-        "pb_ratio": 2.94,
-        "roe_pct": 16.49,
-        "debt_to_equity": "UNKNOWN",
-        "rev_growth_yoy_pct": 15.8,
-        "earnings_growth_yoy_pct": 22.1,
-        "source": "yfinance_info",
-        "as_of_date": "2026-11-17"
-      },
-      "rejection_reasons": [],
-      "unverified_badges": [],
-      "conviction_tier": "HIGH_CONVICTION"
-    },
-    {
-      "symbol": "BAJAJ-AUTO.NS",
-      "passed": true,
-      "sector": "Auto",
-      "current_price": 10770.0,
-      "sma_200": 10362.6,
-      "fair_value_min": 12659.55,
-      "fair_value_max": 16176.1,
-      "fair_value_mid": 14066.17,
-      "margin_of_safety_pct": 23.43,
-      "target_weight_pct": 5.0,
-      "tranche_plan": {
-        "tranche_1_initial": {
-          "pct": 40.0,
-          "price_target": 10770.0,
-          "trigger": "Immediate on approval"
-        },
-        "tranche_2_pullback": {
-          "pct": 30.0,
-          "price_target": 10231.5,
-          "trigger": "5% dip or 50-EMA test"
-        },
-        "tranche_3_deep_value": {
-          "pct": 30.0,
-          "price_target": 9693.0,
-          "trigger": "10% dip or 200-SMA support"
-        }
-      },
-      "thesis_break_triggers": [
-        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
-        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
-        "ROE drops below 12% on trailing 12-month basis.",
-        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
-      ],
-      "quarterly_review_date": "2027-02-15",
-      "tax_12m_flag_date": "2027-11-18",
-      "fundamentals": {
-        "symbol": "BAJAJ-AUTO.NS",
-        "market_cap_cr": 295963.7479424,
-        "pe_ratio": 22.97,
-        "pb_ratio": 8.11,
-        "roe_pct": 35.56,
-        "debt_to_equity": 0.7,
-        "rev_growth_yoy_pct": 57.4,
-        "earnings_growth_yoy_pct": 63.8,
-        "source": "yfinance_info",
-        "as_of_date": "2026-11-17"
-      },
-      "rejection_reasons": [],
-      "unverified_badges": [],
-      "conviction_tier": "HIGH_CONVICTION"
-    },
-    {
-      "symbol": "CHOLAFIN.NS",
-      "passed": true,
-      "sector": "NBFC",
-      "current_price": 1884.7,
-      "sma_200": 1672.57,
-      "fair_value_min": 1970.83,
-      "fair_value_max": 2518.28,
-      "fair_value_mid": 2189.81,
-      "margin_of_safety_pct": 13.93,
-      "target_weight_pct": 5.0,
-      "tranche_plan": {
-        "tranche_1_initial": {
-          "pct": 40.0,
-          "price_target": 1884.699951171875,
-          "trigger": "Immediate on approval"
-        },
-        "tranche_2_pullback": {
-          "pct": 30.0,
-          "price_target": 1790.46,
-          "trigger": "5% dip or 50-EMA test"
-        },
-        "tranche_3_deep_value": {
-          "pct": 30.0,
-          "price_target": 1696.23,
-          "trigger": "10% dip or 200-SMA support"
-        }
-      },
-      "thesis_break_triggers": [
-        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
-        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
-        "ROE drops below 12% on trailing 12-month basis.",
-        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
-      ],
-      "quarterly_review_date": "2027-02-15",
-      "tax_12m_flag_date": "2027-11-18",
-      "fundamentals": {
-        "symbol": "CHOLAFIN.NS",
-        "market_cap_cr": 161654.8724736,
-        "pe_ratio": 25.82,
-        "pb_ratio": 4.66,
-        "roe_pct": 20.58,
-        "debt_to_equity": 6.72,
-        "rev_growth_yoy_pct": 32.0,
-        "earnings_growth_yoy_pct": 38.6,
-        "source": "yfinance_info",
-        "as_of_date": "2026-11-17"
-      },
-      "rejection_reasons": [],
-      "unverified_badges": [],
-      "conviction_tier": "QUALITY_COMPOUNDER"
-    },
-    {
-      "symbol": "TCS.NS",
-      "passed": true,
-      "sector": "IT",
-      "current_price": 2406.6,
-      "sma_200": 2391.73,
-      "fair_value_min": 2311.02,
-      "fair_value_max": 2952.97,
-      "fair_value_mid": 2567.8,
-      "margin_of_safety_pct": 6.28,
-      "target_weight_pct": 5.0,
-      "tranche_plan": {
-        "tranche_1_initial": {
-          "pct": 40.0,
-          "price_target": 2406.60009765625,
-          "trigger": "Immediate on approval"
-        },
-        "tranche_2_pullback": {
-          "pct": 30.0,
-          "price_target": 2286.27,
-          "trigger": "5% dip or 50-EMA test"
-        },
-        "tranche_3_deep_value": {
-          "pct": 30.0,
-          "price_target": 2165.94,
-          "trigger": "10% dip or 200-SMA support"
-        }
-      },
-      "thesis_break_triggers": [
-        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
-        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
-        "ROE drops below 12% on trailing 12-month basis.",
-        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
-      ],
-      "quarterly_review_date": "2027-02-15",
-      "tax_12m_flag_date": "2027-11-18",
-      "fundamentals": {
-        "symbol": "TCS.NS",
-        "market_cap_cr": 870728.9645056,
-        "pe_ratio": 16.87,
-        "pb_ratio": 7.32,
-        "roe_pct": 45.57,
-        "debt_to_equity": 0.1,
-        "rev_growth_yoy_pct": 11.2,
-        "earnings_growth_yoy_pct": 15.0,
-        "source": "yfinance_info",
-        "as_of_date": "2026-11-17"
-      },
-      "rejection_reasons": [],
-      "unverified_badges": [],
-      "conviction_tier": "QUALITY_COMPOUNDER"
-    },
-    {
-      "symbol": "TECHM.NS",
-      "passed": true,
-      "sector": "IT",
-      "current_price": 1762.0,
-      "sma_200": 1534.0,
-      "fair_value_min": 1679.88,
-      "fair_value_max": 2146.51,
-      "fair_value_mid": 1866.53,
-      "margin_of_safety_pct": 5.6,
-      "target_weight_pct": 5.0,
-      "tranche_plan": {
-        "tranche_1_initial": {
-          "pct": 40.0,
-          "price_target": 1762.0,
-          "trigger": "Immediate on approval"
-        },
-        "tranche_2_pullback": {
-          "pct": 30.0,
-          "price_target": 1673.9,
-          "trigger": "5% dip or 50-EMA test"
-        },
-        "tranche_3_deep_value": {
-          "pct": 30.0,
-          "price_target": 1585.8,
-          "trigger": "10% dip or 200-SMA support"
-        }
-      },
-      "thesis_break_triggers": [
-        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
-        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
-        "ROE drops below 12% on trailing 12-month basis.",
-        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
-      ],
-      "quarterly_review_date": "2027-02-15",
-      "tax_12m_flag_date": "2027-11-18",
-      "fundamentals": {
-        "symbol": "TECHM.NS",
-        "market_cap_cr": 172712.132608,
-        "pe_ratio": 28.32,
-        "pb_ratio": 5.26,
-        "roe_pct": 19.19,
-        "debt_to_equity": 0.07,
-        "rev_growth_yoy_pct": 15.6,
-        "earnings_growth_yoy_pct": 32.5,
-        "source": "yfinance_info",
-        "as_of_date": "2026-11-17"
-      },
-      "rejection_reasons": [],
-      "unverified_badges": [],
-      "conviction_tier": "QUALITY_COMPOUNDER"
-    }
-  ],
-  "screened_out_count": 28,
+  "scan_timestamp": "2026-11-17 16:16:57 IST",
+  "total_screened": 2500,
+  "undervalued_count": 0,
+  "value_picks": [],
+  "screened_out_count": 227,
   "screened_out": [
     {
-      "symbol": "ITC.NS",
+      "symbol": "3BBLACKBIO.NS",
       "passed": false,
-      "margin_of_safety_pct": -29.73,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "YoY Revenue Growth 3.9% below 10.0%.",
-        "YoY Earnings Growth -18.8% below 12.0%."
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b91,157 Cr is below minimum \u20b92,000 Cr.",
+        "YoY Earnings Growth -29.0% below 12.0%."
       ]
     },
     {
-      "symbol": "RELIANCE.NS",
+      "symbol": "AASTHA.NS",
       "passed": false,
-      "margin_of_safety_pct": 24.9,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "ROE 8.8% below institutional minimum of 15.0%."
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b9212 Cr is below minimum \u20b92,000 Cr.",
+        "YoY Revenue Growth -15.7% below 10.0%."
       ]
     },
     {
-      "symbol": "SUNPHARMA.NS",
+      "symbol": "ABANSENT.NS",
       "passed": false,
-      "margin_of_safety_pct": -172.8,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "ROE 13.1% below institutional minimum of 15.0%.",
-        "P/E ratio 40.9 exceeds hard cap of 35.0.",
-        "YoY Earnings Growth -36.2% below 12.0%."
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b9189 Cr is below minimum \u20b92,000 Cr.",
+        "ROE 11.9% below institutional minimum of 15.0%.",
+        "YoY Revenue Growth -25.8% below 10.0%.",
+        "YoY Earnings Growth -82.9% below 12.0%."
       ]
     },
     {
-      "symbol": "LT.NS",
+      "symbol": "ABMKNO.NS",
       "passed": false,
-      "margin_of_safety_pct": -6.7,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Debt-to-Equity 1.05 exceeds conservative ceiling 0.8."
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b9320 Cr is below minimum \u20b92,000 Cr.",
+        "ROE 3.9% below institutional minimum of 15.0%.",
+        "P/E ratio 35.8 exceeds hard cap of 35.0.",
+        "YoY Earnings Growth -10.9% below 12.0%."
       ]
     },
     {
-      "symbol": "BSE.NS",
+      "symbol": "ABSL10BANK.NS",
       "passed": false,
-      "margin_of_safety_pct": -72.2,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "P/E ratio 51.7 exceeds hard cap of 35.0."
+        "Insufficient price history (< 200 bars)."
       ]
     },
     {
-      "symbol": "HDFCBANK.NS",
+      "symbol": "ABSLMSCIN.NS",
       "passed": false,
-      "margin_of_safety_pct": 30.32,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "ROE 11.0% below institutional minimum of 15.0%."
+        "Insufficient price history (< 200 bars)."
       ]
     },
     {
-      "symbol": "BAJFINANCE.NS",
-      "passed": true,
-      "margin_of_safety_pct": -7.43,
+      "symbol": "ACGL.NS",
+      "passed": false,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Trading above fair value (No margin of safety)"
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b91,090 Cr is below minimum \u20b92,000 Cr.",
+        "YoY Earnings Growth -9.8% below 12.0%."
       ]
     },
     {
-      "symbol": "INFY.NS",
+      "symbol": "ADDIND.NS",
       "passed": false,
-      "margin_of_safety_pct": -0.33,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b91130.00 is below 200-day SMA \u20b91188.52 (long-term downtrend).",
-        "YoY Revenue Growth 1.4% below 10.0%."
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b976 Cr is below minimum \u20b92,000 Cr.",
+        "YoY Earnings Growth 6.4% below 12.0%."
       ]
     },
     {
-      "symbol": "M&M.NS",
+      "symbol": "ADVIKCA.NS",
       "passed": false,
-      "margin_of_safety_pct": 34.37,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Debt-to-Equity 1.33 exceeds conservative ceiling 0.8."
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b952 Cr is below minimum \u20b92,000 Cr.",
+        "ROE -20.1% below institutional minimum of 15.0%.",
+        "Debt-to-Equity 1.95 exceeds conservative ceiling 0.8.",
+        "YoY Revenue Growth -66.0% below 10.0%."
       ]
     },
     {
-      "symbol": "TATASTEEL.NS",
+      "symbol": "AEPL.NS",
       "passed": false,
-      "margin_of_safety_pct": 10.13,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b9181.50 is below 200-day SMA \u20b9193.70 (long-term downtrend).",
-        "ROE 11.7% below institutional minimum of 15.0%.",
-        "Debt-to-Equity 0.97 exceeds conservative ceiling 0.8."
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b9366 Cr is below minimum \u20b92,000 Cr.",
+        "P/E ratio 42.9 exceeds hard cap of 35.0.",
+        "YoY Revenue Growth -17.6% below 10.0%."
       ]
     },
     {
-      "symbol": "HINDUNILVR.NS",
+      "symbol": "AEROPLANE.NS",
       "passed": false,
-      "margin_of_safety_pct": -197.47,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b92009.90 is below 200-day SMA \u20b92120.94 (long-term downtrend).",
-        "P/E ratio 44.6 exceeds hard cap of 35.0.",
-        "YoY Earnings Growth 3.9% below 12.0%."
+        "Insufficient price history (< 200 bars)."
       ]
     },
     {
-      "symbol": "ONGC.NS",
+      "symbol": "AGL.NS",
       "passed": false,
-      "margin_of_safety_pct": 81.07,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b9223.52 is below 200-day SMA \u20b9254.73 (long-term downtrend).",
-        "ROE 12.1% below institutional minimum of 15.0%."
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b91,470 Cr is below minimum \u20b92,000 Cr.",
+        "YoY Revenue Growth 5.8% below 10.0%."
       ]
     },
     {
-      "symbol": "CIPLA.NS",
+      "symbol": "AKCAPIT.NS",
       "passed": false,
-      "margin_of_safety_pct": -158.2,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "ROE 8.3% below institutional minimum of 15.0%.",
-        "P/E ratio 38.7 exceeds hard cap of 35.0.",
-        "YoY Revenue Growth -1.1% below 10.0%.",
-        "YoY Earnings Growth -35.0% below 12.0%."
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b91,321 Cr is below minimum \u20b92,000 Cr.",
+        "Debt-to-Equity 2.73 exceeds conservative ceiling 0.8.",
+        "YoY Revenue Growth 3.9% below 10.0%."
       ]
     },
     {
-      "symbol": "SIEMENS.NS",
+      "symbol": "ALFREDHE.NS",
       "passed": false,
-      "margin_of_safety_pct": -474.54,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b93561.90 is below 200-day SMA \u20b93578.23 (long-term downtrend).",
-        "P/E ratio 86.2 exceeds hard cap of 35.0.",
-        "YoY Earnings Growth 3.9% below 12.0%."
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b9214 Cr is below minimum \u20b92,000 Cr.",
+        "YoY Earnings Growth -98.5% below 12.0%."
       ]
     },
     {
-      "symbol": "MCX.NS",
+      "symbol": "ALPINETEX.NS",
       "passed": false,
-      "margin_of_safety_pct": -113.07,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "P/E ratio 63.9 exceeds hard cap of 35.0."
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b9161 Cr is below minimum \u20b92,000 Cr."
       ]
     },
     {
-      "symbol": "SBIN.NS",
+      "symbol": "AMAL.NS",
       "passed": false,
-      "margin_of_safety_pct": 53.76,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "ROE 14.7% below institutional minimum of 15.0%.",
-        "YoY Revenue Growth 7.8% below 10.0%."
+        "Insufficient price history (< 200 bars)."
       ]
     },
     {
-      "symbol": "MUTHOOTFIN.NS",
+      "symbol": "AMARJOTHI.NS",
       "passed": false,
-      "margin_of_safety_pct": 69.83,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b92749.00 is below 200-day SMA \u20b93131.15 (long-term downtrend)."
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b9103 Cr is below minimum \u20b92,000 Cr.",
+        "ROE 5.1% below institutional minimum of 15.0%.",
+        "YoY Earnings Growth 10.6% below 12.0%."
       ]
     },
     {
-      "symbol": "HCLTECH.NS",
+      "symbol": "ANDREWYU.NS",
       "passed": false,
-      "margin_of_safety_pct": -33.73,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "YoY Revenue Growth 2.2% below 10.0%.",
-        "YoY Earnings Growth 10.8% below 12.0%."
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b91,140 Cr is below minimum \u20b92,000 Cr.",
+        "YoY Revenue Growth 3.8% below 10.0%."
       ]
     },
     {
-      "symbol": "MARUTI.NS",
+      "symbol": "ANNU.NS",
       "passed": false,
-      "margin_of_safety_pct": -96.73,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b912625.00 is below 200-day SMA \u20b913280.00 (long-term downtrend).",
-        "ROE 12.9% below institutional minimum of 15.0%.",
-        "YoY Earnings Growth -26.4% below 12.0%."
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b9262 Cr is below minimum \u20b92,000 Cr."
       ]
     },
     {
-      "symbol": "HINDALCO.NS",
+      "symbol": "ANSALBU.NS",
       "passed": false,
-      "margin_of_safety_pct": 64.13,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b9927.75 is below 200-day SMA \u20b9980.94 (long-term downtrend).",
-        "ROE 13.0% below institutional minimum of 15.0%."
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b956 Cr is below minimum \u20b92,000 Cr."
       ]
     }
   ],
