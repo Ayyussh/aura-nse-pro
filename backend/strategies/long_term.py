@@ -125,20 +125,24 @@ class LongTermStrategyEngine:
         # Sector Multiple Bounds to prevent Cyclical Commodity Traps
         sector_upper = sector.upper() if sector else ""
         if any(c in sector_upper for c in ("METAL", "STEEL", "MINING", "COMMODIT", "OIL", "ENERGY", "POWER")):
-            pe_min_floor, pe_max_cap = 8.0, 12.0
+            pe_min_floor, pe_max_cap = 8.0, 14.0
         elif any(c in sector_upper for c in ("AUTO", "VEHICLE")):
-            pe_min_floor, pe_max_cap = 12.0, 18.0
+            pe_min_floor, pe_max_cap = 14.0, 24.0
         elif any(c in sector_upper for c in ("BANK", "NBFC", "FINANC", "INSUR")):
-            pe_min_floor, pe_max_cap = 12.0, 22.0
+            pe_min_floor, pe_max_cap = 12.0, 24.0
         elif any(c in sector_upper for c in ("INFRA", "REALTY", "CONSTRUCT", "CEMENT", "CAPITAL GOODS")):
-            pe_min_floor, pe_max_cap = 12.0, 20.0
+            pe_min_floor, pe_max_cap = 12.0, 22.0
         elif any(c in sector_upper for c in ("IT", "TECH", "SOFTWARE", "PHARMA", "HEALTH", "FMCG", "CONSUMER")):
-            pe_min_floor, pe_max_cap = 15.0, 28.0
+            pe_min_floor, pe_max_cap = 16.0, 30.0
         else:
             pe_min_floor, pe_max_cap = 12.0, 22.0
 
+        # Institutional PEG + ROE Economic Moat Multiple
         growth_est = float(earnings_growth) if isinstance(earnings_growth, (int, float)) and earnings_growth > 0 else 12.0
-        fair_multiple = min(pe_max_cap, max(pe_min_floor, growth_est * 1.1))
+        roe_val = float(roe) if isinstance(roe, (int, float)) and roe > 0 else 15.0
+        roe_moat_premium = min(4.0, max(0.0, (roe_val - 15.0) * 0.12))
+        raw_multiple = (growth_est * 1.15) + roe_moat_premium
+        fair_multiple = min(pe_max_cap, max(pe_min_floor, round(raw_multiple, 2)))
         current_pe = float(pe) if isinstance(pe, (int, float)) and pe > 0 else 20.0
         fair_value_mid = round(c_last * (fair_multiple / current_pe), 2) if current_pe > 0 and c_last > 0 else c_last
         fair_value_min = round(fair_value_mid * 0.90, 2)

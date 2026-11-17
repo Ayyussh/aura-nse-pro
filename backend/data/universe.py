@@ -271,12 +271,29 @@ def get_universe_symbols(limit: int | None = None, mode: str = "curated") -> Lis
     """Return filtered equity universe symbols.
 
     Modes:
-      - 'all': All ~2,760 listed NSE stocks.
-      - 'diversified': Sector-stratified bluechips.
+      - 'all': Prioritizes sector-stratified bluechips and NIFTY 500 constituents first,
+               then spans all ~2,760 listed NSE stocks.
+      - 'diversified': Sector-stratified bluechips across all major sectors.
       - 'curated': Liquid institutional universe (191 core mapped stocks).
     """
     if mode == "all":
-        symbols = [s for s in ALL_LISTED_NSE_SYMBOLS if s not in EXCLUDED_SURVEILLANCE_SYMBOLS]
+        seen: Set[str] = set()
+        symbols: List[str] = []
+        # 1. Sector-stratified bluechips first (guarantees cross-sector balance from index 0)
+        for s in get_diversified_universe_symbols(limit=70):
+            if s not in EXCLUDED_SURVEILLANCE_SYMBOLS and s not in seen:
+                symbols.append(s)
+                seen.add(s)
+        # 2. Institutional NIFTY 500 constituents next
+        for s in NIFTY_500_SYMBOLS:
+            if s not in EXCLUDED_SURVEILLANCE_SYMBOLS and s not in seen:
+                symbols.append(s)
+                seen.add(s)
+        # 3. All remaining listed symbols
+        for s in ALL_LISTED_NSE_SYMBOLS:
+            if s not in EXCLUDED_SURVEILLANCE_SYMBOLS and s not in seen:
+                symbols.append(s)
+                seen.add(s)
     elif mode == "diversified":
         return get_diversified_universe_symbols(limit=limit or 40)
     else:
