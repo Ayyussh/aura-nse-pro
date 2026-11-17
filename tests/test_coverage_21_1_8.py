@@ -949,7 +949,11 @@ def test_variants_engine_and_sizing_edge_branches():
 
 def test_each_core_module_strictly_exceeds_85_percent_coverage():
     """Enforce per-module coverage threshold: each core calculation module must individually achieve >= 85%."""
-    import coverage
+    try:
+        import coverage
+    except ImportError:
+        pytest.skip("Coverage library not installed in this environment")
+
     cov = coverage.Coverage()
     try:
         cov.load()

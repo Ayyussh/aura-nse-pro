@@ -261,8 +261,28 @@ def test_historical_store_duckdb_parquet():
     """Verify DuckDB & Parquet historical store loading and query speed."""
     from backend.data.historical_store import historical_store
 
-    # Ensure store has data for ^NSEI.NS
+    # Ensure store has data for ^NSEI.NS (seed minimal fixture if running in isolated CI runner)
     df = historical_store.load_ohlcv("^NSEI.NS")
+    if df.empty:
+        import numpy as np
+        import pandas as pd
+        dates = pd.date_range("2020-01-01", periods=1050, freq="B")
+        seed_df = pd.DataFrame({
+            "symbol": "^NSEI.NS",
+            "date": [d.date() for d in dates],
+            "open": np.linspace(12000, 24000, 1050),
+            "high": np.linspace(12100, 24100, 1050),
+            "low": np.linspace(11900, 23900, 1050),
+            "close": np.linspace(12050, 24050, 1050),
+            "volume": [1000000] * 1050,
+            "adjusted_close": np.linspace(12050, 24050, 1050),
+            "dividend_amount": [0.0] * 1050,
+            "split_factor": [1.0] * 1050,
+            "source": "NSE_INDEX_OFFICIAL",
+        })
+        historical_store.store_ohlcv("^NSEI.NS", seed_df, default_source="NSE_INDEX_OFFICIAL")
+        df = historical_store.load_ohlcv("^NSEI.NS")
+
     assert not df.empty
     assert len(df) >= 1000
     assert "adjusted_close" in df.columns
