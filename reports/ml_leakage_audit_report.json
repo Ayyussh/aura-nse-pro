@@ -1,0 +1,49 @@
+{
+  "report_type": "ML_LEAKAGE_AUDIT_REPORT",
+  "clean_model": {
+    "brier_score": 0.0752,
+    "auc": 0.4875,
+    "brier_skill_score": -0.0031,
+    "spearman_rank_correlation": -0.104,
+    "spearman_p_value": 0.30813,
+    "leakage_flag": "CLEAN_VALIDATED"
+  },
+  "shuffled_label_test": {
+    "description": "Permute target labels randomly; AUC must collapse to ~0.50 and BSS <= 0.0",
+    "shuffled_auc": 0.5833,
+    "shuffled_bss": -0.0018,
+    "shuffled_spearman_rho": 0.1333,
+    "passed": true
+  },
+  "time_shift_test": {
+    "description": "Shift feature matrix forward by 1 step; verifies point-in-time stability",
+    "shifted_auc": 0.4639,
+    "shifted_bss": -0.0301,
+    "passed": true
+  },
+  "feature_audit": {
+    "features_evaluated": [
+      "rsi_14",
+      "adx_14",
+      "macd_norm",
+      "dist_ema20_pct",
+      "dist_ema50_pct",
+      "dist_sma200_pct",
+      "atr_pct",
+      "vol_ratio_20d",
+      "vol_trend_5d",
+      "rs_vs_nifty_20d",
+      "dist_52w_high_pct",
+      "mansfield_rs_50d",
+      "vix_level_proxy",
+      "nifty_trend_score"
+    ],
+    "lookahead_detected": false,
+    "nifty_lag_verified": "Strictly lagged (loc[:d]) with zero forward lookahead"
+  },
+  "rule_enforcement": {
+    "bss_threshold_max": 0.5,
+    "rho_threshold_max": 0.9,
+    "suspected_leakage_triggered": false
+  }
+}

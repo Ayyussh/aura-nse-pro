@@ -5,9 +5,10 @@ loss set-off rules, tax harvesting signals, and pre/post-tax P&L attribution.
 """
 
 from __future__ import annotations
+
 import datetime
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple, Any
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional, Tuple
 
 from backend.core.config import get_tax_config
 
@@ -204,7 +205,13 @@ class IndianTaxEngine:
         for h in holdings:
             buy_dt = h.get("buy_date")
             if isinstance(buy_dt, str):
-                buy_dt = datetime.date.fromisoformat(buy_dt)
+                try:
+                    buy_dt = datetime.date.fromisoformat(buy_dt)
+                except ValueError:
+                    buy_dt = None
+
+            if not isinstance(buy_dt, datetime.date):
+                continue
 
             days_held = (today - buy_dt).days
             unrealized = h.get("unrealized_pnl", 0.0)

@@ -1,0 +1,51 @@
+<USER_REQUEST>
+Closing prompt: close every gap and prove it
+Paste this after section 20. It asks the coder agent to close the proof gaps and the engineering gaps, and to prove each one is closed, or to say plainly that it is not.
+21.0 Mission and rules
+Mission: close every remaining gap between the app and the original brief, and produce evidence that each gap is closed. Do not ask clarifying questions; record assumptions in docs/DECISIONS.md.
+What 'no gaps remaining' means. Every item below ends in exactly one status:
+• DONE: implemented and proven by evidence (file path, command, output, test name; for UI items, a screenshot path).
+• TIME_GATED: cannot be completed until a future date (for example the live shadow period). Show it running, the earliest completion date and the monitor that will report it.
+• OWNER_ACTION: needs the owner (an account, a credential, an approval). Give the exact steps.
+• BLOCKED: cannot be done for a stated technical reason, with the evidence.
+Rules:
+1.  Never mark DONE without evidence. If any item is not DONE, the report headline must read 'NOT COMPLETE: n items open' and list them. Do not write 'all done', '100%' or 'coverage' unless the number is computed and shown.
+2.  Do not tune strategy parameters to improve numbers. If fixing a bias makes results worse, report the worse numbers.
+3.  The holdout stays sealed. Opening it is an OWNER_ACTION, and only after FROZEN_CONFIG.json exists.
+4.  Every config change after the freeze is logged with a reason and a new hash.
+5.  Use real data only. RNG is allowed only with a fixed seed and never for market data.
+6.  Report in this format after each group: items, status, evidence, numbers with intervals, open risks.
+21.1 Proof gaps (is the edge real?)
+1.  Survivorship bias. The backfill uses today's index list. Source historical index membership by date (NSE index rebalancing notices or historical constituent files), include delisted, merged and demerged names with correct treatment, and rerun the replay with membership by date. Report the difference from the current-list replay. If full history cannot be sourced, restrict to the index with obtainable history (for example NIFTY 100), run a sensitivity analysis, and record the limitation.
+2.  Candidate-level report. Mean net R for all candidates, taken only and rejected only, by year and setup, with week-block intervals. State what ranks candidates, and add a test that permuting future data leaves the ranking unchanged.
+3.  Trailing-stop (V5) audit. On the bar where +1R is first reached, assume the worst ordering (if that bar's low reaches the original stop, count -1R). Charge costs on breakeven exits and fill gaps below the stop at the open. Recompute with block-bootstrap p-values and Bonferroni-adjusted intervals, by year including 2021 to 2024, with best-case and worst-case bar ordering.
+4.  Spec drift. Either revert to the spec (VCP, 5 positions, 10-day limit) or pre-register the new setups, position cap and limit with a hash and rerun. Label results exploratory otherwise.
+5.  Bhavcopy provenance. For each source print file path or URL and SHA-256, plus 10 sample rows including pre-split bars for split names. State the raw-versus-adjusted policy and add a test on a split stock.
+6.  Comparators. Matched placebo (same dates, holding periods and exits), NIFTY buy-and-hold, and the same-exposure benchmark, all with block intervals.
+7.  Robustness. Vary ATR multiples by +/-20%, double slippage, split by year, regime and market-cap bucket, and show the result is not a knife-edge.
+8.  Real test coverage. Run pytest-cov. Require at least 80% line coverage on grader, charges, sizing, audit, replay, regime, setup priors and the variants engine, and show the report. Add tests for replay determinism, variants, placebo matching, purged CV, the holdout seal and the V5 changes. The test count must rise accordingly.
+9.  Freeze. Write FROZEN_CONFIG.json (config hash, git commit, model state, universe rule). Then wait for the owner before touching the holdout.
+10.  Forward shadow test (TIME_GATED). Confirm shadow mode runs on every trading day and grades outcomes daily. Define the go-live scorecard now in config (minimum 8 weeks and 30 graded trades; net expectancy interval; maximum drawdown; edge over the same-exposure benchmark and random entries; calibration; no data incidents). Add scripts/shadow_scorecard.py with a weekly report and show progress as k of 30 trades.
+21.2 Engineering gaps (is the app complete?)
+1.  Feature inventory against the original brief. Produce reports/feature_inventory.md marking each item BUILT, PARTIAL or MISSING with evidence, then implement everything not BUILT. At minimum: the long-term investing engine (fundamentals, sector-relative valuation, tranches, thesis triggers, 12-month tax flag); the earnings and corporate-action guard using real results dates; FII/DII, breadth and event-calendar inputs; the LLM router (model discovery with no hard-coded model names, encrypted key vault, Validate All Keys, failover tests); the analyst with real news and a red-flag checklist; and the research chat console that answers from the app's own data.
+2.  Dashboard views, each with a screenshot path: AURA Command Center (avatar, voice, captions), Stress Test and Net P&L, Portfolio and Risk Guard, Mistake Lab (proposal approval flow), Key, Model and Alert Vault, Research and Watchlist (per-stock page), Journal and Tax Center, System Health. No trade-level Sharpe, skill badges shown, DEMO labels on demo data.
+3.  Reliability. Run the backend as a Windows service (or equivalent) so all jobs fire without a manual launch. Prove every scheduled job (08:30, 09:00, 09:15 to 09:20, 15:45, 18:30, Saturday 10:00) with logs from a real trading day. Prove catch-up after a sleep or reboot, a configured external heartbeat (show the last ping), a Telegram alert test, and a backup-and-restore drill with an integrity check. Add log rotation and a disk-space alert.
+4.  Data operations. A nightly pipeline (NSE files, Upstox), daily reconciliation with an incident queue, the run gate, Upstox limiter windows (50/s, 500/min, 2,000 per 30 min), a token-expiry monitor with alerts at 30 and 7 days, and a weekly symbol-master and corporate-action check that alerts on new renames, mergers, demergers and listings.
+5.  Security and exposure. Auth on every endpoint, loopback binding, locked CORS, rate limits, encrypted vault (show keys are not plaintext in the database), pip-audit and npm audit, gitleaks in CI and as a pre-commit hook. The public page is demo-only with a dist/ scan in CI, and no workflow publishes picks. Prepare the git history purge of the old reports/ and data/ files as a script plus a dry-run list; running it is an OWNER_ACTION.
+6.  Performance. Full-universe scan time under the rate limits, database indexes, memory use and database size, reported with numbers.
+7.  Code quality. ruff and mypy (or pyright) clean on core modules, and strict TypeScript for the frontend.
+8.  Documentation. README runbook (install, .env, generating the Upstox Analytics Token, schedules, backup, restore, troubleshooting), architecture diagram, DECISIONS.md, KNOWN_LIMITATIONS.md and a failure-mode runbook.
+9.  Phone access (optional). A short guide for Tailscale or a Cloudflare tunnel with login.
+21.3 Proof of completion
+1.  scripts/prove_all.ps1 (and a Makefile target) re-runs everything from a clean checkout: fresh environment, migrations, tests with coverage, replay run twice with identical output hashes, data checks against NSE files, API auth tests, a scheduled-job dry run with a mocked clock, backup and restore, frontend build with dist/ scan and UI smoke tests with screenshots under reports/screenshots/, LLM failover tests, at least 15 mutation checks, the robustness analyses and the shadow scorecard.
+2.  Red-team script. It tries to break the system: tamper with the database, inject bad data, kill each data source, expire the token, send 429 errors, fail the Telegram send. For each, show that the system halts or degrades safely and alerts.
+3.  reports/gap_closure_report.md with a table: item, status (DONE / TIME_GATED / OWNER_ACTION / BLOCKED), evidence path, command, result, date. Add a 'What could still be wrong' section with the top five residual risks and how each is monitored.
+21.4 Final verdict format
+End with exactly three lines:
+1.  Software completeness: x of N items DONE; list every item that is not.
+2.  Evidence of edge: replay results with intervals (survivorship-adjusted), holdout status (SEALED or authorized), and shadow progress as k of 30 trades.
+3.  Go-live readiness: NOT READY or READY, strictly per the scorecard thresholds set in 21.1 item 10.
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-11-16T08:08:53+05:30.
+</ADDITIONAL_METADATA>

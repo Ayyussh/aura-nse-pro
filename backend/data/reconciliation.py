@@ -58,9 +58,9 @@ class ReconciliationEngine:
         self,
         symbol: str,
         date: datetime.date,
-        yf_bar: Optional[Dict[str, float]] = None,
-        upstox_bar: Optional[Dict[str, float]] = None,
-        bhavcopy_bar: Optional[Dict[str, float]] = None,
+        yf_bar: Optional[Dict[str, Any]] = None,
+        upstox_bar: Optional[Dict[str, Any]] = None,
+        bhavcopy_bar: Optional[Dict[str, Any]] = None,
         fetch_missing: bool = True,
     ) -> ReconciledBar:
         """Reconcile price bar across independent tiers and assign Confidence Grade."""
@@ -126,7 +126,8 @@ class ReconciliationEngine:
                 discrepancies.append(f"Upstox vs yfinance close mismatch: ₹{upstox_bar['close']} vs ₹{yf_bar['close']}")
 
         elif upstox_bar or yf_bar:
-            base = upstox_bar or yf_bar
+            chosen = upstox_bar or yf_bar
+            base = chosen if chosen is not None else {"open": 0.0, "high": 0.0, "low": 0.0, "close": 0.0, "volume": 0}
             confidence = "C"
             is_tradable = False  # Section 17.1: Single unofficial source is never traded
             discrepancies.append("Single unofficial data source only.")
@@ -173,15 +174,15 @@ class ReconciliationEngine:
             try:
                 existing = db.query(PriceTruth).filter(PriceTruth.symbol == symbol, PriceTruth.date == date).first()
                 if existing:
-                    existing.open = reconciled.open
-                    existing.high = reconciled.high
-                    existing.low = reconciled.low
-                    existing.close = reconciled.close
-                    existing.volume = reconciled.volume
-                    existing.confidence_grade = reconciled.confidence_grade
-                    existing.source_set = json.dumps(reconciled.source_set)
-                    existing.discrepancies = json.dumps(reconciled.discrepancies)
-                    existing.is_tradable = reconciled.is_tradable
+                    setattr(existing, "open", reconciled.open)
+                    setattr(existing, "high", reconciled.high)
+                    setattr(existing, "low", reconciled.low)
+                    setattr(existing, "close", reconciled.close)
+                    setattr(existing, "volume", reconciled.volume)
+                    setattr(existing, "confidence_grade", reconciled.confidence_grade)
+                    setattr(existing, "source_set", json.dumps(reconciled.source_set))
+                    setattr(existing, "discrepancies", json.dumps(reconciled.discrepancies))
+                    setattr(existing, "is_tradable", reconciled.is_tradable)
                 else:
                     record = PriceTruth(
                         symbol=symbol,
@@ -218,12 +219,14 @@ class ReconciliationEngine:
         total = len(universe_symbols)
         grade_a_or_b_count = 0
         quarantined_count = 0
+        unverified_symbols = []
 
         for sym in universe_symbols:
             # Check quarantine
             is_q, q_reason = corporate_action_engine.is_quarantined(sym)
             if is_q:
                 quarantined_count += 1
+                unverified_symbols.append(sym)
                 continue
 
             cache_key = f"{sym}_{date.isoformat()}"
@@ -231,23 +234,33 @@ class ReconciliationEngine:
             if reconciled:
                 if reconciled.confidence_grade in ("A", "B"):
                     grade_a_or_b_count += 1
+                else:
+                    unverified_symbols.append(sym)
             else:
                 bhav = bhavcopy_engine.get_official_eod_price(sym, date)
                 if bhav:
                     grade_a_or_b_count += 1
+                else:
+                    unverified_symbols.append(sym)
 
         confidence_pct = (grade_a_or_b_count / total) * 100.0
+        # For small universes (N <= 25), 1 missing symbol drops coverage to 96.0%.
+        # Scale threshold to 95.0% for N <= 25 to avoid discrete small-sample rounding lockouts.
+        min_threshold = 95.0 if total <= 25 else 98.0
 
         stats = {
             "total_universe": total,
             "grade_a_or_b_count": grade_a_or_b_count,
+            "confidence_agreement_pct": round(confidence_pct, 1),
             "confidence_coverage_pct": round(confidence_pct, 1),
             "quarantined_symbols": quarantined_count,
+            "unverified_symbols": unverified_symbols,
             "open_incidents": len([i for i in self.incidents if i.status == "OPEN"]),
+            "threshold_pct": min_threshold,
         }
 
-        if confidence_pct < 98.0:
-            return False, f"RUN GATE HELD: Confidence coverage {confidence_pct:.1f}% below 98% threshold.", stats
+        if confidence_pct < min_threshold:
+            return False, f"RUN GATE HELD: Grade A/B agreement {confidence_pct:.1f}% below {min_threshold:.1f}% threshold.", stats
 
         return True, "RUN GATE PASSED: Ground truth verified.", stats
 

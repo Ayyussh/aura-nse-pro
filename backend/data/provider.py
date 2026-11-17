@@ -69,7 +69,7 @@ class MarketDataProvider:
         # Fetch from Yahoo Finance
         try:
             ticker = yf.Ticker(symbol)
-            df = ticker.history(period=period, interval=interval, auto_adjust=True)
+            df = ticker.history(period=period, interval=interval, auto_adjust=False)
 
             if df is None or df.empty:
                 logger.warning(f"Empty data returned for symbol: {symbol}")
@@ -79,15 +79,18 @@ class MarketDataProvider:
             if isinstance(df.columns, pd.MultiIndex):
                 df.columns = [col[0] if isinstance(col, tuple) else col for col in df.columns]
 
-            # Ensure standardized column names
+            # Ensure standardized column names (Close is raw EOD close matching Bhavcopy, Adj Close is corporate action adjusted)
             rename_map = {
                 "Open": "open",
                 "High": "high",
                 "Low": "low",
                 "Close": "close",
+                "Adj Close": "adjusted_close",
                 "Volume": "volume",
             }
             df = df.rename(columns=rename_map)
+            if "adjusted_close" not in df.columns:
+                df["adjusted_close"] = df.get("close", 0.0)
 
             # Strip timezone from index for consistent pandas operations
             if hasattr(df.index, "tz") and df.index.tz is not None:

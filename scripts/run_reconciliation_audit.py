@@ -88,8 +88,8 @@ def run_reconciliation_audit(target_date: datetime.date = datetime.date(2026, 11
             })
 
     total = len(symbols)
-    coverage_ab_pct = round(((grade_counts["A"] + grade_counts["B"]) / total) * 100.0, 2)
-    passed_gate_g1 = bool(coverage_ab_pct >= 98.0 and len(discrepancy_records) == 0)
+    agreement_ab_pct = round(((grade_counts["A"] + grade_counts["B"]) / total) * 100.0, 2)
+    passed_gate_g1 = bool(agreement_ab_pct >= 98.0 and len(discrepancy_records) == 0)
 
     report_payload = {
         "report_type": "MULTI_SOURCE_RECONCILIATION_MISMATCH_AUDIT",
@@ -97,18 +97,19 @@ def run_reconciliation_audit(target_date: datetime.date = datetime.date(2026, 11
         "audit_target_date": target_date.isoformat(),
         "total_symbols_audited": total,
         "confidence_grades": grade_counts,
-        "confidence_coverage_a_b_pct": coverage_ab_pct,
+        "confidence_agreement_a_b_pct": agreement_ab_pct,
+        "confidence_coverage_a_b_pct": agreement_ab_pct,
         "gate_g1_status": "PASSED" if passed_gate_g1 else "HELD",
         "gate_g1_threshold_pct": 98.0,
         "source_participation": source_stats,
         "total_discrepancies_detected": len(discrepancy_records),
         "discrepancy_details": discrepancy_records,
-        "symbol_master_active_records": len(symbol_master.records),
+        "symbol_master_active_records": len(symbol_master.events),
         "summary": (
-            f"Gate G1 Data Quality Contract PASSED: {coverage_ab_pct}% of universe reached Grade A/B confidence "
+            f"Gate G1 Data Quality Contract PASSED: {agreement_ab_pct}% of universe reached Grade A/B confidence "
             f"with zero unhandled price discrepancies."
             if passed_gate_g1
-            else f"Gate G1 Data Quality Contract HELD: Insufficient Grade A/B coverage ({coverage_ab_pct}% < 98%)."
+            else f"Gate G1 Data Quality Contract HELD: Insufficient Grade A/B agreement ({agreement_ab_pct}% < 98%)."
         ),
     }
 
@@ -118,7 +119,7 @@ def run_reconciliation_audit(target_date: datetime.date = datetime.date(2026, 11
     print(f"\n[REPORT] Saved Reconciliation Mismatch Report to {RECON_REPORT_FILE}")
     print(f"Total Symbols Audited: {total}")
     print(f"Grade Breakdown: {grade_counts}")
-    print(f"Grade A/B Coverage: {coverage_ab_pct}%")
+    print(f"Grade A/B Agreement: {agreement_ab_pct}%")
     print(f"Gate G1 Status: {report_payload['gate_g1_status']}")
     print(f"Discrepancies: {len(discrepancy_records)}")
     return report_payload

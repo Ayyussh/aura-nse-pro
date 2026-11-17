@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "report": "Section 21.1 Item 3 V5 Trailing Stop Stress Audit",
+    "source": "reports/results_master.json",
+    "generated_at": "2026-11-16T05:09:47.679341"
+  },
+  "rule": "Move stop to breakeven after +1.0R gain",
+  "base_fixed_stop": {
+    "n": 446,
+    "mean": 0.1406,
+    "ci_lower_95": 0.03,
+    "ci_upper_95": 0.2521,
+    "asymmetry": 0.0045
+  },
+  "worst_case_intraday_ordering": {
+    "n": 443,
+    "mean": 0.1464,
+    "ci_lower_95": 0.0295,
+    "ci_upper_95": 0.2625,
+    "asymmetry": 0.004
+  },
+  "best_case_intraday_ordering": {
+    "n": 443,
+    "mean": 0.0742,
+    "ci_lower_95": -0.0353,
+    "ci_upper_95": 0.1851,
+    "asymmetry": 0.0066
+  },
+  "breakeven_drag_confirmed": true
+}

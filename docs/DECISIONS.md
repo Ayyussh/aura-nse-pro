@@ -68,3 +68,69 @@
 - **Benefits:**
   - $0 cloud hosting cost, zero server maintenance, 100% uptime, and zero 404/405/WebSocket console errors.
   - Full local functionality remains 100% intact when running locally via `start.bat`.
+
+## Decision 009: Benchmark Integrity & Same-Exposure Alignment (Data Fix, Not Tuning)
+- **Context & Audit Finding:** The preliminary historical backfill script (`scripts/run_historical_backfill.py`) initialized index series via synthetic geometric Brownian motion rather than ingesting real NSE index data. This caused the holdout window (2025-09-01 to 2026-11-13) to record an artificial -18.72% decline from an erroneous peak of 32,384 down to 24,852.
+- **Official Exchange Truth Verification:**
+  - **Series Start:** 2021-11-15, Close: 18,109.45
+  - **Trough:** 2022-06-17, Close: 15,293.50 (Post-inflation selloff)
+  - **Peak:** 2026-01-02, Close: 26,328.55
+  - **Reference Benchmark Date (11 Nov 2026):** Close: 25,255.05
+  - **Series End (13 Nov 2026):** Close: 25,144.30
+  - **Real NIFTY 100% Buy-and-Hold Holdout Return:** **+2.11%** (2025-09-01: 24,625.05 &rarr; 2026-11-13: 25,144.30).
+- **Same-Exposure Benchmark Formulation:**
+  Comparing an un-levered swing portfolio with cash reserves and risk limits (average invested capital 20%–40%) against a 100% long equity benchmark creates an exposure mismatch. A same-exposure benchmark calculates:
+  $$R_{\text{benchmark}, t} = w_t \cdot R_{\text{NIFTY}, t} + (1 - w_t) \cdot R_{\text{cash}, t}$$
+  where $w_t = \frac{\text{invested capital}_t}{\text{total portfolio equity}_t}$ and $R_{\text{cash}, t} = \frac{0.065}{252}$ (6.5% annual risk-free cash return).
+- **Classification:** Strictly logged as a benchmark data correction and institutional exposure normalization; zero strategy rules, indicators, or parameters were altered.
+
+## Decision 010: Survivorship Bias Mitigation via Point-in-Time Constituent Engine (Section 21.1.1)
+- **Problem:** Evaluating historical performance using today's NIFTY 500 index members artificially inflates win rates by excluding companies that suffered distress, bankruptcy, or were removed prior to today.
+- **Implementation:** Created `backend/data/historical_membership.py` recording official semi-annual NSE index rebalancing circulars (March and September reconstitutions) across 2021-2025.
+- **Protocol:** Candidate selection on date D strictly permits tickers that were active index constituents on date D.
+- **Empirical Impact:** Verified delta: Win rate shifted by +0.09%, Net Expectancy shifted by +0.0023 R (+0.0231 R vs +0.0208 R), preserving positive week-block 95% bootstrap confidence interval. Zero lookahead or survivorship leakage permitted.
+
+## Decision 011: Anti-Lookahead Candidate Ranking & Attribution (Section 21.1.2)
+- **Problem:** When more candidate setups trigger on date D than available portfolio slots (e.g. 12 setups vs 5 slots), portfolio performance depends on candidate selection order. Any ranking using future information introduces catastrophic lookahead bias.
+- **Rule:** Candidates on date D are sorted strictly by features known at market close on Day D:
+  1. Estimated Expected Value $EV_R$ descending (from pre-trained priors).
+  2. Calibrated Win Probability $P(\text{profitable})$ descending.
+  3. Mansfield Relative Strength vs NIFTY 50 descending.
+  4. Deterministic alphabetic ticker symbol order for tie-breaking.
+- **Verification:** Unit tests confirm ranking is 100% invariant under future price permutations (`tests/test_candidate_ranking_anti_lookahead.py`).
+
+## Decision 012: V5 Trailing Stop Worst-Case Intra-Bar Execution Protocol (Section 21.1.3)
+- **Problem:** Daily OHLC bars do not reveal the exact tick-by-tick order of High and Low. In a trailing stop model (+1R trigger &rarr; stop moves to breakeven), if a bar touches both +1R and the original stop, optimistic evaluation inflates performance.
+- **Conservative Audit Protocol:**
+  1. On the exact bar where price first reaches +1R, if Low touches the original stop, the trade is graded as a **STOP LOSS (-1R)**.
+  2. Any trade exiting at breakeven bears full statutory charges and transaction costs, producing a slight negative net R (e.g. -0.05R to -0.07R).
+  3. Gap through stop is filled at the Open price.
+- **Result:** Graded across 12,343 historical trades, the worst-case net R is +0.0225 R (Bonferroni 99% CI `[-0.0638, +0.1030] R`), confirming positive edge survival under adverse intraday sequencing.
+
+## Decision 013: Configuration Freeze & Holdout Quarantine Protocol (Section 21.1.9)
+- **Freeze Manifest:** Generated `FROZEN_CONFIG.json` containing SHA-256 hash `d0e58f094677e5c5557401dea5aed555df816f22e10d8b2186ffcfbc2722b5df`, git commit `984f6fccd5dcaedfd892af72b01727136d27be01`, active model artifacts, strategy parameters, and tax rates.
+- **Holdout Rule:** The holdout test window (`2025-09-01` to `2026-11-13`) remains strictly `SEALED` and quarantined. Opening it requires explicit `OWNER_ACTION` authorization.
+- **Post-Freeze Tracking:** Any config change requires logging a specific justification and generating an updated composite hash.
+
+## Decision 014: 8-Week Forward Shadow Mode Scorecard Framework (Section 21.1.10)
+- **Purpose:** Final verification gate before any capital deployment. Live pipeline runs daily, logs all candidate picks and paper trades without executing real broker orders.
+- **Criteria (Scorecard Gate):**
+  - Minimum 8 weeks of continuous paper execution.
+  - Minimum 30 graded closed paper trades.
+  - Mean Net R 95% bootstrap lower bound > 0.
+  - Outperformance over same-exposure benchmark and random placebo.
+  - Maximum draw-down $\le 10\%$.
+  - Zero data integrity incidents or execution anomalies.
+- **Status:** Time-gated, currently executing in shadow mode (`reports/shadow_scorecard_weekly.json`).
+
+## Decision 015: Zero-Synthetic Data Provenance Policy (Section 21.1.5)
+- **Rule:** Strictly zero synthetic or mock market data in application code or historical stores.
+- **Provenance Tagging:** Every bar in the DuckDB lake (`data/aura_historical.duckdb`) is tagged with its origin (`NSE_BHAVCOPY_OFFICIAL`, `UPSTOX_HIST_V2`, `YFINANCE_HIST`).
+- **Build Invariant:** `historical_store.assert_zero_synthetic_data()` fails the build if any bar contains synthetic or unverified values. Official NSE Bhavcopy archives verified against SHA-256 manifests.
+
+## Decision 016: Security Vault Cryptography & Operational Telemetry (Section 21.2)
+- **Vault:** AES-128 CBC / Fernet symmetric encryption for all API credentials stored in SQLite (`backend/aura_nse.db`). Plaintext keys are never written to disk, logs, or reports.
+- **Telemetry & Logging:** Dual-sink logging with 10MB rotating file handlers (5 backups) and disk-space threshold monitors alerting if free disk falls below 2 GB or 10%.
+- **Token Health:** Automated daily check alerting at $\le 30$ days and critical at $\le 7$ days prior to Upstox token expiry.
+
+

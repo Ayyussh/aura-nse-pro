@@ -1,0 +1,88 @@
+{
+  "report_type": "FULL_UNIVERSE_CANDIDATE_REPLAY_REPORT",
+  "generated_at": "2026-11-15T18:10:26.806641+00:00",
+  "date_range": [
+    "2021-11-15",
+    "2025-08-31"
+  ],
+  "universe_equities_audited": 475,
+  "total_candidates_logged": 29572,
+  "total_portfolio_trades_taken": 569,
+  "setups_breakdown": {
+    "pullback_ema": {
+      "total_candidates": 15769,
+      "taken_in_portfolio": 353,
+      "rejected_candidates": 15416,
+      "p_target": 0.284,
+      "p_stop": 0.4787,
+      "p_expired": 0.2284,
+      "probabilities_sum": 0.9911,
+      "net_win_rate_pct": 43.85,
+      "net_win_rate_ci_95": [
+        40.26,
+        47.42
+      ],
+      "mean_net_r": 0.1159,
+      "net_r_week_block_ci_95": [
+        0.0178,
+        0.2138
+      ]
+    },
+    "breakout_52w": {
+      "total_candidates": 3869,
+      "taken_in_portfolio": 125,
+      "rejected_candidates": 3744,
+      "p_target": 0.3003,
+      "p_stop": 0.5234,
+      "p_expired": 0.1683,
+      "probabilities_sum": 0.992,
+      "net_win_rate_pct": 41.77,
+      "net_win_rate_ci_95": [
+        38.08,
+        45.43
+      ],
+      "mean_net_r": 0.066,
+      "net_r_week_block_ci_95": [
+        -0.0372,
+        0.1739
+      ]
+    },
+    "mean_reversion_rsi": {
+      "total_candidates": 9934,
+      "taken_in_portfolio": 95,
+      "rejected_candidates": 9839,
+      "p_target": 0.2533,
+      "p_stop": 0.4161,
+      "p_expired": 0.3213,
+      "probabilities_sum": 0.9907,
+      "net_win_rate_pct": 46.97,
+      "net_win_rate_ci_95": [
+        40.67,
+        53.18
+      ],
+      "mean_net_r": 0.1615,
+      "net_r_week_block_ci_95": [
+        0.0052,
+        0.3261
+      ]
+    }
+  },
+  "placebo_comparison": {
+    "matched_placebo_samples": 29555,
+    "placebo_win_rate_pct": 42.85,
+    "placebo_win_rate_ci_95": [
+      38.96,
+      46.76
+    ],
+    "placebo_mean_net_r": -0.0128,
+    "placebo_net_r_ci_95": [
+      -0.1416,
+      0.112
+    ],
+    "real_vs_placebo_diff_r": 0.1375,
+    "welch_t_stat": 2.9817,
+    "p_value": 0.0029,
+    "statistically_significant_at_05": true
+  },
+  "status": "DONE"
+}

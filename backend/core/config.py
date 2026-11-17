@@ -6,11 +6,12 @@ encryption helpers for API key vault.
 """
 
 from __future__ import annotations
+
 import hashlib
 import json
-import os
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
+
 import yaml
 from cryptography.fernet import Fernet
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -34,18 +35,18 @@ class Settings(BaseSettings):
     ADMIN_PASSWORD: str = "aura_nse_secure_pass_2026"
 
     # LLM keys
-    GEMINI_API_KEY_1: Optional[str] = None
-    GEMINI_API_KEY_2: Optional[str] = None
-    GEMINI_API_KEY_3: Optional[str] = None
+    GEMINI_API_KEY_1: str | None = None
+    GEMINI_API_KEY_2: str | None = None
+    GEMINI_API_KEY_3: str | None = None
 
-    GROQ_API_KEY: Optional[str] = None
-    OPENROUTER_API_KEY: Optional[str] = None
-    OPENAI_API_KEY: Optional[str] = None
+    GROQ_API_KEY: str | None = None
+    OPENROUTER_API_KEY: str | None = None
+    OPENAI_API_KEY: str | None = None
     OLLAMA_BASE_URL: str = "http://localhost:11434"
 
     # Alerts
-    TELEGRAM_BOT_TOKEN: Optional[str] = None
-    TELEGRAM_CHAT_ID: Optional[str] = None
+    TELEGRAM_BOT_TOKEN: str | None = None
+    TELEGRAM_CHAT_ID: str | None = None
 
     # Capital defaults
     INITIAL_CAPITAL: float = 100000.0
@@ -77,14 +78,14 @@ def decrypt_secret(cipher_text: str) -> str:
     return fernet_cipher.decrypt(cipher_text.encode()).decode()
 
 
-def mask_secret(secret: Optional[str]) -> str:
+def mask_secret(secret: str | None) -> str:
     """Mask a secret key for UI display (e.g., sk-...4a9f)."""
     if not secret or len(secret) < 8:
         return "********" if secret else ""
     return f"{secret[:4]}...{secret[-4:]}"
 
 
-def load_yaml_config(file_name: str) -> Dict[str, Any]:
+def load_yaml_config(file_name: str) -> dict[str, Any]:
     """Load a YAML configuration file from config/ directory."""
     file_path = CONFIG_DIR / file_name
     if not file_path.exists():
@@ -93,19 +94,19 @@ def load_yaml_config(file_name: str) -> Dict[str, Any]:
         return yaml.safe_load(f) or {}
 
 
-def get_strategy_config() -> Dict[str, Any]:
+def get_strategy_config() -> dict[str, Any]:
     return load_yaml_config("strategy.yaml")
 
 
-def get_charges_config() -> Dict[str, Any]:
+def get_charges_config() -> dict[str, Any]:
     return load_yaml_config("charges.yaml")
 
 
-def get_tax_config() -> Dict[str, Any]:
+def get_tax_config() -> dict[str, Any]:
     return load_yaml_config("tax.yaml")
 
 
-def get_groups_config() -> Dict[str, Any]:
+def get_groups_config() -> dict[str, Any]:
     file_path = CONFIG_DIR / "groups.yaml"
     if not file_path.exists():
         return {}

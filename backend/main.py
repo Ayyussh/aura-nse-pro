@@ -18,8 +18,12 @@ from fastapi.responses import JSONResponse
 from backend.api.auth import router as auth_router
 from backend.api.endpoints import router as api_router
 from backend.core.config import settings
+from backend.core.ops_monitor import configure_rotating_logger, check_disk_space
 from backend.db.init_db import init_database
 from backend.jobs.scheduler import start_scheduler, get_ist_now
+
+# Configure Rotating File Logging (10MB, 5 backups)
+configure_rotating_logger()
 
 logging.basicConfig(
     level=logging.INFO,

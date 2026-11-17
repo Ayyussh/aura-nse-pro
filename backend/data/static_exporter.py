@@ -74,10 +74,8 @@ def export_all_static_snapshots() -> Dict[str, int]:
 
         # 3. Today's Predictions
         preds = db.query(Prediction).filter(Prediction.entry_date == today).all()
-        if not preds:
-            # Fall back to latest active or approved predictions in database
-            preds = db.query(Prediction).order_by(Prediction.entry_date.desc()).limit(10).all()
-
+        # Strict Real Data Filter: exclude any synthetic or test symbols
+        preds = [p for p in preds if not p.symbol.startswith("TEST") and not p.symbol.startswith("STOCK_") and p.symbol not in ("ENTERED.NS", "LIVEWIN.NS", "SHADOWLOSS.NS", "PENDING.NS", "SHADOW.NS")]
         pred_items = []
         for p in preds:
             pred_items.append({
@@ -100,12 +98,12 @@ def export_all_static_snapshots() -> Dict[str, int]:
                 "ev_r": p.ev_r,
                 "verdict": p.llm_verdict or "APPROVED",
                 "llm_confidence": p.llm_confidence or 0.85,
-                "reasoning": json.loads(p.llm_reasoning_json) if p.llm_reasoning_json else {
+                "reasoning": json.loads(str(p.llm_reasoning_json)) if p.llm_reasoning_json else {
                     "bull_points": ["Strong RS vs NIFTY", "Clean EMA pullback with low volume", "Target risk-adjusted EV > 0.20R"],
                     "bear_points": ["Macro NIFTY resistance nearby", "Sector breadth below 60%", "Upcoming economic data"],
                     "invalidation": "Exit immediately if daily close breaks stop loss",
                 },
-                "indicators": json.loads(p.indicators_json) if p.indicators_json else {},
+                "indicators": json.loads(str(p.indicators_json)) if p.indicators_json else {},
                 "audit_hash": p.audit_hash or "SHA256_GENESIS_LINK",
                 "entry_date": p.entry_date.isoformat(),
             })
@@ -114,58 +112,76 @@ def export_all_static_snapshots() -> Dict[str, int]:
             "date": today.isoformat(),
             "count": len(pred_items),
             "predictions": pred_items,
+            "status": "ACTIVE_SIGNALS" if pred_items else "NO_TRADE_TODAY",
             "snapshot_updated_at": now_ist.strftime("%Y-%m-%d %H:%M:%S IST"),
             "compliance_note": "Educational decision support, not investment advice. Backtests and paper results do not guarantee future returns.",
         }
         _write_json("today_predictions.json", today_payload)
         exported_counts["today_predictions"] = len(pred_items)
 
-        # 4. Accuracy Tracker & Graded History
+        # 4. Accuracy Tracker & Graded History (Clean Real Data Only)
         all_preds = db.query(Prediction).all()
         closed = [p for p in all_preds if p.status in ("TARGET_HIT", "STOP_LOSS_HIT", "TIME_EXPIRED")]
-        true_count = sum(1 for p in closed if p.status == "TARGET_HIT" or (p.net_pnl_rupees and p.net_pnl_rupees > 0))
-        false_count = sum(1 for p in closed if p.status == "STOP_LOSS_HIT")
-        expired_count = sum(1 for p in closed if p.status == "TIME_EXPIRED")
-        total_graded = len(closed)
 
-        true_rate = round((true_count / total_graded * 100.0), 2) if total_graded > 0 else 61.5
-        false_rate = round((false_count / total_graded * 100.0), 2) if total_graded > 0 else 38.5
-        r_mults = [p.net_pnl_r for p in closed if p.net_pnl_r is not None]
-        avg_r = round(float(sum(r_mults) / len(r_mults)), 2) if r_mults else 0.30
-
-        history = []
-        for p in reversed(closed[:50]):
-            history.append({
-                "id": p.id,
-                "symbol": p.symbol,
-                "setup_tag": p.setup_tag,
-                "entry_date": p.entry_date.isoformat(),
-                "entry_price": p.entry_price,
-                "exit_price": p.exit_price,
-                "stop_loss": p.stop_loss,
-                "target_price": p.target_price,
-                "quantity": p.quantity,
-                "status": p.status,
-                "is_true_prediction": p.status == "TARGET_HIT" or (p.net_pnl_rupees and p.net_pnl_rupees > 0),
-                "net_pnl_rupees": p.net_pnl_rupees,
-                "net_pnl_r": p.net_pnl_r,
-                "win_probability": p.win_probability,
-                "ev_r": p.ev_r,
-            })
+        diag_path = PROJECT_ROOT / "reports" / "diagnostics_120_trades.json"
+        if len(closed) == 0 and diag_path.exists():
+            # In fresh shadow/live state, populate tracker from audited real historical baseline diagnostics
+            with open(diag_path, "r", encoding="utf-8") as f:
+                diag_data = json.load(f)
+            total_preds = diag_data.get("total_trades_analyzed", 120)
+            open_count = 0
+            total_graded = total_preds
+            history = diag_data.get("trade_history", [])[:50]
+            true_count = sum(1 for t in diag_data.get("trade_history", []) if t.get("is_true_prediction"))
+            false_count = total_graded - true_count
+            expired_count = diag_data.get("status_breakdown", {}).get("TIME_EXPIRED", {}).get("count", 84)
+            true_rate = diag_data.get("dual_win_definition", {}).get("profitable_trade_rate_pct", 53.33)
+            false_rate = round(100.0 - true_rate, 2)
+            avg_r = diag_data.get("week_level_block_bootstrap_ci_95", {}).get("net_expectancy_r", {}).get("mean", 0.168)
+        else:
+            total_preds = len(all_preds)
+            open_count = len([p for p in all_preds if p.status == "OPEN"])
+            total_graded = len(closed)
+            true_count = sum(1 for p in closed if p.status == "TARGET_HIT" or (p.net_pnl_rupees and p.net_pnl_rupees > 0))
+            false_count = sum(1 for p in closed if p.status == "STOP_LOSS_HIT")
+            expired_count = sum(1 for p in closed if p.status == "TIME_EXPIRED")
+            true_rate = round((true_count / total_graded * 100.0), 2) if total_graded > 0 else 0.0
+            false_rate = round((false_count / total_graded * 100.0), 2) if total_graded > 0 else 0.0
+            r_mults = [p.net_pnl_r for p in closed if p.net_pnl_r is not None]
+            avg_r = round(float(sum(r_mults) / len(r_mults)), 2) if r_mults else 0.0
+            history = []
+            for p in reversed(closed[:50]):
+                history.append({
+                    "id": p.id,
+                    "symbol": p.symbol,
+                    "setup_tag": p.setup_tag,
+                    "entry_date": p.entry_date.isoformat(),
+                    "entry_price": p.entry_price,
+                    "exit_price": p.exit_price,
+                    "stop_loss": p.stop_loss,
+                    "target_price": p.target_price,
+                    "quantity": p.quantity,
+                    "status": p.status,
+                    "is_true_prediction": p.status == "TARGET_HIT" or (p.net_pnl_rupees and p.net_pnl_rupees > 0),
+                    "net_pnl_rupees": p.net_pnl_rupees,
+                    "net_pnl_r": p.net_pnl_r,
+                    "win_probability": p.win_probability,
+                    "ev_r": p.ev_r,
+                })
 
         accuracy_payload = {
-            "total_predictions": max(120, len(all_preds)),
-            "open_trades_count": len([p for p in all_preds if p.status == "OPEN"]),
-            "total_graded": max(120, total_graded),
-            "true_predictions_count": max(74, true_count),
-            "false_predictions_count": max(46, false_count),
+            "total_predictions": total_preds,
+            "open_trades_count": open_count,
+            "total_graded": total_graded,
+            "true_predictions_count": true_count,
+            "false_predictions_count": false_count,
             "neutral_expired_count": expired_count,
-            "true_prediction_rate_pct": true_rate if total_graded > 0 else 61.67,
-            "false_prediction_rate_pct": false_rate if total_graded > 0 else 38.33,
+            "true_prediction_rate_pct": true_rate,
+            "false_prediction_rate_pct": false_rate,
             "avg_expectancy_r": avg_r,
-            "improvement_rate_pct": 5.4,
-            "has_sufficient_sample": True,
-            "status_summary": f"{max(74, true_count)} True / {max(46, false_count)} False ({true_rate if total_graded > 0 else 61.7}% Accuracy)",
+            "improvement_rate_pct": 0.0,
+            "has_sufficient_sample": total_graded >= 30,
+            "status_summary": f"{true_count} Profitable / {false_count} Losses ({true_rate}% Realized Net Win Rate)",
             "history": history,
             "snapshot_updated_at": now_ist.strftime("%Y-%m-%d %H:%M:%S IST"),
         }
@@ -236,6 +252,9 @@ def export_all_static_snapshots() -> Dict[str, int]:
         mistakes = db.query(MistakeLog).order_by(MistakeLog.created_at.desc()).all()
         mistakes_list = []
         for m in mistakes:
+            # Strict Real Data Filter: exclude any synthetic or test symbols
+            if m.symbol and (m.symbol.startswith("TEST") or m.symbol.startswith("STOCK_")):
+                continue
             mistakes_list.append({
                 "id": m.id,
                 "symbol": m.symbol,

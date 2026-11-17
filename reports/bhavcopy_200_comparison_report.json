@@ -1,0 +1,181 @@
+{
+  "report_type": "BHAVCOPY_200_SYMBOL_DAYS_COMPARISON",
+  "generated_at": "2026-11-15T13:16:13.232334+00:00",
+  "total_symbol_days_evaluated": 200,
+  "exact_price_matches": 200,
+  "grade_a_matches_le_0_1_pct": 200,
+  "grade_b_matches_le_0_5_pct": 200,
+  "agreement_pct_le_0_5": 100.0,
+  "mean_close_diff_pct": 0.0,
+  "max_close_diff_pct": 0.0,
+  "discrepancies_above_0_5_pct_count": 0,
+  "discrepancies_sample": [],
+  "sample_comparisons": [
+    {
+      "symbol": "IDFCFIRSTB.NS",
+      "date": "2026-09-08",
+      "store_close": 86.5,
+      "bhavcopy_close": 86.5,
+      "close_diff_pct": 0.0,
+      "store_volume": 11728338,
+      "bhavcopy_volume": 11728338,
+      "is_grade_a": true,
+      "is_grade_b": true
+    },
+    {
+      "symbol": "PFC.NS",
+      "date": "2026-11-13",
+      "store_close": 334.25,
+      "bhavcopy_close": 334.25,
+      "close_diff_pct": 0.0,
+      "store_volume": 5794828,
+      "bhavcopy_volume": 5794828,
+      "is_grade_a": true,
+      "is_grade_b": true
+    },
+    {
+      "symbol": "TATATECH.NS",
+      "date": "2026-08-28",
+      "store_close": 834.3499755859375,
+      "bhavcopy_close": 834.35,
+      "close_diff_pct": 0.0,
+      "store_volume": 2546795,
+      "bhavcopy_volume": 2546795,
+      "is_grade_a": true,
+      "is_grade_b": true
+    },
+    {
+      "symbol": "ICICIBANK.NS",
+      "date": "2026-09-07",
+      "store_close": 1427.5,
+      "bhavcopy_close": 1427.5,
+      "close_diff_pct": 0.0,
+      "store_volume": 8035111,
+      "bhavcopy_volume": 8035111,
+      "is_grade_a": true,
+      "is_grade_b": true
+    },
+    {
+      "symbol": "ICICIPRULI.NS",
+      "date": "2026-08-26",
+      "store_close": 515.0499877929688,
+      "bhavcopy_close": 515.05,
+      "close_diff_pct": 0.0,
+      "store_volume": 1266598,
+      "bhavcopy_volume": 1266598,
+      "is_grade_a": true,
+      "is_grade_b": true
+    },
+    {
+      "symbol": "AUBANK.NS",
+      "date": "2026-09-10",
+      "store_close": 1054.699951171875,
+      "bhavcopy_close": 1054.7,
+      "close_diff_pct": 0.0,
+      "store_volume": 1126434,
+      "bhavcopy_volume": 1126434,
+      "is_grade_a": true,
+      "is_grade_b": true
+    },
+    {
+      "symbol": "PERSISTENT.NS",
+      "date": "2026-11-13",
+      "store_close": 6003.0,
+      "bhavcopy_close": 6003.0,
+      "close_diff_pct": 0.0,
+      "store_volume": 346539,
+      "bhavcopy_volume": 346539,
+      "is_grade_a": true,
+      "is_grade_b": true
+    },
+    {
+      "symbol": "PNB.NS",
+      "date": "2026-08-24",
+      "store_close": 115.86000061035156,
+      "bhavcopy_close": 115.86,
+      "close_diff_pct": 0.0,
+      "store_volume": 10613260,
+      "bhavcopy_volume": 10613260,
+      "is_grade_a": true,
+      "is_grade_b": true
+    },
+    {
+      "symbol": "ETERNAL.NS",
+      "date": "2026-08-28",
+      "store_close": 328.0,
+      "bhavcopy_close": 328.0,
+      "close_diff_pct": 0.0,
+      "store_volume": 31385139,
+      "bhavcopy_volume": 31385139,
+      "is_grade_a": true,
+      "is_grade_b": true
+    },
+    {
+      "symbol": "BSE.NS",
+      "date": "2026-09-07",
+      "store_close": 3446.199951171875,
+      "bhavcopy_close": 3446.2,
+      "close_diff_pct": 0.0,
+      "store_volume": 3952983,
+      "bhavcopy_volume": 3952983,
+      "is_grade_a": true,
+      "is_grade_b": true
+    },
+    {
+      "symbol": "SBIN.NS",
+      "date": "2026-09-11",
+      "store_close": 995.7000122070312,
+      "bhavcopy_close": 995.7,
+      "close_diff_pct": 0.0,
+      "store_volume": 7771109,
+      "bhavcopy_volume": 7771109,
+      "is_grade_a": true,
+      "is_grade_b": true
+    },
+    {
+      "symbol": "SBILIFE.NS",
+      "date": "2026-08-25",
+      "store_close": 1755.0,
+      "bhavcopy_close": 1755.0,
+      "close_diff_pct": 0.0,
+      "store_volume": 1641672,
+      "bhavcopy_volume": 1641672,
+      "is_grade_a": true,
+      "is_grade_b": true
+    },
+    {
+      "symbol": "ICICIBANK.NS",
+      "date": "2026-08-28",
+      "store_close": 1422.800048828125,
+      "bhavcopy_close": 1422.8,
+      "close_diff_pct": 0.0,
+      "store_volume": 8625738,
+      "bhavcopy_volume": 8625738,
+      "is_grade_a": true,
+      "is_grade_b": true
+    },
+    {
+      "symbol": "HDFCLIFE.NS",
+      "date": "2026-08-27",
+      "store_close": 548.0,
+      "bhavcopy_close": 548.0,
+      "close_diff_pct": 0.0,
+      "store_volume": 2474974,
+      "bhavcopy_volume": 2474974,
+      "is_grade_a": true,
+      "is_grade_b": true
+    },
+    {
+      "symbol": "MOTILALOFS.NS",
+      "date": "2026-08-10",
+      "store_close": 882.0,
+      "bhavcopy_close": 882.0,
+      "close_diff_pct": 0.0,
+      "store_volume": 693336,
+      "bhavcopy_volume": 693336,
+      "is_grade_a": true,
+      "is_grade_b": true
+    }
+  ],
+  "status": "DONE"
+}

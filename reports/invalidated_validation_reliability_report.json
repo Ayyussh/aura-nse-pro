@@ -1,0 +1,27 @@
+{
+  "report_type": "VALIDATION_SKILL_CLEAN_REPORT",
+  "sample_size": 98,
+  "date_range": [
+    "2024-07-02",
+    "2025-08-28"
+  ],
+  "brier_score": 0.0752,
+  "brier_skill_score": -0.0031,
+  "brier_skill_score_ci_95": [
+    -0.688,
+    0.5801
+  ],
+  "auc_roc": 0.4875,
+  "spearman_rank_correlation": {
+    "rho": -0.104,
+    "p_value": 0.30813,
+    "ci_95": [
+      0.063,
+      0.0711
+    ]
+  },
+  "leakage_rule_passed": true,
+  "status": "INVALID_SYNTHETIC_INPUT",
+  "invalidation_reason": "Marked INVALID_SYNTHETIC_INPUT pursuant to investor-grade audit. Prior results were contaminated by Brownian motion random walk generators in run_historical_backfill.py.",
+  "invalidated_at": "2026-11-15T13:39:52.939510+00:00"
+}

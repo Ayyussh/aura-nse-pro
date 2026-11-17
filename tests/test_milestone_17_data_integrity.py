@@ -255,3 +255,25 @@ def test_intraday_replay_tie_breaker():
     assert res_status == "TARGET_HIT"
     assert exit_price == target
     assert "target reached before stop" in reason
+
+
+def test_historical_store_duckdb_parquet():
+    """Verify DuckDB & Parquet historical store loading and query speed."""
+    from backend.data.historical_store import historical_store
+
+    # Ensure store has data for ^NSEI.NS
+    df = historical_store.load_ohlcv("^NSEI.NS")
+    assert not df.empty
+    assert len(df) >= 1000
+    assert "adjusted_close" in df.columns
+    assert "volume" in df.columns
+    assert "close" in df.columns
+
+    # Test duckdb direct SQL query
+    import duckdb
+    con = duckdb.connect(str(historical_store.duckdb_path), read_only=True)
+    count = con.execute("SELECT count(*) FROM daily_ohlcv WHERE symbol = '^NSEI.NS'").fetchone()[0]
+    con.close()
+    assert count >= 1000
+
+

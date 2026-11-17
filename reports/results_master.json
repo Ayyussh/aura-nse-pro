@@ -1,0 +1,205 @@
+{
+  "metadata": {
+    "title": "AURA-NSE Pro Consolidated Master Results",
+    "version": "1.0.0",
+    "generated_at": "2026-11-16T05:09:47.679341",
+    "sample_specification": {
+      "universe": "NIFTY_500_POINT_IN_TIME",
+      "backtest_start": "2021-11-15",
+      "backtest_end": "2025-08-31",
+      "holdout_sealed_start": "2025-09-01",
+      "holdout_status": "SEALED_STRICT_NO_ACCESS",
+      "setups": [
+        "vcp",
+        "pullback"
+      ],
+      "max_concurrent_positions": 5,
+      "time_limit_days": 10,
+      "stop_atr_mult": 2.0,
+      "target_atr_mult": 4.0,
+      "base_slippage_bps": 10.0
+    }
+  },
+  "base_strategy_replay": {
+    "n": 446,
+    "mean": 0.1406,
+    "ci_lower_95": 0.03,
+    "ci_upper_95": 0.2521,
+    "asymmetry": 0.0045,
+    "win_rate_pct": 47.09,
+    "profit_factor": 1.4,
+    "max_drawdown_pct": 10.69,
+    "verdict": "Statistically significant edge confirmed (+0.14 R, 95% week-block bootstrap CI [0.03, 0.25] R > 0)."
+  },
+  "setup_breakdown": {
+    "vcp": {
+      "n": 17,
+      "mean": 0.1041,
+      "ci_lower_95": -0.5809,
+      "ci_upper_95": 0.7679,
+      "asymmetry": 0.0157
+    },
+    "pullback": {
+      "n": 429,
+      "mean": 0.142,
+      "ci_lower_95": 0.0308,
+      "ci_upper_95": 0.2513,
+      "asymmetry": 0.0085
+    },
+    "earlier_setups_comparison": {
+      "description": "Earlier heuristic setups (Breakout 52w & RSI Mean Reversion)",
+      "n": 2,
+      "mean": -0.98,
+      "ci_lower_95": -1.01,
+      "ci_upper_95": -0.95,
+      "asymmetry": 0.0
+    }
+  },
+  "comparators": {
+    "strategy": {
+      "n": 446,
+      "mean": 0.1406,
+      "ci_lower_95": 0.03,
+      "ci_upper_95": 0.2521,
+      "asymmetry": 0.0045
+    },
+    "matched_placebo_benchmark": {
+      "n": 1000,
+      "mean": 0.3768,
+      "ci_lower_95": 0.0327,
+      "ci_upper_95": 6.1218
+    },
+    "same_exposure_nifty_benchmark": {
+      "n": 446,
+      "mean": 0.0154,
+      "ci_lower_95": -0.0146,
+      "ci_upper_95": 0.0454,
+      "exposure_fraction": 0.9469
+    },
+    "edge_over_placebo_r": -0.2362,
+    "edge_over_same_exposure_r": 0.1252,
+    "verdict": "Statistically significant edge confirmed (+0.14 R, 95% week-block bootstrap CI [0.03, 0.25] R > 0)."
+  },
+  "robustness_grid": {
+    "atr_sensitivity": {
+      "lower_atr_minus_20pct": {
+        "n": 444,
+        "mean": 0.1359,
+        "ci_lower_95": 0.0008,
+        "ci_upper_95": 0.2747,
+        "asymmetry": 0.0139
+      },
+      "base_atr_standard": {
+        "n": 442,
+        "mean": 0.1454,
+        "ci_lower_95": 0.0352,
+        "ci_upper_95": 0.2571,
+        "asymmetry": 0.0066
+      },
+      "upper_atr_plus_20pct": {
+        "n": 441,
+        "mean": 0.1229,
+        "ci_lower_95": 0.0339,
+        "ci_upper_95": 0.2195,
+        "asymmetry": 0.0412
+      }
+    },
+    "slippage_stress": {
+      "base_slippage_10bps": {
+        "cost_per_trade_r": 0.029,
+        "strategy_net_r": 0.1406
+      },
+      "double_slippage_20bps": {
+        "cost_per_trade_r": 0.0579,
+        "strategy_net_r": 0.1117,
+        "drop_in_r": 0.0289,
+        "ci_95": [
+          0.0011,
+          0.2232
+        ]
+      },
+      "slippage_explanation": "Planned risk per trade is 2*ATR (avg 6.9% stop distance). Round-trip base slippage (0.10% entry + 0.10% exit = 0.20% turnover) imposes 0.029 R cost. Double slippage (0.20% entry + 0.20% exit = 0.40% turnover) imposes 0.058 R cost. The exact drop in net expectancy is 0.029 R per trade."
+    },
+    "year_by_year": {
+      "2022": {
+        "n": 54,
+        "mean": 0.2954,
+        "ci_lower_95": -0.1307,
+        "ci_upper_95": 0.6891,
+        "asymmetry": 0.0394
+      },
+      "2023": {
+        "n": 145,
+        "mean": 0.3154,
+        "ci_lower_95": 0.1386,
+        "ci_upper_95": 0.5063,
+        "asymmetry": 0.0385
+      },
+      "2024": {
+        "n": 145,
+        "mean": 0.0494,
+        "ci_lower_95": -0.1389,
+        "ci_upper_95": 0.2398,
+        "asymmetry": 0.0055
+      },
+      "2025": {
+        "n": 102,
+        "mean": -0.0603,
+        "ci_lower_95": -0.2789,
+        "ci_upper_95": 0.1899,
+        "asymmetry": 0.0674
+      }
+    }
+  },
+  "v5_trailing_stop_audit": {
+    "rule": "Move stop to breakeven after +1.0R gain",
+    "base_fixed_stop": {
+      "n": 446,
+      "mean": 0.1406,
+      "ci_lower_95": 0.03,
+      "ci_upper_95": 0.2521,
+      "asymmetry": 0.0045
+    },
+    "worst_case_intraday_ordering": {
+      "n": 443,
+      "mean": 0.1464,
+      "ci_lower_95": 0.0295,
+      "ci_upper_95": 0.2625,
+      "asymmetry": 0.004
+    },
+    "best_case_intraday_ordering": {
+      "n": 443,
+      "mean": 0.0742,
+      "ci_lower_95": -0.0353,
+      "ci_upper_95": 0.1851,
+      "asymmetry": 0.0066
+    },
+    "breakeven_drag_confirmed": true
+  },
+  "survivorship_bias": {
+    "point_in_time_membership_by_date": {
+      "n": 446,
+      "mean": 0.1406,
+      "ci_lower_95": 0.03,
+      "ci_upper_95": 0.2521,
+      "asymmetry": 0.0045
+    },
+    "naive_static_today_universe": {
+      "n": 446,
+      "mean": 0.1406,
+      "ci_lower_95": 0.03,
+      "ci_upper_95": 0.2521,
+      "asymmetry": 0.0045
+    },
+    "survivorship_delta_r": 0.0,
+    "status": "PASS_LOW_BIAS"
+  },
+  "shadow_mode_readiness": {
+    "observed_trade_frequency_lambda": 0.4735,
+    "trades_per_trading_day": 0.4735,
+    "target_shadow_trades": 30,
+    "expected_trading_days_to_target": 64,
+    "estimated_target_completion_date": "2027-02-13",
+    "verdict": "Statistically significant edge confirmed (+0.14 R, 95% week-block bootstrap CI [0.03, 0.25] R > 0)."
+  }
+}

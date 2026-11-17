@@ -1,0 +1,135 @@
+{
+  "mode": "LIVE_SHADOW_MODE",
+  "status": "ACTIVE_RUNNING",
+  "timestamp_ist": "2026-11-16 10:53:42 IST",
+  "timestamp_utc": "2026-11-16T05:23:42.736486+00:00",
+  "broker_order_execution": "DISABLED (Decision Support Only - Zero Orders Placed)",
+  "pipeline_summary": {
+    "status": "SUCCESS",
+    "date": "2026-11-16",
+    "regime": {
+      "regime_label": "GREEN",
+      "is_shadow_mode": false,
+      "sizing_multiplier": 1.0,
+      "description": "Favorable / Bullish: NIFTY trading above key short-term EMAs and India VIX remains subdued (<= 18).",
+      "nifty_close": 25218.05,
+      "nifty_20_ema": 24102.79,
+      "nifty_50_ema": 23681.02,
+      "nifty_200_sma": 23992.06,
+      "nifty_above_20ema": true,
+      "nifty_above_50ema": true,
+      "nifty_above_200sma": true,
+      "india_vix": 15.54,
+      "vix_5d_change": -1.93,
+      "top_leading_sectors": [
+        "Pharma",
+        "Banking"
+      ],
+      "sector_rankings": [
+        {
+          "sector": "Pharma",
+          "monthly_return_pct": 10.55,
+          "relative_strength": 0.89,
+          "is_outperforming": true
+        },
+        {
+          "sector": "Banking",
+          "monthly_return_pct": 9.89,
+          "relative_strength": 0.24,
+          "is_outperforming": true
+        },
+        {
+          "sector": "Auto",
+          "monthly_return_pct": 8.49,
+          "relative_strength": -1.17,
+          "is_outperforming": false
+        },
+        {
+          "sector": "IT",
+          "monthly_return_pct": 4.07,
+          "relative_strength": -5.59,
+          "is_outperforming": false
+        },
+        {
+          "sector": "Metals",
+          "monthly_return_pct": 3.8,
+          "relative_strength": -5.86,
+          "is_outperforming": false
+        },
+        {
+          "sector": "Energy",
+          "monthly_return_pct": 2.42,
+          "relative_strength": -7.24,
+          "is_outperforming": false
+        }
+      ],
+      "evaluated_at": "2026-11-16T05:23:39.707726"
+    },
+    "approved_count": 0,
+    "approved_candidates": [],
+    "rejected_count": 14,
+    "rejected_candidates": [
+      {
+        "symbol": "TCS.NS",
+        "reason": "Trend failed: Close (2403.40) > EMA50 (2354.32) > SMA200 (2395.44) required.; RSI 49.9 outside institutional sweet spot [50.0, 70.0].; MACD line (39.76) not above Signal (59.33).; Volume ratio 0.15x below required 1.2x 20d SMA.; Relative strength vs NIFTY 50 (-11.45%) is negative (lagging index)."
+      },
+      {
+        "symbol": "INFY.NS",
+        "reason": "Trend failed: Close (1145.90) > EMA50 (1115.93) > SMA200 (1191.19) required.; ADX 12.9 below minimum threshold of 20.0.; MACD line (17.53) not above Signal (21.78).; Volume ratio 0.11x below required 1.2x 20d SMA.; Relative strength vs NIFTY 50 (-10.27%) is negative (lagging index)."
+      },
+      {
+        "symbol": "HCLTECH.NS",
+        "reason": "MACD line (21.70) not above Signal (31.60).; Volume ratio 0.17x below required 1.2x 20d SMA.; Relative strength vs NIFTY 50 (-8.64%) is negative (lagging index)."
+      },
+      {
+        "symbol": "WIPRO.NS",
+        "reason": "Trend failed: Close (193.87) > EMA50 (183.15) > SMA200 (190.51) required.; MACD line (5.94) not above Signal (6.55).; Volume ratio 0.12x below required 1.2x 20d SMA.; Relative strength vs NIFTY 50 (-3.82%) is negative (lagging index)."
+      },
+      {
+        "symbol": "TECHM.NS",
+        "reason": "MACD line (40.40) not above Signal (51.09).; Volume ratio 0.12x below required 1.2x 20d SMA.; Relative strength vs NIFTY 50 (-9.75%) is negative (lagging index)."
+      },
+      {
+        "symbol": "PERSISTENT.NS",
+        "reason": "ADX 13.2 below minimum threshold of 20.0.; MACD line (102.55) not above Signal (115.26).; Volume ratio 0.20x below required 1.2x 20d SMA.; Relative strength vs NIFTY 50 (-4.41%) is negative (lagging index)."
+      },
+      {
+        "symbol": "COFORGE.NS",
+        "reason": "ADX 12.1 below minimum threshold of 20.0.; MACD line (42.05) not above Signal (48.09).; Volume ratio 0.19x below required 1.2x 20d SMA.; Relative strength vs NIFTY 50 (-5.22%) is negative (lagging index)."
+      },
+      {
+        "symbol": "MPHASIS.NS",
+        "reason": "Trend failed: Close (2418.20) > EMA50 (2427.06) > SMA200 (2353.77) required.; RSI 46.9 outside institutional sweet spot [50.0, 70.0].; MACD line (8.18) not above Signal (27.34).; Volume ratio 0.13x below required 1.2x 20d SMA.; Relative strength vs NIFTY 50 (-12.22%) is negative (lagging index)."
+      },
+      {
+        "symbol": "TATAELXSI.NS",
+        "reason": "20-day avg volume 308,694 below 500,000"
+      },
+      {
+        "symbol": "TATATECH.NS",
+        "reason": "Trend failed: Close (660.30) > EMA50 (702.63) > SMA200 (681.66) required.; ADX 12.1 below minimum threshold of 20.0.; RSI 41.5 outside institutional sweet spot [50.0, 70.0].; Volume ratio 0.22x below required 1.2x 20d SMA.; Relative strength vs NIFTY 50 (-17.73%) is negative (lagging index)."
+      },
+      {
+        "symbol": "NAUKRI.NS",
+        "reason": "Trend failed: Close (1178.80) > EMA50 (1216.99) > SMA200 (1128.92) required.; ADX 16.6 below minimum threshold of 20.0.; RSI 43.6 outside institutional sweet spot [50.0, 70.0].; Volume ratio 0.08x below required 1.2x 20d SMA.; Relative strength vs NIFTY 50 (-15.77%) is negative (lagging index)."
+      },
+      {
+        "symbol": "ETERNAL.NS",
+        "reason": "RSI 70.2 outside institutional sweet spot [50.0, 70.0].; Volume ratio 0.29x below required 1.2x 20d SMA."
+      },
+      {
+        "symbol": "SWIGGY.NS",
+        "reason": "Trend failed: Close (188.27) > EMA50 (221.86) > SMA200 (267.88) required.; RSI 37.7 outside institutional sweet spot [50.0, 70.0].; Volume ratio 0.17x below required 1.2x 20d SMA.; Relative strength vs NIFTY 50 (-28.60%) is negative (lagging index).; Stop distance 9.04% exceeds maximum allowable 8.0%."
+      },
+      {
+        "symbol": "POLICYBZR.NS",
+        "reason": "Trend failed: Close (1091.80) > EMA50 (1199.55) > SMA200 (1516.85) required.; Volume ratio 0.65x below required 1.2x 20d SMA.; Relative strength vs NIFTY 50 (-6.91%) is negative (lagging index).; Stop distance 9.21% exceeds maximum allowable 8.0%."
+      }
+    ],
+    "briefing_script": "Good morning. This is your 9:00 AM market briefing for November 16, 2026. The NSE Macro Regime is GREEN. NIFTY 50 is at 25,218 and India VIX is at 15.5. Today, our models screened 15 candidates, but none satisfied all institutional criteria with positive expected value. Our ruling today is NO TRADE TODAY. Cash is a valid position during market uncertainty.",
+    "as_of_ist": "10:53 AM IST"
+  },
+  "recent_shadow_picks_count": 0,
+  "recent_shadow_picks": [],
+  "compliance_footer": "Educational decision support, not investment advice. Backtests and paper results do not guarantee future returns."
+}

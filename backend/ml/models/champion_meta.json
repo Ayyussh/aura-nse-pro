@@ -1,9 +1,14 @@
 {
-  "model_version": "v1.18.0",
-  "promoted_at": "2026-11-14T18:08:01.066286",
-  "brier_score": 0.0434,
-  "auc_score": 0.9928,
-  "training_samples": 400,
-  "validation_samples": 100,
-  "live_trade_experiences": 0
+  "model_type": "LogisticRegression+CalibratedClassifierCV(sigmoid)",
+  "trained_at": "2026-11-15T13:39:53.038468+00:00",
+  "n_train": 176,
+  "train_dates": [
+    "2022-09-06",
+    "2024-06-10"
+  ],
+  "brier_score": 0.0752,
+  "auc": 0.4875,
+  "brier_skill_score": -0.0031,
+  "spearman_rho": -0.104,
+  "status": "CLEAN_TRAINED_ON_REAL_DATA"
 }

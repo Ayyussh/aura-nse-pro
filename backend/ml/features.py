@@ -17,21 +17,65 @@ from backend.strategies.indicators import (
     compute_macd,
     compute_adx,
     compute_relative_strength,
+    compute_mansfield_relative_strength,
 )
 
 
-FEATURE_COLUMNS = [
+
+FEATURE_BATCH_A = [
     "rsi_14",
     "adx_14",
-    "atr_pct",
+    "macd_norm",
     "dist_ema20_pct",
     "dist_ema50_pct",
     "dist_sma200_pct",
-    "macd_norm",
+]  # Trend & Momentum
+
+FEATURE_BATCH_B = [
+    "atr_pct",
     "vol_ratio_20d",
-    "dist_52w_high_pct",
+    "vol_trend_5d",
+]  # Volume & Volatility
+
+FEATURE_BATCH_C = [
     "rs_vs_nifty_20d",
-]
+    "dist_52w_high_pct",
+    "mansfield_rs_50d",
+]  # Relative Strength
+
+FEATURE_BATCH_D = [
+    "vix_level_proxy",
+    "nifty_trend_score",
+]  # Macro & Regime Context
+
+# All combined features strictly subject to <= 25 feature cap (Section 18.6 U5)
+FEATURE_COLUMNS = FEATURE_BATCH_A + FEATURE_BATCH_B + FEATURE_BATCH_C + FEATURE_BATCH_D
+assert len(FEATURE_COLUMNS) <= 25, f"Feature count {len(FEATURE_COLUMNS)} exceeds institutional 25-feature cap!"
+
+
+def cross_sectional_rank_normalize(
+    universe_features: Dict[str, Dict[str, float]],
+) -> Dict[str, Dict[str, float]]:
+    """Cross-sectional uniform rank normalization [0.0, 1.0] across universe on day D (Section 18.6 U5).
+    
+    Prevents market-wide regime shift distortion and outlier leverage.
+    """
+    if not universe_features:
+        return {}
+
+    symbols = list(universe_features.keys())
+    normalized: Dict[str, Dict[str, float]] = {s: {} for s in symbols}
+
+    for col in FEATURE_COLUMNS:
+        raw_vals = [universe_features[s].get(col, 0.0) for s in symbols]
+        s_series = pd.Series(raw_vals, index=symbols)
+        # Rank from 0 to 1
+        ranked = s_series.rank(pct=True, method="average")
+        for s in symbols:
+            normalized[s][col] = round(float(ranked[s]), 4)
+
+    return normalized
+
 
 
 def extract_features_from_df(
@@ -60,36 +104,52 @@ def extract_features_from_df(
     adx14 = float(compute_adx(sub_df, 14).iloc[-1])
 
     vol_sma20 = float(compute_sma(volume, 20).iloc[-1])
+    vol_sma5 = float(compute_sma(volume, 5).iloc[-1])
     vol_last = float(volume.iloc[-1])
     vol_ratio = vol_last / vol_sma20 if vol_sma20 > 0 else 1.0
+    vol_trend = vol_sma5 / vol_sma20 if vol_sma20 > 0 else 1.0
 
     high_52w = float(high.tail(252).max()) if len(high) >= 252 else float(high.max())
     dist_52w_high = ((high_52w - c_cur) / high_52w) * 100.0 if high_52w > 0 else 0.0
 
     rs_20d = 0.0
+    mansfield_rs = 0.0
+    nifty_trend = 1.0
     if nifty_df is not None and len(nifty_df) >= 20:
         nifty_sub = nifty_df.loc[nifty_df.index <= sub_df.index[-1]]
         if len(nifty_sub) >= 20:
             rs_20d = compute_relative_strength(close, nifty_sub["close"], 20)
+            mrs_series = compute_mansfield_relative_strength(close, nifty_sub["close"], 50)
+            mansfield_rs = float(mrs_series.iloc[-1]) if not mrs_series.empty else 0.0
+            if len(nifty_sub) >= 50:
+                n_c = float(nifty_sub["close"].iloc[-1])
+                n_ema50 = float(compute_ema(nifty_sub["close"], 50).iloc[-1])
+                nifty_trend = 1.0 if n_c >= n_ema50 else -1.0
 
     atr_pct = (atr14 / c_cur) * 100.0 if c_cur > 0 else 0.0
     dist_ema20 = ((c_cur - ema20) / ema20) * 100.0 if ema20 > 0 else 0.0
     dist_ema50 = ((c_cur - ema50) / ema50) * 100.0 if ema50 > 0 else 0.0
     dist_sma200 = ((c_cur - sma200) / sma200) * 100.0 if sma200 > 0 else 0.0
     macd_norm = (macd_val / c_cur) * 1000.0 if c_cur > 0 else 0.0
+    vix_proxy = min(35.0, max(10.0, atr_pct * 7.5))
 
     return {
         "rsi_14": round(rsi14, 2),
         "adx_14": round(adx14, 2),
-        "atr_pct": round(atr_pct, 2),
+        "macd_norm": round(macd_norm, 2),
         "dist_ema20_pct": round(dist_ema20, 2),
         "dist_ema50_pct": round(dist_ema50, 2),
         "dist_sma200_pct": round(dist_sma200, 2),
-        "macd_norm": round(macd_norm, 2),
+        "atr_pct": round(atr_pct, 2),
         "vol_ratio_20d": round(vol_ratio, 2),
-        "dist_52w_high_pct": round(dist_52w_high, 2),
+        "vol_trend_5d": round(vol_trend, 2),
         "rs_vs_nifty_20d": round(rs_20d, 2),
+        "dist_52w_high_pct": round(dist_52w_high, 2),
+        "mansfield_rs_50d": round(mansfield_rs, 2),
+        "vix_level_proxy": round(vix_proxy, 2),
+        "nifty_trend_score": round(nifty_trend, 2),
     }
+
 
 
 def compute_triple_barrier_label(

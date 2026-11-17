@@ -15,3 +15,20 @@
 ## 4. Single-User Decision Support Scope
 - AURA-NSE Pro is strictly an educational decision-support and paper-trading platform. It does not execute live orders on exchange order books and does not broadcast recommendations to third-party channels.
 - Backtests and paper-trading metrics do not account for instantaneous market impact of multi-crore institutional blocks.
+
+## 5. Daily Bar Intraday Path Ambiguity
+- Daily OHLCV bars do not provide intra-bar tick sequences. On days where both high and low breach critical price boundaries (+1R trigger and original stop), the system enforces a strict worst-case order assumption (stop loss hit first, -1R attribution).
+- For live shadow execution, intraday tick logging or trailing stop orders placed directly at the broker would provide precise tick execution.
+
+## 6. Corporate Action & Restructuring Quarantines
+- Stock splits and bonus issues are automatically adjusted across price and quantity histories.
+- However, complex demergers (e.g. spinoffs like Tata Motors PV/CV, Vedanta) disrupt technical indicators (EMA, ATR) and ML feature baselines. Any stock undergoing a major demerger is placed under a strict 20-trading-day quarantine during which trading signals are suppressed.
+
+## 7. Dual Operating Modes: GitOps Static Host vs Local Full-Stack
+- On GitHub Pages (`isStaticHost = true`), the platform operates as a read-only analytics portal consuming pre-generated JSON snapshots. Live WebSockets and interactive POST endpoints are inactive.
+- Full interactive capabilities (real-time scans, encrypted vault management, instant ML retraining) run via local backend server (`start.bat`).
+
+## 8. Forward Shadow Scorecard Time-Gate
+- Historical edge validation (survivorship-corrected, Bonferroni-corrected, placebo-beating) is necessary but insufficient for capital allocation.
+- The system enforces a mandatory 8-week, 30-trade forward live paper trading period before any go-live recommendation can be issued.
+

@@ -1,0 +1,20 @@
+{
+  "report_type": "CLEAN_REAL_DATA_DIAGNOSTICS",
+  "total_trades_analyzed": 176,
+  "status_breakdown": {
+    "TARGET_HIT": 12,
+    "STOP_LOSS_HIT": 43,
+    "TIME_EXPIRED": 121
+  },
+  "time_expired_analysis": {
+    "count": 121,
+    "mean_net_r": 0.2224,
+    "ci_95": [
+      0.0877,
+      0.3706
+    ]
+  },
+  "status": "INVALID_SYNTHETIC_INPUT",
+  "invalidation_reason": "Marked INVALID_SYNTHETIC_INPUT pursuant to investor-grade audit. Prior results were contaminated by Brownian motion random walk generators in run_historical_backfill.py.",
+  "invalidated_at": "2026-11-15T13:39:52.934857+00:00"
+}

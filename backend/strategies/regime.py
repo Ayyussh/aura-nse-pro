@@ -5,14 +5,12 @@ and outputs dynamic sizing multipliers (Green: 100%, Amber: 50%, Red: 0%).
 """
 
 from __future__ import annotations
-import datetime
-from typing import Dict, Any, List
 
-import pandas as pd
+import datetime
+from typing import Any, Dict, List, Optional
 
 from backend.data.provider import data_provider
 from backend.strategies.indicators import compute_ema
-
 
 REGIME_RANK = {"RED": 0, "AMBER": 1, "GREEN": 2}
 

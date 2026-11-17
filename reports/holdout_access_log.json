@@ -1,0 +1,562 @@
+[
+  {
+    "access_id": "HOLDOUT_ACCESS_1794743526",
+    "timestamp": "2026-11-15T11:52:06.236232+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794744103",
+    "timestamp": "2026-11-15T12:01:43.361771+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794744178",
+    "timestamp": "2026-11-15T12:02:58.595558+00:00",
+    "requester": "Antigravity P8 Evaluation Runner",
+    "reason": "Phase P8 Formal Verification and Model Comparison (Commit: 984f6fccd5dcaedfd892af72b01727136d27be01)",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794744178",
+    "timestamp": "2026-11-15T12:02:58.599731+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794745077",
+    "timestamp": "2026-11-15T12:17:57.213552+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794745911",
+    "timestamp": "2026-11-15T12:31:51.438448+00:00",
+    "requester": "Antigravity P8 Evaluation Runner",
+    "reason": "Phase P8 Formal Verification and Model Comparison (Commit: 984f6fccd5dcaedfd892af72b01727136d27be01)",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794745911",
+    "timestamp": "2026-11-15T12:31:51.442776+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794746374",
+    "timestamp": "2026-11-15T12:39:34.217104+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794746492",
+    "timestamp": "2026-11-15T12:41:32.174065+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794746555",
+    "timestamp": "2026-11-15T12:42:35.851610+00:00",
+    "requester": "Antigravity P8 Evaluation Runner",
+    "reason": "Phase P8 Formal Verification and Model Comparison (Commit: 984f6fccd5dcaedfd892af72b01727136d27be01)",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794746555",
+    "timestamp": "2026-11-15T12:42:35.858700+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794746641",
+    "timestamp": "2026-11-15T12:44:01.152984+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794746704",
+    "timestamp": "2026-11-15T12:45:04.000902+00:00",
+    "requester": "Antigravity P8 Evaluation Runner",
+    "reason": "Phase P8 Formal Verification and Model Comparison (Commit: 984f6fccd5dcaedfd892af72b01727136d27be01)",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794746704",
+    "timestamp": "2026-11-15T12:45:04.010467+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794750028",
+    "timestamp": "2026-11-15T13:40:28.257342+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794750272",
+    "timestamp": "2026-11-15T13:44:32.536886+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794750358",
+    "timestamp": "2026-11-15T13:45:58.852760+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794750427",
+    "timestamp": "2026-11-15T13:47:07.220647+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794750624",
+    "timestamp": "2026-11-15T13:50:24.576422+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794750768",
+    "timestamp": "2026-11-15T13:52:48.575665+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794766497",
+    "timestamp": "2026-11-15T18:14:57.026356+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794766629",
+    "timestamp": "2026-11-15T18:17:09.741210+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794766702",
+    "timestamp": "2026-11-15T18:18:22.022425+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794766819",
+    "timestamp": "2026-11-15T18:20:19.995912+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794796906",
+    "timestamp": "2026-11-16T02:41:46.440895+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794797474",
+    "timestamp": "2026-11-16T02:51:14.251215+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794797591",
+    "timestamp": "2026-11-16T02:53:11.951035+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794797797",
+    "timestamp": "2026-11-16T02:56:37.407210+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794800559",
+    "timestamp": "2026-11-16T03:42:39.469982+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794800916",
+    "timestamp": "2026-11-16T03:48:36.732504+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794800943",
+    "timestamp": "2026-11-16T03:49:03.232615+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794800962",
+    "timestamp": "2026-11-16T03:49:22.635643+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794800976",
+    "timestamp": "2026-11-16T03:49:36.084256+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794801004",
+    "timestamp": "2026-11-16T03:50:04.213653+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794801058",
+    "timestamp": "2026-11-16T03:50:58.977748+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794801093",
+    "timestamp": "2026-11-16T03:51:33.200270+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794801108",
+    "timestamp": "2026-11-16T03:51:48.489255+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794801157",
+    "timestamp": "2026-11-16T03:52:37.977798+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794801212",
+    "timestamp": "2026-11-16T03:53:32.122217+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794801248",
+    "timestamp": "2026-11-16T03:54:08.049796+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794801265",
+    "timestamp": "2026-11-16T03:54:25.482768+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794802451",
+    "timestamp": "2026-11-16T04:14:11.613844+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794802840",
+    "timestamp": "2026-11-16T04:20:40.467989+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794802886",
+    "timestamp": "2026-11-16T04:21:26.637236+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794802933",
+    "timestamp": "2026-11-16T04:22:13.487283+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794802986",
+    "timestamp": "2026-11-16T04:23:06.235589+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794803015",
+    "timestamp": "2026-11-16T04:23:35.565686+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794803057",
+    "timestamp": "2026-11-16T04:24:17.306287+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794803110",
+    "timestamp": "2026-11-16T04:25:10.677972+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794803876",
+    "timestamp": "2026-11-16T04:37:56.945970+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794803984",
+    "timestamp": "2026-11-16T04:39:44.584749+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794804088",
+    "timestamp": "2026-11-16T04:41:28.296497+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794805834",
+    "timestamp": "2026-11-16T05:10:34.188308+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794805837",
+    "timestamp": "2026-11-16T05:10:37.734392+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794896864",
+    "timestamp": "2026-11-17T06:27:44.609330+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1794896881",
+    "timestamp": "2026-11-17T06:28:01.813635+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  }
+]

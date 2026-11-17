@@ -9,12 +9,13 @@ Maintains an independent ledger of corporate actions:
 """
 
 from __future__ import annotations
+
 import datetime
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple, Any
+from typing import Dict, List, Tuple
 
-from backend.db.session import SessionLocal
 from backend.db.models import Prediction
+from backend.db.session import SessionLocal
 
 
 @dataclass
@@ -30,6 +31,38 @@ class CorporateAction:
 
 # Seeded ledger of known corporate actions for benchmark testing and live reconciliation
 CORPORATE_ACTION_LEDGER: List[CorporateAction] = [
+    CorporateAction(
+        symbol="TATAMOTORS.NS",
+        action_type="DEMERGER",
+        ex_date=datetime.date(2025, 10, 24),
+        ratio_from=1.0,
+        ratio_to=1.0,
+        notes="Commercial Vehicles demerged into TMCV; PV renamed to TMPV. Exclusion window 20 days.",
+    ),
+    CorporateAction(
+        symbol="TMCV.NS",
+        action_type="DEMERGER",
+        ex_date=datetime.date(2025, 11, 12),
+        ratio_from=1.0,
+        ratio_to=1.0,
+        notes="Listing of demerged Commercial Vehicle entity TMCV. Exclusion window 20 days.",
+    ),
+    CorporateAction(
+        symbol="HDFC.NS",
+        action_type="MERGER",
+        ex_date=datetime.date(2023, 7, 1),
+        ratio_from=25.0,
+        ratio_to=42.0,
+        notes="Merger of HDFC Ltd into HDFC Bank Ltd (42 shares of HDFCBANK for every 25 shares of HDFC).",
+    ),
+    CorporateAction(
+        symbol="VEDL.NS",
+        action_type="DEMERGER",
+        ex_date=datetime.date(2026, 4, 30),
+        ratio_from=1.0,
+        ratio_to=1.0,
+        notes="Vedanta Ltd demerger of business units. 20-day quarantine.",
+    ),
     CorporateAction(
         symbol="VEDL.NS",
         action_type="DIVIDEND",
@@ -56,6 +89,24 @@ CORPORATE_ACTION_LEDGER: List[CorporateAction] = [
         amount=28.0,
         notes="Interim Dividend",
     ),
+    CorporateAction(
+        symbol="TDPOWERSYS.NS",
+        action_type="SPLIT",
+        ex_date=datetime.date(2026, 8, 24),
+        ratio_from=2.0,
+        ratio_to=1.0,
+        notes="2:1 Stock Split (Subdivision of shares from FV Rs 2 to FV Rs 1)",
+    ),
+    CorporateAction(
+        symbol="CONCORDBIO.NS",
+        action_type="SPLIT",
+        ex_date=datetime.date(2026, 11, 4),
+        ratio_from=2.0,
+        ratio_to=1.0,
+        notes="2:1 Stock Split (Subdivision of shares from FV Rs 2 to FV Rs 1)",
+    ),
+
+
 ]
 
 
@@ -131,6 +182,15 @@ class CorporateActionEngine:
             return action.ratio_to / (action.ratio_from + action.ratio_to)
         return 1.0
 
+    def get_cumulative_split_factor(self, symbol: str, query_date: datetime.date) -> float:
+        """Compute the cumulative split adjustment factor for historical prices prior to query_date."""
+        factor = 1.0
+        for action in self.ledger:
+            if action.symbol == symbol and action.action_type == "SPLIT":
+                if query_date < action.ex_date:
+                    factor *= (action.ratio_to / action.ratio_from)
+        return factor
+
     def auto_adjust_open_positions(self, symbol: str, action: CorporateAction):
         """Auto-adjust quantity, stop-loss, and target price for open paper trades."""
         db = SessionLocal()
@@ -150,7 +210,7 @@ class CorporateActionEngine:
                 pred.stop_loss = round(pred.stop_loss * factor, 2)
                 pred.target_price = round(pred.target_price * factor, 2)
                 # Adjust whole-share quantity inversely
-                pred.quantity = int(round(pred.quantity / factor))
+                pred.quantity = int(round(pred.quantity / factor))  # type: ignore[assignment]
 
             db.commit()
         finally:

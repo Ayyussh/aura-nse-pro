@@ -1,0 +1,12 @@
+{
+  "report_type": "CLEAN_REAL_DATA_PLACEBO_TEST",
+  "baseline_net_expectancy_r": 0.0287,
+  "placebo_iterations": 1000,
+  "placebo_distribution_mean": -0.0486,
+  "placebo_distribution_std": 0.0304,
+  "p_value": 0.004,
+  "is_statistically_significant": true,
+  "status": "INVALID_SYNTHETIC_INPUT",
+  "invalidation_reason": "Marked INVALID_SYNTHETIC_INPUT pursuant to investor-grade audit. Prior results were contaminated by Brownian motion random walk generators in run_historical_backfill.py.",
+  "invalidated_at": "2026-11-15T13:39:52.935921+00:00"
+}

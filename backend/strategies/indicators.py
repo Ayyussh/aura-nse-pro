@@ -98,4 +98,28 @@ def compute_relative_strength(stock_close: pd.Series, benchmark_close: pd.Series
 
     stock_ret = (stock_close.iloc[-1] / stock_close.iloc[-period] - 1.0) * 100.0
     bench_ret = (benchmark_close.iloc[-1] / benchmark_close.iloc[-period] - 1.0) * 100.0
-    return stock_ret - bench_ret
+    return round(float(stock_ret - bench_ret), 2)
+
+
+def compute_mansfield_relative_strength(
+    stock_close: pd.Series,
+    benchmark_close: pd.Series,
+    period: int = 50,
+) -> pd.Series:
+    """Institutional Mansfield Relative Strength (MRS) vs Benchmark:
+    
+    Formula:
+      BP = Stock_Close / Benchmark_Close
+      MRS = ((BP / SMA(BP, period)) - 1.0) * 100.0
+      
+    Values > 0 indicate true institutional outperformance against benchmark base.
+    """
+    if len(stock_close) < period or len(benchmark_close) < period:
+        return pd.Series(0.0, index=stock_close.index)
+
+    # Reindex benchmark to match stock series
+    bench_aligned = benchmark_close.reindex(stock_close.index).ffill().bfill()
+    base_performance = stock_close / bench_aligned.replace(0, np.nan)
+    sma_bp = compute_sma(base_performance, period)
+    mrs = ((base_performance / sma_bp.replace(0, np.nan)) - 1.0) * 100.0
+    return mrs.fillna(0.0)

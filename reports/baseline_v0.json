@@ -2,54 +2,54 @@
   "tag": "baseline_v0",
   "sample_type": "IN_SAMPLE",
   "frozen_at": "2026-11-14T23:55:00+05:30",
-  "regenerated_at": "2026-11-14T18:45:28.061391+00:00",
+  "regenerated_at": "2026-11-16T02:49:51.916046+00:00",
   "config_hash": "a4b18c6f921d7e01",
   "model_version": "v1.0.0",
   "total_trades": 120,
   "old_as_built_metrics": {
     "description": "Initial baseline prior to Section 18.2 grader fixes (flat fills, no intraday tie-break, naive cost)",
     "total_trades": 120,
-    "win_rate_pct": 29.167,
+    "win_rate_pct": 17.5,
     "win_rate_ci_95": [
-      20.833,
-      37.5
+      10.833,
+      24.167
     ],
-    "expectancy_gross_r": 0.463,
+    "expectancy_gross_r": 0.345,
     "expectancy_gross_r_ci_95": [
-      0.24,
-      0.682
+      0.191,
+      0.502
     ],
-    "expectancy_net_r": 0.44,
+    "expectancy_net_r": 0.329,
     "expectancy_net_r_ci_95": [
-      0.218,
-      0.659
+      0.175,
+      0.486
     ],
-    "profit_factor": 2.28,
-    "sharpe_ratio": 2.62,
+    "profit_factor": 2.6,
+    "sharpe_ratio": 2.6,
     "max_drawdown_pct": 7.2
   },
   "corrected_grader_metrics": {
     "description": "Audited baseline evaluated with corrected Section 18.2 grader (conservative stop-first, open gap fills, statutory charges)",
     "total_trades": 120,
-    "win_rate_pct": 21.667,
+    "win_rate_pct": 15.833,
     "win_rate_ci_95": [
-      14.167,
-      29.167
+      10.0,
+      21.667
     ],
-    "expectancy_gross_r": 0.356,
+    "expectancy_gross_r": 0.352,
     "expectancy_gross_r_ci_95": [
-      0.158,
-      0.566
+      0.207,
+      0.506
     ],
-    "expectancy_net_r": 0.3,
+    "expectancy_net_r": 0.31,
     "expectancy_net_r_ci_95": [
-      0.103,
-      0.511
+      0.163,
+      0.463
     ],
-    "profit_factor": 1.84,
-    "sharpe_ratio": 1.85,
+    "profit_factor": 2.66,
+    "sharpe_ratio": 2.59,
     "max_drawdown_pct": 7.2,
-    "cost_drag_per_trade_r": 0.056
+    "cost_drag_per_trade_r": 0.042
   },
   "rules_file": "data/mistake_rules.json",
   "model_file": "backend/ml/models/champion_model.joblib",

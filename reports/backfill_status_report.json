@@ -1,0 +1,3046 @@
+{
+  "report_type": "NIFTY_500_CLEAN_HISTORICAL_BACKFILL_REPORT",
+  "generated_at": "2026-11-15T17:43:10.102309+00:00",
+  "years_requested": 5,
+  "total_unique_symbols_in_store": 505,
+  "total_bars_in_lake": 562319,
+  "sources_summary": {
+    "YFINANCE_HIST": 501,
+    "NSE_INDEX_OFFICIAL": 3,
+    "NSE_VIX_OFFICIAL": 1
+  },
+  "synthetic_bars_detected": 0,
+  "symbols_detail": {
+    "360ONE.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AADHARHFC.NS": {
+      "bars": 620,
+      "listing_or_start_date": "2024-05-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AARTIIND.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AAVAS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ABB.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ABBOTINDIA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ABCAPITAL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ABDL.NS": {
+      "bars": 588,
+      "listing_or_start_date": "2024-07-02",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ABREL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ABSLAMC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ACC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ACE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ACMESOLAR.NS": {
+      "bars": 495,
+      "listing_or_start_date": "2024-11-13",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ACUTAAS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ADANIENSOL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ADANIENT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ADANIGREEN.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ADANIPORTS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ADANIPOWER.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AEGISLOG.NS": {
+      "bars": 1234,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AEGISVOPAK.NS": {
+      "bars": 361,
+      "listing_or_start_date": "2025-06-02",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AETHER.NS": {
+      "bars": 1099,
+      "listing_or_start_date": "2022-06-03",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AFCONS.NS": {
+      "bars": 502,
+      "listing_or_start_date": "2024-11-04",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AFFLE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AIAENG.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AIIL.NS": {
+      "bars": 635,
+      "listing_or_start_date": "2024-04-23",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AJANTPHARM.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ALKEM.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AMBER.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AMBUJACEM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ANANDRATHI.NS": {
+      "bars": 1216,
+      "listing_or_start_date": "2021-12-14",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ANANTRAJ.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ANGELONE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ANTHEM.NS": {
+      "bars": 326,
+      "listing_or_start_date": "2025-07-21",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ANURAS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "APARINDS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "APLAPOLLO.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "APOLLOHOSP.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "APOLLOTYRE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "APTUS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ARE&M.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ASAHIINDIA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ASHOKLEY.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ASIANPAINT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ASTERDM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ASTRAL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ATGL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ATHERENERG.NS": {
+      "bars": 380,
+      "listing_or_start_date": "2025-05-06",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ATUL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AUBANK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AUROPHARMA.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AVANTIFEED.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AWL.NS": {
+      "bars": 1177,
+      "listing_or_start_date": "2022-02-08",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AXISBANK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "AZAD.NS": {
+      "bars": 711,
+      "listing_or_start_date": "2023-12-28",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BAJAJ-AUTO.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BAJAJFINSV.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BAJAJHFL.NS": {
+      "bars": 536,
+      "listing_or_start_date": "2024-09-16",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BAJAJHLDNG.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BAJFINANCE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BALKRISIND.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BALRAMCHIN.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BANDHANBNK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BANKBARODA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BANKINDIA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BATAINDIA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BBOX.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BDL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BEL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BELRISE.NS": {
+      "bars": 364,
+      "listing_or_start_date": "2025-05-28",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BEML.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BERGEPAINT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BHARATCOAL.NS": {
+      "bars": 202,
+      "listing_or_start_date": "2026-01-19",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BHARATFORG.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BHARTIARTL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BHARTIHEXA.NS": {
+      "bars": 641,
+      "listing_or_start_date": "2024-04-12",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BHEL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BIOCON.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BIRET.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BLS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BLUESTARCO.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BOSCHLTD.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BPCL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BRIGADE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BRITANNIA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BSE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "BSOFT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CAMS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CANBK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CANFINHOME.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CANHLIFE.NS": {
+      "bars": 265,
+      "listing_or_start_date": "2025-10-17",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CAPLIPOINT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CARBORUNIV.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CARTRADE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CASTROLIND.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CCL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CDSL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CEATLTD.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CEMPRO.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CENTRALBK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CESC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CGCL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CGPOWER.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CHAMBLFERT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CHENNPETRO.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CHOICEIN.NS": {
+      "bars": 1136,
+      "listing_or_start_date": "2022-04-08",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CHOLAFIN.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CHOLAHLDNG.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CIEINDIA.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CIPLA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CLEAN.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CLEANMAX.NS": {
+      "bars": 173,
+      "listing_or_start_date": "2026-03-02",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CMPDI.NS": {
+      "bars": 155,
+      "listing_or_start_date": "2026-03-30",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "COALINDIA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "COCHINSHIP.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "COFORGE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "COHANCE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "COLPAL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CONCOR.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CONCORDBIO.NS": {
+      "bars": 799,
+      "listing_or_start_date": "2023-08-18",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "COROMANDEL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CPPLUS.NS": {
+      "bars": 315,
+      "listing_or_start_date": "2025-08-05",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CRAFTSMAN.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CREDITACC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CRISIL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CROMPTON.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CUB.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CUMMINSIND.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CUPID.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "CYIENT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "DABUR.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "DALBHARAT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "DATAPATTNS.NS": {
+      "bars": 1208,
+      "listing_or_start_date": "2021-12-24",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "DEEPAKFERT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "DEEPAKNTR.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "DELHIVERY.NS": {
+      "bars": 1107,
+      "listing_or_start_date": "2022-05-24",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "DEVYANI.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "DIVISLAB.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "DIXON.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "DLF.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "DMART.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "DOMS.NS": {
+      "bars": 716,
+      "listing_or_start_date": "2023-12-20",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "DRREDDY.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ECLERX.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "EICHERMOT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "EIDPARRY.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "EIHOTEL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ELECON.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ELGIEQUIP.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "EMAMILTD.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "EMBASSY.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "EMCURE.NS": {
+      "bars": 581,
+      "listing_or_start_date": "2024-07-10",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "EMMVEE.NS": {
+      "bars": 245,
+      "listing_or_start_date": "2025-11-18",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ENDURANCE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ENGINERSIN.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ENRIN.NS": {
+      "bars": 348,
+      "listing_or_start_date": "2025-06-19",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ESCORTS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ETERNAL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "EXIDEIND.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "FACT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "FEDERALBNK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "FINCABLES.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "FIRSTCRY.NS": {
+      "bars": 559,
+      "listing_or_start_date": "2024-08-13",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "FIVESTAR.NS": {
+      "bars": 984,
+      "listing_or_start_date": "2022-11-21",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "FLUOROCHEM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "FORCEMOT.NS": {
+      "bars": 1195,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "FORTIS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "FRACTAL.NS": {
+      "bars": 183,
+      "listing_or_start_date": "2026-02-16",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "FSL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GABRIEL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GAIL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GALLANTT.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GESHIP.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GICRE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GILLETTE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GLAND.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GLAXO.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GLENMARK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GMDCLTD.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GMRAIRPORT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GODFRYPHLP.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GODREJCP.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GODREJIND.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GODREJPROP.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GPIL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GRANULES.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GRAPHITE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GRASIM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GRAVITA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GROWW.NS": {
+      "bars": 249,
+      "listing_or_start_date": "2025-11-12",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GRSE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "GVT&D.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HAL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HAVELLS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HBLENGINE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HCLTECH.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HDBFS.NS": {
+      "bars": 339,
+      "listing_or_start_date": "2025-07-02",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HDFCAMC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HDFCBANK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HDFCLIFE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HEGAM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HEROMOTOCO.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HEXT.NS": {
+      "bars": 426,
+      "listing_or_start_date": "2025-02-19",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HFCL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HINDALCO.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HINDCOPPER.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HINDPETRO.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HINDUNILVR.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HINDZINC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HOMEFIRST.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HONASA.NS": {
+      "bars": 744,
+      "listing_or_start_date": "2023-11-07",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HONAUT.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HSCL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HUDCO.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "HYUNDAI.NS": {
+      "bars": 511,
+      "listing_or_start_date": "2024-10-22",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ICICIAMC.NS": {
+      "bars": 222,
+      "listing_or_start_date": "2025-12-19",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ICICIBANK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ICICIGI.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ICICILIFE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ICICIPRULI.NS": {
+      "bars": 82,
+      "listing_or_start_date": "2026-07-17",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IDBI.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IDEA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IDFCFIRSTB.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IEX.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IFCI.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IGIL.NS": {
+      "bars": 464,
+      "listing_or_start_date": "2024-12-30",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IGL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IIFL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IKS.NS": {
+      "bars": 470,
+      "listing_or_start_date": "2024-12-19",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "INDHOTEL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "INDIACEM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "INDIAMART.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "INDIANB.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "INDIGO.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "INDUSINDBK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "INDUSTOWER.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "INFY.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "INOXINDIA.NS": {
+      "bars": 714,
+      "listing_or_start_date": "2023-12-21",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "INOXWIND.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "INTELLECT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IOB.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IOC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IPCALAB.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IRB.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IRCON.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IRCTC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IREDA.NS": {
+      "bars": 731,
+      "listing_or_start_date": "2023-11-29",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "IRFC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ITC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ITCHOTELS.NS": {
+      "bars": 442,
+      "listing_or_start_date": "2025-01-29",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ITI.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "J&KBANK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JAINREC.NS": {
+      "bars": 274,
+      "listing_or_start_date": "2025-10-06",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JBMA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JINDALSAW.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JINDALSTEL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JIOFIN.NS": {
+      "bars": 798,
+      "listing_or_start_date": "2023-08-21",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JKCEMENT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JKTYRE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JMFINANCIL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JPPOWER.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JSL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JSWCEMENT.NS": {
+      "bars": 308,
+      "listing_or_start_date": "2025-08-14",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JSWENERGY.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JSWINFRA.NS": {
+      "bars": 769,
+      "listing_or_start_date": "2023-10-03",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JSWSTEEL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JUBLFOOD.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JUBLINGREA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JWL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "JYOTICNC.NS": {
+      "bars": 698,
+      "listing_or_start_date": "2024-01-16",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "KAJARIACER.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "KALYANKJIL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "KARURVYSYA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "KAYNES.NS": {
+      "bars": 983,
+      "listing_or_start_date": "2022-11-22",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "KEC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "KEI.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "KFINTECH.NS": {
+      "bars": 956,
+      "listing_or_start_date": "2022-12-29",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "KIMS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "KIRLOSBROS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "KIRLOSENG.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "KOTAKBANK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "KPIL.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "KPITTECH.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "KPRMILL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "KSB.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "LALPATHLAB.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "LAURUSLABS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "LEMONTREE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "LENSKART.NS": {
+      "bars": 251,
+      "listing_or_start_date": "2025-11-10",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "LGEINDIA.NS": {
+      "bars": 268,
+      "listing_or_start_date": "2025-10-14",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "LICHSGFIN.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "LICI.NS": {
+      "bars": 1112,
+      "listing_or_start_date": "2022-05-17",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "LINDEINDIA.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "LLOYDSME.NS": {
+      "bars": 822,
+      "listing_or_start_date": "2023-07-17",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "LODHA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "LT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "LTF.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "LTFOODS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "LTM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "LTTS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "LUPIN.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "M&M.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "M&MFIN.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MAHABANK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MANAPPURAM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MANKIND.NS": {
+      "bars": 870,
+      "listing_or_start_date": "2023-05-09",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MARICO.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MARUTI.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MAXHEALTH.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MAZDOCK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MCX.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MEDANTA.NS": {
+      "bars": 985,
+      "listing_or_start_date": "2022-11-18",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MEESHO.NS": {
+      "bars": 229,
+      "listing_or_start_date": "2025-12-10",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MFSL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MGL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MINDACORP.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MMTC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MOTHERSON.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MOTILALOFS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MPHASIS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MRF.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MRPL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MSUMI.NS": {
+      "bars": 1145,
+      "listing_or_start_date": "2022-03-28",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MTARTECH.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "MUTHOOTFIN.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NAM-INDIA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NATCOPHARM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NATIONALUM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NAUKRI.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NAVA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NAVINFLUOR.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NBCC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NCC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NESTLEIND.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NETWEB.NS": {
+      "bars": 814,
+      "listing_or_start_date": "2023-07-27",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NEULANDLAB.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NH.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NHPC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NIACL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NLCINDIA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NMDC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NSLNISP.NS": {
+      "bars": 920,
+      "listing_or_start_date": "2023-02-20",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NTPC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NTPCGREEN.NS": {
+      "bars": 487,
+      "listing_or_start_date": "2024-11-27",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NUVAMA.NS": {
+      "bars": 773,
+      "listing_or_start_date": "2023-09-26",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NUVOCO.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "NYKAA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "OBEROIRLTY.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "OFSS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "OIL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "OLAELEC.NS": {
+      "bars": 561,
+      "listing_or_start_date": "2024-08-09",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "OLECTRA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ONESOURCE.NS": {
+      "bars": 446,
+      "listing_or_start_date": "2025-01-24",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ONGC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PAGEIND.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PARADEEP.NS": {
+      "bars": 1104,
+      "listing_or_start_date": "2022-05-27",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PATANJALI.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PAYTM.NS": {
+      "bars": 1233,
+      "listing_or_start_date": "2021-11-18",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PCBL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PERSISTENT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PETRONET.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PFC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PFOCUS.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PGEL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PHOENIXLTD.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PIDILITIND.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PIIND.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PINELABS.NS": {
+      "bars": 247,
+      "listing_or_start_date": "2025-11-14",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PIRAMALFIN.NS": {
+      "bars": 252,
+      "listing_or_start_date": "2025-11-07",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PNB.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PNBHOUSING.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "POLICYBZR.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "POLYCAB.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "POLYMED.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "POONAWALLA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "POWERGRID.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "POWERINDIA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PPLPHARMA.NS": {
+      "bars": 1005,
+      "listing_or_start_date": "2022-10-19",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PREMIERENE.NS": {
+      "bars": 545,
+      "listing_or_start_date": "2024-09-03",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PRESTIGE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PRIVISCL.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PTCIL.NS": {
+      "bars": 846,
+      "listing_or_start_date": "2023-06-09",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PVRINOX.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "PWL.NS": {
+      "bars": 245,
+      "listing_or_start_date": "2025-11-18",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "RADICO.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "RAILTEL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "RAINBOW.NS": {
+      "bars": 1116,
+      "listing_or_start_date": "2022-05-10",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "RAMCOCEM.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "RBLBANK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "RECLTD.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "REDINGTON.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "RELIANCE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "RHIM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "RITES.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "RKFORGE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ROUTETEST.NS": {
+      "bars": 20,
+      "listing_or_start_date": "2026-08-03",
+      "latest_date": "2026-08-28",
+      "source": "YFINANCE_HIST"
+    },
+    "RPOWER.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "RRKABEL.NS": {
+      "bars": 775,
+      "listing_or_start_date": "2023-09-20",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "RUBICON.NS": {
+      "bars": 265,
+      "listing_or_start_date": "2025-10-16",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "RVNL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SAGILITY.NS": {
+      "bars": 496,
+      "listing_or_start_date": "2024-11-12",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SAIL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SAILIFE.NS": {
+      "bars": 472,
+      "listing_or_start_date": "2024-12-18",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SAMMAANCAP.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SANSERA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SARDAEN.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SBICARD.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SBILIFE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SBIN.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SCHAEFFLER.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SCHNEIDER.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SCI.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SHREECEM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SHRIPISTON.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SHRIRAMFIN.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SHYAMMETL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SIEMENS.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SIGNATURE.NS": {
+      "bars": 771,
+      "listing_or_start_date": "2023-09-27",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SJVN.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SOBHA.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SOLARINDS.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SONACOMS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SRF.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "STARHEALTH.NS": {
+      "bars": 1218,
+      "listing_or_start_date": "2021-12-10",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "STLTECH.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SUMICHEM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SUNDARMFIN.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SUNPHARMA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SUNTV.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SUPREMEIND.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SUZLON.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SWANCORP.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SWIGGY.NS": {
+      "bars": 495,
+      "listing_or_start_date": "2024-11-13",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SYNGENE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "SYRMA.NS": {
+      "bars": 1041,
+      "listing_or_start_date": "2022-08-26",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TARIL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TATACAP.NS": {
+      "bars": 269,
+      "listing_or_start_date": "2025-10-13",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TATACHEM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TATACOMM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TATACONSUM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TATAELXSI.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TATAINVEST.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TATAPOWER.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TATASTEEL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TATATECH.NS": {
+      "bars": 730,
+      "listing_or_start_date": "2023-11-30",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TBOTEK.NS": {
+      "bars": 620,
+      "listing_or_start_date": "2024-05-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TCS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TDPOWERSYS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TECHM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TECHNOE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TEGA.NS": {
+      "bars": 1217,
+      "listing_or_start_date": "2021-12-13",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TEJASNET.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TENNIND.NS": {
+      "bars": 244,
+      "listing_or_start_date": "2025-11-19",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "THANGAMAYL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "THERMAX.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TIINDIA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TIMKEN.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TITAGARH.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TITAN.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TMCV.NS": {
+      "bars": 249,
+      "listing_or_start_date": "2025-11-12",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TMPV.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TORNTPHARM.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TORNTPOWER.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TRENT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TRIDENT.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TRITURBINE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TTML.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "TVSMOTOR.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "UBL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "UCOBANK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ULTRACEMCO.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "UNIONBANK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "UNITDSPR.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "UNOMINDA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "UPL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "URBANCO.NS": {
+      "bars": 286,
+      "listing_or_start_date": "2025-09-17",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "USHAMART.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "UTIAMC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "VAML.NS": {
+      "bars": 105,
+      "listing_or_start_date": "2026-06-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "VBL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "VEDL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "VEDPOWER.NS": {
+      "bars": 105,
+      "listing_or_start_date": "2026-06-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "VIJAYA.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "VISL.NS": {
+      "bars": 105,
+      "listing_or_start_date": "2026-06-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "VMM.NS": {
+      "bars": 472,
+      "listing_or_start_date": "2024-12-18",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "VOGL.NS": {
+      "bars": 105,
+      "listing_or_start_date": "2026-06-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "VOLTAS.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "VTL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "WAAREEENER.NS": {
+      "bars": 507,
+      "listing_or_start_date": "2024-10-28",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "WELCORP.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "WELSPUNLIV.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "WHIRLPOOL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "WIPRO.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "WOCKPHARMA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "YESBANK.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ZEEL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ZENSARTECH.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ZENTEC.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ZFCVINDIA.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ZYDUSLIFE.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "ZYDUSWELL.NS": {
+      "bars": 1236,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "YFINANCE_HIST"
+    },
+    "^CNXIT.NS": {
+      "bars": 1234,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "NSE_INDEX_OFFICIAL"
+    },
+    "^INDIAVIX.NS": {
+      "bars": 1229,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "NSE_VIX_OFFICIAL"
+    },
+    "^NSEBANK.NS": {
+      "bars": 1234,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "NSE_INDEX_OFFICIAL"
+    },
+    "^NSEI.NS": {
+      "bars": 1235,
+      "listing_or_start_date": "2021-11-15",
+      "latest_date": "2026-11-13",
+      "source": "NSE_INDEX_OFFICIAL"
+    }
+  },
+  "status": "DONE"
+}

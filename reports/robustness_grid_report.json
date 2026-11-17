@@ -1,0 +1,76 @@
+{
+  "metadata": {
+    "report": "Section 21.1 Item 7 Robustness Grid & Parameter Sensitivity",
+    "source": "reports/results_master.json",
+    "generated_at": "2026-11-16T05:09:47.679341"
+  },
+  "atr_sensitivity": {
+    "lower_atr_minus_20pct": {
+      "n": 444,
+      "mean": 0.1359,
+      "ci_lower_95": 0.0008,
+      "ci_upper_95": 0.2747,
+      "asymmetry": 0.0139
+    },
+    "base_atr_standard": {
+      "n": 442,
+      "mean": 0.1454,
+      "ci_lower_95": 0.0352,
+      "ci_upper_95": 0.2571,
+      "asymmetry": 0.0066
+    },
+    "upper_atr_plus_20pct": {
+      "n": 441,
+      "mean": 0.1229,
+      "ci_lower_95": 0.0339,
+      "ci_upper_95": 0.2195,
+      "asymmetry": 0.0412
+    }
+  },
+  "slippage_stress": {
+    "base_slippage_10bps": {
+      "cost_per_trade_r": 0.029,
+      "strategy_net_r": 0.1406
+    },
+    "double_slippage_20bps": {
+      "cost_per_trade_r": 0.0579,
+      "strategy_net_r": 0.1117,
+      "drop_in_r": 0.0289,
+      "ci_95": [
+        0.0011,
+        0.2232
+      ]
+    },
+    "slippage_explanation": "Planned risk per trade is 2*ATR (avg 6.9% stop distance). Round-trip base slippage (0.10% entry + 0.10% exit = 0.20% turnover) imposes 0.029 R cost. Double slippage (0.20% entry + 0.20% exit = 0.40% turnover) imposes 0.058 R cost. The exact drop in net expectancy is 0.029 R per trade."
+  },
+  "year_by_year": {
+    "2022": {
+      "n": 54,
+      "mean": 0.2954,
+      "ci_lower_95": -0.1307,
+      "ci_upper_95": 0.6891,
+      "asymmetry": 0.0394
+    },
+    "2023": {
+      "n": 145,
+      "mean": 0.3154,
+      "ci_lower_95": 0.1386,
+      "ci_upper_95": 0.5063,
+      "asymmetry": 0.0385
+    },
+    "2024": {
+      "n": 145,
+      "mean": 0.0494,
+      "ci_lower_95": -0.1389,
+      "ci_upper_95": 0.2398,
+      "asymmetry": 0.0055
+    },
+    "2025": {
+      "n": 102,
+      "mean": -0.0603,
+      "ci_lower_95": -0.2789,
+      "ci_upper_95": 0.1899,
+      "asymmetry": 0.0674
+    }
+  }
+}

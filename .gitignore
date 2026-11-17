@@ -29,8 +29,10 @@ yarn-error.log*
 
 # Data cache downloads (keep models and mistake rules)
 data/cache/
+data/backups/
 data/bhavcopy/*.zip
 data/bhavcopy/*.csv
+data/bhavcopy/*.parquet
 !data/bhavcopy/.gitkeep
 !data/mistake_rules.json
 
@@ -43,4 +45,9 @@ desktop.ini
 *.duckdb
 data/historical/
 backend/*.db
+tests/*.db*
+tests/*.db
+logs/
+data/heartbeat.json
+reports/screenshots/
 data/audit_anchor_history.jsonl

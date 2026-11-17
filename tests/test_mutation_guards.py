@@ -104,3 +104,88 @@ def test_three_outcome_ev_incorporates_time_expiry():
     # EV_R = (p_target * target_r) - (p_stop * stop_r) + (p_expired * expected_r_expired) - cost_r
     manual_ev = (pred["p_target"] * 2.0) - (pred["p_stop"] * 1.0) + (pred["p_expired"] * 0.37) - 0.062
     assert abs(pred["ev_r"] - round(manual_ev, 3)) <= 0.01
+
+
+def test_trade_fill_event_chaining_and_triggers():
+    """Verify TradeFillEvent recording, hash chaining, and sqlite immutability triggers."""
+    from backend.db.session import SessionLocal
+    from backend.db.models import Prediction, TradeFillEvent
+    from backend.db.fill_events import record_trade_fill_event
+
+    db = SessionLocal()
+    try:
+        # Create a test prediction
+        pred = Prediction(
+            config_hash="TEST_CONFIG_HASH",
+            model_version="v1.0.0",
+            data_snapshot_id="SNAP_001",
+            symbol="RELIANCE.NS",
+            series="EQ",
+            horizon="SWING",
+            setup_tag="breakout",
+            status="OPEN",
+            planned_entry_price=2900.0,
+            entry_price=2900.0,
+            stop_loss=2800.0,
+            target_price=3100.0,
+            quantity=50,
+            time_limit_days=10,
+            entry_date=datetime.date(2026, 11, 13),
+        )
+        db.add(pred)
+        db.commit()
+        db.refresh(pred)
+
+        # Record fill event: executed at ₹2905 (₹5 positive slippage)
+        event1 = record_trade_fill_event(
+            db=db,
+            prediction_id=pred.id,
+            symbol="RELIANCE.NS",
+            planned_price=2900.0,
+            fill_price=2905.0,
+            quantity=50,
+        )
+
+        assert event1.id is not None
+        assert event1.slippage_rupees == 5.0
+        assert event1.event_hash is not None
+        assert event1.fill_price == 2905.0
+
+
+        # Verify trigger blocks UPDATE
+        with pytest.raises(Exception) as exc_info:
+            event1.fill_price = 2950.0
+            db.commit()
+        assert "IMMUTABLE_FILL_EVENTS" in str(exc_info.value)
+        db.rollback()
+
+        # Verify trigger blocks DELETE
+        with pytest.raises(Exception) as exc_info:
+            db.delete(event1)
+            db.commit()
+        assert "IMMUTABLE_FILL_EVENTS" in str(exc_info.value)
+        db.rollback()
+
+    finally:
+        db.close()
+
+
+def test_protected_endpoints_require_authentication():
+    """Verify unauthenticated calls to protected endpoints return 401 Unauthorized."""
+    from fastapi.testclient import TestClient
+    from backend.main import app
+
+    client = TestClient(app)
+
+    # 1. Scanner run requires auth
+    res_scanner = client.post("/api/scanner/run")
+    assert res_scanner.status_code == 401
+
+    # 2. Vault endpoint requires auth
+    res_vault = client.get("/api/vault/keys")
+    assert res_vault.status_code == 401
+
+    # 3. Save Upstox token requires auth
+    res_token = client.post("/api/upstox/save-token", json={"access_token": "TEST"})
+    assert res_token.status_code == 401
+

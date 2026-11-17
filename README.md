@@ -170,7 +170,22 @@ TELEGRAM_BOT_TOKEN=your_bot_token
 TELEGRAM_CHAT_ID=your_chat_id
 ```
 
-### 3. Build & Run Frontend
+### 3. Upstox 1-Year Analytics Token Setup (Tier-2 Data Verification)
+To enable real-time price reconciliation against official Upstox market feeds:
+1. Register for an [Upstox Developer Account](https://developer.upstox.com/) and create an app.
+2. Generate an Analytics Access Token (valid for 365 days).
+3. Add to your `.env`:
+   ```env
+   UPSTOX_ACCESS_TOKEN=your_token_here
+   UPSTOX_API_VERSION=v2
+   ```
+4. Test connection:
+   ```bash
+   python scripts/upstox_smoke_test.py
+   ```
+   *Note: Token expiry is automatically monitored daily at 08:00 IST, warning at $\le 30$ days.*
+
+### 4. Build & Run Frontend
 ```bash
 cd frontend
 npm install
@@ -178,12 +193,28 @@ npm run build
 cd ..
 ```
 
-### 4. Launch Application
+### 5. Launch Application (Local Host Only)
 ```bash
-# Start FastAPI backend (serves built React frontend on http://localhost:8000)
-python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+# Start FastAPI backend (serves built React frontend on loopback http://127.0.0.1:8000)
+python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
 ```
-Open your browser at **`http://localhost:8000`** to access the AURA-NSE Pro Institutional Dashboard.
+Open your browser at **`http://127.0.0.1:8000`** to access the AURA-NSE Pro Institutional Dashboard.
+
+### 6. Local Windows Task Scheduler Automation
+For 24x7 local execution without keeping a command prompt open:
+```powershell
+# Register scheduled daily tasks (09:00, 09:20, 15:45, 18:30 IST)
+powershell -ExecutionPolicy Bypass -File scripts/register_windows_tasks.ps1
+```
+
+### 7. Backup & Restore Drill
+- Automated daily backups run to `backups/` at 23:00 IST.
+- To restore:
+  ```powershell
+  python -c "import shutil, glob; b = sorted(glob.glob('backups/aura_nse_*.db')); shutil.copy2(b[-1], 'backend/aura_nse.db') if b else None"
+  ```
+- See [docs/RUNBOOK.md](file:///c:/test/stock%20prediction/docs/RUNBOOK.md) for full failure-mode recovery runbook.
+- See [docs/REMOTE_ACCESS.md](file:///c:/test/stock%20prediction/docs/REMOTE_ACCESS.md) for Tailscale / Cloudflare tunnel configuration.
 
 ---
 
@@ -192,7 +223,17 @@ Open your browser at **`http://localhost:8000`** to access the AURA-NSE Pro Inst
 The system includes comprehensive automated unit tests covering all mathematical, risk, tax, and failover requirements:
 
 ```bash
+# Run full unit & regression suite:
 pytest -v
+
+# Run core calculation modules coverage check (Target >= 80% line coverage):
+pytest tests/test_coverage_21_1_8.py --cov=backend.core.audit_ledger --cov=backend.core.grader --cov=backend.costs.charges --cov=backend.ml.setup_priors --cov=backend.risk.sizing --cov=backend.strategies.regime --cov=backend.strategies.variants --cov-report=term-missing
+
+# Run Red-Team Fault Injection & Tamper Simulation:
+python scripts/red_team.py
+
+# Run Master Verification & Gap Closure Script:
+powershell -ExecutionPolicy Bypass -File scripts/prove_all.ps1
 ```
 
 ### Verified Test Cases:

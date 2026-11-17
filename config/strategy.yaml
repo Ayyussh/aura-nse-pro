@@ -121,10 +121,15 @@ guardrails:
   gap_down_skip_stop_pct: 0.0
 
 readiness_scorecard:
-  min_historical_trades: 100
+  min_shadow_weeks: 8
+  min_shadow_trades: 30
   min_net_expectancy_r: 0.15
-  min_ci_lower_bound_r: -0.05
-  max_drawdown_pct: 15.0
-  min_sharpe_ratio: 1.0
+  min_ci_lower_bound_r: 0.00
+  max_drawdown_pct: 10.0
+  min_edge_over_same_exposure_benchmark_r: 0.05
+  min_edge_over_random_placebo_r: 0.10
+  max_brier_score: 0.24
   max_calibration_error: 0.08
+  max_unresolved_data_incidents: 0
+  min_historical_trades: 100
   min_live_paper_trades: 30

@@ -5,9 +5,10 @@ and special trading windows (e.g., Muhurat Trading).
 """
 
 from __future__ import annotations
+
 import datetime
+from typing import Any, Dict, Set
 from zoneinfo import ZoneInfo
-from typing import Dict, List, Set
 
 IST = ZoneInfo("Asia/Kolkata")
 
@@ -84,7 +85,7 @@ def get_next_trading_day(d: datetime.date) -> datetime.date:
     return curr
 
 
-def get_market_status(now: datetime.datetime | None = None) -> Dict[str, any]:
+def get_market_status(now: datetime.datetime | None = None) -> Dict[str, Any]:
     """Get real-time market operational status in IST."""
     if now is None:
         now = get_ist_now()

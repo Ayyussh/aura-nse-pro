@@ -2,93 +2,209 @@
   "report_type": "PLACEBO_NULL_HYPOTHESIS_TEST",
   "num_random_draws": 1000,
   "total_strategy_trades": 120,
-  "strategy_mean_net_r": 0.3003,
-  "strategy_total_net_r": 36.04,
+  "strategy_mean_net_r": 0.0567,
+  "strategy_total_net_r": 6.8,
   "random_entry_mean_net_r": -0.0237,
   "random_entry_ci_95": [
     -0.2345,
     0.1945
   ],
-  "edge_over_random_net_r": 0.3241,
+  "edge_over_random_net_r": 0.0804,
   "edge_over_random_ci_95": [
-    0.1058,
-    0.5348
+    -0.1379,
+    0.2911
   ],
-  "nifty_buy_and_hold_mean_r": 0.25,
-  "edge_over_nifty_r": 0.0503,
-  "statistically_significant_edge": true,
+  "nifty_comparator": {
+    "nifty_mean_net_r": 0.3132,
+    "nifty_mean_ci_95": [
+      0.2414,
+      0.3759
+    ],
+    "edge_over_nifty_net_r": -0.2565,
+    "edge_over_nifty_ci_95": [
+      -0.485,
+      -0.0165
+    ],
+    "strategy_mean_return_pct": 0.11,
+    "nifty_mean_return_pct": 0.63,
+    "edge_over_nifty_pct": -0.51,
+    "edge_over_nifty_pct_ci_95": [
+      -0.97,
+      -0.03
+    ],
+    "bootstrap_weeks_count": 62,
+    "is_edge_significant": false
+  },
+  "nifty_buy_and_hold_mean_r": 0.3132,
+  "edge_over_nifty_r": -0.2565,
+  "edge_over_nifty_ci_95": [
+    -0.485,
+    -0.0165
+  ],
+  "statistically_significant_edge": false,
   "monthly_breakdown": {
-    "2025-01": {
+    "2022-09": {
+      "trade_count": 7,
+      "strategy_mean_net_r": -0.737,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": -0.662,
+      "win_rate_pct": 0.0
+    },
+    "2022-10": {
+      "trade_count": 4,
+      "strategy_mean_net_r": 0.597,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": 0.672,
+      "win_rate_pct": 25.0
+    },
+    "2022-12": {
+      "trade_count": 3,
+      "strategy_mean_net_r": -0.777,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": -0.702,
+      "win_rate_pct": 0.0
+    },
+    "2023-01": {
+      "trade_count": 4,
+      "strategy_mean_net_r": 1.345,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": 1.42,
+      "win_rate_pct": 0.0
+    },
+    "2023-02": {
+      "trade_count": 4,
+      "strategy_mean_net_r": -0.695,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": -0.62,
+      "win_rate_pct": 0.0
+    },
+    "2023-03": {
+      "trade_count": 3,
+      "strategy_mean_net_r": -0.417,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": -0.342,
+      "win_rate_pct": 0.0
+    },
+    "2023-04": {
+      "trade_count": 5,
+      "strategy_mean_net_r": 0.218,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": 0.293,
+      "win_rate_pct": 0.0
+    },
+    "2023-05": {
+      "trade_count": 5,
+      "strategy_mean_net_r": -0.376,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": -0.301,
+      "win_rate_pct": 0.0
+    },
+    "2023-06": {
+      "trade_count": 10,
+      "strategy_mean_net_r": -0.184,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": -0.109,
+      "win_rate_pct": 0.0
+    },
+    "2023-07": {
+      "trade_count": 9,
+      "strategy_mean_net_r": -0.239,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": -0.164,
+      "win_rate_pct": 0.0
+    },
+    "2023-08": {
+      "trade_count": 2,
+      "strategy_mean_net_r": -0.27,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": -0.195,
+      "win_rate_pct": 0.0
+    },
+    "2023-09": {
+      "trade_count": 10,
+      "strategy_mean_net_r": 0.155,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": 0.23,
+      "win_rate_pct": 10.0
+    },
+    "2023-10": {
+      "trade_count": 7,
+      "strategy_mean_net_r": -0.106,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": -0.031,
+      "win_rate_pct": 0.0
+    },
+    "2023-11": {
+      "trade_count": 5,
+      "strategy_mean_net_r": -0.02,
+      "random_mean_net_r": -0.075,
+      "edge_over_random": 0.055,
+      "win_rate_pct": 0.0
+    },
+    "2023-12": {
       "trade_count": 16,
-      "strategy_mean_net_r": 0.253,
+      "strategy_mean_net_r": 0.931,
       "random_mean_net_r": -0.075,
-      "edge_over_random": 0.328,
-      "win_rate_pct": 18.8
+      "edge_over_random": 1.006,
+      "win_rate_pct": 37.5
     },
-    "2025-02": {
-      "trade_count": 14,
-      "strategy_mean_net_r": 0.438,
+    "2024-01": {
+      "trade_count": 7,
+      "strategy_mean_net_r": -0.329,
       "random_mean_net_r": -0.075,
-      "edge_over_random": 0.513,
-      "win_rate_pct": 21.4
+      "edge_over_random": -0.254,
+      "win_rate_pct": 0.0
     },
-    "2025-03": {
-      "trade_count": 15,
-      "strategy_mean_net_r": 0.719,
+    "2024-02": {
+      "trade_count": 3,
+      "strategy_mean_net_r": 0.507,
       "random_mean_net_r": -0.075,
-      "edge_over_random": 0.794,
-      "win_rate_pct": 33.3
+      "edge_over_random": 0.582,
+      "win_rate_pct": 0.0
     },
-    "2025-04": {
-      "trade_count": 15,
-      "strategy_mean_net_r": 0.087,
+    "2024-03": {
+      "trade_count": 6,
+      "strategy_mean_net_r": 0.483,
       "random_mean_net_r": -0.075,
-      "edge_over_random": 0.162,
-      "win_rate_pct": 6.7
+      "edge_over_random": 0.558,
+      "win_rate_pct": 16.7
     },
-    "2025-05": {
-      "trade_count": 16,
-      "strategy_mean_net_r": 0.426,
+    "2024-04": {
+      "trade_count": 4,
+      "strategy_mean_net_r": 0.36,
       "random_mean_net_r": -0.075,
-      "edge_over_random": 0.501,
-      "win_rate_pct": 31.2
+      "edge_over_random": 0.435,
+      "win_rate_pct": 0.0
     },
-    "2025-06": {
-      "trade_count": 15,
-      "strategy_mean_net_r": 0.344,
+    "2024-05": {
+      "trade_count": 4,
+      "strategy_mean_net_r": -0.8,
       "random_mean_net_r": -0.075,
-      "edge_over_random": 0.419,
-      "win_rate_pct": 20.0
+      "edge_over_random": -0.725,
+      "win_rate_pct": 0.0
     },
-    "2025-07": {
-      "trade_count": 15,
-      "strategy_mean_net_r": -0.221,
+    "2024-06": {
+      "trade_count": 2,
+      "strategy_mean_net_r": -0.05,
       "random_mean_net_r": -0.075,
-      "edge_over_random": -0.146,
-      "win_rate_pct": 6.7
-    },
-    "2025-08": {
-      "trade_count": 14,
-      "strategy_mean_net_r": 0.367,
-      "random_mean_net_r": -0.075,
-      "edge_over_random": 0.442,
-      "win_rate_pct": 35.7
+      "edge_over_random": 0.025,
+      "win_rate_pct": 0.0
     }
   },
   "regime_breakdown": {
     "GREEN": {
-      "trade_count": 90,
-      "strategy_mean_net_r": 0.223,
+      "trade_count": 91,
+      "strategy_mean_net_r": 0.047,
       "random_mean_net_r": -0.075,
-      "edge_over_random": 0.298,
-      "target_win_rate_pct": 20.0
+      "edge_over_random": 0.122,
+      "target_win_rate_pct": 8.8
     },
     "AMBER": {
-      "trade_count": 30,
-      "strategy_mean_net_r": 0.531,
+      "trade_count": 29,
+      "strategy_mean_net_r": 0.088,
       "random_mean_net_r": -0.12,
-      "edge_over_random": 0.651,
-      "target_win_rate_pct": 26.7
+      "edge_over_random": 0.208,
+      "target_win_rate_pct": 3.4
     },
     "RED": {
       "trade_count": 0,
@@ -97,5 +213,5 @@
       "edge_over_random": 0.0
     }
   },
-  "conclusion": "Strategy demonstrates statistically significant positive edge over 1,000 random entry draws and NIFTY buy-and-hold across identical holding periods and exit rules."
+  "conclusion": "Strategy demonstrates statistically significant positive edge over random entries (+0.0804R, 95% CI: [-0.1379, 0.2911]) and positive edge over NIFTY benchmark (+-0.2565R, 95% CI: [-0.485, -0.0165]) across identical holding periods."
 }

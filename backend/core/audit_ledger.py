@@ -10,12 +10,12 @@ Features:
 """
 
 from __future__ import annotations
+
 import datetime
 import hashlib
 import json
 import logging
-from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Any
 
 from backend.core.config import PROJECT_ROOT
 
@@ -31,14 +31,14 @@ def format_canonical_float(val: float) -> str:
     return f"{float(val):.4f}"
 
 
-def format_canonical_timestamp(dt: Optional[datetime.datetime] = None) -> str:
+def format_canonical_timestamp(dt: datetime.datetime | None = None) -> str:
     """Format datetime into canonical ISO 8601 UTC timestamp ending in 'Z'."""
     if dt is None:
-        dt = datetime.datetime.now(datetime.timezone.utc)
+        dt = datetime.datetime.now(datetime.UTC)
     elif dt.tzinfo is None:
-        dt = dt.replace(tzinfo=datetime.timezone.utc)
+        dt = dt.replace(tzinfo=datetime.UTC)
     else:
-        dt = dt.astimezone(datetime.timezone.utc)
+        dt = dt.astimezone(datetime.UTC)
     return dt.strftime("%Y-%m-%dT%H:%M:%S.%fZ")[:-4] + "Z"
 
 
@@ -56,9 +56,9 @@ def build_canonical_prediction_payload(
     data_snapshot_id: str,
     llm_output_hash: str,
     prev_hash: str,
-    utc_timestamp: Optional[str] = None,
+    utc_timestamp: str | None = None,
     hash_version: str = "v2",
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Construct deterministic canonical dictionary payload for hashing."""
     if not utc_timestamp:
         utc_timestamp = format_canonical_timestamp()
@@ -82,7 +82,7 @@ def build_canonical_prediction_payload(
     }
 
 
-def compute_audit_hash(payload: Dict[str, Any]) -> str:
+def compute_audit_hash(payload: dict[str, Any]) -> str:
     """Compute deterministic SHA-256 hash over canonical JSON with sorted keys and no whitespace."""
     canonical_json = json.dumps(payload, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(canonical_json.encode("utf-8")).hexdigest()
@@ -91,12 +91,12 @@ def compute_audit_hash(payload: Dict[str, Any]) -> str:
 def append_external_daily_anchor(
     latest_hash: str,
     record_count: int,
-    anchor_date: Optional[datetime.date] = None,
+    anchor_date: datetime.date | None = None,
     notes: str = "Daily close audit anchor",
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Append external immutable daily anchor entry into data/audit_anchor_history.jsonl."""
     if anchor_date is None:
-        anchor_date = datetime.datetime.now(datetime.timezone.utc).date()
+        anchor_date = datetime.datetime.now(datetime.UTC).date()
 
     anchor_entry = {
         "anchor_version": "v1",
@@ -118,10 +118,10 @@ def append_external_daily_anchor(
 def dispatch_external_daily_anchor(
     latest_hash: str,
     record_count: int,
-    anchor_date: Optional[datetime.date] = None,
+    anchor_date: datetime.date | None = None,
     channel: str = "telegram",
     notes: str = "Daily close audit anchor",
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Send the audit anchor outside the machine daily (Telegram, email, or git commit), append-only."""
     # 1. Append locally in append-only JSONL
     anchor_entry = append_external_daily_anchor(
@@ -171,7 +171,7 @@ def dispatch_external_daily_anchor(
     return anchor_entry
 
 
-def read_external_anchor_history() -> List[Dict[str, Any]]:
+def read_external_anchor_history() -> list[dict[str, Any]]:
     """Read all historical external daily anchor entries."""
     if not AUDIT_ANCHOR_FILE.exists():
         return []
@@ -188,7 +188,7 @@ def read_external_anchor_history() -> List[Dict[str, Any]]:
     return entries
 
 
-def verify_audit_ledger(predictions: List[Any]) -> Dict[str, Any]:
+def verify_audit_ledger(predictions: list[Any]) -> dict[str, Any]:
     """Full cryptographic verification of prediction ledger:
 
     1. Checks prev_hash linkage across adjacent rows.

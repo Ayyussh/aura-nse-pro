@@ -6,10 +6,10 @@ confidence intervals, calibration curve, and go-live readiness scorecard.
 """
 
 from __future__ import annotations
-import math
-from typing import Dict, List, Any, Optional
+
+from typing import Any
+
 import numpy as np
-import pandas as pd
 
 from backend.core.config import get_strategy_config
 
@@ -17,16 +17,16 @@ from backend.core.config import get_strategy_config
 class StressTestEngine:
     """Institutional Analytics & Performance Evaluator."""
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, config: dict[str, Any] | None = None):
         self.strategy_cfg = config or get_strategy_config()
         self.scorecard_cfg = self.strategy_cfg.get("readiness_scorecard", {})
 
     def evaluate_performance(
         self,
-        trades: List[Dict[str, Any]],
+        trades: list[dict[str, Any]],
         initial_capital: float = 100000.0,
         risk_free_rate_pct: float = 6.8,  # Current RBI repo / 91-day T-Bill yield ~ 6.8%
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Compute exhaustive institutional metrics on a trade sequence."""
         total_trades = len(trades)
         if total_trades == 0:
@@ -73,17 +73,14 @@ class StressTestEngine:
         # Equity Curve and Max Drawdown
         current_eq = initial_capital
         peak_eq = initial_capital
-        max_dd_rupees = 0.0
         max_dd_pct = 0.0
         equity_series = [{"day": 0, "equity": round(initial_capital, 2), "drawdown_pct": 0.0}]
 
         for idx, t in enumerate(trades, start=1):
             current_eq += t.get("net_pnl_rupees", 0.0)
-            if current_eq > peak_eq:
-                peak_eq = current_eq
+            peak_eq = max(peak_eq, current_eq)
             dd_pct = ((peak_eq - current_eq) / peak_eq) * 100.0 if peak_eq > 0 else 0.0
-            if dd_pct > max_dd_pct:
-                max_dd_pct = dd_pct
+            max_dd_pct = max(max_dd_pct, dd_pct)
             equity_series.append({
                 "trade_idx": idx,
                 "equity": round(current_eq, 2),
@@ -91,7 +88,7 @@ class StressTestEngine:
             })
 
         # Sharpe and Sortino (H5: daily return series when dates exist, trade-by-trade fallback)
-        daily_pnl: Dict[str, float] = {}
+        daily_pnl: dict[str, float] = {}
         for t in trades:
             date_key = t.get("closed_at") or t.get("date") or t.get("entry_date")
             if date_key:
@@ -123,8 +120,7 @@ class StressTestEngine:
         for t in trades:
             if t.get("net_pnl_rupees", 0) < 0:
                 current_streak += 1
-                if current_streak > longest_loss_streak:
-                    longest_loss_streak = current_streak
+                longest_loss_streak = max(longest_loss_streak, current_streak)
             else:
                 current_streak = 0
 

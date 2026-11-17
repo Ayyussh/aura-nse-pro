@@ -1,0 +1,28 @@
+{
+  "report_type": "PURGED_WALKFORWARD_ML_AUDIT_REPORT",
+  "generated_at": "2026-11-15T18:14:08.946074+00:00",
+  "total_labelled_candidates_available": 28928,
+  "purged_training_candidates": 18393,
+  "embargo_purged_candidates": 644,
+  "validation_candidates": 10535,
+  "min_candidates_threshold_for_retraining": 3000,
+  "sufficient_samples_for_retraining": true,
+  "labels_used": "net_pnl_r > 0 (profitable-at-exit after statutory friction)",
+  "empirical_setup_base_rates": {
+    "training_win_rate_pct": 47.31,
+    "validation_win_rate_pct": 38.3,
+    "base_rate_brier_score": 0.2444
+  },
+  "ml_model_metrics": {
+    "model_architecture": "LogisticRegression + CalibratedClassifierCV(sigmoid)",
+    "validation_brier_score": 0.2465,
+    "brier_skill_score_bss": -0.0432,
+    "validation_auc": 0.518,
+    "beats_setup_base_rates": false,
+    "beats_placebo": true
+  },
+  "ml_model_status": "OFF",
+  "decision": "RETAIN_OFF",
+  "reason": "Out-of-sample validation Brier score (0.2465) does not outperform the empirical setup base rate Brier score (0.2444). Brier Skill Score is negative (BSS = -0.0432 < 0.0). In accordance with institutional quantitative decision rules: ML model MUST STAY OFF. System relies strictly on calibrated empirical setup priors (p_target=0.0682, p_stop=0.2443, p_expired=0.6875).",
+  "status": "DONE"
+}

@@ -1,0 +1,65 @@
+{
+  "freeze_version": "1.0.1",
+  "frozen_at_utc": "2026-11-16T03:55:11.108Z",
+  "composite_config_hash": "d0e58f094677e5c5557401dea5aed555df816f22e10d8b2186ffcfbc2722b5df",
+  "individual_config_hashes": {
+    "config/strategy.yaml": "544629aff3c99ae5a650f1ca379d1397cf95fda5cdbae4975e72dafc1e8f8488",
+    "config/charges.yaml": "1861ead2ffc8a077fe06a15df0dadc916a6632c27d03a043ba2d11edea90066b",
+    "config/tax.yaml": "69fffb5ba934d09d83afb6a7a8d8bfdc5f8d6447f96d9440d518cd374a44d312",
+    "config/groups.yaml": "3cc4c1f60f9d2b45a2f63ac0e65b3b651a235f551de6c861cdfd4a1e43330156"
+  },
+  "git_commit": "984f6fccd5dcaedfd892af72b01727136d27be01",
+  "change_log": [
+    {
+      "version": "1.0.1",
+      "timestamp": "2026-11-16T03:55:11.108691+00:00",
+      "reason": "Added explicit Section 21.1 Item 10 forward shadow test scorecard parameters (8 weeks, 30 trades, CI_lower > 0, max DD 10%, benchmark & placebo edges, zero data incidents) to config/strategy.yaml.",
+      "new_hash": "d0e58f094677e5c5557401dea5aed555df816f22e10d8b2186ffcfbc2722b5df"
+    }
+  ],
+  "model_state": {
+    "model_version": "v2.0-purged-baseline",
+    "model_path": "backend/ml/models/champion_model.joblib",
+    "meta_path": "backend/ml/models/champion_meta.json",
+    "calibration_method": "sigmoid",
+    "feature_count": 0,
+    "champion_meta": {
+      "model_type": "LogisticRegression+CalibratedClassifierCV(sigmoid)",
+      "trained_at": "2026-11-15T13:39:53.038468+00:00",
+      "n_train": 176,
+      "train_dates": [
+        "2022-09-06",
+        "2024-06-10"
+      ],
+      "brier_score": 0.0752,
+      "auc": 0.4875,
+      "brier_skill_score": -0.0031,
+      "spearman_rho": -0.104,
+      "status": "CLEAN_TRAINED_ON_REAL_DATA"
+    }
+  },
+  "universe_rule": {
+    "universe_name": "NIFTY 500 Point-in-Time Historical Membership",
+    "rebalancing_schedule": "Semi-annual (March & September notices)",
+    "membership_source": "backend/data/historical_membership.py",
+    "delisted_and_corporate_action_treatment": "Preserved with survivorship-adjusted point-in-time entry/exit boundaries"
+  },
+  "holdout_policy": {
+    "partition": "2025-09-01 to 2026-11-13",
+    "status": "SEALED",
+    "unseal_condition": "STRICT OWNER_ACTION: Requires explicit written approval from platform owner after complete verification.",
+    "audit_log": "reports/holdout_access_log.json"
+  },
+  "retained_strategy_variant": {
+    "variant_id": "V5",
+    "name": "V5_TRAILING_STOP_1R",
+    "position_cap": 5,
+    "holding_time_limit_days": 10,
+    "setups_allowed": [
+      "pullback_ema",
+      "breakout_vcp"
+    ],
+    "trailing_stop_trigger_r": 1.0,
+    "intra_bar_order_assumption": "WORST_CASE"
+  }
+}

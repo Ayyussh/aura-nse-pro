@@ -1,0 +1,36 @@
+{
+  "report_type": "CLEAN_SETUP_PRIORS_PROVENANCE",
+  "sample_size": 176,
+  "date_range": [
+    "2022-09-06",
+    "2024-06-10"
+  ],
+  "database_query": "SELECT * FROM daily_ohlcv WHERE date <= '2024-06-30' (Real NSE Data)",
+  "p_target": 0.0682,
+  "p_target_ci_95": [
+    0.0341,
+    0.108
+  ],
+  "p_stop": 0.2443,
+  "p_stop_ci_95": [
+    0.1818,
+    0.3068
+  ],
+  "p_expired": 0.6875,
+  "p_expired_ci_95": [
+    0.6136,
+    0.7557
+  ],
+  "expected_r_expired": 0.2224,
+  "expected_r_expired_ci_95": [
+    0.0877,
+    0.3706
+  ],
+  "cost_drag_r": 0.0492,
+  "cost_drag_ci_95": [
+    0.0469,
+    0.0522
+  ],
+  "status": "DONE",
+  "explanation": "E[R_E] = 0.2224R is derived directly as the empirical mean net R-multiple of the 121 time-expired trades strictly within the training window (2022-09-06 to 2024-06-10). Zero synthetic data or hand-coded constants are used."
+}

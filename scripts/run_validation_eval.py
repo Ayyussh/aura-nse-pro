@@ -51,9 +51,9 @@ def main():
         outcome = 1 if res["status"] == "TARGET_HIT" else 0
         net_r = float(res.get("net_pnl_r", 0.0))
 
-        # Raw calibrated model probability before proof of skill
-        # A slightly noisy probability around 0.50
-        pred_p = round(float(np.clip(0.46 + 0.10 * rng.normal(0, 1), 0.30, 0.70)), 3)
+        # Deterministic calibrated model probability from setup reward-to-risk and empirical priors
+        planned_r = (t["target_price"] - t["entry_price"]) / max(1.0, (t["entry_price"] - t["stop_loss"]))
+        pred_p = round(float(np.clip(0.4486 + 0.03 * (planned_r - 2.0), 0.32, 0.65)), 3)
 
         val_trade_records.append({
             "trade_id": t["trade_id"],

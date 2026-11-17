@@ -8,12 +8,12 @@ Downloads and parses official daily closing files from NSE archives:
 """
 
 from __future__ import annotations
+
 import datetime
 import io
 import logging
-from pathlib import Path
-from typing import Dict, Optional, Any
 import zipfile
+from typing import Any, Dict, Optional
 
 import httpx
 import pandas as pd
@@ -138,7 +138,7 @@ class NSEBhavcopyEngine:
         df["symbol"] = df["symbol"].astype(str).str.strip() + ".NS"
         return df[["symbol", "open", "high", "low", "close", "volume"]]
 
-    def get_official_eod_price(self, symbol: str, dt: datetime.date) -> Optional[Dict[str, float]]:
+    def get_official_eod_price(self, symbol: str, dt: datetime.date) -> Optional[Dict[str, Any]]:
         """Lookup official EOD OHLCV values for a symbol on a specific date."""
         df = self.download_and_parse_bhavcopy(dt)
         if df.empty:
@@ -146,6 +146,19 @@ class NSEBhavcopyEngine:
 
         clean_sym = symbol if symbol.endswith(".NS") else f"{symbol}.NS"
         match = df[df["symbol"] == clean_sym]
+        if match.empty:
+            # Check known ticker variations in NSE Bhavcopy UDiFF format
+            BHAVCOPY_ALIASES = {
+                "LTIM.NS": "LTM.NS",
+                "LTIM": "LTM.NS",
+                "M&M.NS": "MM.NS",
+                "M&M": "MM.NS",
+                "BAJAJ-AUTO.NS": "BAJAJ_AUTO.NS",
+            }
+            if clean_sym in BHAVCOPY_ALIASES:
+                alt = BHAVCOPY_ALIASES[clean_sym]
+                match = df[df["symbol"] == alt]
+
         if match.empty:
             return None
 

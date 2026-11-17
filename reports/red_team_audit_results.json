@@ -1,0 +1,41 @@
+{
+  "timestamp_utc": "2026-11-16T04:25:28.250427+00:00Z",
+  "all_passed": true,
+  "tests_run": 6,
+  "tests_passed": 6,
+  "details": [
+    {
+      "test": "cryptographic_db_tampering",
+      "passed": true,
+      "tamper_detected": true,
+      "tampered_ids": [
+        1
+      ]
+    },
+    {
+      "test": "synthetic_data_rejection",
+      "passed": true,
+      "bad_data_halted": true
+    },
+    {
+      "test": "provider_outage_fallback",
+      "passed": true,
+      "handled_gracefully": true
+    },
+    {
+      "test": "expired_token_handling",
+      "passed": true,
+      "expiry_alert_dispatched": true
+    },
+    {
+      "test": "llm_429_failover",
+      "passed": true,
+      "cooldown_and_failover_verified": true
+    },
+    {
+      "test": "telegram_resilience",
+      "passed": true,
+      "graceful_degradation": true
+    }
+  ]
+}

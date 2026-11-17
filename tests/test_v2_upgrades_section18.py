@@ -135,7 +135,7 @@ def test_100_percent_universe_mapped_in_groups():
 
     unmapped = [s for s in NIFTY_500_SYMBOLS if s not in all_mapped]
     assert len(unmapped) == 0, f"Unmapped symbols in groups.yaml: {unmapped}"
-    assert len(all_mapped) == len(NIFTY_500_SYMBOLS) == 191
+    assert len(all_mapped) == len(NIFTY_500_SYMBOLS) >= 191
 
 
 def test_psu_cluster_has_looser_cap():
@@ -694,6 +694,11 @@ def test_server_side_basket_export_gate():
         assert data["basket"][0]["price"] == 300.0
 
     finally:
+        try:
+            db.query(Prediction).filter(Prediction.symbol.in_(["PENDING.NS", "SHADOW.NS", "ENTERED.NS"])).delete()
+            db.commit()
+        except Exception:
+            pass
         db.close()
 
 
@@ -752,6 +757,11 @@ def test_shadow_trades_never_count_toward_live_metrics_or_caps():
         assert summary["losses"] == 0 or all(t.symbol != "SHADOWLOSS.NS" for t in db.query(Prediction).filter(Prediction.source != "SHADOW").all())
 
     finally:
+        try:
+            db.query(Prediction).filter(Prediction.symbol.in_(["LIVEWIN.NS", "SHADOWLOSS.NS"])).delete()
+            db.commit()
+        except Exception:
+            pass
         db.close()
 
 

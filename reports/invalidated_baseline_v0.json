@@ -1,0 +1,19 @@
+{
+  "report_type": "CLEAN_REAL_DATA_BASELINE_V0",
+  "data_provenance": "100% Verified Real NSE Daily OHLCV (DuckDB / Bhavcopy)",
+  "sample_size": 176,
+  "win_rate_pct": 6.82,
+  "win_rate_ci_95": [
+    3.41,
+    10.8
+  ],
+  "expectancy_net_r": 0.0287,
+  "expectancy_net_r_ci_95": [
+    -0.1136,
+    0.187
+  ],
+  "total_trades": 176,
+  "status": "INVALID_SYNTHETIC_INPUT",
+  "invalidation_reason": "Marked INVALID_SYNTHETIC_INPUT pursuant to investor-grade audit. Prior results were contaminated by Brownian motion random walk generators in run_historical_backfill.py.",
+  "invalidated_at": "2026-11-15T13:39:52.933768+00:00"
+}

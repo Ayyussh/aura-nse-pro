@@ -1,14 +1,16 @@
 {
-  "evaluation_timestamp": "2026-11-15T10:40:59.236851+00:00",
+  "evaluation_timestamp": "2026-11-16T02:52:34.503010+00:00",
   "dataset_type": "OUT_OF_SAMPLE_VALIDATION",
   "sample_size": 60,
-  "empirical_base_rate": 0.2333,
-  "validation_brier_score": 0.2405,
-  "reference_brier_score": 0.1789,
-  "brier_skill_score_bss": -0.3443,
+  "empirical_base_rate": 0.1333,
+  "validation_brier_score": 0.2122,
+  "reference_brier_score": 0.1156,
+  "brier_skill_score_bss": -0.8356,
+  "leakage_rule_passed": true,
+  "leakage_detected": false,
   "spearman_rank_correlation": {
-    "rho": 0.0887,
-    "p_value": 0.50011,
+    "rho": 0.0884,
+    "p_value": 0.50178,
     "statistically_significant": false
   },
   "model_skill_badge": "MODEL_SKILL_NOT_DEMONSTRATED",
@@ -18,253 +20,265 @@
       "decile_rank": 1,
       "trade_count": 6,
       "prob_range": [
-        0.3,
-        0.361
+        0.4,
+        0.435
       ],
-      "mean_predicted_prob": 0.333,
-      "realized_win_rate": 0.167,
-      "realized_net_r": 0.307
+      "mean_predicted_prob": 0.427,
+      "realized_win_rate": 0.0,
+      "realized_net_r": -0.122
     },
     {
       "decile_rank": 2,
       "trade_count": 6,
       "prob_range": [
-        0.366,
-        0.384
+        0.436,
+        0.439
       ],
-      "mean_predicted_prob": 0.374,
-      "realized_win_rate": 0.167,
-      "realized_net_r": 0.232
+      "mean_predicted_prob": 0.438,
+      "realized_win_rate": 0.0,
+      "realized_net_r": -0.082
     },
     {
       "decile_rank": 3,
       "trade_count": 6,
       "prob_range": [
-        0.385,
-        0.425
+        0.44,
+        0.442
       ],
-      "mean_predicted_prob": 0.405,
+      "mean_predicted_prob": 0.442,
       "realized_win_rate": 0.167,
-      "realized_net_r": 0.02
+      "realized_net_r": 0.762
     },
     {
       "decile_rank": 4,
       "trade_count": 6,
       "prob_range": [
-        0.428,
-        0.46
+        0.442,
+        0.444
       ],
-      "mean_predicted_prob": 0.447,
-      "realized_win_rate": 0.5,
-      "realized_net_r": 0.762
+      "mean_predicted_prob": 0.443,
+      "realized_win_rate": 0.167,
+      "realized_net_r": 0.518
     },
     {
       "decile_rank": 5,
       "trade_count": 6,
       "prob_range": [
-        0.467,
-        0.479
+        0.444,
+        0.445
       ],
-      "mean_predicted_prob": 0.476,
-      "realized_win_rate": 0.167,
-      "realized_net_r": -0.32
+      "mean_predicted_prob": 0.444,
+      "realized_win_rate": 0.333,
+      "realized_net_r": 0.487
     },
     {
       "decile_rank": 6,
       "trade_count": 6,
       "prob_range": [
-        0.48,
-        0.508
+        0.446,
+        0.448
       ],
-      "mean_predicted_prob": 0.492,
+      "mean_predicted_prob": 0.447,
       "realized_win_rate": 0.167,
-      "realized_net_r": -0.567
+      "realized_net_r": 0.353
     },
     {
       "decile_rank": 7,
       "trade_count": 6,
       "prob_range": [
-        0.51,
-        0.523
+        0.448,
+        0.449
       ],
-      "mean_predicted_prob": 0.517,
-      "realized_win_rate": 0.167,
-      "realized_net_r": 0.063
+      "mean_predicted_prob": 0.449,
+      "realized_win_rate": 0.0,
+      "realized_net_r": -0.09
     },
     {
       "decile_rank": 8,
       "trade_count": 6,
       "prob_range": [
-        0.524,
-        0.541
+        0.449,
+        0.449
       ],
-      "mean_predicted_prob": 0.529,
+      "mean_predicted_prob": 0.449,
       "realized_win_rate": 0.167,
-      "realized_net_r": 0.21
+      "realized_net_r": 0.39
     },
     {
       "decile_rank": 9,
       "trade_count": 6,
       "prob_range": [
-        0.551,
-        0.646
+        0.449,
+        0.454
       ],
-      "mean_predicted_prob": 0.585,
+      "mean_predicted_prob": 0.45,
       "realized_win_rate": 0.167,
-      "realized_net_r": 0.172
+      "realized_net_r": 0.263
     },
     {
       "decile_rank": 10,
       "trade_count": 6,
       "prob_range": [
-        0.65,
-        0.7
+        0.454,
+        0.472
       ],
-      "mean_predicted_prob": 0.674,
-      "realized_win_rate": 0.5,
-      "realized_net_r": 1.42
+      "mean_predicted_prob": 0.46,
+      "realized_win_rate": 0.167,
+      "realized_net_r": 0.34
     }
   ],
   "setup_level_empirical_priors": {
     "pullback_ema": {
-      "p_target": 0.28,
+      "setup_name": "default",
+      "p_target": 0.0682,
       "p_target_ci_95": [
-        0.2,
-        0.36
+        0.0341,
+        0.108
       ],
-      "p_stop": 0.32,
+      "p_stop": 0.2443,
       "p_stop_ci_95": [
-        0.24,
-        0.4
+        0.1818,
+        0.3068
       ],
-      "p_expired": 0.4,
+      "p_expired": 0.6875,
       "p_expired_ci_95": [
-        0.31,
-        0.49
+        0.6136,
+        0.7557
       ],
-      "expected_r_expired": 0.36,
+      "expected_r_expired": 0.2224,
       "expected_r_expired_ci_95": [
-        0.18,
-        0.54
+        0.0877,
+        0.3706
       ],
-      "cost_r": 0.065,
+      "cost_r": 0.0492,
       "cost_r_ci_95": [
-        0.05,
-        0.08
+        0.0469,
+        0.0522
       ],
-      "sample_size": 250
+      "sample_size": 176,
+      "provenance": {
+        "query": "SELECT * FROM daily_ohlcv WHERE date <= '2024-06-30' (Real NSE Data)",
+        "sample_size": 176,
+        "date_range": [
+          "2022-09-06",
+          "2024-06-10"
+        ],
+        "computed_at": "2026-11-16T02:52:26.974006+00:00"
+      }
     },
     "breakout_vcp": {
-      "p_target": 0.31,
+      "setup_name": "default",
+      "p_target": 0.0682,
       "p_target_ci_95": [
-        0.22,
-        0.4
+        0.0341,
+        0.108
       ],
-      "p_stop": 0.35,
+      "p_stop": 0.2443,
       "p_stop_ci_95": [
-        0.26,
-        0.44
+        0.1818,
+        0.3068
       ],
-      "p_expired": 0.34,
+      "p_expired": 0.6875,
       "p_expired_ci_95": [
-        0.25,
-        0.43
+        0.6136,
+        0.7557
       ],
-      "expected_r_expired": 0.32,
+      "expected_r_expired": 0.2224,
       "expected_r_expired_ci_95": [
-        0.12,
-        0.52
+        0.0877,
+        0.3706
       ],
-      "cost_r": 0.06,
+      "cost_r": 0.0492,
       "cost_r_ci_95": [
-        0.048,
-        0.075
+        0.0469,
+        0.0522
       ],
-      "sample_size": 220
+      "sample_size": 176,
+      "provenance": {
+        "query": "SELECT * FROM daily_ohlcv WHERE date <= '2024-06-30' (Real NSE Data)",
+        "sample_size": 176,
+        "date_range": [
+          "2022-09-06",
+          "2024-06-10"
+        ],
+        "computed_at": "2026-11-16T02:52:26.974006+00:00"
+      }
     },
     "mean_reversion": {
-      "p_target": 0.24,
+      "setup_name": "default",
+      "p_target": 0.0682,
       "p_target_ci_95": [
-        0.16,
-        0.32
+        0.0341,
+        0.108
       ],
-      "p_stop": 0.3,
+      "p_stop": 0.2443,
       "p_stop_ci_95": [
-        0.22,
-        0.38
+        0.1818,
+        0.3068
       ],
-      "p_expired": 0.46,
+      "p_expired": 0.6875,
       "p_expired_ci_95": [
-        0.37,
-        0.55
+        0.6136,
+        0.7557
       ],
-      "expected_r_expired": 0.39,
+      "expected_r_expired": 0.2224,
       "expected_r_expired_ci_95": [
-        0.21,
-        0.57
+        0.0877,
+        0.3706
       ],
-      "cost_r": 0.068,
+      "cost_r": 0.0492,
       "cost_r_ci_95": [
-        0.052,
-        0.084
+        0.0469,
+        0.0522
       ],
-      "sample_size": 180
-    },
-    "compounder": {
-      "p_target": 0.26,
-      "p_target_ci_95": [
-        0.18,
-        0.34
-      ],
-      "p_stop": 0.28,
-      "p_stop_ci_95": [
-        0.2,
-        0.36
-      ],
-      "p_expired": 0.46,
-      "p_expired_ci_95": [
-        0.37,
-        0.55
-      ],
-      "expected_r_expired": 0.41,
-      "expected_r_expired_ci_95": [
-        0.23,
-        0.59
-      ],
-      "cost_r": 0.055,
-      "cost_r_ci_95": [
-        0.042,
-        0.068
-      ],
-      "sample_size": 190
+      "sample_size": 176,
+      "provenance": {
+        "query": "SELECT * FROM daily_ohlcv WHERE date <= '2024-06-30' (Real NSE Data)",
+        "sample_size": 176,
+        "date_range": [
+          "2022-09-06",
+          "2024-06-10"
+        ],
+        "computed_at": "2026-11-16T02:52:26.974006+00:00"
+      }
     },
     "default": {
-      "p_target": 0.27,
+      "setup_name": "default",
+      "p_target": 0.0682,
       "p_target_ci_95": [
-        0.19,
-        0.35
+        0.0341,
+        0.108
       ],
-      "p_stop": 0.31,
+      "p_stop": 0.2443,
       "p_stop_ci_95": [
-        0.23,
-        0.39
+        0.1818,
+        0.3068
       ],
-      "p_expired": 0.42,
+      "p_expired": 0.6875,
       "p_expired_ci_95": [
-        0.33,
-        0.51
+        0.6136,
+        0.7557
       ],
-      "expected_r_expired": 0.37,
+      "expected_r_expired": 0.2224,
       "expected_r_expired_ci_95": [
-        0.19,
-        0.55
+        0.0877,
+        0.3706
       ],
-      "cost_r": 0.062,
+      "cost_r": 0.0492,
       "cost_r_ci_95": [
-        0.048,
-        0.076
+        0.0469,
+        0.0522
       ],
-      "sample_size": 840
+      "sample_size": 176,
+      "provenance": {
+        "query": "SELECT * FROM daily_ohlcv WHERE date <= '2024-06-30' (Real NSE Data)",
+        "sample_size": 176,
+        "date_range": [
+          "2022-09-06",
+          "2024-06-10"
+        ],
+        "computed_at": "2026-11-16T02:52:26.974006+00:00"
+      }
     }
   },
   "policy_action": "Model skill not demonstrated out-of-sample (BSS <= 0). Tickets display 'MODEL_SKILL_NOT_DEMONSTRATED' and use empirical setup-level base rates with 95% bootstrap intervals."

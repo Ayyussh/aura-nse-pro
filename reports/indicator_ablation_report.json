@@ -1,0 +1,62 @@
+{
+  "report_type": "INDICATOR_BATCHES_CONDITIONAL_ABLATION_STUDY",
+  "total_features": 14,
+  "feature_cap": 25,
+  "baseline_full_model": {
+    "brier_score": 0.0656,
+    "log_loss": 0.2041
+  },
+  "ablation_results": {
+    "BATCH_A_TREND_MOMENTUM": {
+      "features_removed": [
+        "rsi_14",
+        "adx_14",
+        "macd_norm",
+        "dist_ema20_pct",
+        "dist_ema50_pct",
+        "dist_sma200_pct"
+      ],
+      "brier_score_without_batch": 0.1684,
+      "brier_delta": 0.1028,
+      "log_loss_without_batch": 0.5044,
+      "log_loss_delta": 0.3003,
+      "verdict": "Batch provides informational edge"
+    },
+    "BATCH_B_VOLUME_VOLATILITY": {
+      "features_removed": [
+        "atr_pct",
+        "vol_ratio_20d",
+        "vol_trend_5d"
+      ],
+      "brier_score_without_batch": 0.1302,
+      "brier_delta": 0.0646,
+      "log_loss_without_batch": 0.4074,
+      "log_loss_delta": 0.2033,
+      "verdict": "Batch provides informational edge"
+    },
+    "BATCH_C_RELATIVE_STRENGTH": {
+      "features_removed": [
+        "rs_vs_nifty_20d",
+        "dist_52w_high_pct",
+        "mansfield_rs_50d"
+      ],
+      "brier_score_without_batch": 0.1321,
+      "brier_delta": 0.0665,
+      "log_loss_without_batch": 0.4054,
+      "log_loss_delta": 0.2013,
+      "verdict": "Batch provides informational edge"
+    },
+    "BATCH_D_MACRO_REGIME": {
+      "features_removed": [
+        "vix_level_proxy",
+        "nifty_trend_score"
+      ],
+      "brier_score_without_batch": 0.0981,
+      "brier_delta": 0.0325,
+      "log_loss_without_batch": 0.2975,
+      "log_loss_delta": 0.0934,
+      "verdict": "Batch provides informational edge"
+    }
+  },
+  "status": "COMPLETED"
+}

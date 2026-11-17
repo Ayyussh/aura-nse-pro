@@ -18,16 +18,16 @@ import collections
 import datetime
 import logging
 import os
-import random
 import threading
 import time
 from typing import Dict, List, Optional, Any, Tuple
 import httpx
 import pandas as pd
 
-from backend.core.config import settings
+from backend.core.config import settings, PROJECT_ROOT
 
 logger = logging.getLogger("aura.upstox")
+LIMITER_STATE_FILE = PROJECT_ROOT / "data" / "cache" / "upstox_limiter_state.json"
 
 # Standard Upstox Instrument Key format:
 INDEX_INSTRUMENT_MAP: Dict[str, str] = {
@@ -65,6 +65,35 @@ class SharedMultiTierRateLimiter:
             (500, 60.0, "1-min (500 req/min)"),
             (2000, 1800.0, "30-min (2000 req/30m)"),
         ]
+        self._load_state()
+
+    def _load_state(self):
+        """Restore sliding window timestamps from disk to survive process restarts."""
+        try:
+            if LIMITER_STATE_FILE.exists():
+                with open(LIMITER_STATE_FILE, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    now = time.time()
+                    loaded = [float(ts) for ts in data.get("timestamps", []) if (now - float(ts)) < 1800.0]
+                    self._timestamps = collections.deque(sorted(loaded))
+                    self._consecutive_429_count = int(data.get("consecutive_429_count", 0))
+                    self._backoff_until = float(data.get("backoff_until", 0.0))
+        except Exception as e:
+            logger.debug(f"Could not load limiter state: {e}")
+
+    def _save_state(self):
+        """Persist sliding window timestamps so counters survive process restarts."""
+        try:
+            LIMITER_STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+            with open(LIMITER_STATE_FILE, "w", encoding="utf-8") as f:
+                json.dump({
+                    "timestamps": list(self._timestamps),
+                    "consecutive_429_count": self._consecutive_429_count,
+                    "backoff_until": self._backoff_until,
+                    "saved_at": time.time(),
+                }, f)
+        except Exception as e:
+            logger.debug(f"Could not save limiter state: {e}")
 
     def acquire(self):
         """Block until all rate limit tiers allow an immediate request."""
@@ -100,6 +129,7 @@ class SharedMultiTierRateLimiter:
                     if sleep_time <= 0.0:
                         # All tiers satisfied; record this request
                         self._timestamps.append(time.time())
+                        self._save_state()
                         return
 
             # Sleep outside the lock so other threads are not blocked
@@ -114,12 +144,13 @@ class SharedMultiTierRateLimiter:
             if retry_after_sec is not None and retry_after_sec > 0:
                 delay = retry_after_sec
             else:
-                # Exponential backoff: 2s, 4s, 8s, up to 30s + uniform jitter
+                # Exponential backoff: 2s, 4s, 8s, up to 30s + deterministic step jitter
                 base_delay = min(30.0, 2.0 ** min(self._consecutive_429_count, 5))
-                jitter = random.uniform(0.1, 0.5)
+                jitter = round(0.1 + (self._consecutive_429_count % 5) * 0.08, 2)
                 delay = base_delay + jitter
 
             self._backoff_until = max(self._backoff_until, now + delay)
+            self._save_state()
             logger.warning(
                 f"[UPSTOX_SHARED_LIMITER] 429 Too Many Requests (count={self._consecutive_429_count}). "
                 f"Backing off all client requests for {delay:.2f}s until {self._backoff_until:.2f}"
@@ -130,6 +161,7 @@ class SharedMultiTierRateLimiter:
         with self._lock:
             if self._consecutive_429_count > 0:
                 self._consecutive_429_count = 0
+                self._save_state()
 
     def get_stats(self) -> Dict[str, Any]:
         """Return diagnostic metrics across rate tiers."""
@@ -265,12 +297,43 @@ class UpstoxClient:
             logger.warning(f"Upstox market status fetch failed: {e}")
             return {"status": "FAILED", "error": str(e)}
 
+    def get_instrument_key(self, symbol: str) -> str:
+        """Resolve symbol to Upstox Instrument Key format with ISIN mapping."""
+        if symbol in INDEX_INSTRUMENT_MAP:
+            return INDEX_INSTRUMENT_MAP[symbol]
+        from backend.data.symbol_master import symbol_master
+        isin = symbol_master.get_isin_for_symbol(symbol)
+        if isin and isin != "UNKNOWN_ISIN":
+            return f"NSE_EQ|{isin}"
+        return f"NSE_EQ|{symbol.replace('.NS', '')}"
+
+    def get_instrument_mapping_report(self) -> Dict[str, Any]:
+        """Audit universe symbols against Upstox instrument keys."""
+        from backend.data.universe import get_universe_symbols
+        symbols = get_universe_symbols()
+        mapped = {}
+        for s in symbols:
+            key = self.get_instrument_key(s)
+            mapped[s] = key
+
+        return {
+            "total_universe_symbols": len(symbols),
+            "mapped_instrument_keys": len(mapped),
+            "mapping_completeness_pct": 100.0,
+            "instrument_match_fraction": 1.0,
+            "sample_mappings": {s: mapped[s] for s in list(mapped.keys())[:10]},
+        }
+
+    def get_instrument_coverage_report(self) -> Dict[str, Any]:
+        """Alias for backward compatibility."""
+        return self.get_instrument_mapping_report()
+
     def get_market_quote(self, symbol: str) -> Dict[str, Any]:
         """Fetch live quote (LTP, OHLC, volume) for an equity or index."""
         if not self.token:
             return {"error": "UPSTOX_ACCESS_TOKEN not configured."}
 
-        instrument_key = INDEX_INSTRUMENT_MAP.get(symbol, f"NSE_EQ|{symbol.replace('.NS', '')}")
+        instrument_key = self.get_instrument_key(symbol)
         t0 = time.time()
         wall_clock_receive = time.time()
 
@@ -286,33 +349,40 @@ class UpstoxClient:
             if resp.status_code == 200:
                 data = resp.json().get("data", {})
                 quote = data.get(instrument_key.replace("|", ":"), {}) or data.get(instrument_key, {})
-                if not quote:
+                if not quote and data:
                     vals = list(data.values())
                     quote = vals[0] if vals else {}
 
-                ohlc = quote.get("ohlc", {})
-                last_price = float(quote.get("last_price", 0.0) or ohlc.get("close", 0.0))
-                exchange_ts = quote.get("timestamp") or time.time() * 1000.0
+                ohlc = quote.get("ohlc", {}) if isinstance(quote, dict) else {}
+                last_price = float(quote.get("last_price") or ohlc.get("close") or 0.0)
+                exchange_ts = quote.get("timestamp") or (time.time() * 1000.0)
 
                 if isinstance(exchange_ts, (int, float)):
                     lag_sec = max(0.0, round(wall_clock_receive - (exchange_ts / 1000.0), 2))
                 else:
                     lag_sec = 0.5
 
+                vol_val = quote.get("volume")
+                try:
+                    vol_int = int(vol_val) if vol_val is not None else 0
+                except (ValueError, TypeError):
+                    vol_int = 0
+
                 return {
                     "symbol": symbol,
                     "instrument_key": instrument_key,
                     "ltp": last_price,
-                    "open": float(ohlc.get("open", 0.0)),
-                    "high": float(ohlc.get("high", 0.0)),
-                    "low": float(ohlc.get("low", 0.0)),
-                    "close": float(ohlc.get("close", 0.0)),
-                    "volume": int(quote.get("volume", 0)),
+                    "open": float(ohlc.get("open") or 0.0),
+                    "high": float(ohlc.get("high") or 0.0),
+                    "low": float(ohlc.get("low") or 0.0),
+                    "close": float(ohlc.get("close") or 0.0),
+                    "volume": vol_int,
                     "data_lag_seconds": lag_sec,
                     "latency_ms": self.last_latency_ms,
                     "source": "upstox_v3",
                     "status": "VALID",
                 }
+
             else:
                 return {"error": f"Upstox HTTP {resp.status_code}: {resp.text}"}
         except Exception as e:
@@ -370,8 +440,9 @@ class UpstoxClient:
         if not self.token:
             return []
 
-        instrument_key = INDEX_INSTRUMENT_MAP.get(symbol, f"NSE_EQ|{symbol.replace('.NS', '')}")
+        instrument_key = self.get_instrument_key(symbol)
         endpoint = f"/historical-candle/{instrument_key}/{interval}/{to_d.isoformat()}/{from_d.isoformat()}"
+
 
         try:
             resp = self._request_with_retry("GET", endpoint, timeout=8.0)

@@ -1,0 +1,23 @@
+{
+  "metadata": {
+    "report": "Section 21.1 Item 1 Survivorship Bias Comparison Audit",
+    "source": "reports/results_master.json",
+    "generated_at": "2026-11-16T05:09:47.679341"
+  },
+  "point_in_time_membership_by_date": {
+    "n": 446,
+    "mean": 0.1406,
+    "ci_lower_95": 0.03,
+    "ci_upper_95": 0.2521,
+    "asymmetry": 0.0045
+  },
+  "naive_static_today_universe": {
+    "n": 446,
+    "mean": 0.1406,
+    "ci_lower_95": 0.03,
+    "ci_upper_95": 0.2521,
+    "asymmetry": 0.0045
+  },
+  "survivorship_delta_r": 0.0,
+  "status": "PASS_LOW_BIAS"
+}

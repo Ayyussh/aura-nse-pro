@@ -6,22 +6,22 @@ LLM Bull/Bear auditing, risk sizing, Telegram alert dispatch, 9:15 AM gap checks
 """
 
 from __future__ import annotations
+
 import datetime
 import hashlib
 import json
 import logging
-from typing import Dict, List, Any, Optional
+from typing import Any, cast
 
-import pandas as pd
 import httpx
 
-from backend.core.config import settings, compute_config_hash
+from backend.core.config import compute_config_hash, settings
 from backend.costs.charges import charges_engine
-from backend.data.holiday_calendar import is_trading_day, get_ist_now
+from backend.data.holiday_calendar import get_ist_now
 from backend.data.provider import data_provider
-from backend.data.universe import get_universe_symbols, get_sector_for_symbol
+from backend.data.universe import get_sector_for_symbol, get_universe_symbols
+from backend.db.models import MistakeLog, Prediction, SystemAuditLog
 from backend.db.session import SessionLocal
-from backend.db.models import Prediction, MistakeLog, SystemAuditLog
 from backend.llm.analyst import aura_analyst
 from backend.ml.features import extract_features_from_df
 from backend.ml.predictor import ml_predictor
@@ -112,7 +112,7 @@ def send_telegram_alert(message: str) -> bool:
         return False
 
 
-def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False) -> Dict[str, Any]:
+def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False, is_shadow: bool = False) -> dict[str, Any]:
     """Execute complete 9:00 AM IST pre-market screening and prediction generation."""
     today = get_ist_now().date()
     config_hash = compute_config_hash()
@@ -125,12 +125,13 @@ def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False) -> Di
 
     # 2. Run-Gate Check (C4): Validate data reconciliation before screening
     try:
-        from backend.data.reconciliation import reconciliation_engine
         from backend.data.holiday_calendar import get_previous_trading_day
+        from backend.data.reconciliation import reconciliation_engine
         symbols_for_gate = get_universe_symbols(limit=universe_limit)
         target_recon_date = get_previous_trading_day(today)
         can_run, gate_reason, gate_stats = reconciliation_engine.evaluate_run_gate(symbols_for_gate, target_recon_date)
-        gate_pct = gate_stats.get("confidence_coverage_pct", 100.0) if isinstance(gate_stats, dict) else 100.0
+        gate_pct = gate_stats.get("confidence_agreement_pct", gate_stats.get("confidence_coverage_pct", 100.0)) if isinstance(gate_stats, dict) else 100.0
+        unverified_set = set(gate_stats.get("unverified_symbols", [])) if isinstance(gate_stats, dict) else set()
         if not can_run and not force:
             msg = (
                 f"🚦 *AURA 9:00 AM Pre-Market — HELD*\n"
@@ -161,8 +162,8 @@ def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False) -> Di
     nifty_df = data_provider.fetch_history("^NSEI", period="1y", interval="1d")
 
     symbols = get_universe_symbols(limit=universe_limit)
-    approved_candidates: List[Dict[str, Any]] = []
-    rejected_candidates: List[Dict[str, Any]] = []
+    approved_candidates: list[dict[str, Any]] = []
+    rejected_candidates: list[dict[str, Any]] = []
 
     db = SessionLocal()
     try:
@@ -170,8 +171,8 @@ def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False) -> Di
         open_db_preds = db.query(Prediction).filter(Prediction.status == "OPEN").all()
         open_positions = [
             {
-                "symbol": p.symbol,
-                "sector": get_sector_for_symbol(p.symbol),
+                "symbol": str(p.symbol),
+                "sector": get_sector_for_symbol(str(p.symbol)),
                 "quantity": p.quantity,
                 "entry_price": p.entry_price,
                 "stop_loss": p.stop_loss,
@@ -180,6 +181,10 @@ def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False) -> Di
         ]
 
         for symbol in symbols:
+            if symbol in unverified_set:
+                logger.warning(f"Quarantining unverified/mismatched symbol {symbol} from pre-market screening.")
+                rejected_candidates.append({"symbol": symbol, "reason": "Data reconciliation unverified or quarantined."})
+                continue
             try:
                 # Fetch history
                 df = data_provider.fetch_history(symbol, period="1y", interval="1d")
@@ -318,6 +323,8 @@ def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False) -> Di
                     audit_hash=audit_hash,
                     prev_hash=prev_hash,
                     hash_version="v2",
+                    source="SHADOW" if is_shadow else "LIVE",
+                    is_shadow=is_shadow,
                 )
                 db.add(pred_record)
                 db.commit()
@@ -418,7 +425,7 @@ def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False) -> Di
         db.close()
 
 
-def run_open_check_pipeline() -> Dict[str, Any]:
+def run_open_check_pipeline() -> dict[str, Any]:
     """09:15-09:20 IST: Evaluate market open prices, apply gap filter, recompute quantities."""
     db = SessionLocal()
     updated = 0
@@ -431,18 +438,19 @@ def run_open_check_pipeline() -> Dict[str, Any]:
         ).all()
 
         for pred in open_preds:
-            df = data_provider.fetch_history(pred.symbol, period="5d", interval="1d", force_refresh=True)
+            pred_symbol = str(pred.symbol)
+            df = data_provider.fetch_history(pred_symbol, period="5d", interval="1d", force_refresh=True)
             if df.empty:
                 continue
 
             open_price = float(df["open"].iloc[-1])
-            planned = pred.planned_entry_price
+            planned = float(pred.planned_entry_price or 0.0)
 
             # ATR-relative gap limit: clamp(0.5 * ATR14 / planned * 100, 0.75, 2.5)
             max_gap_pct = 2.5
             try:
                 if pred.indicators_json:
-                    inds = json.loads(pred.indicators_json)
+                    inds = json.loads(str(pred.indicators_json))
                     atr = float(inds.get("atr_14", 0.0))
                     if atr > 0 and planned > 0:
                         atr_gap = 0.5 * (atr / planned) * 100.0
@@ -450,32 +458,33 @@ def run_open_check_pipeline() -> Dict[str, Any]:
             except Exception:
                 max_gap_pct = 2.5
 
-            gap_pct = ((open_price - planned) / planned) * 100.0
+            gap_pct = ((open_price - planned) / planned) * 100.0 if planned > 0 else 0.0
             if gap_pct > max_gap_pct:
-                pred.status = "SKIPPED_GAP_UP"
-                pred.exit_reason = f"Gapped up {gap_pct:.2f}% at open (exceeded ATR-relative chasing limit {max_gap_pct:.2f}%)."
-                pred.closed_at = datetime.datetime.utcnow()
+                setattr(pred, "status", "SKIPPED_GAP_UP")
+                setattr(pred, "exit_reason", f"Gapped up {gap_pct:.2f}% at open (exceeded ATR-relative chasing limit {max_gap_pct:.2f}%).")
+                setattr(pred, "closed_at", datetime.datetime.utcnow())
                 skipped_gaps += 1
                 continue
 
             # Gap Down below stop loss
-            if open_price <= pred.stop_loss:
-                pred.status = "SKIPPED_GAP_DOWN"
-                pred.exit_reason = f"Gapped down through stop loss at open (Open ₹{open_price} <= Stop ₹{pred.stop_loss})."
-                pred.closed_at = datetime.datetime.utcnow()
+            pred_stop = float(pred.stop_loss or 0.0)
+            if open_price <= pred_stop:
+                setattr(pred, "status", "SKIPPED_GAP_DOWN")
+                setattr(pred, "exit_reason", f"Gapped down through stop loss at open (Open ₹{open_price} <= Stop ₹{pred_stop}).")
+                setattr(pred, "closed_at", datetime.datetime.utcnow())
                 skipped_gaps += 1
                 continue
 
             # Normal Open: Update entry price to actual open + slippage and recompute quantity to preserve rupee risk
             slippage = open_price * 0.0005  # 5 bps
             actual_fill = round(open_price + slippage, 2)
-            pred.entry_price = actual_fill
+            setattr(pred, "entry_price", actual_fill)
 
             # Recompute exact whole-share quantity
-            risk_per_share = max(0.5, actual_fill - pred.stop_loss)
+            risk_per_share = max(0.5, actual_fill - pred_stop)
             target_risk_rupees = settings.INITIAL_CAPITAL * (settings.MAX_RISK_PER_TRADE_PCT / 100.0)
             recomputed_qty = max(1, int(target_risk_rupees / risk_per_share))
-            pred.quantity = recomputed_qty
+            setattr(pred, "quantity", recomputed_qty)
             updated += 1
 
         db.commit()
@@ -490,7 +499,7 @@ def run_open_check_pipeline() -> Dict[str, Any]:
         db.close()
 
 
-def run_post_market_grading() -> Dict[str, Any]:
+def run_post_market_grading() -> dict[str, Any]:
     """15:45 IST: Grade active OPEN trades against daily OHLC."""
     from backend.core.grader import grade_trade_outcome
     db = SessionLocal()
@@ -498,52 +507,59 @@ def run_post_market_grading() -> Dict[str, Any]:
     try:
         open_preds = db.query(Prediction).filter(Prediction.status == "OPEN").all()
         for pred in open_preds:
-            df = data_provider.fetch_history(pred.symbol, period="1mo", interval="1d", force_refresh=True)
+            pred_sym = str(pred.symbol)
+            df = data_provider.fetch_history(pred_sym, period="1mo", interval="1d", force_refresh=True)
             if df.empty:
                 continue
 
+            pred_entry_p = float(pred.entry_price or 0.0)
+            pred_sl = float(pred.stop_loss or 0.0)
+            pred_tp = float(pred.target_price or 0.0)
+            pred_qty = int(pred.quantity or 0)
+            pred_tlimit = int(pred.time_limit_days or 10)
+
             res = grade_trade_outcome(
-                symbol=pred.symbol,
-                entry_date=pred.entry_date,
-                entry_price=pred.entry_price,
-                stop_loss=pred.stop_loss,
-                target_price=pred.target_price,
-                quantity=pred.quantity,
-                time_limit_days=pred.time_limit_days,
+                symbol=pred_sym,
+                entry_date=cast(datetime.date, pred.entry_date),
+                entry_price=pred_entry_p,
+                stop_loss=pred_sl,
+                target_price=pred_tp,
+                quantity=pred_qty,
+                time_limit_days=pred_tlimit,
                 history_df=df,
             )
 
             if res["status"] != "OPEN":
-                pred.status = res["status"]
-                pred.exit_price = res["exit_price"]
-                pred.exit_reason = res["exit_reason"]
-                pred.closed_at = datetime.datetime.utcnow()
-                pred.gross_pnl_rupees = res["gross_pnl_rupees"]
-                pred.charges_rupees = res["charges_rupees"]
-                pred.net_pnl_rupees = res["net_pnl_rupees"]
-                pred.net_pnl_r = res["net_pnl_r"]
-                pred.tax_estimated_rupees = res["tax_estimated_rupees"]
+                setattr(pred, "status", res["status"])
+                setattr(pred, "exit_price", res["exit_price"])
+                setattr(pred, "exit_reason", res["exit_reason"])
+                setattr(pred, "closed_at", datetime.datetime.utcnow())
+                setattr(pred, "gross_pnl_rupees", res["gross_pnl_rupees"])
+                setattr(pred, "charges_rupees", res["charges_rupees"])
+                setattr(pred, "net_pnl_rupees", res["net_pnl_rupees"])
+                setattr(pred, "net_pnl_r", res["net_pnl_r"])
+                setattr(pred, "tax_estimated_rupees", res["tax_estimated_rupees"])
                 graded_count += 1
 
                 # If trade ended in loss, log mistake candidate with LLM post-mortem (C3)
                 if res["net_pnl_rupees"] < 0:
-                    inds = json.loads(pred.indicators_json) if pred.indicators_json else {}
+                    inds = json.loads(str(pred.indicators_json)) if pred.indicators_json else {}
                     regime = evaluate_market_regime()
                     post_mortem = aura_analyst.conduct_loss_post_mortem(
-                        symbol=pred.symbol,
-                        entry_price=pred.entry_price,
-                        exit_price=res["exit_price"],
-                        stop_loss=pred.stop_loss,
-                        target_price=pred.target_price,
-                        exit_reason=res["exit_reason"],
-                        net_pnl_rupees=res["net_pnl_rupees"],
-                        net_pnl_r=res["net_pnl_r"],
+                        symbol=pred_sym,
+                        entry_price=pred_entry_p,
+                        exit_price=float(res["exit_price"]),
+                        stop_loss=pred_sl,
+                        target_price=pred_tp,
+                        exit_reason=str(res["exit_reason"]),
+                        net_pnl_rupees=float(res["net_pnl_rupees"]),
+                        net_pnl_r=float(res["net_pnl_r"]),
                         indicators=inds,
                         macro_regime=regime,
                     )
                     mistake = MistakeLog(
                         prediction_id=pred.id,
-                        symbol=pred.symbol,
+                        symbol=pred_sym,
                         loss_category=post_mortem["loss_category"],
                         loss_rupees=abs(res["net_pnl_rupees"]),
                         loss_r=abs(res["net_pnl_r"]),
@@ -559,29 +575,31 @@ def run_post_market_grading() -> Dict[str, Any]:
         db.close()
 
 
-def run_midday_stop_check() -> Dict[str, Any]:
+def run_midday_stop_check() -> dict[str, Any]:
     """13:00 IST: Check OPEN positions against latest intraday price. Alert if breaching stop. (H3)"""
     db = SessionLocal()
     alerts_sent = 0
     checked = 0
-    breaches: List[Dict[str, Any]] = []
+    breaches: list[dict[str, Any]] = []
     try:
         open_preds = db.query(Prediction).filter(Prediction.status == "OPEN").all()
         for pred in open_preds:
             try:
                 # Fetch intraday 5-min data to get latest price
-                df_5m = data_provider.fetch_history(pred.symbol, period="1d", interval="5m", force_refresh=True)
+                pred_sym = str(pred.symbol)
+                df_5m = data_provider.fetch_history(pred_sym, period="1d", interval="5m", force_refresh=True)
                 if df_5m.empty:
                     # Fall back to daily data
-                    df_5m = data_provider.fetch_history(pred.symbol, period="5d", interval="1d", force_refresh=True)
+                    df_5m = data_provider.fetch_history(pred_sym, period="5d", interval="1d", force_refresh=True)
                 if df_5m.empty:
                     continue
 
                 latest_price = float(df_5m["close"].iloc[-1])
                 checked += 1
 
-                if latest_price <= pred.stop_loss:
-                    pct_below = ((pred.stop_loss - latest_price) / pred.stop_loss) * 100.0
+                pred_sl = float(pred.stop_loss or 0.0)
+                if pred_sl > 0 and latest_price <= pred_sl:
+                    pct_below = ((pred_sl - latest_price) / pred_sl) * 100.0
                     msg = (
                         f"⚠️ *AURA Mid-Day Stop Alert — 13:00 IST*\n"
                         f"🔴 *{pred.symbol}* has breached its stop loss!\n"
@@ -614,7 +632,7 @@ def run_midday_stop_check() -> Dict[str, Any]:
         db.close()
 
 
-def refresh_portfolio_prices() -> Dict[str, Any]:
+def refresh_portfolio_prices() -> dict[str, Any]:
     """15:50 IST: Refresh current_price, current_value, unrealized_pnl for all portfolio holdings. (C2)"""
     from backend.db.models import PortfolioHolding
     db = SessionLocal()
@@ -624,19 +642,22 @@ def refresh_portfolio_prices() -> Dict[str, Any]:
         holdings = db.query(PortfolioHolding).all()
         for h in holdings:
             try:
-                df = data_provider.fetch_history(h.symbol, period="5d", interval="1d", force_refresh=True)
+                h_sym = str(h.symbol)
+                h_qty = int(h.quantity or 0)
+                h_inv = float(h.invested_amount or 0.0)
+                df = data_provider.fetch_history(h_sym, period="5d", interval="1d", force_refresh=True)
                 if df.empty:
-                    logger.warning(f"No price data for portfolio holding {h.symbol}")
+                    logger.warning(f"No price data for portfolio holding {h_sym}")
                     errors += 1
                     continue
 
                 latest_price = float(df["close"].iloc[-1])
-                h.current_price = round(latest_price, 2)
-                h.current_value = round(latest_price * h.quantity, 2)
-                h.unrealized_pnl = round(h.current_value - h.invested_amount, 2)
+                setattr(h, "current_price", round(latest_price, 2))
+                setattr(h, "current_value", round(latest_price * h_qty, 2))
+                setattr(h, "unrealized_pnl", round(latest_price * h_qty - h_inv, 2))
                 updated += 1
             except Exception as e:
-                logger.warning(f"Failed to refresh price for {h.symbol}: {e}")
+                logger.warning(f"Failed to refresh price for {getattr(h, 'symbol', '')}: {e}")
                 errors += 1
 
         db.commit()
@@ -651,7 +672,7 @@ def refresh_portfolio_prices() -> Dict[str, Any]:
         db.close()
 
 
-def run_bhavcopy_reconciliation() -> Dict[str, Any]:
+def run_bhavcopy_reconciliation() -> dict[str, Any]:
     """18:30 IST: Final reconciliation against official EOD bhavcopy."""
     # Re-evaluate all trades closed today and log audit reconciliation
     db = SessionLocal()
@@ -667,7 +688,7 @@ def run_bhavcopy_reconciliation() -> Dict[str, Any]:
         db.close()
 
 
-def calculate_weekly_performance_summary(db: Any) -> Dict[str, Any]:
+def calculate_weekly_performance_summary(db: Any) -> dict[str, Any]:
     """Calculate trailing 7-day performance metrics across all closed trades (M6)."""
     seven_days_ago = get_ist_now().date() - datetime.timedelta(days=7)
     trades_raw = (
@@ -730,7 +751,7 @@ def calculate_weekly_performance_summary(db: Any) -> Dict[str, Any]:
     }
 
 
-def run_weekly_mistake_audit() -> Dict[str, Any]:
+def run_weekly_mistake_audit() -> dict[str, Any]:
     """Saturday 10:00 IST: Mistake audit categorizer, weekly P&L summary, and self-improving ML retraining."""
     from backend.ml.retrain import self_improving_engine
 
@@ -749,14 +770,16 @@ def run_weekly_mistake_audit() -> Dict[str, Any]:
         }
         for m in pending_mistakes:
             # Categorize based on narrative
-            if "gap" in m.diagnosis_narrative.lower():
-                m.loss_category = "Gap-Through-Stop"
-            elif "breakout" in m.diagnosis_narrative.lower():
-                m.loss_category = "False Breakout"
+            narrative = str(m.diagnosis_narrative or "").lower()
+            if "gap" in narrative:
+                cat = "Gap-Through-Stop"
+            elif "breakout" in narrative:
+                cat = "False Breakout"
             else:
-                m.loss_category = "Sector Weakness"
-            m.status = "RESOLVED"
-            categories[m.loss_category] = categories.get(m.loss_category, 0) + 1
+                cat = "Sector Weakness"
+            setattr(m, "loss_category", cat)
+            setattr(m, "status", "RESOLVED")
+            categories[cat] = categories.get(cat, 0) + 1
 
         db.commit()
 

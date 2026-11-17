@@ -51,47 +51,51 @@ def compute_bootstrap_ci(data: np.ndarray, num_samples: int = 1000, alpha: float
 
 
 def generate_baseline_stored_trades() -> List[Dict[str, Any]]:
-    """Synthesize representative stored historical swing trades anchored on NIFTY 500 setups."""
-    rng = np.random.RandomState(1337)
+    """Extract 120 real historical swing trades across 120 distinct NIFTY 500 equities from DuckDB."""
+    from backend.data.historical_store import historical_store
+    from backend.strategies.swing import SwingStrategyEngine
+
+    engine = SwingStrategyEngine()
+    symbols = [s for s in historical_store.list_available_symbols() if not s.startswith("^")]
+    nifty_df = historical_store.load_ohlcv("^NSEI.NS")
+
+    start_d = datetime.date(2022, 1, 1)
+    end_d = datetime.date(2024, 6, 30)
+
     trades = []
-    symbols = ["RELIANCE.NS", "TCS.NS", "INFY.NS", "HDFCBANK.NS", "TATAMOTORS.NS", "ITC.NS", "SBIN.NS", "LT.NS"]
-
-    start_date = datetime.date(2025, 1, 1)
-    for i in range(120):
-        sym = symbols[i % len(symbols)]
-        entry_price = round(float(rng.uniform(500, 3500)), 2)
-        atr = round(entry_price * float(rng.uniform(0.015, 0.035)), 2)
-        stop_loss = round(entry_price - (2.0 * atr), 2)
-        target_price = round(entry_price + (4.0 * atr), 2)
-        qty = max(1, int(50000 / entry_price))
-
-        # Generate a 15-day price history following entry
-        dates = pd.date_range(start_date + datetime.timedelta(days=i * 2), periods=12, freq="D")
-        drift = rng.normal(0.003, 0.018, size=12)
-        prices = [entry_price]
-        for d in drift:
-            prices.append(prices[-1] * (1.0 + d))
-
-        bars = []
-        for p in prices[1:]:
-            high = p * (1.0 + rng.uniform(0.005, 0.02))
-            low = p * (1.0 - rng.uniform(0.005, 0.02))
-            open_p = p * (1.0 + rng.uniform(-0.005, 0.005))
-            bars.append({"open": open_p, "high": high, "low": low, "close": p})
-
-        history_df = pd.DataFrame(bars, index=dates)
-
-        trades.append({
-            "trade_id": f"BT_{i+1:03d}",
-            "symbol": sym,
-            "entry_date": dates[0].date(),
-            "entry_price": entry_price,
-            "stop_loss": stop_loss,
-            "target_price": target_price,
-            "quantity": qty,
-            "time_limit_days": 10,
-            "history_df": history_df,
-        })
+    for sym in symbols:
+        df = historical_store.load_ohlcv(sym)
+        if len(df) < 200:
+            continue
+        split_dates = [d for d in df.index if start_d <= d.date() <= end_d]
+        for d in split_dates[::15]:
+            sub_df = df.loc[:d]
+            if len(sub_df) < 200:
+                continue
+            sub_nifty = nifty_df.loc[:d] if not nifty_df.empty else None
+            cand = engine.evaluate(sym, sub_df, sub_nifty)
+            if cand:
+                fut_df = df.loc[d:]
+                if len(fut_df) >= cand.time_limit_days + 2:
+                    entry_p = round(float(fut_df["open"].iloc[1]), 2)
+                    qty = max(1, int(50000 / entry_p))
+                    trades.append({
+                        "trade_id": f"BT_{len(trades)+1:03d}",
+                        "symbol": sym,
+                        "entry_date": fut_df.index[1].date(),
+                        "entry_price": entry_p,
+                        "stop_loss": round(float(cand.stop_loss), 2),
+                        "target_price": round(float(cand.target_price), 2),
+                        "quantity": qty,
+                        "time_limit_days": cand.time_limit_days,
+                        "history_df": fut_df.iloc[1:cand.time_limit_days+2],
+                        "source": "REAL_NSE_DATA",
+                    })
+                    break  # Take at most 1 representative trade per symbol for diverse universe coverage
+            if len(trades) >= 120:
+                break
+        if len(trades) >= 120:
+            break
 
     return trades
 

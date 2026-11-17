@@ -72,8 +72,8 @@ class Prediction(Base):
     tax_estimated_rupees = Column(Float, nullable=True)
 
     audit_hash = Column(String(64), nullable=True) # Hash-chain link
-    prev_hash = Column(String(64), nullable=True, default="GENESIS_AURA_HASH")
-    hash_version = Column(String(16), nullable=False, default="v2")
+    prev_hash = Column(String(64), nullable=True, default="GENESIS_AURA_HASH", server_default="GENESIS_AURA_HASH")
+    hash_version = Column(String(16), nullable=False, default="v2", server_default="v2")
     source = Column(String(16), default="LIVE", nullable=True) # LIVE or SHADOW
     is_shadow = Column(Boolean, default=False, nullable=True)
 

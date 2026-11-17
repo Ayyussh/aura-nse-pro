@@ -13,9 +13,12 @@ Provides full programmatic access to:
 from __future__ import annotations
 import datetime
 import json
+import logging
 import threading
 import uuid
 from typing import Dict, List, Any, Optional
+
+logger = logging.getLogger(__name__)
 from fastapi import APIRouter, Depends, HTTPException, Query, Body
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
@@ -23,7 +26,7 @@ from sqlalchemy.orm import Session
 _scanner_lock = threading.Lock()
 
 from backend.api.auth import get_current_user, require_authenticated_user, UserProfile
-from backend.core.config import settings, encrypt_secret, mask_secret
+from backend.core.config import settings, encrypt_secret, mask_secret, PROJECT_ROOT
 from backend.core.pipeline import run_pre_market_pipeline, run_open_check_pipeline, run_post_market_grading, refresh_portfolio_prices, run_midday_stop_check
 from backend.costs.charges import charges_engine
 from backend.data.holiday_calendar import get_market_status, get_ist_now
@@ -85,9 +88,9 @@ def api_todays_predictions(
             "charges_rupees": p.charges_rupees,
             "verdict": p.llm_verdict,
             "llm_confidence": p.llm_confidence,
-            "reasoning": json.loads(p.llm_reasoning_json) if p.llm_reasoning_json else {},
-            "indicators": json.loads(p.indicators_json) if p.indicators_json else {},
-            "news_citations": json.loads(p.news_citations_json) if p.news_citations_json else [],
+            "reasoning": json.loads(str(p.llm_reasoning_json)) if p.llm_reasoning_json else {},
+            "indicators": json.loads(str(p.indicators_json)) if p.indicators_json else {},
+            "news_citations": json.loads(str(p.news_citations_json)) if p.news_citations_json else [],
             "audit_hash": p.audit_hash,
             "created_at": p.created_at.isoformat(),
         })
@@ -231,7 +234,9 @@ def api_get_portfolio(db: Session = Depends(get_db)):
     # Sector concentration
     sector_exposure: Dict[str, float] = {}
     for h in holdings:
-        sector_exposure[h.sector] = sector_exposure.get(h.sector, 0.0) + h.invested_amount
+        sec_name = str(h.sector)
+        inv_amt = float(h.invested_amount)
+        sector_exposure[sec_name] = sector_exposure.get(sec_name, 0.0) + inv_amt
 
     sector_breakdown = [
         {
@@ -320,8 +325,12 @@ class AddKeyRequest(BaseModel):
 
 
 @router.get("/vault/keys")
-def api_get_vault_keys(db: Session = Depends(get_db)):
+def api_get_vault_keys(
+    db: Session = Depends(get_db),
+    current_user: UserProfile = Depends(require_authenticated_user),
+):
     """Fetch masked keys and health status from LLM Vault."""
+
     keys = db.query(ApiKeyVault).order_by(ApiKeyVault.priority_order.asc()).all()
     from backend.core.config import decrypt_secret
     return [
@@ -656,6 +665,37 @@ def api_system_health():
     }
 
 
+@router.get("/health/heartbeat")
+def api_health_heartbeat():
+    """Dead-man's heartbeat monitor.
+    
+    Verifies APScheduler is active and background tasks have fired within tolerance.
+    """
+    heartbeat_file = PROJECT_ROOT / "data" / "heartbeat.json"
+    if not heartbeat_file.exists():
+        # Trigger immediate heartbeat
+        from backend.jobs.scheduler import job_heartbeat
+        job_heartbeat()
+
+    with open(heartbeat_file, "r", encoding="utf-8") as f:
+        hb_data = json.load(f)
+
+    last_beat = datetime.datetime.fromisoformat(hb_data["last_beat_utc"])
+    now_utc = datetime.datetime.now(datetime.timezone.utc)
+    seconds_ago = (now_utc - last_beat).total_seconds()
+
+    status = "ALIVE" if seconds_ago < 600 else "DEGRADED"
+
+    return {
+        "status": status,
+        "seconds_since_last_beat": round(seconds_ago, 1),
+        "last_beat_utc": hb_data.get("last_beat_utc"),
+        "scheduler_running": hb_data.get("scheduler_running", True),
+        "coalesce_enabled": True,
+        "misfire_grace_seconds": 3600,
+    }
+
+
 # --- ML Model Status & Retraining ---
 
 @router.get("/ml/model-status")
@@ -717,9 +757,9 @@ def api_prediction_audit(prediction_id: int, db: Session = Depends(get_db)):
         "ev_r": p.ev_r,
         "llm_verdict": p.llm_verdict,
         "llm_confidence": p.llm_confidence,
-        "llm_reasoning": json.loads(p.llm_reasoning_json) if p.llm_reasoning_json else {},
-        "indicators": json.loads(p.indicators_json) if p.indicators_json else {},
-        "news_citations": json.loads(p.news_citations_json) if p.news_citations_json else [],
+        "llm_reasoning": json.loads(str(p.llm_reasoning_json)) if p.llm_reasoning_json else {},
+        "indicators": json.loads(str(p.indicators_json)) if p.indicators_json else {},
+        "news_citations": json.loads(str(p.news_citations_json)) if p.news_citations_json else [],
         "audit_hash": p.audit_hash,
         "exit_price": p.exit_price,
         "exit_reason": p.exit_reason,
@@ -1044,8 +1084,12 @@ def api_upstox_test_connection(payload: Optional[UpstoxTokenPayload] = None):
 
 
 @router.post("/upstox/save-token")
-def api_upstox_save_token(payload: UpstoxTokenPayload):
+def api_upstox_save_token(
+    payload: UpstoxTokenPayload,
+    current_user: UserProfile = Depends(require_authenticated_user),
+):
     """Save Upstox Analytics Token into local environment and memory."""
+
     from backend.data.upstox import upstox_client
     from backend.core.config import PROJECT_ROOT
     import os

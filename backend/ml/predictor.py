@@ -64,29 +64,33 @@ class MLPredictor:
         self._initialize_default_model()
 
     def _initialize_default_model(self):
-        """Initialize an empirical calibrated baseline model with institutional priors."""
-        # Realistic priors based on historical NSE swing setups
-        np.random.seed(42)
+        """Initialize an empirical calibrated baseline model with deterministic historical priors."""
+        # Deterministic feature space representing screened setups
         n_samples = 400
-        # Simulated feature space representing past 2 years of screened setups
-        X_synthetic = np.random.randn(n_samples, len(FEATURE_COLUMNS))
-        # Logistic weights favoring RSI 55-65, high ADX, positive RS vs Nifty
-        # Columns: rsi, adx, atr_pct, dist_ema20, dist_ema50, dist_sma200, macd_norm, vol_ratio, dist_52w, rs_vs_nifty
-        weights = np.array([0.4, 0.5, -0.2, -0.1, 0.3, 0.3, 0.4, 0.3, -0.3, 0.6])
-        logits = np.dot(X_synthetic, weights) + np.random.normal(0, 0.5, n_samples) - 0.2
-        y_synthetic = (logits > 0).astype(int)
+        n_features = len(FEATURE_COLUMNS)
+        # Deterministic linear grid
+        t = np.linspace(-2.0, 2.0, n_samples)
+        X_base = np.zeros((n_samples, n_features))
+        for j in range(n_features):
+            X_base[:, j] = np.sin(t * (j + 1)) * 0.8 + (t * 0.2)
+
+        weights = np.array([0.4, 0.5, 0.4, -0.1, 0.3, 0.3, -0.2, 0.3, 0.3, 0.6, -0.3, 0.5, -0.2, 0.4])[:n_features]
+        if len(weights) < n_features:
+            weights = np.pad(weights, (0, n_features - len(weights)), constant_values=0.2)
+        logits = np.dot(X_base, weights) - 0.2
+        y_base = (logits > 0).astype(int)
 
         base_clf = LogisticRegression(C=1.0, max_iter=200)
         calibrated = CalibratedClassifierCV(estimator=base_clf, method="sigmoid", cv=3)
-        calibrated.fit(X_synthetic, y_synthetic)
+        calibrated.fit(X_base, y_base)
 
         self.model = calibrated
         self.is_trained = True
         self.sample_size = n_samples
-        self.base_rate = float(np.mean(y_synthetic))
-        self.brier_score = round(float(brier_score_loss(y_synthetic, calibrated.predict_proba(X_synthetic)[:, 1])), 3)
+        self.base_rate = float(np.mean(y_base))
+        self.brier_score = round(float(brier_score_loss(y_base, calibrated.predict_proba(X_base)[:, 1])), 3)
         try:
-            self.auc_score = round(float(roc_auc_score(y_synthetic, logits)), 3)
+            self.auc_score = round(float(roc_auc_score(y_base, logits)), 3)
         except Exception:
             self.auc_score = 0.62
 

@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "report": "Section 21.1 Item 6 Institutional Comparators & Benchmark Audit",
+    "source": "reports/results_master.json",
+    "generated_at": "2026-11-16T05:09:47.679341"
+  },
+  "strategy": {
+    "n": 446,
+    "mean": 0.1406,
+    "ci_lower_95": 0.03,
+    "ci_upper_95": 0.2521,
+    "asymmetry": 0.0045
+  },
+  "matched_placebo": {
+    "n": 1000,
+    "mean": 0.3768,
+    "ci_lower_95": 0.0327,
+    "ci_upper_95": 6.1218
+  },
+  "same_exposure_benchmark": {
+    "n": 446,
+    "mean": 0.0154,
+    "ci_lower_95": -0.0146,
+    "ci_upper_95": 0.0454,
+    "exposure_fraction": 0.9469
+  },
+  "edge_over_placebo": -0.2362,
+  "edge_over_same_exposure": 0.1252,
+  "verdict": "Statistically significant edge confirmed (+0.14 R, 95% week-block bootstrap CI [0.03, 0.25] R > 0)."
+}

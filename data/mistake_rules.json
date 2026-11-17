@@ -1,7 +1,28 @@
 {
-  "updated_at": "2026-11-16T05:19:57.026144",
+  "updated_at": "2026-11-17T06:29:14.481602",
   "rules": [
-    "Past Failure Pattern: Sector Weakness triggered 12 losses recently. Check closely.",
-    "Past Failure Pattern: Gap-Through-Stop triggered 8 losses recently. Check closely."
+    "Scrutinize high India VIX environments (>18) for sudden momentum reversals.",
+    "Verify breakout volume is at least 1.2x above the 20-day average to avoid bull traps.",
+    "Ensure Relative Strength vs NIFTY 50 is positive before entering sector laggards."
+  ],
+  "proposals": [
+    {
+      "rule_text": "Scrutinize high India VIX environments (>18) for sudden momentum reversals.",
+      "sample_size": 100,
+      "status": "ACTIVE_SYSTEMIC_PRIOR",
+      "evidence": "Baseline Strategy Prior"
+    },
+    {
+      "rule_text": "Verify breakout volume is at least 1.2x above the 20-day average to avoid bull traps.",
+      "sample_size": 100,
+      "status": "ACTIVE_SYSTEMIC_PRIOR",
+      "evidence": "Baseline Strategy Prior"
+    },
+    {
+      "rule_text": "Ensure Relative Strength vs NIFTY 50 is positive before entering sector laggards.",
+      "sample_size": 100,
+      "status": "ACTIVE_SYSTEMIC_PRIOR",
+      "evidence": "Baseline Strategy Prior"
+    }
   ]
 }

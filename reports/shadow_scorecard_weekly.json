@@ -1,0 +1,72 @@
+{
+  "report_type": "FORWARD_SHADOW_WEEKLY_SCORECARD",
+  "generated_at_utc": "2026-11-16T04:25:31.867333+00:00",
+  "status": "TIME_GATED",
+  "shadow_mode": {
+    "inception_date": "2026-11-14",
+    "earliest_completion_date": "2027-01-09",
+    "target_weeks": 8,
+    "weeks_elapsed": 0.3,
+    "target_graded_trades": 30,
+    "graded_trades_completed": 0,
+    "progress_tag": "0 of 30 trades",
+    "daily_scheduler_status": "ACTIVE (09:15, 15:45, 18:30 IST)"
+  },
+  "metrics": {
+    "mean_net_r": 0.0,
+    "week_block_ci_95": [
+      0.0,
+      0.0
+    ],
+    "max_drawdown_pct": 0.0,
+    "unresolved_data_incidents": 0
+  },
+  "gates": {
+    "gate_sample_size": {
+      "required": ">=30 graded trades",
+      "current": "0 trades",
+      "progress_fraction": "0 of 30 trades",
+      "status": "IN_PROGRESS"
+    },
+    "gate_duration": {
+      "required": ">=8 weeks",
+      "current": "0.3 weeks",
+      "status": "IN_PROGRESS"
+    },
+    "gate_net_expectancy": {
+      "required": ">=0.15 R (with CI_lower > 0.0 R)",
+      "current": "0.0000 R (95% CI: [0.0000, 0.0000] R)",
+      "status": "IN_PROGRESS"
+    },
+    "gate_max_drawdown": {
+      "required": "<=10.0%",
+      "current": "0.00%",
+      "status": "PASS"
+    },
+    "gate_benchmark_superiority": {
+      "required": ">0.05 R edge over same-exposure benchmark",
+      "current": "Awaiting completion of 30 trades",
+      "status": "IN_PROGRESS"
+    },
+    "gate_placebo_superiority": {
+      "required": ">0.1 R edge over random placebo",
+      "current": "Awaiting completion of 30 trades",
+      "status": "IN_PROGRESS"
+    },
+    "gate_data_integrity": {
+      "required": "0 unresolved incidents",
+      "current": "0 incidents",
+      "status": "PASS"
+    }
+  },
+  "overall_readiness_verdict": "NOT READY",
+  "readiness_summary": "Forward shadow test in progress: 0 of 30 trades completed over 0.3 of 8 weeks. Earliest completion date: 2027-01-09. Go-live readiness verdict: NOT READY (TIME_GATED).",
+  "shadow_mode_readiness": {
+    "observed_trade_frequency_lambda": 0.4735,
+    "trades_per_trading_day": 0.4735,
+    "target_shadow_trades": 30,
+    "expected_trading_days_to_target": 64,
+    "estimated_target_completion_date": "2027-02-13",
+    "verdict": "Statistically significant edge confirmed (+0.14 R, 95% week-block bootstrap CI [0.03, 0.25] R > 0)."
+  }
+}

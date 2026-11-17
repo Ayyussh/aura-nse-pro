@@ -5,7 +5,10 @@ ASM/GSM filters, EQ series validation, and traded liquidity gates.
 """
 
 from __future__ import annotations
-from typing import Dict, List, Set
+
+from typing import Dict, List, Set, Tuple
+
+from backend.data.symbol_master import symbol_master
 
 # Representative high-liquidity NIFTY 500 constituent universe across sectors (191 Stocks)
 NIFTY_500_SYMBOLS: List[str] = [
@@ -40,7 +43,7 @@ NIFTY_500_SYMBOLS: List[str] = [
     "ADANIENSOL.NS", "NHPC.NS", "SJVN.NS", "SUZLON.NS",
 
     # Automobiles & Auto Ancillaries
-    "TATAMOTORS.NS", "M&M.NS", "MARUTI.NS", "BAJAJ-AUTO.NS", "HEROMOTOCO.NS",
+    "TATAMOTORS.NS", "TMPV.NS", "TMCV.NS", "M&M.NS", "MARUTI.NS", "BAJAJ-AUTO.NS", "HEROMOTOCO.NS",
     "EICHERMOT.NS", "TVSMOTOR.NS", "BHARATFORG.NS", "BOSCHLTD.NS",
     "SONACOMS.NS", "MOTHERSON.NS", "UNOMINDA.NS", "TIINDIA.NS", "EXIDEIND.NS",
 
@@ -138,7 +141,7 @@ SYMBOL_SECTOR_MAP: Dict[str, str] = {
     "ADANIPOWER.NS": "Power", "ADANIENSOL.NS": "Power", "NHPC.NS": "Power", "SJVN.NS": "Power", "SUZLON.NS": "Power",
 
     # Auto & Auto Ancillaries
-    "TATAMOTORS.NS": "Auto", "M&M.NS": "Auto", "MARUTI.NS": "Auto", "BAJAJ-AUTO.NS": "Auto",
+    "TATAMOTORS.NS": "Auto", "TMPV.NS": "Auto", "TMCV.NS": "Auto", "M&M.NS": "Auto", "MARUTI.NS": "Auto", "BAJAJ-AUTO.NS": "Auto",
     "HEROMOTOCO.NS": "Auto", "EICHERMOT.NS": "Auto", "TVSMOTOR.NS": "Auto",
     "BHARATFORG.NS": "Auto Ancillary", "BOSCHLTD.NS": "Auto Ancillary",
     "SONACOMS.NS": "Auto Ancillary", "MOTHERSON.NS": "Auto Ancillary", "UNOMINDA.NS": "Auto Ancillary",
@@ -213,32 +216,21 @@ SYMBOL_SECTOR_MAP: Dict[str, str] = {
 }
 
 # Known Surveillance (ASM / GSM / Trade-to-Trade) exclusions
-EXCLUDED_SURVEILLANCE_SYMBOLS: Set[str] = {
-    # Any stock placed under ASM/GSM stage II+ or trade-to-trade is quarantined here
-}
+EXCLUDED_SURVEILLANCE_SYMBOLS: Set[str] = set()
 
 
-# Symbol Master & Historical Alias Registry (Section 18.3 & 19.3)
-SYMBOL_MASTER_ALIASES: Dict[str, str] = {
-    "ZOMATO.NS": "ETERNAL.NS",
-    "ZOMATO": "ETERNAL.NS",
-    "LTI.NS": "LTIM.NS",
-    "MINDTREE.NS": "LTIM.NS",
-    "TATAMTRDVR.NS": "TATAMOTORS.NS",
-}
+# Symbol Master & Historical Alias Registry (Section 17.2, 18.3, 19.3)
+SYMBOL_MASTER_ALIASES: Dict[str, str] = symbol_master.alias_to_active
 
 
 def resolve_symbol_master(symbol: str) -> str:
     """Resolve symbol through Symbol Master to active corporate ticker ensuring historical continuity."""
-    clean = symbol.strip().upper()
-    if clean in SYMBOL_MASTER_ALIASES:
-        return SYMBOL_MASTER_ALIASES[clean]
-    base = clean.replace(".NS", "")
-    if base in SYMBOL_MASTER_ALIASES:
-        return SYMBOL_MASTER_ALIASES[base]
-    if not clean.endswith(".NS"):
-        clean = f"{clean}.NS"
-    return SYMBOL_MASTER_ALIASES.get(clean, clean)
+    return symbol_master.resolve(symbol)
+
+
+def can_splice_history(from_symbol: str, to_symbol: str, as_of_date) -> Tuple[bool, str]:
+    """Check if price history between symbols may be spliced across restructuring events."""
+    return symbol_master.can_splice_history(from_symbol, to_symbol, as_of_date)
 
 
 def get_sector_for_symbol(symbol: str) -> str:

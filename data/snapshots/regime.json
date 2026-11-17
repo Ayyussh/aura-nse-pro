@@ -3,54 +3,56 @@
   "is_shadow_mode": false,
   "sizing_multiplier": 1.0,
   "description": "Favorable / Bullish: NIFTY trading above key short-term EMAs and India VIX remains subdued (<= 18).",
-  "nifty_close": 25144.3,
-  "nifty_20_ema": 23985.39,
-  "nifty_50_ema": 23618.29,
-  "nifty_200_sma": 23991.76,
+  "nifty_close": 25446.7,
+  "nifty_20_ema": 24237.08,
+  "nifty_50_ema": 23753.02,
+  "nifty_200_sma": 23993.21,
   "nifty_above_20ema": true,
   "nifty_above_50ema": true,
   "nifty_above_200sma": true,
-  "india_vix": 15.5,
-  "vix_5d_change": -0.08,
-  "top_leading_sectors": [],
+  "india_vix": 15.26,
+  "vix_5d_change": -2.16,
+  "top_leading_sectors": [
+    "Banking"
+  ],
   "sector_rankings": [
     {
-      "sector": "Auto",
-      "monthly_return_pct": 11.02,
-      "relative_strength": -0.12,
-      "is_outperforming": false
+      "sector": "Banking",
+      "monthly_return_pct": 11.64,
+      "relative_strength": 1.7,
+      "is_outperforming": true
     },
     {
       "sector": "Pharma",
-      "monthly_return_pct": 10.87,
-      "relative_strength": -0.27,
+      "monthly_return_pct": 9.28,
+      "relative_strength": -0.65,
       "is_outperforming": false
     },
     {
-      "sector": "Banking",
-      "monthly_return_pct": 10.34,
-      "relative_strength": -0.81,
-      "is_outperforming": false
-    },
-    {
-      "sector": "IT",
-      "monthly_return_pct": 5.83,
-      "relative_strength": -5.31,
+      "sector": "Auto",
+      "monthly_return_pct": 7.78,
+      "relative_strength": -2.16,
       "is_outperforming": false
     },
     {
       "sector": "Metals",
-      "monthly_return_pct": 5.34,
-      "relative_strength": -5.81,
+      "monthly_return_pct": 3.08,
+      "relative_strength": -6.86,
       "is_outperforming": false
     },
     {
       "sector": "Energy",
-      "monthly_return_pct": 2.45,
-      "relative_strength": -8.69,
+      "monthly_return_pct": 2.55,
+      "relative_strength": -7.39,
+      "is_outperforming": false
+    },
+    {
+      "sector": "IT",
+      "monthly_return_pct": 0.13,
+      "relative_strength": -9.81,
       "is_outperforming": false
     }
   ],
-  "evaluated_at": "2026-11-16T22:41:20.348694",
-  "snapshot_generated_at": "2026-11-17T04:11:19.062430+05:30"
+  "evaluated_at": "2026-11-17T06:29:14.598189",
+  "snapshot_generated_at": "2026-11-17T11:59:14.520078+05:30"
 }

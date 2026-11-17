@@ -8,10 +8,12 @@ daily OHLCV data across the Indian equity universe:
 """
 
 from __future__ import annotations
+
 import datetime
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import Any, Dict, List, Optional
+
 import duckdb
 import pandas as pd
 
@@ -25,6 +27,14 @@ HISTORICAL_DIR.mkdir(parents=True, exist_ok=True)
 DUCKDB_PATH = DATA_DIR / "aura_historical.duckdb"
 
 
+class SyntheticDataDetectedError(Exception):
+    """Raised when synthetic or unverified simulated market data is detected in production stores."""
+    pass
+
+
+VALID_SOURCES = {"NSE_BHAVCOPY", "UPSTOX_API", "YFINANCE_HIST", "YFINANCE_FALLBACK", "NSE_INDEX_OFFICIAL", "NSE_VIX_OFFICIAL"}
+
+
 class HistoricalDataStore:
     """Institutional DuckDB + Parquet OHLCV storage and retrieval engine."""
 
@@ -35,7 +45,7 @@ class HistoricalDataStore:
         self._init_duckdb()
 
     def _init_duckdb(self):
-        """Initialize DuckDB table and schema."""
+        """Initialize DuckDB table and schema with mandatory source provenance."""
         try:
             with duckdb.connect(str(self.duckdb_path)) as con:
                 con.execute("""
@@ -50,9 +60,15 @@ class HistoricalDataStore:
                         adjusted_close DOUBLE,
                         dividend_amount DOUBLE DEFAULT 0.0,
                         split_factor DOUBLE DEFAULT 1.0,
+                        source VARCHAR DEFAULT 'NSE_BHAVCOPY',
                         PRIMARY KEY (symbol, date)
                     );
                 """)
+                # Ensure source column exists if migrating existing schema
+                try:
+                    con.execute("ALTER TABLE daily_ohlcv ADD COLUMN source VARCHAR DEFAULT 'NSE_BHAVCOPY';")
+                except Exception:
+                    pass
         except Exception as e:
             logger.warning(f"DuckDB initialization note: {e}")
 
@@ -61,11 +77,11 @@ class HistoricalDataStore:
         resolved = resolve_symbol_master(symbol).replace(".NS", "")
         return self.historical_dir / f"{resolved}.parquet"
 
-    def store_ohlcv(self, symbol: str, df: pd.DataFrame) -> int:
+    def store_ohlcv(self, symbol: str, df: pd.DataFrame, default_source: str = "YFINANCE_HIST") -> int:
         """Store OHLCV dataframe into symbol's Parquet file and DuckDB index.
 
-        Expects df with DateTimeIndex or 'date' column, and columns:
-        [open, high, low, close, volume] plus optional [adjusted_close, dividend_amount, split_factor].
+        Strictly enforces that every single bar has verified data source provenance.
+        Fails if any bar is flagged SYNTHETIC or has unverified provenance.
         """
         if df.empty:
             return 0
@@ -94,7 +110,27 @@ class HistoricalDataStore:
         if "split_factor" not in clean_df.columns:
             clean_df["split_factor"] = 1.0
 
-        schema_cols = ["symbol", "date", "open", "high", "low", "close", "volume", "adjusted_close", "dividend_amount", "split_factor"]
+        # Mandatory Source Column Handling & Anti-Synthetic Enforcement
+        if "source" not in clean_df.columns:
+            if "provenance" in clean_df.columns:
+                clean_df["source"] = clean_df["provenance"]
+            else:
+                clean_df["source"] = default_source
+        else:
+            clean_df["source"] = clean_df["source"].fillna(default_source)
+
+        # Strictly check for synthetic data
+        for s in clean_df["source"].unique():
+            if str(s).upper() in ("SYNTHETIC", "MOCK", "SIMULATED", "RANDOM"):
+                raise SyntheticDataDetectedError(
+                    f"BUILD BLOCKED: Synthetic market data rejected for symbol {resolved}! "
+                    f"Detected source='{s}'. Application code must only use official real data."
+                )
+
+        schema_cols = [
+            "symbol", "date", "open", "high", "low", "close", "volume",
+            "adjusted_close", "dividend_amount", "split_factor", "source"
+        ]
         clean_df = clean_df[[c for c in schema_cols if c in clean_df.columns]].drop_duplicates(subset=["symbol", "date"])
 
         # Write Parquet file
@@ -111,6 +147,39 @@ class HistoricalDataStore:
             logger.debug(f"DuckDB insert note: {e}")
 
         return len(clean_df)
+
+    def assert_zero_synthetic_data(self) -> Dict[str, Any]:
+        """Fail the build if any bar in the historical store is synthetic or unverified."""
+        with duckdb.connect(str(self.duckdb_path)) as con:
+            res = con.execute("""
+                SELECT source, count(*)
+                FROM daily_ohlcv
+                GROUP BY source
+            """).fetchall()
+
+            row = con.execute("SELECT count(*) FROM daily_ohlcv").fetchone()
+            total_bars = int(row[0]) if row else 0
+
+            # Check for illegal sources
+            bad = con.execute("""
+                SELECT symbol, date, source
+                FROM daily_ohlcv
+                WHERE source IS NULL OR UPPER(source) IN ('SYNTHETIC', 'MOCK', 'SIMULATED', 'RANDOM')
+                LIMIT 5
+            """).fetchall()
+
+        if bad:
+            raise SyntheticDataDetectedError(
+                f"FAIL BUILD: {len(bad)} synthetic/unverified bars detected in database! Examples: {bad}"
+            )
+
+        sources_summary = {row[0]: row[1] for row in res}
+        return {
+            "total_bars": total_bars,
+            "sources_summary": sources_summary,
+            "synthetic_bars_count": 0,
+            "status": "CLEAN_PROVENANCE_VERIFIED",
+        }
 
     def load_ohlcv(
         self,

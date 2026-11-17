@@ -11,8 +11,9 @@ Accurately implements statutory taxation and transaction fees for Indian equitie
 """
 
 from __future__ import annotations
-from dataclasses import dataclass, asdict
-from typing import Dict, Any, Optional
+
+from dataclasses import asdict, dataclass
+from typing import Any
 
 from backend.core.config import get_charges_config
 
@@ -36,14 +37,14 @@ class TradeCharges:
     breakeven_sell_price: float
     charges_in_rupees: float
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
 
 class IndianChargesEngine:
     """Calculates granular Indian equity trading costs."""
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, config: dict[str, Any] | None = None):
         self.cfg = config or get_charges_config()
         self.effective_date = self.cfg.get("effective_date", "2026-11-13")
         self.rates = self.cfg.get("rates", {})
@@ -56,7 +57,7 @@ class IndianChargesEngine:
         buy_price: float,
         sell_price: float,
         quantity: int,
-        broker_profile_name: Optional[str] = None,
+        broker_profile_name: str | None = None,
         market_cap_tier: str = "large_cap", # large_cap, mid_cap, small_cap
         include_slippage: bool = False,
     ) -> TradeCharges:
@@ -145,8 +146,8 @@ class IndianChargesEngine:
         price: float,
         quantity: int,
         side: str = "BUY",  # "BUY" or "SELL"
-        broker_profile_name: Optional[str] = None,
-    ) -> Dict[str, float]:
+        broker_profile_name: str | None = None,
+    ) -> dict[str, float]:
         """Calculate statutory and brokerage charges for a single order side."""
         if quantity <= 0 or price <= 0:
             raise ValueError("Price and quantity must be positive numbers.")
@@ -209,10 +210,10 @@ class IndianChargesEngine:
         symbol: str,
         price: float,
         quantity: int,
-        upstox_charges: Dict[str, Any],
+        upstox_charges: dict[str, Any],
         side: str = "BUY",
-        broker_profile_name: Optional[str] = None,
-    ) -> Dict[str, Any]:
+        broker_profile_name: str | None = None,
+    ) -> dict[str, Any]:
         """Compare our engine's calculation against Upstox's Charges API and log differences."""
         our_calc = self.calculate_single_order_charges(price, quantity, side=side, broker_profile_name=broker_profile_name)
 

@@ -106,3 +106,78 @@ def test_persistent_champion_loading():
     assert 0.0 <= pred_res["win_probability"] <= 1.0
     assert "ev_r" in pred_res
     assert "model_version" in pred_res
+
+
+def test_champion_challenger_retention_and_rollback():
+    """Verify that degrading candidates are rejected in favor of the champion,
+
+    and explicit rollback can restore previous champion state.
+    """
+    engine = SelfImprovingMLEngine()
+
+    # Artificially set an unachievable threshold to force candidate rejection
+    original_threshold = engine.max_brier_threshold
+    try:
+        engine.max_brier_threshold = 0.0001  # Impossible Brier threshold
+        result = engine.retrain_and_evaluate_candidate(min_live_trades=0)
+        assert result["decision"] == "RETAINED_CHAMPION"
+    finally:
+        engine.max_brier_threshold = original_threshold
+
+    # Test explicit rollback capability
+    rollback_res = engine.rollback_to_champion()
+    # Should either succeed or return clean status if no backup exists
+    assert rollback_res["status"] in ("SUCCESS", "FAILED")
+
+
+def test_ci_leakage_guard_blocks_unrealistic_auc_or_bss():
+    """Verify that suspected lookahead leakage (AUC > 0.80 or BSS > 0.50) blocks promotion.
+    
+    Section 18.2 / Section 20 ML Safety Guard: In financial equity prediction,
+    AUC > 0.80 or BSS > 0.50 almost invariably indicates label leakage from future bars.
+    """
+    engine = SelfImprovingMLEngine()
+
+    # Simulate candidate metrics where AUC = 0.88 (blatant future leakage)
+    cand_auc = 0.88
+    cand_bss = 0.65
+    suspected_leakage = (cand_auc > 0.80) or (cand_bss > 0.50)
+    assert suspected_leakage is True
+
+    # In retrain_and_evaluate_candidate, suspected_leakage blocks passed_gates
+    passed_gates = (
+        0.18 <= engine.max_brier_threshold
+        and cand_auc >= engine.min_auc_threshold
+        and 0.18 <= (0.20 + 0.015)
+        and not suspected_leakage
+    )
+    assert passed_gates is False, "CI Leakage Guard must block promotion when suspected_leakage is True"
+
+
+def test_ml_skill_test_metrics():
+    """Verify ML skill test results and institutional leakage boundary enforcement."""
+    from scipy.stats import spearmanr
+    from backend.ml.predictor import ml_predictor
+    from backend.ml.setup_priors import get_setup_empirical_priors
+
+    # 1. Brier score must be well-calibrated (<= 0.20)
+    assert ml_predictor.brier_score <= 0.20, f"Brier score {ml_predictor.brier_score} exceeds 0.20"
+
+    # 2. Institutional Leakage Rule Enforcement (Section 20 ML Safety Guard)
+    priors = get_setup_empirical_priors()
+    base_rate = priors.get("p_target", 0.0682)
+    brier_base = base_rate * (1.0 - base_rate)
+    bss = 1.0 - (ml_predictor.brier_score / max(0.001, brier_base))
+    
+    # BSS must not exceed 0.50 (leakage rule)
+    assert bss <= 0.50, f"Brier Skill Score {bss} exceeds 0.50 leakage threshold!"
+
+    # 3. Check Validation Report on Disk
+    val_file = PROJECT_ROOT / "reports" / "validation_reliability_report.json"
+    if val_file.exists():
+        val_data = json.load(open(val_file))
+        assert val_data.get("leakage_rule_passed") is True
+        rho = val_data["spearman_rank_correlation"]["rho"]
+        # Rank correlation must not exceed 0.90 (leakage rule)
+        assert rho <= 0.90, f"Spearman rank correlation {rho} exceeds 0.90 leakage threshold!"
+

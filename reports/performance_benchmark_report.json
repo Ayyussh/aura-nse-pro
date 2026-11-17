@@ -1,0 +1,93 @@
+{
+  "report_type": "PERFORMANCE_AND_CAPACITY_BENCHMARK",
+  "generated_at_utc": "2026-11-16T04:07:40.038282+00:00",
+  "database_metrics": {
+    "sqlite_db_size_mb": 0.6,
+    "duckdb_lake_size_mb": 44.51,
+    "total_persisted_storage_mb": 45.11,
+    "sqlite_indexes_count": 12,
+    "sqlite_indexes": [
+      {
+        "index_name": "ix_predictions_symbol",
+        "table_name": "predictions",
+        "sql": "CREATE INDEX ix_predictions_symbol ON predictions (symbol)"
+      },
+      {
+        "index_name": "ix_predictions_status",
+        "table_name": "predictions",
+        "sql": "CREATE INDEX ix_predictions_status ON predictions (status)"
+      },
+      {
+        "index_name": "ix_predictions_id",
+        "table_name": "predictions",
+        "sql": "CREATE INDEX ix_predictions_id ON predictions (id)"
+      },
+      {
+        "index_name": "ix_portfolio_holdings_id",
+        "table_name": "portfolio_holdings",
+        "sql": "CREATE INDEX ix_portfolio_holdings_id ON portfolio_holdings (id)"
+      },
+      {
+        "index_name": "ix_portfolio_holdings_symbol",
+        "table_name": "portfolio_holdings",
+        "sql": "CREATE INDEX ix_portfolio_holdings_symbol ON portfolio_holdings (symbol)"
+      },
+      {
+        "index_name": "ix_api_key_vault_id",
+        "table_name": "api_key_vault",
+        "sql": "CREATE INDEX ix_api_key_vault_id ON api_key_vault (id)"
+      },
+      {
+        "index_name": "ix_system_audit_logs_id",
+        "table_name": "system_audit_logs",
+        "sql": "CREATE INDEX ix_system_audit_logs_id ON system_audit_logs (id)"
+      },
+      {
+        "index_name": "ix_price_truth_symbol",
+        "table_name": "price_truth",
+        "sql": "CREATE INDEX ix_price_truth_symbol ON price_truth (symbol)"
+      },
+      {
+        "index_name": "ix_price_truth_date",
+        "table_name": "price_truth",
+        "sql": "CREATE INDEX ix_price_truth_date ON price_truth (date)"
+      },
+      {
+        "index_name": "ix_trade_executions_id",
+        "table_name": "trade_executions",
+        "sql": "CREATE INDEX ix_trade_executions_id ON trade_executions (id)"
+      },
+      {
+        "index_name": "ix_mistake_logs_id",
+        "table_name": "mistake_logs",
+        "sql": "CREATE INDEX ix_mistake_logs_id ON mistake_logs (id)"
+      },
+      {
+        "index_name": "ix_trade_fill_events_id",
+        "table_name": "trade_fill_events",
+        "sql": "CREATE INDEX ix_trade_fill_events_id ON trade_fill_events (id)"
+      }
+    ]
+  },
+  "universe_scan_performance": {
+    "symbols_benchmarked": 50,
+    "valid_bars_scanned": 48,
+    "setups_passed": 1,
+    "sample_scan_time_seconds": 2.43,
+    "throughput_symbols_per_sec": 19.8,
+    "extrapolated_full_universe_500_scan_seconds": 25.31
+  },
+  "memory_and_resources": {
+    "initial_ram_mb": 106.62,
+    "post_scan_ram_mb": 119.55,
+    "peak_rss_mb": 119.55,
+    "ram_status": "OPTIMAL (Well below 1.5 GB memory envelope)"
+  },
+  "rate_limiting_conformance": {
+    "upstox_1s_limit": 50,
+    "upstox_1m_limit": 500,
+    "upstox_30m_limit": 2000,
+    "enforcement_mechanism": "backend/data/upstox.py MultiTierTokenBucketLimiter",
+    "conformance_status": "COMPLIANT (Zero 429 errors observed during full replay)"
+  }
+}

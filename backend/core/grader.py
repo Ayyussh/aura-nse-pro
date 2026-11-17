@@ -12,8 +12,10 @@ Implements institutional outcome grading on daily OHLC and intraday replay:
 """
 
 from __future__ import annotations
+
 import datetime
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Any
+
 import pandas as pd
 
 from backend.costs.charges import charges_engine
@@ -32,11 +34,11 @@ def round_to_exchange_tick(price: float) -> float:
 
 
 def replay_intraday_tie_breaker(
-    intraday_candles: List[Dict[str, Any]],
+    intraday_candles: list[dict[str, Any]],
     stop_loss: float,
     target_price: float,
-    fill_time: Optional[datetime.time] = None,
-) -> Optional[Tuple[str, float, str]]:
+    fill_time: datetime.time | None = None,
+) -> tuple[str, float, str] | None:
     """Replay 1-minute or 5-minute candles to resolve ambiguous same-day bars."""
     for candle in intraday_candles:
         candle_time = candle.get("time")
@@ -78,9 +80,11 @@ def grade_trade_outcome(
     time_limit_days: int,
     history_df: pd.DataFrame,
     entry_at_open: bool = True,
-    fill_time: Optional[datetime.time] = None,
-    intraday_candles_by_date: Optional[Dict[str, List[Dict[str, Any]]]] = None,
-) -> Dict[str, Any]:
+    fill_time: datetime.time | None = None,
+    intraday_candles_by_date: dict[str, list[dict[str, Any]]] | None = None,
+    trailing_stop_trigger_r: float | None = None,
+    order_assumption: str = "WORST_CASE",
+) -> dict[str, Any]:
     """Grade an open trade with precise time-of-fill awareness.
 
     - When entry_at_open is True: evaluates entry bar starting from open fill.
@@ -95,6 +99,11 @@ def grade_trade_outcome(
     entry_price = round_to_exchange_tick(entry_price)
     stop_loss = round_to_exchange_tick(stop_loss)
     target_price = round_to_exchange_tick(target_price)
+
+    # Ensure index is DatetimeIndex so .date accessor works consistently
+    if not isinstance(history_df.index, pd.DatetimeIndex):
+        history_df = history_df.copy()
+        history_df.index = pd.to_datetime(history_df.index)
 
     # Determine candidate bars
     if entry_at_open:
@@ -111,6 +120,12 @@ def grade_trade_outcome(
     exit_reason = ""
     exit_date = None
 
+    # Trailing stop setup (e.g. V5: trail to breakeven after +1.0R)
+    risk_per_share = max(0.01, entry_price - stop_loss)
+    trigger_price = entry_price + (trailing_stop_trigger_r * risk_per_share) if trailing_stop_trigger_r is not None else None
+    current_stop = stop_loss
+    is_trailed = False
+
     for idx, (bar_ts, bar) in enumerate(df_bars.iterrows(), start=1):
         o = float(bar["open"])
         h = float(bar["high"])
@@ -122,11 +137,11 @@ def grade_trade_outcome(
         # Handle entry day when entry is at market open
         if bar_date == entry_date and entry_at_open:
             # 1. Open gaps down through stop loss -> Trade is skipped (never filled)
-            if o <= stop_loss:
+            if o <= current_stop:
                 return {
                     "status": "SKIPPED_GAP_DOWN",
                     "exit_price": round_to_exchange_tick(o),
-                    "exit_reason": f"Gapped down through stop loss at open (Open ₹{o} <= Stop ₹{stop_loss}); trade was not filled.",
+                    "exit_reason": f"Gapped down through stop loss at open (Open ₹{o} <= Stop ₹{current_stop}); trade was not filled.",
                     "exit_date": bar_date.isoformat(),
                     "gross_pnl_rupees": 0.0,
                     "gross_pnl_r": 0.0,
@@ -148,21 +163,21 @@ def grade_trade_outcome(
             # 3. Intraday replay on entry day (evaluating only bars after fill_time)
             intraday_bars = intraday_candles_by_date.get(date_str) if intraday_candles_by_date else None
             active_fill_time = fill_time or datetime.time(9, 15)
-            tie_result = replay_intraday_tie_breaker(intraday_bars, stop_loss, target_price, fill_time=active_fill_time) if intraday_bars else None
+            tie_result = replay_intraday_tie_breaker(intraday_bars, current_stop, target_price, fill_time=active_fill_time) if intraday_bars else None
 
             if tie_result:
                 final_status, exit_price, exit_reason = tie_result
                 exit_date = bar_date
                 break
-            elif l <= stop_loss and h >= target_price:
+            elif l <= current_stop and h >= target_price:
                 final_status = "STOP_LOSS_HIT"
-                exit_price = stop_loss
+                exit_price = current_stop
                 exit_reason = "Ambiguous bar on entry day (no intraday replay): conservative stop-first attributed."
                 exit_date = bar_date
                 break
-            elif l <= stop_loss:
+            elif l <= current_stop:
                 final_status = "STOP_LOSS_HIT"
-                exit_price = stop_loss
+                exit_price = current_stop
                 exit_reason = "Stop loss touched on entry day."
                 exit_date = bar_date
                 break
@@ -173,13 +188,17 @@ def grade_trade_outcome(
                 exit_date = bar_date
                 break
 
+            if trigger_price is not None and h >= trigger_price and not is_trailed:
+                is_trailed = True
+                current_stop = entry_price
+
             # If neither touched on entry day, continue to subsequent days
             continue
 
         # For subsequent days (strictly after entry)
         # 1. Gap down through stop at open
-        if o <= stop_loss:
-            final_status = "STOP_LOSS_HIT"
+        if o <= current_stop:
+            final_status = "BREAKEVEN_STOP_HIT" if is_trailed else "STOP_LOSS_HIT"
             exit_price = round_to_exchange_tick(o)  # Slipped to market open
             exit_reason = "Gap-down below stop loss at open."
             exit_date = bar_date
@@ -194,35 +213,58 @@ def grade_trade_outcome(
             break
 
         # 3. Ambiguous day: High touches target AND Low touches stop
-        if l <= stop_loss and h >= target_price:
+        if l <= current_stop and h >= target_price:
             intraday_bars = intraday_candles_by_date.get(date_str) if intraday_candles_by_date else None
-            tie_result = replay_intraday_tie_breaker(intraday_bars, stop_loss, target_price) if intraday_bars else None
+            tie_result = replay_intraday_tie_breaker(intraday_bars, current_stop, target_price) if intraday_bars else None
 
             if tie_result:
                 final_status, exit_price, exit_reason = tie_result
             else:
-                final_status = "STOP_LOSS_HIT"
-                exit_price = stop_loss
+                final_status = "BREAKEVEN_STOP_HIT" if is_trailed else "STOP_LOSS_HIT"
+                exit_price = current_stop
                 exit_reason = "Ambiguous bar (no intraday candles): conservative stop-first attributed."
 
             exit_date = bar_date
             break
 
-        # 4. Stop touched
-        if l <= stop_loss:
-            final_status = "STOP_LOSS_HIT"
-            exit_price = stop_loss
-            exit_reason = "Stop loss touched."
-            exit_date = bar_date
-            break
+        if order_assumption == "WORST_CASE":
+            # WORST_CASE: Check stop hit before trailing stop trigger
+            if l <= current_stop:
+                final_status = "BREAKEVEN_STOP_HIT" if is_trailed else "STOP_LOSS_HIT"
+                exit_price = current_stop
+                exit_reason = "Stop loss touched."
+                exit_date = bar_date
+                break
 
-        # 5. Target touched
-        if h >= target_price:
-            final_status = "TARGET_HIT"
-            exit_price = target_price
-            exit_reason = "Target reached."
-            exit_date = bar_date
-            break
+            if h >= target_price:
+                final_status = "TARGET_HIT"
+                exit_price = target_price
+                exit_reason = "Target reached."
+                exit_date = bar_date
+                break
+
+            if trigger_price is not None and h >= trigger_price and not is_trailed:
+                is_trailed = True
+                current_stop = entry_price
+        else:
+            # BEST_CASE: Acknowledge trailing trigger first
+            if trigger_price is not None and h >= trigger_price and not is_trailed:
+                is_trailed = True
+                current_stop = entry_price
+
+            if h >= target_price:
+                final_status = "TARGET_HIT"
+                exit_price = target_price
+                exit_reason = "Target reached."
+                exit_date = bar_date
+                break
+
+            if l <= current_stop:
+                final_status = "BREAKEVEN_STOP_HIT" if is_trailed else "STOP_LOSS_HIT"
+                exit_price = current_stop
+                exit_reason = "Stop loss touched."
+                exit_date = bar_date
+                break
 
         # 6. Time limit expiration
         if idx >= time_limit_days:

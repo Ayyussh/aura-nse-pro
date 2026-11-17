@@ -13,6 +13,7 @@ import {
   CheckCircle2,
   AlertCircle,
   Database,
+  Activity,
 } from "lucide-react";
 
 import { AuraAvatar } from "./components/AuraAvatar";
@@ -24,6 +25,7 @@ import { MistakeLab } from "./components/MistakeLab";
 import { VaultSettings } from "./components/VaultSettings";
 import { ResearchConsole } from "./components/ResearchConsole";
 import { JournalTaxCenter } from "./components/JournalTaxCenter";
+import { SystemHealth } from "./components/SystemHealth";
 
 import {
   DEMO_MARKET_STATUS,
@@ -40,29 +42,29 @@ import {
 
 export function App() {
   const [activeView, setActiveView] = useState<
-    "command" | "stress" | "portfolio" | "mistakes" | "vault" | "research" | "tax"
+    "command" | "stress" | "portfolio" | "mistakes" | "vault" | "research" | "tax" | "health"
   >("command");
 
   const [auraState, setAuraState] = useState<AuraState>("Idle");
   const [briefingScript, setBriefingScript] = useState<string>(DEMO_VOICE_BRIEFING);
   const [marketStatus, setMarketStatus] = useState<any>(DEMO_MARKET_STATUS);
   const [regime, setRegime] = useState<any>(DEMO_REGIME);
-  const [todayPredictions, setTodayPredictions] = useState<any[]>(DEMO_APPROVED_PREDICTIONS);
-  const [rejectedCandidates, setRejectedCandidates] = useState<any[]>(DEMO_REJECTED_CANDIDATES);
-  const [stressMetrics, setStressMetrics] = useState<any>(DEMO_STRESS_METRICS);
+  const [todayPredictions, setTodayPredictions] = useState<any[]>([]);
+  const [rejectedCandidates, setRejectedCandidates] = useState<any[]>([]);
+  const [stressMetrics, setStressMetrics] = useState<any>(null);
   const [tradeHistory, setTradeHistory] = useState<any[]>([]);
   const [portfolio, setPortfolio] = useState<any>(null);
   const [mistakes, setMistakes] = useState<any[]>([]);
   const [vaultKeys, setVaultKeys] = useState<any[]>([]);
-  const [fiiDiiData, setFiiDiiData] = useState<any>(DEMO_FII_DII);
-  const [accuracyTracker, setAccuracyTracker] = useState<any>(DEMO_ACCURACY_TRACKER);
-  const [telegramAlerts, setTelegramAlerts] = useState<any[]>(DEMO_TELEGRAM_ALERTS);
-  const [sectorMatrix, setSectorMatrix] = useState<any>(DEMO_SECTOR_MATRIX);
+  const [fiiDiiData, setFiiDiiData] = useState<any>(null);
+  const [accuracyTracker, setAccuracyTracker] = useState<any>(null);
+  const [telegramAlerts, setTelegramAlerts] = useState<any[]>([]);
+  const [sectorMatrix, setSectorMatrix] = useState<any>(null);
 
   const [isLoadingScan, setIsLoadingScan] = useState<boolean>(false);
   const [isValidatingKeys, setIsValidatingKeys] = useState<boolean>(false);
   const [wsConnected, setWsConnected] = useState<boolean>(false);
-  const [isDemoMode, setIsDemoMode] = useState<boolean>(true);
+  const [isDemoMode, setIsDemoMode] = useState<boolean>(false);
   const [snapshotTimestamp, setSnapshotTimestamp] = useState<string>("");
 
   // Live IST Clock
@@ -125,20 +127,20 @@ export function App() {
         portfolioData,
         mistakesData,
       ] = await Promise.all([
-        fetchSnapshot("market_status.json", DEMO_MARKET_STATUS),
-        fetchSnapshot("regime.json", DEMO_REGIME),
-        fetchSnapshot("today_predictions.json", { predictions: DEMO_APPROVED_PREDICTIONS }),
-        fetchSnapshot("stress_metrics.json", DEMO_STRESS_METRICS),
-        fetchSnapshot("accuracy_tracker.json", DEMO_ACCURACY_TRACKER),
-        fetchSnapshot("fii_dii.json", DEMO_FII_DII),
-        fetchSnapshot("sector_matrix.json", DEMO_SECTOR_MATRIX),
+        fetchSnapshot("market_status.json", null),
+        fetchSnapshot("regime.json", null),
+        fetchSnapshot("today_predictions.json", { predictions: [] }),
+        fetchSnapshot("stress_metrics.json", null),
+        fetchSnapshot("accuracy_tracker.json", null),
+        fetchSnapshot("fii_dii.json", null),
+        fetchSnapshot("sector_matrix.json", null),
         fetchSnapshot("portfolio.json", []),
         fetchSnapshot("mistakes.json", []),
       ]);
 
       if (statusData) setMarketStatus(statusData);
       if (regimeData) setRegime(regimeData);
-      if (predsData && predsData.predictions && predsData.predictions.length > 0) {
+      if (predsData && Array.isArray(predsData.predictions)) {
         setTodayPredictions(predsData.predictions);
       }
       if (predsData?.snapshot_updated_at) {
@@ -251,14 +253,14 @@ export function App() {
       if (res.ok) {
         const data = await res.json();
         const preds = data.predictions || [];
-        setTodayPredictions(preds.length > 0 ? preds : DEMO_APPROVED_PREDICTIONS);
+        setTodayPredictions(preds);
       } else {
-        const snap = await fetchSnapshot("today_predictions.json", { predictions: DEMO_APPROVED_PREDICTIONS });
-        setTodayPredictions(snap.predictions?.length ? snap.predictions : DEMO_APPROVED_PREDICTIONS);
+        const snap = await fetchSnapshot("today_predictions.json", { predictions: [] });
+        setTodayPredictions(snap?.predictions || []);
       }
     } catch {
-      const snap = await fetchSnapshot("today_predictions.json", { predictions: DEMO_APPROVED_PREDICTIONS });
-      setTodayPredictions(snap.predictions?.length ? snap.predictions : DEMO_APPROVED_PREDICTIONS);
+      const snap = await fetchSnapshot("today_predictions.json", { predictions: [] });
+      setTodayPredictions(snap?.predictions || []);
     }
   };
 
@@ -670,6 +672,16 @@ export function App() {
             >
               <Receipt className="w-3.5 h-3.5" /> Tax & Charges
             </button>
+            <button
+              onClick={() => setActiveView("health")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+                activeView === "health"
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                  : "text-gray-400 hover:text-white hover:bg-gray-800"
+              }`}
+            >
+              <Activity className="w-3.5 h-3.5" /> System Health
+            </button>
           </nav>
         </div>
       </header>
@@ -735,6 +747,7 @@ export function App() {
         )}
 
         {activeView === "tax" && <JournalTaxCenter />}
+        {activeView === "health" && <SystemHealth />}
       </main>
 
       {/* Toast Notification Popup */}

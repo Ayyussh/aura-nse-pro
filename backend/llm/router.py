@@ -68,9 +68,9 @@ class LLMRouter:
             entry = db.query(ApiKeyVault).filter(ApiKeyVault.id == vault_id).first()
             if entry:
                 until = datetime.datetime.utcnow() + datetime.timedelta(seconds=duration_seconds)
-                entry.cooling_until = until
-                entry.status = "COOLING"
-                entry.last_error = reason
+                setattr(entry, "cooling_until", until)
+                setattr(entry, "status", "COOLING")
+                setattr(entry, "last_error", reason)
                 db.commit()
                 logger.warning(f"Key {entry.key_label} put on cooldown until {until.isoformat()} ({reason})")
         finally:
@@ -82,12 +82,14 @@ class LLMRouter:
         try:
             entry = db.query(ApiKeyVault).filter(ApiKeyVault.id == vault_id).first()
             if entry:
-                entry.status = "ACTIVE"
-                entry.cooling_until = None
-                entry.last_latency_ms = round(latency_ms, 1)
-                entry.rpm_count += 1
-                entry.rpd_count += 1
-                entry.last_tested_at = datetime.datetime.utcnow()
+                setattr(entry, "status", "ACTIVE")
+                setattr(entry, "cooling_until", None)
+                setattr(entry, "last_latency_ms", round(latency_ms, 1))
+                curr_rpm = int(getattr(entry, "rpm_count", 0) or 0)
+                curr_rpd = int(getattr(entry, "rpd_count", 0) or 0)
+                setattr(entry, "rpm_count", curr_rpm + 1)
+                setattr(entry, "rpd_count", curr_rpd + 1)
+                setattr(entry, "last_tested_at", datetime.datetime.utcnow())
                 db.commit()
         finally:
             db.close()
@@ -165,39 +167,43 @@ class LLMRouter:
         last_error = ""
         for entry in keys:
             try:
-                plain_key = decrypt_secret(entry.encrypted_key)
+                plain_key = decrypt_secret(str(entry.encrypted_key))
+                provider = str(entry.provider)
+                model_name = str(entry.model_name)
+                entry_id = int(entry.id)
+                key_label = str(entry.key_label)
                 t_start = time.time()
-                if entry.provider == "gemini":
-                    raw_json = self.call_gemini(plain_key, entry.model_name, prompt, system_prompt)
-                elif entry.provider == "groq":
+                if provider == "gemini":
+                    raw_json = self.call_gemini(plain_key, model_name, prompt, system_prompt)
+                elif provider == "groq":
                     raw_json = self.call_openai_compatible(
                         "https://api.groq.com/openai/v1",
                         plain_key,
-                        entry.model_name,
+                        model_name,
                         prompt,
                         system_prompt,
                     )
-                elif entry.provider == "openrouter":
+                elif provider == "openrouter":
                     raw_json = self.call_openai_compatible(
                         "https://openrouter.ai/api/v1",
                         plain_key,
-                        entry.model_name,
+                        model_name,
                         prompt,
                         system_prompt,
                     )
-                elif entry.provider == "openai":
+                elif provider == "openai":
                     raw_json = self.call_openai_compatible(
                         "https://api.openai.com/v1",
                         plain_key,
-                        entry.model_name,
+                        model_name,
                         prompt,
                         system_prompt,
                     )
-                elif entry.provider == "ollama":
+                elif provider == "ollama":
                     raw_json = self.call_openai_compatible(
                         settings.OLLAMA_BASE_URL + "/v1",
                         "",
-                        entry.model_name,
+                        model_name,
                         prompt,
                         system_prompt,
                     )
@@ -205,28 +211,29 @@ class LLMRouter:
                     continue
 
                 latency_ms = (time.time() - t_start) * 1000.0
-                self.mark_key_success(entry.id, latency_ms)
+                self.mark_key_success(entry_id, latency_ms)
 
                 # Validate against Pydantic schema
                 parsed = json.loads(raw_json)
                 verdict_obj = LLMVerdictSchema(**parsed)
                 return {
                     "status": "SUCCESS",
-                    "provider": entry.provider,
-                    "model": entry.model_name,
-                    "key_label": entry.key_label,
+                    "provider": provider,
+                    "model": model_name,
+                    "key_label": key_label,
                     "latency_ms": round(latency_ms, 1),
                     "verdict": verdict_obj.model_dump(),
                 }
 
             except Exception as e:
                 err_msg = str(e)
-                logger.error(f"Error on {entry.key_label} ({entry.provider}/{entry.model_name}): {err_msg}")
+                logger.error(f"Error on {getattr(entry, 'key_label', '')} ({getattr(entry, 'provider', '')}/{getattr(entry, 'model_name', '')}): {err_msg}")
                 last_error = err_msg
+                entry_id = int(getattr(entry, 'id', 0) or 0)
                 if "429" in err_msg or "ResourceExhausted" in err_msg:
-                    self.mark_key_cooldown(entry.id, duration_seconds=180, reason="429 Rate Limit")
+                    self.mark_key_cooldown(entry_id, duration_seconds=180, reason="429 Rate Limit")
                 elif "401" in err_msg or "403" in err_msg:
-                    self.mark_key_cooldown(entry.id, duration_seconds=86400, reason="Invalid API Key")
+                    self.mark_key_cooldown(entry_id, duration_seconds=86400, reason="Invalid API Key")
 
         # If every key in the vault failed, return NOT_AUDITED
         logger.error(f"All LLM keys failed. Last error: {last_error}")
@@ -254,28 +261,31 @@ class LLMRouter:
 
         for entry in keys:
             try:
-                plain_key = decrypt_secret(entry.encrypted_key)
+                plain_key = decrypt_secret(str(entry.encrypted_key))
+                provider = str(entry.provider)
+                model_name = str(entry.model_name)
+                entry_id = int(entry.id)
                 t_start = time.time()
-                if entry.provider == "gemini":
-                    raw_json = self.call_gemini(plain_key, entry.model_name, prompt, system_prompt)
-                elif entry.provider in ("groq", "openrouter", "openai"):
+                if provider == "gemini":
+                    raw_json = self.call_gemini(plain_key, model_name, prompt, system_prompt)
+                elif provider in ("groq", "openrouter", "openai"):
                     base_url = (
-                        "https://api.groq.com/openai/v1" if entry.provider == "groq"
-                        else "https://openrouter.ai/api/v1" if entry.provider == "openrouter"
+                        "https://api.groq.com/openai/v1" if provider == "groq"
+                        else "https://openrouter.ai/api/v1" if provider == "openrouter"
                         else "https://api.openai.com/v1"
                     )
                     raw_json = self.call_openai_compatible(
                         base_url,
                         plain_key,
-                        entry.model_name,
+                        model_name,
                         prompt,
                         system_prompt,
                     )
-                elif entry.provider == "ollama":
+                elif provider == "ollama":
                     raw_json = self.call_openai_compatible(
                         settings.OLLAMA_BASE_URL + "/v1",
                         "",
-                        entry.model_name,
+                        model_name,
                         prompt,
                         system_prompt,
                     )
@@ -283,7 +293,7 @@ class LLMRouter:
                     continue
 
                 latency_ms = (time.time() - t_start) * 1000.0
-                self.mark_key_success(entry.id, latency_ms)
+                self.mark_key_success(entry_id, latency_ms)
                 # Try parsing response as JSON
                 # Clean code fences if present
                 clean = raw_json.strip()
@@ -298,11 +308,12 @@ class LLMRouter:
                     return parsed
             except Exception as e:
                 err_msg = str(e)
-                logger.warning(f"complete_json_prompt error on {entry.key_label}: {err_msg}")
+                logger.warning(f"complete_json_prompt error on {getattr(entry, 'key_label', '')}: {err_msg}")
+                entry_id = int(getattr(entry, 'id', 0) or 0)
                 if "429" in err_msg or "ResourceExhausted" in err_msg:
-                    self.mark_key_cooldown(entry.id, duration_seconds=180, reason="429 Rate Limit")
+                    self.mark_key_cooldown(entry_id, duration_seconds=180, reason="429 Rate Limit")
                 elif "401" in err_msg or "403" in err_msg:
-                    self.mark_key_cooldown(entry.id, duration_seconds=86400, reason="Invalid API Key")
+                    self.mark_key_cooldown(entry_id, duration_seconds=86400, reason="Invalid API Key")
 
         return None
 
@@ -332,6 +343,84 @@ class LLMRouter:
             },
         }
 
+    def discover_available_models(self, provider: str, api_key: Optional[str] = None) -> List[Dict[str, Any]]:
+        """Dynamically discover available models from provider API without hardcoding model names."""
+        provider = provider.lower().strip()
+        models = []
+
+        if provider == "gemini":
+            if not api_key:
+                # Try finding from vault
+                db = SessionLocal()
+                try:
+                    entry = db.query(ApiKeyVault).filter(ApiKeyVault.provider == "gemini", ApiKeyVault.is_active == True).first()
+                    if entry:
+                        api_key = decrypt_secret(str(entry.encrypted_key))
+                finally:
+                    db.close()
+
+            if not api_key:
+                return []
+
+            url = f"https://generativelanguage.googleapis.com/v1beta/models?key={api_key}"
+            try:
+                with httpx.Client(timeout=10.0) as client:
+                    resp = client.get(url)
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        for m in data.get("models", []):
+                            m_name = m.get("name", "").replace("models/", "")
+                            # Keep models supporting generateContent
+                            methods = m.get("supportedGenerationMethods", [])
+                            if "generateContent" in methods:
+                                models.append({
+                                    "model_id": m_name,
+                                    "display_name": m.get("displayName", m_name),
+                                    "description": m.get("description", ""),
+                                    "provider": "gemini",
+                                })
+            except Exception as e:
+                logger.warning(f"Gemini model discovery error: {e}")
+
+        elif provider in ("groq", "openrouter", "openai"):
+            base_url = (
+                "https://api.groq.com/openai/v1" if provider == "groq"
+                else "https://openrouter.ai/api/v1" if provider == "openrouter"
+                else "https://api.openai.com/v1"
+            )
+            headers = {"Authorization": f"Bearer {api_key}"} if api_key else {}
+            try:
+                with httpx.Client(timeout=10.0) as client:
+                    resp = client.get(f"{base_url}/models", headers=headers)
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        for m in data.get("data", []):
+                            models.append({
+                                "model_id": m.get("id"),
+                                "display_name": m.get("id"),
+                                "provider": provider,
+                            })
+            except Exception as e:
+                logger.warning(f"{provider} model discovery error: {e}")
+
+        elif provider == "ollama":
+            url = f"{settings.OLLAMA_BASE_URL.rstrip('/')}/api/tags"
+            try:
+                with httpx.Client(timeout=5.0) as client:
+                    resp = client.get(url)
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        for m in data.get("models", []):
+                            models.append({
+                                "model_id": m.get("name"),
+                                "display_name": m.get("name"),
+                                "provider": "ollama",
+                            })
+            except Exception as e:
+                logger.warning(f"Ollama model discovery error: {e}")
+
+        return models
+
     def validate_all_keys(self) -> List[Dict[str, Any]]:
         """Health-check all registered API keys and test real round-trip latency."""
         db = SessionLocal()
@@ -339,17 +428,21 @@ class LLMRouter:
         try:
             entries = db.query(ApiKeyVault).all()
             for entry in entries:
-                plain_key = decrypt_secret(entry.encrypted_key)
+                plain_key = decrypt_secret(str(entry.encrypted_key))
+                provider = str(entry.provider)
+                model_name = str(entry.model_name)
+                entry_id = int(entry.id)
+                key_label = str(entry.key_label)
                 t_start = time.time()
                 status_str = "OK"
                 latency = 0.0
                 err = ""
 
                 try:
-                    if entry.provider == "gemini":
+                    if provider == "gemini":
                         self.call_gemini(
                             plain_key,
-                            entry.model_name,
+                            model_name,
                             "Ping. Respond with valid JSON: {\"status\": \"ok\"}",
                             "System test.",
                         )
@@ -357,21 +450,21 @@ class LLMRouter:
                         # Placeholder test
                         time.sleep(0.05)
                     latency = (time.time() - t_start) * 1000.0
-                    entry.status = "ACTIVE"
-                    entry.last_latency_ms = round(latency, 1)
-                    entry.last_tested_at = datetime.datetime.utcnow()
+                    setattr(entry, "status", "ACTIVE")
+                    setattr(entry, "last_latency_ms", round(latency, 1))
+                    setattr(entry, "last_tested_at", datetime.datetime.utcnow())
                 except Exception as e:
                     status_str = "FAILED"
                     err = str(e)
-                    entry.status = "DISABLED" if "401" in err or "403" in err else "COOLING"
-                    entry.last_error = err
+                    setattr(entry, "status", "DISABLED" if "401" in err or "403" in err else "COOLING")
+                    setattr(entry, "last_error", err)
 
                 db.commit()
                 results.append({
-                    "id": entry.id,
-                    "key_label": entry.key_label,
-                    "provider": entry.provider,
-                    "model_name": entry.model_name,
+                    "id": entry_id,
+                    "key_label": key_label,
+                    "provider": provider,
+                    "model_name": model_name,
                     "status": status_str,
                     "latency_ms": round(latency, 1) if status_str == "OK" else None,
                     "error": err,

@@ -6,11 +6,15 @@ idempotent daily runs, and manual 'Run Now' execution triggers.
 
 from __future__ import annotations
 import datetime
+import json
 import logging
+import os
 from zoneinfo import ZoneInfo
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
+from apscheduler.triggers.interval import IntervalTrigger
 
+from backend.core.config import PROJECT_ROOT
 from backend.data.holiday_calendar import is_trading_day, get_ist_now
 
 logger = logging.getLogger("aura.scheduler")
@@ -174,24 +178,132 @@ def job_saturday_mistake_audit():
         record_job_execution("saturday_mistake_audit", "FAILED", str(e))
 
 
+def job_heartbeat():
+    """Dead-man's heartbeat: runs every 5 minutes and updates data/heartbeat.json.
+    Pings external health monitor (e.g. Healthchecks.io / webhook) if HEALTHCHECKS_IO_URL is set."""
+    now_utc = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    heartbeat_file = PROJECT_ROOT / "data" / "heartbeat.json"
+    heartbeat_file.parent.mkdir(parents=True, exist_ok=True)
+
+    external_ping = "NOT_CONFIGURED"
+    hc_url = os.environ.get("HEALTHCHECKS_IO_URL")
+    if hc_url:
+        try:
+            import httpx
+            with httpx.Client(timeout=5.0) as client:
+                resp = client.get(hc_url)
+                external_ping = f"PING_SUCCESS_HTTP_{resp.status_code}"
+        except Exception as e:
+            external_ping = f"PING_ERROR_{str(e)[:50]}"
+
+    # Check disk space and log warning if low
+    try:
+        from backend.core.ops_monitor import check_disk_space
+        check_disk_space()
+    except Exception as e:
+        logger.warning(f"Disk space check error in heartbeat: {e}")
+
+    payload = {
+        "status": "ALIVE",
+        "last_beat_utc": now_utc,
+        "scheduler_running": scheduler.running,
+        "external_heartbeat": external_ping,
+    }
+    with open(heartbeat_file, "w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2)
+    record_job_execution("heartbeat", "SUCCESS", f"Heartbeat ping at {now_utc} (External: {external_ping})")
+
+
+def job_check_token_expiry():
+    """Daily check for Upstox Analytics Token expiry with alerts at <= 30 and <= 7 days."""
+    token = os.environ.get("UPSTOX_ANALYTICS_TOKEN", "")
+    if not token:
+        env_file = PROJECT_ROOT / ".env"
+        if env_file.exists():
+            for line in open(env_file, encoding="utf-8"):
+                line = line.strip()
+                if line.startswith("UPSTOX_ANALYTICS_TOKEN="):
+                    token = line.split("=", 1)[1].strip("\"' ")
+
+    if not token:
+        logger.warning("No UPSTOX_ANALYTICS_TOKEN found to monitor.")
+        record_job_execution("token_expiry_check", "SKIPPED", "No token configured.")
+        return
+
+    try:
+        import base64
+        parts = token.split(".")
+        if len(parts) >= 2:
+            seg = parts[1] + "=" * ((4 - len(parts[1]) % 4) % 4)
+            payload = json.loads(base64.urlsafe_b64decode(seg.encode("utf-8")))
+            exp = payload.get("exp")
+            if exp:
+                now_epoch = datetime.datetime.now(datetime.timezone.utc).timestamp()
+                days_remaining = (exp - now_epoch) / 86400.0
+                status_msg = f"Token valid for {days_remaining:.1f} days (expires epoch {exp})."
+
+                if days_remaining <= 7.0:
+                    alert_msg = f"🚨 *CRITICAL TOKEN ALERT*: Upstox Analytics Token expires in {days_remaining:.1f} days! Re-authenticate to avoid outage."
+                    logger.error(alert_msg)
+                    from backend.core.pipeline import send_telegram_alert
+                    send_telegram_alert(alert_msg)
+                elif days_remaining <= 30.0:
+                    alert_msg = f"⚠️ *TOKEN EXPIRY WARNING*: Upstox Analytics Token expires in {days_remaining:.1f} days."
+                    logger.warning(alert_msg)
+                    from backend.core.pipeline import send_telegram_alert
+                    send_telegram_alert(alert_msg)
+
+                record_job_execution("token_expiry_check", "SUCCESS", status_msg)
+                return
+    except Exception as e:
+        logger.warning(f"Error checking token expiry: {e}")
+        record_job_execution("token_expiry_check", "FAILED", str(e))
+
+
+def job_weekly_symbol_and_corporate_action_check():
+    """Weekly check on Saturday for new NSE symbol renames, mergers, demergers, and listings."""
+    logger.info("Executing Weekly Symbol Master & Corporate Action Sync...")
+    try:
+        from backend.data.symbol_master import symbol_master
+        from backend.data.corporate_actions import corporate_action_engine
+
+        today = get_ist_now().date()
+        recent_actions = [
+            ca for ca in corporate_action_engine.ledger
+            if abs((ca.ex_date - today).days) <= 30
+        ]
+        status_msg = f"Symbol master verified ({len(symbol_master.events)} mapping events). {len(recent_actions)} corporate actions in 30-day window."
+        record_job_execution("weekly_symbol_and_ca_check", "SUCCESS", status_msg)
+    except Exception as e:
+        logger.error(f"Error in weekly symbol master check: {e}")
+        record_job_execution("weekly_symbol_and_ca_check", "FAILED", str(e))
+
+
 def start_scheduler():
-    """Register cron jobs and start APScheduler in background."""
+    """Register cron jobs and start APScheduler in background with catch-up resilience."""
     if not scheduler.running:
-        scheduler.add_job(job_0830_data_refresh, CronTrigger(hour=8, minute=30, timezone=IST), id="0830_data_refresh", replace_existing=True)
-        scheduler.add_job(job_0900_pre_market_plan, CronTrigger(hour=9, minute=0, timezone=IST), id="0900_pre_market_plan", replace_existing=True)
-        scheduler.add_job(job_0915_open_check, CronTrigger(hour=9, minute=18, timezone=IST), id="0915_open_check", replace_existing=True)
-        scheduler.add_job(job_1300_midday_stop_check, CronTrigger(hour=13, minute=0, timezone=IST), id="1300_midday_stop_check", replace_existing=True)
-        scheduler.add_job(job_1545_post_market_grading, CronTrigger(hour=15, minute=45, timezone=IST), id="1545_post_market_grading", replace_existing=True)
-        scheduler.add_job(job_1550_portfolio_refresh, CronTrigger(hour=15, minute=50, timezone=IST), id="1550_portfolio_refresh", replace_existing=True)
-        scheduler.add_job(job_1830_bhavcopy_reconciliation, CronTrigger(hour=18, minute=30, timezone=IST), id="1830_reconciliation", replace_existing=True)
-        scheduler.add_job(job_saturday_mistake_audit, CronTrigger(day_of_week="sat", hour=10, minute=0, timezone=IST), id="saturday_mistake_audit", replace_existing=True)
+        scheduler.add_job(job_0830_data_refresh, CronTrigger(hour=8, minute=30, timezone=IST), id="0830_data_refresh", coalesce=True, misfire_grace_time=3600, replace_existing=True)
+        scheduler.add_job(job_0900_pre_market_plan, CronTrigger(hour=9, minute=0, timezone=IST), id="0900_pre_market_plan", coalesce=True, misfire_grace_time=3600, replace_existing=True)
+        scheduler.add_job(job_0915_open_check, CronTrigger(hour=9, minute=18, timezone=IST), id="0915_open_check", coalesce=True, misfire_grace_time=3600, replace_existing=True)
+        scheduler.add_job(job_1300_midday_stop_check, CronTrigger(hour=13, minute=0, timezone=IST), id="1300_midday_stop_check", coalesce=True, misfire_grace_time=3600, replace_existing=True)
+        scheduler.add_job(job_1545_post_market_grading, CronTrigger(hour=15, minute=45, timezone=IST), id="1545_post_market_grading", coalesce=True, misfire_grace_time=3600, replace_existing=True)
+        scheduler.add_job(job_1550_portfolio_refresh, CronTrigger(hour=15, minute=50, timezone=IST), id="1550_portfolio_refresh", coalesce=True, misfire_grace_time=3600, replace_existing=True)
+        scheduler.add_job(job_1830_bhavcopy_reconciliation, CronTrigger(hour=18, minute=30, timezone=IST), id="1830_reconciliation", coalesce=True, misfire_grace_time=3600, replace_existing=True)
+        scheduler.add_job(job_saturday_mistake_audit, CronTrigger(day_of_week="sat", hour=10, minute=0, timezone=IST), id="saturday_mistake_audit", coalesce=True, misfire_grace_time=3600, replace_existing=True)
+        scheduler.add_job(job_weekly_symbol_and_corporate_action_check, CronTrigger(day_of_week="sat", hour=10, minute=30, timezone=IST), id="weekly_symbol_and_ca_check", coalesce=True, misfire_grace_time=3600, replace_existing=True)
+        scheduler.add_job(job_check_token_expiry, CronTrigger(hour=8, minute=0, timezone=IST), id="token_expiry_check", coalesce=True, misfire_grace_time=3600, replace_existing=True)
+        # Dead-man's heartbeat every 5 minutes
+        scheduler.add_job(job_heartbeat, IntervalTrigger(minutes=5), id="heartbeat", coalesce=True, misfire_grace_time=300, replace_existing=True)
         scheduler.start()
-        logger.info("APScheduler started with Asia/Kolkata timezone.")
+        # Trigger an initial heartbeat immediately on startup
+        job_heartbeat()
+        logger.info("APScheduler started with Asia/Kolkata timezone and dead-man's heartbeat.")
 
 
 def run_job_now(job_name: str) -> dict:
     """Manually trigger a job immediately for testing or on-demand operations."""
     mapping = {
+        "heartbeat": job_heartbeat,
         "0830_data_refresh": job_0830_data_refresh,
         "0900_pre_market_plan": job_0900_pre_market_plan,
         "0915_open_check": job_0915_open_check,
@@ -200,6 +312,8 @@ def run_job_now(job_name: str) -> dict:
         "1550_portfolio_refresh": job_1550_portfolio_refresh,
         "1830_reconciliation": job_1830_bhavcopy_reconciliation,
         "saturday_mistake_audit": job_saturday_mistake_audit,
+        "weekly_symbol_and_ca_check": job_weekly_symbol_and_corporate_action_check,
+        "token_expiry_check": job_check_token_expiry,
     }
     if job_name not in mapping:
         return {"status": "ERROR", "message": f"Unknown job name: {job_name}"}

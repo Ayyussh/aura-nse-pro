@@ -12,9 +12,10 @@ Enforces strict capital preservation rules:
 """
 
 from __future__ import annotations
+
 import math
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Any
 
 from backend.core.config import get_strategy_config
 
@@ -33,13 +34,13 @@ class SizingDecision:
     capital_allocation_pct: float
     regime_multiplier_applied: float
     drawdown_multiplier_applied: float
-    notes: List[str]
+    notes: list[str]
 
 
 class RiskGuardEngine:
     """Manages position sizing, portfolio exposure, and risk guardrails."""
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, config: dict[str, Any] | None = None):
         self.strategy_cfg = config or get_strategy_config()
         self.risk_cfg = self.strategy_cfg.get("risk_guard", {})
         self.regime_cfg = self.strategy_cfg.get("macro_regime", {})
@@ -57,10 +58,10 @@ class RiskGuardEngine:
         macro_regime: str = "GREEN", # GREEN, AMBER, RED
         current_drawdown_pct: float = 0.0,
         consecutive_losses: int = 0,
-        open_positions: Optional[List[Dict[str, Any]]] = None,
+        open_positions: list[dict[str, Any]] | None = None,
     ) -> SizingDecision:
         """Calculate exact whole-share quantity and validate portfolio constraints."""
-        notes: List[str] = []
+        notes: list[str] = []
         # Filter out SHADOW trades: shadow trades never count toward live positions, caps, or heat
         open_positions = [
             p for p in (open_positions or [])

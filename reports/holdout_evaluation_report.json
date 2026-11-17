@@ -1,0 +1,140 @@
+{
+  "report_type": "HOLDOUT_PARTITION_EVALUATION_REPORT",
+  "evaluation_timestamp": "2026-11-15T12:45:23.729401+00:00",
+  "git_commit_hash": "984f6fccd5dcaedfd892af72b01727136d27be01",
+  "holdout_window": {
+    "start": "2025-09-01",
+    "end": "2026-11-13",
+    "duration_months": 14.5
+  },
+  "strategy_performance": {
+    "starting_capital": 1000000.0,
+    "final_equity": 1077167.25,
+    "total_return_pct": 7.72,
+    "max_drawdown_pct": 4.7,
+    "annualized_sharpe_ratio": 1.043,
+    "total_trades": 212,
+    "raw_win_rate_pct": 23.58,
+    "net_positive_win_rate_pct": 42.92,
+    "net_expectancy_r": 0.0946,
+    "net_expectancy_r_95_ci": [
+      -0.092,
+      0.2712
+    ],
+    "profit_factor": 1.156
+  },
+  "nifty_benchmark_performance": {
+    "total_return_pct": 2.11,
+    "max_drawdown_pct": 15.56,
+    "annualized_sharpe_ratio": 0.2,
+    "source": "Official NSE Index Bhavcopy (^NSEI.NS)",
+    "start_close": 24625.05078125,
+    "end_close": 25144.30078125,
+    "reference_11_nov_2026_close": 25255.05
+  },
+  "same_exposure_benchmark": {
+    "description": "Same-exposure cash-weighted benchmark: w_t * R_NIFTY,t + (1 - w_t) * (6.5%/252)",
+    "starting_capital": 1000000.0,
+    "final_equity": 1057645.83,
+    "total_return_pct": 5.76,
+    "max_drawdown_pct": 5.99,
+    "annualized_sharpe_ratio": 0.88,
+    "average_equity_exposure_pct": 41.86,
+    "risk_free_rate_annual_pct": 6.5
+  },
+  "comparison_and_edge": {
+    "edge_over_buy_and_hold_nifty_pct": 5.61,
+    "edge_over_same_exposure_benchmark_pct": 1.96,
+    "net_expectancy_positive": true,
+    "ci_spans_zero": true,
+    "statistical_significance": "Edge positive but confidence interval spans zero on finite sample",
+    "benchmark_alignment_type": "SAME_EXPOSURE_CASH_WEIGHTED",
+    "benchmark_fix_audit_note": "Benchmark data fix logged in docs/DECISIONS.md (Decision 009). Corrected from synthetic walk to official NSE index closes; same-exposure cash-weighted comparator accounts for portfolio cash drag."
+  },
+  "model_skill_evaluation": {
+    "model_version": "v1.18.0",
+    "holdout_brier_score": 0.0434,
+    "brier_base_rate": 0.1803,
+    "brier_skill_score": 0.7593,
+    "model_skill_demonstrated": true,
+    "ui_badge": "MODEL_SKILL_DEMONSTRATED"
+  },
+  "breakdown_by_setup": {
+    "pullback_ema": {
+      "sample_size": 155,
+      "raw_win_rate_pct": 24.52,
+      "net_positive_win_rate_pct": 43.23,
+      "net_win_rate_ci_95": [
+        35.4839,
+        51.6129
+      ],
+      "net_expectancy_r": 0.104,
+      "net_expectancy_r_ci_95": [
+        -0.1091,
+        0.3327
+      ],
+      "profit_factor": 1.172,
+      "total_net_pnl_rupees": 53599.57
+    },
+    "breakout_52w": {
+      "sample_size": 9,
+      "raw_win_rate_pct": 33.33,
+      "net_positive_win_rate_pct": 44.44,
+      "net_win_rate_ci_95": [
+        11.1111,
+        77.7778
+      ],
+      "net_expectancy_r": 0.2233,
+      "net_expectancy_r_ci_95": [
+        -0.8322,
+        1.3601
+      ],
+      "profit_factor": 1.3,
+      "total_net_pnl_rupees": 6354.74,
+      "warning": "INSUFFICIENT SAMPLE (N < 30)"
+    },
+    "mean_reversion_rsi": {
+      "sample_size": 48,
+      "raw_win_rate_pct": 18.75,
+      "net_positive_win_rate_pct": 41.67,
+      "net_win_rate_ci_95": [
+        27.0833,
+        56.25
+      ],
+      "net_expectancy_r": 0.0402,
+      "net_expectancy_r_ci_95": [
+        -0.3253,
+        0.3922
+      ],
+      "profit_factor": 1.071,
+      "total_net_pnl_rupees": 6729.75
+    }
+  },
+  "breakdown_by_regime": {
+    "GREEN": {
+      "sample_size": 212,
+      "raw_win_rate_pct": 23.58,
+      "net_positive_win_rate_pct": 42.92,
+      "net_win_rate_ci_95": [
+        36.3208,
+        49.5283
+      ],
+      "net_expectancy_r": 0.0946,
+      "net_expectancy_r_ci_95": [
+        -0.092,
+        0.2712
+      ],
+      "profit_factor": 1.156,
+      "total_net_pnl_rupees": 66684.06
+    },
+    "AMBER": {
+      "sample_size": 0,
+      "warning": "INSUFFICIENT SAMPLE (N < 30)"
+    },
+    "RED": {
+      "sample_size": 0,
+      "warning": "INSUFFICIENT SAMPLE (N < 30)"
+    }
+  },
+  "status": "DONE"
+}

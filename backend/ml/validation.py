@@ -60,6 +60,8 @@ def evaluate_validation_probability_honesty(
     # If BSS <= 0 out-of-sample, model does NOT beat empirical base rate
     model_skill_demonstrated = bool(bss > 0.0 and p_value < 0.05)
     model_status_badge = "MODEL_SKILL_DEMONSTRATED" if model_skill_demonstrated else "MODEL_SKILL_NOT_DEMONSTRATED"
+    leakage_detected = bool(bss > 0.50 or rho > 0.90)
+    leakage_rule_passed = not leakage_detected
 
     # Setup-level empirical priors fallback
     setup_priors = DEFAULT_SETUP_PRIORS
@@ -72,6 +74,8 @@ def evaluate_validation_probability_honesty(
         "validation_brier_score": brier_val,
         "reference_brier_score": brier_ref,
         "brier_skill_score_bss": bss,
+        "leakage_rule_passed": leakage_rule_passed,
+        "leakage_detected": leakage_detected,
         "spearman_rank_correlation": {
             "rho": rho,
             "p_value": p_value,
