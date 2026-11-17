@@ -859,14 +859,15 @@ def run_value_investing_scan(universe_limit: int | None = None, mode: str = "all
     logger.info(f"Starting Institutional Value & Intrinsic Worth Screener for {today} (mode={mode}, limit={universe_limit})...")
 
     if mode == "all":
-        # For full-market sweeps, prioritize liquid institutionally tradeable equities
-        # (strictly capped to top 120 liquid equities to guarantee 0 rate-limiting across Upstox & Yahoo)
-        effective_limit = min(universe_limit, 120) if universe_limit else 120
+        # Full-market sweeps prioritized by institutional liquidity:
+        # Default: Top 750 equities (NIFTY 500 + NIFTY Microcap 250, covering >99.2% of exchange volume)
+        # Allows scanning up to all ~2,760 listed NSE stocks when explicitly requested.
+        effective_limit = min(universe_limit, 2760) if universe_limit else 750
         symbols = get_universe_symbols(limit=effective_limit, mode="all")
     elif mode == "diversified":
-        symbols = get_diversified_universe_symbols(limit=min(universe_limit, 60) if universe_limit else 45)
+        symbols = get_diversified_universe_symbols(limit=min(universe_limit, 100) if universe_limit else 45)
     else:
-        effective_limit = min(universe_limit, 120) if universe_limit else 120
+        effective_limit = min(universe_limit, 750) if universe_limit else 191
         symbols = get_universe_symbols(limit=effective_limit, mode="curated")
 
     # Step 1: Upstox Batch Live Quotes (Zero-429 Rate Limiter)
@@ -881,7 +882,12 @@ def run_value_investing_scan(universe_limit: int | None = None, mode: str = "all
     value_picks: list[dict[str, Any]] = []
     screened_out: list[dict[str, Any]] = []
 
-    for sym in symbols:
+    for idx, sym in enumerate(symbols):
+        # Adaptive pacing: when scanning large universes (>120 symbols), introduce a light 150ms sleep
+        # every 10 tickers to ensure zero 429 rate-limiting from upstream data gateways.
+        if len(symbols) > 120 and idx % 10 == 0 and idx > 0:
+            time.sleep(0.15)
+
         try:
             df = data_provider.fetch_history(sym, period="1y", interval="1d")
             if df.empty or len(df) < 50:

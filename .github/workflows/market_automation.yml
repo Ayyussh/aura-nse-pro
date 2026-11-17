@@ -39,10 +39,10 @@ on:
           - audit_and_build
         default: premarket
       limit:
-        description: "Candidate Scan Limit"
+        description: "Candidate Scan Limit (750 for Institutional Universe, 2760 for Full NSE)"
         required: false
         type: number
-        default: 25
+        default: 750
       force:
         description: "Force execution on weekends, holidays or bypass gate"
         required: false
@@ -129,7 +129,7 @@ jobs:
                 ;;
               "0 11 * * 1-5")
                 echo "mode=value_scan" >> $GITHUB_OUTPUT
-                echo "limit=50" >> $GITHUB_OUTPUT
+                echo "limit=750" >> $GITHUB_OUTPUT
                 echo "force=false" >> $GITHUB_OUTPUT
                 ;;
               "0 13 * * 1-5")

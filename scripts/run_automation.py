@@ -63,8 +63,8 @@ def main():
     parser.add_argument(
         "--limit",
         type=int,
-        default=25,
-        help="Universe scan candidate limit (default 25)",
+        default=None,
+        help="Universe scan candidate limit (defaults: 25 for premarket, 750 for value_scan)",
     )
     parser.add_argument(
         "--universe-mode",
@@ -93,8 +93,9 @@ def main():
 
     try:
         if args.mode == "premarket":
-            logger.info(f"Running 09:00 AM IST Pre-Market Screening on top {args.limit} candidates...")
-            res = run_pre_market_pipeline(universe_limit=args.limit, force=args.force)
+            scan_limit = args.limit or 25
+            logger.info(f"Running 09:00 AM IST Pre-Market Screening on top {scan_limit} candidates...")
+            res = run_pre_market_pipeline(universe_limit=scan_limit, force=args.force)
             logger.info(f"Pre-Market Run Complete: {res.get('approved_count', 0)} Approved Setups, Regime: {res.get('regime', {}).get('regime_label')}")
             print("\n--- AURA Spoken Briefing ---")
             print(res.get("briefing_script", "No briefing generated."))
@@ -145,8 +146,9 @@ def main():
             logger.info("Full Cycle Completed successfully.")
 
         elif args.mode == "value_scan":
-            logger.info(f"Running Long-Term Institutional Value Screener across '{args.universe_mode}' universe (limit={args.limit})...")
-            res = run_value_investing_scan(universe_limit=args.limit, mode=args.universe_mode, send_alert=True)
+            scan_limit = args.limit or 750
+            logger.info(f"Running Long-Term Institutional Value Screener across '{args.universe_mode}' universe (limit={scan_limit})...")
+            res = run_value_investing_scan(universe_limit=scan_limit, mode=args.universe_mode, send_alert=True)
             logger.info(f"Value Scan Complete: {res.get('undervalued_count', 0)} Undervalued Compounders identified from {res.get('total_screened', 0)} screened.")
 
         # Always export latest static snapshots for serverless GitHub Pages dashboard
