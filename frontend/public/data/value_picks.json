@@ -1,9 +1,198 @@
 {
   "scan_date": "2026-11-17",
-  "scan_timestamp": "2026-11-17 17:54:22 IST",
-  "total_screened": 50,
-  "undervalued_count": 6,
+  "scan_timestamp": "2026-11-17 18:20:08 IST",
+  "total_screened": 130,
+  "undervalued_count": 9,
   "value_picks": [
+    {
+      "symbol": "UNIONBANK.NS",
+      "passed": true,
+      "sector": "Banking",
+      "current_price": 207.9,
+      "sma_200": 177.59,
+      "fair_value_min": 622.84,
+      "fair_value_max": 795.85,
+      "fair_value_mid": 692.04,
+      "margin_of_safety_pct": 69.96,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 207.89999389648438,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 197.5,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 187.11,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-15",
+      "tax_12m_flag_date": "2027-11-18",
+      "fundamentals": {
+        "symbol": "UNIONBANK.NS",
+        "market_cap_cr": 158702.6591744,
+        "pe_ratio": 7.21,
+        "pb_ratio": 1.11,
+        "roe_pct": 16.29,
+        "debt_to_equity": "UNKNOWN",
+        "rev_growth_yoy_pct": 15.6,
+        "earnings_growth_yoy_pct": 29.3,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": [],
+      "conviction_tier": "HIGH_CONVICTION",
+      "gemini_audit": {
+        "verdict": "APPROVED_HIGH_CONVICTION",
+        "ai_conviction_pct": 80.0,
+        "is_cyclical": false,
+        "moat_assessment": "Moderate economic moat",
+        "multiple_sanity_verdict": "Checked against sector bounds",
+        "recommended_pe_cap": 22.0,
+        "bull_thesis": "Strong balance sheet with 16.29% ROE and +70.0% discount to fair worth.",
+        "bear_risk": "Slower earnings momentum.",
+        "summary": "Algorithmic institutional valuation fallback."
+      }
+    },
+    {
+      "symbol": "IOC.NS",
+      "passed": true,
+      "sector": "Energy",
+      "current_price": 145.56,
+      "sma_200": 144.58,
+      "fair_value_min": 432.56,
+      "fair_value_max": 552.71,
+      "fair_value_mid": 480.62,
+      "margin_of_safety_pct": 69.71,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 145.55999755859375,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 138.28,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 131.0,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-15",
+      "tax_12m_flag_date": "2027-11-18",
+      "fundamentals": {
+        "symbol": "IOC.NS",
+        "market_cap_cr": 205548.7488,
+        "pe_ratio": 4.24,
+        "pb_ratio": 0.86,
+        "roe_pct": 22.62,
+        "debt_to_equity": 0.58,
+        "rev_growth_yoy_pct": 42.2,
+        "earnings_growth_yoy_pct": 173.6,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": [],
+      "conviction_tier": "HIGH_CONVICTION",
+      "gemini_audit": {
+        "verdict": "REJECTED_CYCLICAL_TRAP",
+        "ai_conviction_pct": 80.0,
+        "is_cyclical": true,
+        "moat_assessment": "No moat (Commodity cyclical)",
+        "multiple_sanity_verdict": "Checked against sector bounds",
+        "recommended_pe_cap": 12.0,
+        "bull_thesis": "Strong balance sheet with 22.62% ROE and +69.7% discount to fair worth.",
+        "bear_risk": "Cyclical downturn in sector or quarterly margin contraction.",
+        "summary": "Algorithmic institutional valuation fallback."
+      }
+    },
+    {
+      "symbol": "INDIANB.NS",
+      "passed": true,
+      "sector": "Banking",
+      "current_price": 936.0,
+      "sma_200": 868.22,
+      "fair_value_min": 1434.02,
+      "fair_value_max": 1832.36,
+      "fair_value_mid": 1593.36,
+      "margin_of_safety_pct": 41.26,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 936.0,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 889.2,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 842.4,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-15",
+      "tax_12m_flag_date": "2027-11-18",
+      "fundamentals": {
+        "symbol": "INDIANB.NS",
+        "market_cap_cr": 126075.8237184,
+        "pe_ratio": 9.54,
+        "pb_ratio": 1.45,
+        "roe_pct": 16.14,
+        "debt_to_equity": "UNKNOWN",
+        "rev_growth_yoy_pct": 14.4,
+        "earnings_growth_yoy_pct": 14.0,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": [],
+      "conviction_tier": "HIGH_CONVICTION",
+      "gemini_audit": {
+        "verdict": "APPROVED_HIGH_CONVICTION",
+        "ai_conviction_pct": 80.0,
+        "is_cyclical": false,
+        "moat_assessment": "Moderate economic moat",
+        "multiple_sanity_verdict": "Checked against sector bounds",
+        "recommended_pe_cap": 22.0,
+        "bull_thesis": "Strong balance sheet with 16.14% ROE and +41.3% discount to fair worth.",
+        "bear_risk": "Slower earnings momentum.",
+        "summary": "Algorithmic institutional valuation fallback."
+      }
+    },
     {
       "symbol": "HEROMOTOCO.NS",
       "passed": true,
@@ -370,20 +559,10 @@
       "rejection_reasons": [],
       "unverified_badges": [],
       "conviction_tier": "THIN_DISCOUNT",
-      "gemini_audit": {
-        "verdict": "APPROVED_QUALITY",
-        "ai_conviction_pct": 65.0,
-        "is_cyclical": false,
-        "moat_assessment": "Moderate economic moat",
-        "multiple_sanity_verdict": "Checked against sector bounds",
-        "recommended_pe_cap": 22.0,
-        "bull_thesis": "Strong balance sheet with 35.56% ROE and +4.3% discount to fair worth.",
-        "bear_risk": "Slower earnings momentum.",
-        "summary": "Algorithmic institutional valuation fallback."
-      }
+      "gemini_audit": null
     }
   ],
-  "screened_out_count": 44,
+  "screened_out_count": 119,
   "screened_out": [
     {
       "symbol": "CHOLAFIN.NS",
@@ -423,7 +602,7 @@
     {
       "symbol": "LT.NS",
       "passed": false,
-      "margin_of_safety_pct": -45.5,
+      "margin_of_safety_pct": -44.19,
       "reasons": [
         "Debt-to-Equity 1.05 exceeds conservative ceiling 0.8."
       ]

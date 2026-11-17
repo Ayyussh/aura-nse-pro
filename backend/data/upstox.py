@@ -18,6 +18,7 @@ import collections
 import datetime
 import logging
 import os
+import re
 import threading
 import time
 from typing import Dict, List, Optional, Any, Tuple
@@ -407,12 +408,18 @@ class UpstoxClient:
 
             for s in chunk:
                 k = self.get_instrument_key(s)
+                # Upstox API v2 rejects comma-separated batch queries if any key contains special characters like '&', '-', ' ', etc.
+                if not re.match(r"^[A-Za-z0-9_|]+$", k):
+                    continue
                 keys.append(k)
                 key_to_sym[k] = s
                 key_to_sym[k.replace("|", ":")] = s
                 raw_sym = s.replace(".NS", "")
                 key_to_sym[f"NSE_EQ:{raw_sym}"] = s
                 key_to_sym[raw_sym] = s
+
+            if not keys:
+                continue
 
             keys_param = ",".join(keys)
             try:
