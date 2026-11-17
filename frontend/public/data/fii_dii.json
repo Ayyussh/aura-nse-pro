@@ -1,26 +1,26 @@
 {
-  "date": "16-Nov-2026",
+  "date": "17-Nov-2026",
   "fii": {
-    "gross_buy_cr": 15636.88,
-    "gross_sell_cr": 10772.2,
-    "net_cr": 4864.68,
+    "gross_buy_cr": 19930.98,
+    "gross_sell_cr": 15735.6,
+    "net_cr": 4195.38,
     "action": "NET_BUYER"
   },
   "dii": {
-    "gross_buy_cr": 11752.03,
-    "gross_sell_cr": 15271.08,
-    "net_cr": -3519.05,
-    "action": "NET_SELLER"
+    "gross_buy_cr": 14903.8,
+    "gross_sell_cr": 14706.87,
+    "net_cr": 196.93,
+    "action": "NET_BUYER"
   },
-  "combined_net_cr": 1345.63,
-  "institutional_sentiment": "MILD_BULLISH",
-  "bias_narrative": "Net positive institutional inflows supporting benchmark support.",
+  "combined_net_cr": 4392.31,
+  "institutional_sentiment": "STRONG_BULLISH",
+  "bias_narrative": "Aggressive institutional accumulation across Indian equities.",
   "derivatives": {
     "fii_index_long_ratio_pct": 48.5,
     "fii_options_sentiment": "BULLISH",
     "market_pcr": 1.08
   },
-  "timestamp": "2026-11-17 17:44:16 IST",
+  "timestamp": "2026-11-17 17:58:11 IST",
   "source": "NSE_OFFICIAL",
-  "snapshot_updated_at": "2026-11-17 17:44:15 IST"
+  "snapshot_updated_at": "2026-11-17 17:58:09 IST"
 }
