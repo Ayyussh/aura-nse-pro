@@ -1052,6 +1052,18 @@ def run_value_investing_scan(universe_limit: int | None = None, mode: str = "all
                 msg_lines.append(f"🤖 *AI Audit:* Conviction: {ai_conviction:.0f}% | _{ai_thesis}_")
                 msg_lines.append(f"📥 *Staggered Plan:* T1: ₹{t1:,.2f} (40%) | T2: ₹{t2:,.2f} (30%) | T3: ₹{t3:,.2f} (30%)\n")
 
+            # Additional Screened Value Compounders Honor Roll
+            remaining_picks = [p for p in value_picks if p not in broadcast_picks]
+            if remaining_picks:
+                msg_lines.append(f"📋 *Additional Qualified Compounders ({len(remaining_picks)} More):*")
+                rem_items = []
+                for rp in remaining_picks:
+                    sym_short = rp.get("symbol", "").replace(".NS", "")
+                    mos_val = rp.get("margin_of_safety_pct", 0.0)
+                    rem_items.append(f"`{sym_short}` (+{mos_val:.1f}%)")
+                msg_lines.append(" • " + " | ".join(rem_items))
+                msg_lines.append("_Full interactive dossiers & charts available on your Web Dashboard._\n")
+
         msg_lines.append("📌 *Investment Horizon:* 1 to 3+ Years (Fundamental Value Investing).")
         msg_lines.append("_Separate alert from daily 10-day swing momentum signals._")
         msg_lines.append("_Educational decision support, not financial advice._")
