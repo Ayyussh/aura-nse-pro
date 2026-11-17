@@ -1,10 +1,10 @@
 {
   "scan_date": "2026-11-17",
-  "scan_timestamp": "2026-11-17 17:26:44 IST",
-  "total_screened": 25,
+  "scan_timestamp": "2026-11-17 17:44:14 IST",
+  "total_screened": 120,
   "undervalued_count": 0,
   "value_picks": [],
-  "screened_out_count": 25,
+  "screened_out_count": 118,
   "screened_out": [
     {
       "symbol": "20MICRONS.NS",
