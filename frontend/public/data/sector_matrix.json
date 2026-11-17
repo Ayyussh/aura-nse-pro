@@ -2,138 +2,190 @@
   "benchmark": {
     "ticker": "^NSEI",
     "name": "NIFTY 50",
-    "close": 25144.6,
-    "change_1d_pct": 0.35,
-    "change_1m_pct": 1.75
+    "close": 25387.400390625,
+    "change_1d_pct": 0.38,
+    "change_1m_pct": 9.68
   },
-  "sectors_count": 8,
+  "sectors_count": 10,
   "sectors": [
+    {
+      "sector": "Realty",
+      "ticker": "^CNXREALTY",
+      "current_price": 926.5,
+      "change_1d_pct": 1.94,
+      "change_1m_pct": 12.17,
+      "relative_strength": 2.49,
+      "status": "LEADING",
+      "status_desc": "Outperforming NIFTY with strong institutional accumulation.",
+      "constituents": [
+        "DLF.NS",
+        "GODREJPROP.NS",
+        "LODHA.NS",
+        "OBEROIRLTY.NS"
+      ],
+      "constituent_count": 4
+    },
     {
       "sector": "Banking",
       "ticker": "^NSEBANK",
-      "change_1d_pct": 0.85,
-      "change_1m_pct": 4.2,
-      "relative_strength": 2.45,
+      "current_price": 62273.25,
+      "change_1d_pct": 1.13,
+      "change_1m_pct": 11.51,
+      "relative_strength": 1.83,
       "status": "LEADING",
-      "constituent_count": 8,
+      "status_desc": "Outperforming NIFTY with strong institutional accumulation.",
       "constituents": [
         "HDFCBANK.NS",
         "ICICIBANK.NS",
         "SBIN.NS",
         "KOTAKBANK.NS",
-        "AXISBANK.NS"
-      ]
+        "AXISBANK.NS",
+        "INDUSINDBK.NS"
+      ],
+      "constituent_count": 24
+    },
+    {
+      "sector": "Infra",
+      "ticker": "^CNXINFRA",
+      "current_price": 9565.1,
+      "change_1d_pct": 0.26,
+      "change_1m_pct": 9.62,
+      "relative_strength": -0.06,
+      "status": "WEAKENING",
+      "status_desc": "Mild underperformance; momentum slowing.",
+      "constituents": [],
+      "constituent_count": 0
+    },
+    {
+      "sector": "Pharma",
+      "ticker": "^CNXPHARMA",
+      "current_price": 28157.1,
+      "change_1d_pct": 0.21,
+      "change_1m_pct": 9.21,
+      "relative_strength": -0.47,
+      "status": "WEAKENING",
+      "status_desc": "Mild underperformance; momentum slowing.",
+      "constituents": [
+        "SUNPHARMA.NS",
+        "DRREDDY.NS",
+        "CIPLA.NS",
+        "DIVISLAB.NS",
+        "LUPIN.NS",
+        "TORNTPHARM.NS"
+      ],
+      "constituent_count": 9
     },
     {
       "sector": "Auto",
       "ticker": "^CNXAUTO",
-      "change_1d_pct": 1.12,
-      "change_1m_pct": 3.85,
-      "relative_strength": 2.1,
-      "status": "LEADING",
-      "constituent_count": 7,
+      "current_price": 27769.15,
+      "change_1d_pct": 0.72,
+      "change_1m_pct": 7.76,
+      "relative_strength": -1.92,
+      "status": "LAGGING",
+      "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
       "constituents": [
         "TATAMOTORS.NS",
+        "TMPV.NS",
+        "TMCV.NS",
         "M&M.NS",
         "MARUTI.NS",
         "BAJAJ-AUTO.NS"
-      ]
+      ],
+      "constituent_count": 9
+    },
+    {
+      "sector": "FMCG",
+      "ticker": "^CNXFMCG",
+      "current_price": 47611.6,
+      "change_1d_pct": -0.2,
+      "change_1m_pct": 6.71,
+      "relative_strength": -2.97,
+      "status": "LAGGING",
+      "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
+      "constituents": [
+        "HINDUNILVR.NS",
+        "ITC.NS",
+        "NESTLEIND.NS",
+        "BRITANNIA.NS",
+        "TATACONSUM.NS",
+        "DABUR.NS"
+      ],
+      "constituent_count": 22
+    },
+    {
+      "sector": "Metals",
+      "ticker": "^CNXMETAL",
+      "current_price": 12530.3,
+      "change_1d_pct": 0.58,
+      "change_1m_pct": 3.27,
+      "relative_strength": -6.41,
+      "status": "LAGGING",
+      "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
+      "constituents": [
+        "TATASTEEL.NS",
+        "JSWSTEEL.NS",
+        "HINDALCO.NS",
+        "VEDL.NS",
+        "JINDALSTEL.NS",
+        "SAIL.NS"
+      ],
+      "constituent_count": 8
+    },
+    {
+      "sector": "Energy",
+      "ticker": "^CNXENERGY",
+      "current_price": 37176.7,
+      "change_1d_pct": -0.27,
+      "change_1m_pct": 2.72,
+      "relative_strength": -6.96,
+      "status": "LAGGING",
+      "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
+      "constituents": [
+        "RELIANCE.NS",
+        "ONGC.NS",
+        "IOC.NS",
+        "BPCL.NS",
+        "HINDPETRO.NS",
+        "OIL.NS"
+      ],
+      "constituent_count": 6
+    },
+    {
+      "sector": "PSE & Defense",
+      "ticker": "^CNXPSE",
+      "current_price": 9439.25,
+      "change_1d_pct": -0.47,
+      "change_1m_pct": 2.08,
+      "relative_strength": -7.6,
+      "status": "LAGGING",
+      "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
+      "constituents": [],
+      "constituent_count": 0
     },
     {
       "sector": "IT",
       "ticker": "^CNXIT",
-      "change_1d_pct": 0.45,
-      "change_1m_pct": 2.65,
-      "relative_strength": 0.9,
-      "status": "IMPROVING",
-      "constituent_count": 9,
+      "current_price": 31654.1,
+      "change_1d_pct": -0.9,
+      "change_1m_pct": -0.85,
+      "relative_strength": -10.53,
+      "status": "LAGGING",
+      "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
       "constituents": [
         "TCS.NS",
         "INFY.NS",
         "HCLTECH.NS",
         "WIPRO.NS",
-        "LTIM.NS"
-      ]
-    },
-    {
-      "sector": "Energy",
-      "ticker": "^CNXENERGY",
-      "change_1d_pct": 0.3,
-      "change_1m_pct": 1.95,
-      "relative_strength": 0.2,
-      "status": "IMPROVING",
-      "constituent_count": 9,
-      "constituents": [
-        "RELIANCE.NS",
-        "ONGC.NS",
-        "NTPC.NS",
-        "POWERGRID.NS"
-      ]
-    },
-    {
-      "sector": "Pharma",
-      "ticker": "^CNXPHARMA",
-      "change_1d_pct": -0.25,
-      "change_1m_pct": 1.4,
-      "relative_strength": -0.35,
-      "status": "WEAKENING",
-      "constituent_count": 9,
-      "constituents": [
-        "SUNPHARMA.NS",
-        "DRREDDY.NS",
-        "CIPLA.NS",
-        "DIVISLAB.NS"
-      ]
-    },
-    {
-      "sector": "Metals",
-      "ticker": "^CNXMETAL",
-      "change_1d_pct": -0.95,
-      "change_1m_pct": -0.8,
-      "relative_strength": -2.55,
-      "status": "LAGGING",
-      "constituent_count": 7,
-      "constituents": [
-        "TATASTEEL.NS",
-        "JSWSTEEL.NS",
-        "HINDALCO.NS",
-        "VEDL.NS"
-      ]
-    },
-    {
-      "sector": "FMCG",
-      "ticker": "^CNXFMCG",
-      "change_1d_pct": -0.15,
-      "change_1m_pct": 0.85,
-      "relative_strength": -0.9,
-      "status": "WEAKENING",
-      "constituent_count": 10,
-      "constituents": [
-        "HINDUNILVR.NS",
-        "ITC.NS",
-        "NESTLEIND.NS",
-        "BRITANNIA.NS"
-      ]
-    },
-    {
-      "sector": "Realty",
-      "ticker": "^CNXREALTY",
-      "change_1d_pct": 1.45,
-      "change_1m_pct": 5.1,
-      "relative_strength": 3.35,
-      "status": "LEADING",
-      "constituent_count": 4,
-      "constituents": [
-        "DLF.NS",
-        "GODREJPROP.NS",
-        "LODHA.NS"
-      ]
+        "LTIM.NS",
+        "TECHM.NS"
+      ],
+      "constituent_count": 102
     }
   ],
   "top_leading": [
     "Realty",
-    "Banking",
-    "Auto"
+    "Banking"
   ],
-  "timestamp": "2026-11-17 16:16:58 IST"
+  "timestamp": "2026-11-17 17:26:48 IST"
 }

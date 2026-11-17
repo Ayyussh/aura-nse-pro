@@ -1,10 +1,10 @@
 {
   "scan_date": "2026-11-17",
-  "scan_timestamp": "2026-11-17 17:18:09 IST",
-  "total_screened": 5,
+  "scan_timestamp": "2026-11-17 17:26:44 IST",
+  "total_screened": 25,
   "undervalued_count": 0,
   "value_picks": [],
-  "screened_out_count": 5,
+  "screened_out_count": 25,
   "screened_out": [
     {
       "symbol": "20MICRONS.NS",
@@ -52,6 +52,133 @@
       "margin_of_safety_pct": 0.0,
       "reasons": [
         "Price \u20b927905.00 is below 200-day SMA \u20b932988.15 (downtrend)"
+      ]
+    },
+    {
+      "symbol": "3PLAND.NS",
+      "passed": false,
+      "margin_of_safety_pct": 0.0,
+      "reasons": [
+        "Price \u20b931.70 is below 200-day SMA \u20b932.46 (downtrend)"
+      ]
+    },
+    {
+      "symbol": "5PAISA.NS",
+      "passed": false,
+      "margin_of_safety_pct": -131.21,
+      "reasons": [
+        "Market Cap \u20b91,713 Cr is below minimum \u20b92,000 Cr.",
+        "ROE 4.7% below institutional minimum of 15.0%.",
+        "YoY Earnings Growth -49.2% below 12.0%."
+      ]
+    },
+    {
+      "symbol": "63MOONS.NS",
+      "passed": false,
+      "margin_of_safety_pct": -51.52,
+      "reasons": [
+        "ROE -2.6% below institutional minimum of 15.0%."
+      ]
+    },
+    {
+      "symbol": "A2ZINFRA.NS",
+      "passed": false,
+      "margin_of_safety_pct": 0.0,
+      "reasons": [
+        "Price \u20b912.44 is below 200-day SMA \u20b914.94 (downtrend)"
+      ]
+    },
+    {
+      "symbol": "AAATECH.NS",
+      "passed": false,
+      "margin_of_safety_pct": 0.0,
+      "reasons": [
+        "Price \u20b988.36 is below 200-day SMA \u20b997.24 (downtrend)"
+      ]
+    },
+    {
+      "symbol": "AADHARHFC.NS",
+      "passed": false,
+      "margin_of_safety_pct": 0.0,
+      "reasons": [
+        "Price \u20b9432.35 is below 200-day SMA \u20b9475.09 (downtrend)"
+      ]
+    },
+    {
+      "symbol": "AAKASH.NS",
+      "passed": false,
+      "margin_of_safety_pct": 0.0,
+      "reasons": [
+        "Price \u20b97.58 is below 200-day SMA \u20b98.65 (downtrend)"
+      ]
+    },
+    {
+      "symbol": "AAREYDRUGS.NS",
+      "passed": false,
+      "margin_of_safety_pct": -456.75,
+      "reasons": [
+        "Market Cap \u20b9344 Cr is below minimum \u20b92,000 Cr.",
+        "P/E ratio 73.5 exceeds hard cap of 35.0.",
+        "YoY Revenue Growth -56.3% below 10.0%.",
+        "YoY Earnings Growth -25.0% below 12.0%."
+      ]
+    },
+    {
+      "symbol": "AARON.NS",
+      "passed": false,
+      "margin_of_safety_pct": -87.95,
+      "reasons": [
+        "Market Cap \u20b9281 Cr is below minimum \u20b92,000 Cr.",
+        "P/E ratio 41.4 exceeds hard cap of 35.0."
+      ]
+    },
+    {
+      "symbol": "AARTECH.NS",
+      "passed": false,
+      "margin_of_safety_pct": 0.0,
+      "reasons": [
+        "Price \u20b945.90 is below 200-day SMA \u20b946.33 (downtrend)"
+      ]
+    },
+    {
+      "symbol": "AARTIDRUGS.NS",
+      "passed": false,
+      "margin_of_safety_pct": 8.82,
+      "reasons": [
+        "ROE 14.5% below institutional minimum of 15.0%."
+      ]
+    },
+    {
+      "symbol": "AARTIIND.NS",
+      "passed": false,
+      "margin_of_safety_pct": -30.91,
+      "reasons": [
+        "ROE 9.9% below institutional minimum of 15.0%.",
+        "Debt-to-Equity 0.83 exceeds conservative ceiling 0.8."
+      ]
+    },
+    {
+      "symbol": "AARTIPHARM.NS",
+      "passed": false,
+      "margin_of_safety_pct": -63.23,
+      "reasons": [
+        "P/E ratio 35.9 exceeds hard cap of 35.0."
+      ]
+    },
+    {
+      "symbol": "AARTISURF.NS",
+      "passed": false,
+      "margin_of_safety_pct": -17.54,
+      "reasons": [
+        "Market Cap \u20b9476 Cr is below minimum \u20b92,000 Cr."
+      ]
+    },
+    {
+      "symbol": "AARVI.NS",
+      "passed": false,
+      "margin_of_safety_pct": 0.0,
+      "reasons": [
+        "Price \u20b9127.47 is below 200-day SMA \u20b9136.71 (downtrend)"
       ]
     }
   ],
