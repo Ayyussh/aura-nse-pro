@@ -424,7 +424,8 @@ export function App() {
 
   const handleRunValueScan = async (mode: string = "all") => {
     if (isStaticHost) {
-      showToast("Cloud Analytics Mode: Value investing scans run automatically via GitHub Actions or manual dispatch. Run .\\start.bat for live on-demand scans.", "info");
+      showToast("Cloud Mode: Opening GitHub Actions. Click 'Run workflow' -> select 'value_scan' to run in the cloud without keeping your PC on!", "info");
+      window.open("https://github.com/Ayyussh/aura-nse-pro/actions/workflows/market_automation.yml", "_blank");
       return;
     }
     setIsLoadingValueScan(true);
@@ -454,7 +455,8 @@ export function App() {
 
   const handleRunScanNow = async () => {
     if (isStaticHost) {
-      showToast("Cloud Analytics Mode: Institutional scans run automatically via GitHub Actions at 9:00 AM & 3:45 PM IST. Run .\\start.bat for local interactive scans.", "info");
+      showToast("Cloud Mode: Opening GitHub Actions. Click 'Run workflow' -> select 'premarket' or 'full_cycle' to run in the cloud!", "info");
+      window.open("https://github.com/Ayyussh/aura-nse-pro/actions/workflows/market_automation.yml", "_blank");
       return;
     }
     setIsLoadingScan(true);

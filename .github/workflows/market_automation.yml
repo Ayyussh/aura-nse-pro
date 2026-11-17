@@ -13,6 +13,8 @@ on:
     - cron: '15 10 * * 1-5'
     # 15:50 PM IST (10:20 UTC) Mon-Fri: Portfolio Holding Price Refresh
     - cron: '20 10 * * 1-5'
+    # 16:30 PM IST (11:00 UTC) Mon-Fri: Daily Long-Term Value & Intrinsic Worth Screener
+    - cron: '0 11 * * 1-5'
     # 18:30 PM IST (13:00 UTC) Mon-Fri: EOD Official Bhavcopy Reconciliation
     - cron: '0 13 * * 1-5'
     # 10:00 AM IST (04:30 UTC) Saturday: Weekly Mistake Audit & Self-Improving ML Retraining
@@ -123,6 +125,11 @@ jobs:
               "20 10 * * 1-5")
                 echo "mode=refresh_portfolio" >> $GITHUB_OUTPUT
                 echo "limit=25" >> $GITHUB_OUTPUT
+                echo "force=false" >> $GITHUB_OUTPUT
+                ;;
+              "0 11 * * 1-5")
+                echo "mode=value_scan" >> $GITHUB_OUTPUT
+                echo "limit=50" >> $GITHUB_OUTPUT
                 echo "force=false" >> $GITHUB_OUTPUT
                 ;;
               "0 13 * * 1-5")
