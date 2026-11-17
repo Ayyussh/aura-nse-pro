@@ -30,12 +30,13 @@ def init_database():
                 ("GEMINI_KEY_3", settings.GEMINI_API_KEY_3 or ""),
             ]
             for idx, (label, raw_key) in enumerate(gemini_keys, start=1):
-                if raw_key:
+                clean_key = str(raw_key).strip()
+                if clean_key:
                     vault_entry = ApiKeyVault(
                         provider="gemini",
                         key_label=label,
                         model_name="gemini-2.5-flash",
-                        encrypted_key=encrypt_secret(raw_key),
+                        encrypted_key=encrypt_secret(clean_key),
                         priority_order=idx,
                         is_active=True,
                         status="ACTIVE",

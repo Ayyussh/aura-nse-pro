@@ -1,243 +1,57 @@
 {
   "scan_date": "2026-11-17",
-  "scan_timestamp": "2026-11-17 16:39:04 IST",
-  "total_screened": 15,
-  "undervalued_count": 2,
-  "value_picks": [
-    {
-      "symbol": "ICICIBANK.NS",
-      "passed": true,
-      "sector": "Banking",
-      "current_price": 1598.7,
-      "sma_200": 1362.06,
-      "fair_value_min": 1612.55,
-      "fair_value_max": 2060.48,
-      "fair_value_mid": 1791.72,
-      "margin_of_safety_pct": 10.77,
-      "target_weight_pct": 5.0,
-      "tranche_plan": {
-        "tranche_1_initial": {
-          "pct": 40.0,
-          "price_target": 1598.699951171875,
-          "trigger": "Immediate on approval"
-        },
-        "tranche_2_pullback": {
-          "pct": 30.0,
-          "price_target": 1518.76,
-          "trigger": "5% dip or 50-EMA test"
-        },
-        "tranche_3_deep_value": {
-          "pct": 30.0,
-          "price_target": 1438.83,
-          "trigger": "10% dip or 200-SMA support"
-        }
-      },
-      "thesis_break_triggers": [
-        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
-        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
-        "ROE drops below 12% on trailing 12-month basis.",
-        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
-      ],
-      "quarterly_review_date": "2027-02-15",
-      "tax_12m_flag_date": "2027-11-18",
-      "fundamentals": {
-        "symbol": "ICICIBANK.NS",
-        "market_cap_cr": 1148002.7103232,
-        "pe_ratio": 19.63,
-        "pb_ratio": 2.94,
-        "roe_pct": 16.49,
-        "debt_to_equity": "UNKNOWN",
-        "rev_growth_yoy_pct": 15.8,
-        "earnings_growth_yoy_pct": 22.1,
-        "source": "yfinance_info",
-        "as_of_date": "2026-11-17"
-      },
-      "rejection_reasons": [],
-      "unverified_badges": [],
-      "conviction_tier": "QUALITY_COMPOUNDER",
-      "gemini_audit": {
-        "verdict": "APPROVED_QUALITY",
-        "ai_conviction_pct": 65.0,
-        "is_cyclical": false,
-        "moat_assessment": "Moderate economic moat",
-        "multiple_sanity_verdict": "Checked against sector bounds",
-        "recommended_pe_cap": 22.0,
-        "bull_thesis": "Strong balance sheet with 16.49% ROE and +10.8% discount to fair worth.",
-        "bear_risk": "Slower earnings momentum.",
-        "summary": "Algorithmic institutional valuation fallback."
-      }
-    },
-    {
-      "symbol": "JSWSTEEL.NS",
-      "passed": true,
-      "sector": "Metals",
-      "current_price": 1332.0,
-      "sma_200": 1253.86,
-      "fair_value_min": 1256.38,
-      "fair_value_max": 1605.38,
-      "fair_value_mid": 1395.98,
-      "margin_of_safety_pct": 4.58,
-      "target_weight_pct": 5.0,
-      "tranche_plan": {
-        "tranche_1_initial": {
-          "pct": 40.0,
-          "price_target": 1332.0,
-          "trigger": "Immediate on approval"
-        },
-        "tranche_2_pullback": {
-          "pct": 30.0,
-          "price_target": 1265.4,
-          "trigger": "5% dip or 50-EMA test"
-        },
-        "tranche_3_deep_value": {
-          "pct": 30.0,
-          "price_target": 1198.8,
-          "trigger": "10% dip or 200-SMA support"
-        }
-      },
-      "thesis_break_triggers": [
-        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
-        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
-        "ROE drops below 12% on trailing 12-month basis.",
-        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
-      ],
-      "quarterly_review_date": "2027-02-15",
-      "tax_12m_flag_date": "2027-11-18",
-      "fundamentals": {
-        "symbol": "JSWSTEEL.NS",
-        "market_cap_cr": 325258.6020864,
-        "pe_ratio": 11.45,
-        "pb_ratio": 2.87,
-        "roe_pct": 31.93,
-        "debt_to_equity": 0.62,
-        "rev_growth_yoy_pct": 20.7,
-        "earnings_growth_yoy_pct": 225.2,
-        "source": "yfinance_info",
-        "as_of_date": "2026-11-17"
-      },
-      "rejection_reasons": [],
-      "unverified_badges": [],
-      "conviction_tier": "THIN_DISCOUNT",
-      "gemini_audit": {
-        "verdict": "APPROVED_QUALITY",
-        "ai_conviction_pct": 65.0,
-        "is_cyclical": true,
-        "moat_assessment": "No moat (Commodity cyclical)",
-        "multiple_sanity_verdict": "Checked against sector bounds",
-        "recommended_pe_cap": 12.0,
-        "bull_thesis": "Strong balance sheet with 31.93% ROE and +4.6% discount to fair worth.",
-        "bear_risk": "Cyclical downturn in sector or quarterly margin contraction.",
-        "summary": "Algorithmic institutional valuation fallback."
-      }
-    }
-  ],
-  "screened_out_count": 13,
+  "scan_timestamp": "2026-11-17 17:18:09 IST",
+  "total_screened": 5,
+  "undervalued_count": 0,
+  "value_picks": [],
+  "screened_out_count": 5,
   "screened_out": [
     {
-      "symbol": "CHOLAFIN.NS",
-      "passed": true,
-      "margin_of_safety_pct": -17.36,
-      "reasons": [
-        "Trading above fair value (No margin of safety)"
-      ]
-    },
-    {
-      "symbol": "TCS.NS",
-      "passed": true,
-      "margin_of_safety_pct": -2.24,
-      "reasons": [
-        "Trading above fair value (No margin of safety)"
-      ]
-    },
-    {
-      "symbol": "BAJAJ-AUTO.NS",
-      "passed": true,
-      "margin_of_safety_pct": -27.61,
-      "reasons": [
-        "Trading above fair value (No margin of safety)"
-      ]
-    },
-    {
-      "symbol": "ITC.NS",
-      "passed": false,
-      "margin_of_safety_pct": -29.73,
-      "reasons": [
-        "YoY Revenue Growth 3.9% below 10.0%.",
-        "YoY Earnings Growth -18.8% below 12.0%."
-      ]
-    },
-    {
-      "symbol": "RELIANCE.NS",
-      "passed": false,
-      "margin_of_safety_pct": -87.75,
-      "reasons": [
-        "ROE 8.8% below institutional minimum of 15.0%."
-      ]
-    },
-    {
-      "symbol": "SUNPHARMA.NS",
-      "passed": false,
-      "margin_of_safety_pct": -172.8,
-      "reasons": [
-        "ROE 13.1% below institutional minimum of 15.0%.",
-        "P/E ratio 40.9 exceeds hard cap of 35.0.",
-        "YoY Earnings Growth -36.2% below 12.0%."
-      ]
-    },
-    {
-      "symbol": "LT.NS",
-      "passed": false,
-      "margin_of_safety_pct": -60.05,
-      "reasons": [
-        "Debt-to-Equity 1.05 exceeds conservative ceiling 0.8."
-      ]
-    },
-    {
-      "symbol": "BSE.NS",
-      "passed": false,
-      "margin_of_safety_pct": -134.82,
-      "reasons": [
-        "P/E ratio 51.7 exceeds hard cap of 35.0."
-      ]
-    },
-    {
-      "symbol": "HDFCBANK.NS",
-      "passed": false,
-      "margin_of_safety_pct": 19.05,
-      "reasons": [
-        "ROE 11.0% below institutional minimum of 15.0%."
-      ]
-    },
-    {
-      "symbol": "BAJFINANCE.NS",
-      "passed": true,
-      "margin_of_safety_pct": -46.5,
-      "reasons": [
-        "Trading above fair value (No margin of safety)"
-      ]
-    },
-    {
-      "symbol": "INFY.NS",
+      "symbol": "20MICRONS.NS",
       "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b91130.00 is below 200-day SMA \u20b91188.52 (downtrend)"
+        "Price \u20b9181.96 is below 200-day SMA \u20b9186.50 (downtrend)"
       ]
     },
     {
-      "symbol": "M&M.NS",
+      "symbol": "360ONE.NS",
       "passed": false,
-      "margin_of_safety_pct": 0.0,
+      "margin_of_safety_pct": -207.88,
       "reasons": [
-        "Price \u20b9291.25 is below 200-day SMA \u20b93180.14 (downtrend)"
+        "ROE 12.7% below institutional minimum of 15.0%.",
+        "Debt-to-Equity 1.67 exceeds conservative ceiling 0.8.",
+        "P/E ratio 40.6 exceeds hard cap of 35.0.",
+        "YoY Earnings Growth -6.2% below 12.0%."
       ]
     },
     {
-      "symbol": "TATASTEEL.NS",
+      "symbol": "3BBLACKBIO.NS",
       "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b9181.50 is below 200-day SMA \u20b9193.70 (downtrend)"
+        "Insufficient price history (< 200 bars).",
+        "Market Cap \u20b91,157 Cr is below minimum \u20b92,000 Cr.",
+        "YoY Earnings Growth -29.0% below 12.0%."
+      ]
+    },
+    {
+      "symbol": "3IINFOLTD.NS",
+      "passed": false,
+      "margin_of_safety_pct": -35.72,
+      "reasons": [
+        "Market Cap \u20b9401 Cr is below minimum \u20b92,000 Cr.",
+        "ROE 6.4% below institutional minimum of 15.0%.",
+        "YoY Revenue Growth 4.1% below 10.0%.",
+        "YoY Earnings Growth -68.9% below 12.0%."
+      ]
+    },
+    {
+      "symbol": "3MINDIA.NS",
+      "passed": false,
+      "margin_of_safety_pct": 0.0,
+      "reasons": [
+        "Price \u20b927905.00 is below 200-day SMA \u20b932988.15 (downtrend)"
       ]
     }
   ],

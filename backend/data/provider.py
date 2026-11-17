@@ -110,6 +110,34 @@ class MarketDataProvider:
             if cache_path.exists():
                 logger.info(f"Using stale cached data for {symbol} due to fetch error.")
                 return pd.read_parquet(cache_path)
+
+            # Upstox Fallback if Yahoo rate-limits or fails
+            try:
+                from backend.data.upstox import upstox_client
+                if upstox_client.token:
+                    candles = upstox_client.get_historical_candles(symbol, interval="day", force_upstox=True)
+                    if candles and len(candles) >= 30:
+                        rows = []
+                        for c in candles:
+                            rows.append({
+                                "date": pd.to_datetime(c["timestamp"]).tz_localize(None),
+                                "open": float(c["open"]),
+                                "high": float(c["high"]),
+                                "low": float(c["low"]),
+                                "close": float(c["close"]),
+                                "adjusted_close": float(c["close"]),
+                                "volume": int(c["volume"]),
+                            })
+                        udf = pd.DataFrame(rows).set_index("date").sort_index()
+                        try:
+                            udf.to_parquet(cache_path)
+                        except Exception:
+                            pass
+                        logger.info(f"Successfully recovered {len(udf)} bars for {symbol} via Upstox API.")
+                        return udf
+            except Exception as ue:
+                logger.debug(f"Upstox history fallback note for {symbol}: {ue}")
+
             return pd.DataFrame()
 
     def validate_quality_gate(self, symbol: str, df: pd.DataFrame) -> Tuple[bool, str, Dict[str, Any]]:

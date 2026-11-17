@@ -860,13 +860,14 @@ def run_value_investing_scan(universe_limit: int | None = None, mode: str = "all
 
     if mode == "all":
         # For full-market sweeps, prioritize liquid institutionally tradeable equities
-        # (capped to top 120 liquid equities to guarantee 0 rate-limiting across Upstox & Yahoo)
-        effective_limit = universe_limit or 120
+        # (strictly capped to top 120 liquid equities to guarantee 0 rate-limiting across Upstox & Yahoo)
+        effective_limit = min(universe_limit, 120) if universe_limit else 120
         symbols = get_universe_symbols(limit=effective_limit, mode="all")
     elif mode == "diversified":
-        symbols = get_diversified_universe_symbols(limit=universe_limit or 45)
+        symbols = get_diversified_universe_symbols(limit=min(universe_limit, 60) if universe_limit else 45)
     else:
-        symbols = get_universe_symbols(limit=universe_limit, mode="curated")
+        effective_limit = min(universe_limit, 120) if universe_limit else 120
+        symbols = get_universe_symbols(limit=effective_limit, mode="curated")
 
     # Step 1: Upstox Batch Live Quotes (Zero-429 Rate Limiter)
     upstox_quotes: dict[str, dict[str, Any]] = {}
@@ -976,11 +977,17 @@ def run_value_investing_scan(universe_limit: int | None = None, mode: str = "all
         for p in value_picks:
             sec = p.get("sector", "Diversified")
             # If Gemini AI flagged cyclical trap, filter it out from broadcast
-            ai_audit = p.get("gemini_audit", {})
+            ai_audit = p.get("gemini_audit") or {}
             if ai_audit.get("verdict") == "REJECTED_CYCLICAL_TRAP":
                 continue
 
             if sector_counts.get(sec, 0) < 2:
+                # Ensure broadcast candidate has completed institutional audit
+                if not p.get("gemini_audit"):
+                    try:
+                        p["gemini_audit"] = aura_analyst.audit_value_pick(p)
+                    except Exception:
+                        p["gemini_audit"] = {}
                 broadcast_picks.append(p)
                 sector_counts[sec] = sector_counts.get(sec, 0) + 1
             if len(broadcast_picks) >= 6:
@@ -1027,7 +1034,7 @@ def run_value_investing_scan(universe_limit: int | None = None, mode: str = "all
                 t2 = tp.get("tranche_2_pullback", {}).get("price_target", cp * 0.95)
                 t3 = tp.get("tranche_3_deep_value", {}).get("price_target", cp * 0.90)
 
-                ai_audit = p.get("gemini_audit", {})
+                ai_audit = p.get("gemini_audit") or {}
                 ai_conviction = ai_audit.get("ai_conviction_pct", 75.0)
                 ai_thesis = ai_audit.get("bull_thesis") or ai_audit.get("moat_assessment", "Secular earnings compounder")
 

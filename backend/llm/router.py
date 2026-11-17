@@ -96,7 +96,9 @@ class LLMRouter:
 
     def call_gemini(self, api_key: str, model_name: str, prompt: str, system_prompt: str) -> str:
         """Execute call to Google Gemini."""
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}"
+        if not api_key or not api_key.strip():
+            raise Exception("401 Unauthorized: Empty Gemini API key.")
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key.strip()}"
         payload = {
             "contents": [
                 {
@@ -167,7 +169,9 @@ class LLMRouter:
         last_error = ""
         for entry in keys:
             try:
-                plain_key = decrypt_secret(str(entry.encrypted_key))
+                plain_key = decrypt_secret(str(entry.encrypted_key)).strip()
+                if not plain_key:
+                    continue
                 provider = str(entry.provider)
                 model_name = str(entry.model_name)
                 entry_id = int(entry.id)
@@ -261,7 +265,9 @@ class LLMRouter:
 
         for entry in keys:
             try:
-                plain_key = decrypt_secret(str(entry.encrypted_key))
+                plain_key = decrypt_secret(str(entry.encrypted_key)).strip()
+                if not plain_key:
+                    continue
                 provider = str(entry.provider)
                 model_name = str(entry.model_name)
                 entry_id = int(entry.id)
