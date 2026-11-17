@@ -24,6 +24,7 @@ import {
   PieChart,
   Activity,
   Lock,
+  Gem,
 } from "lucide-react";
 
 import { TradingViewChartModal } from "./TradingViewChartModal";
@@ -38,8 +39,11 @@ interface CommandCenterProps {
   accuracyTracker?: any;
   telegramAlerts?: any[];
   sectorMatrix?: any;
+  valuePicksData?: any;
   onRefreshScan: () => void;
+  onRunValueScan?: () => void;
   isLoading: boolean;
+  isLoadingValueScan?: boolean;
   onCopyTicket?: (ticket: string) => void;
 }
 
@@ -52,16 +56,20 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
   accuracyTracker,
   telegramAlerts = [],
   sectorMatrix,
+  valuePicksData,
   onRefreshScan,
+  onRunValueScan,
   isLoading,
+  isLoadingValueScan = false,
 }) => {
-  const [activeTab, setActiveTab] = useState<"approved" | "rejected" | "accuracy" | "alerts" | "sectors">("approved");
+  const [activeTab, setActiveTab] = useState<"approved" | "rejected" | "accuracy" | "alerts" | "sectors" | "value">("approved");
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [showFiiDiiModal, setShowFiiDiiModal] = useState<boolean>(false);
   const [showCalculatorModal, setShowCalculatorModal] = useState<boolean>(false);
   const [showSectorModal, setShowSectorModal] = useState<boolean>(false);
   const [selectedChartCandidate, setSelectedChartCandidate] = useState<any | null>(null);
   const [copiedId, setCopiedId] = useState<number | null>(null);
+  const [copiedThesisSymbol, setCopiedThesisSymbol] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Position Sizing Calculator State
@@ -143,6 +151,37 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
   const filteredRejected = rejectedCandidates.filter((r) =>
     r.symbol.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const valuePicksList: any[] = valuePicksData?.value_picks || valuePicksData?.picks || [];
+  const filteredValuePicks = valuePicksList.filter((v: any) =>
+    (v.symbol || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (v.sector || "").toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleCopyValueThesis = async (v: any) => {
+    const f = v.fundamentals || {};
+    const text = [
+      `💎 AURA INSTITUTIONAL VALUE THESIS — ${v.symbol}`,
+      `Sector: ${v.sector || "N/A"} | Horizon: 1 to 3+ Years`,
+      `Current Market Price: ₹${Number(v.current_price).toFixed(2)}`,
+      `Intrinsic Fair Worth (Mid): ₹${Number(v.fair_value_mid).toFixed(2)} (Range: ₹${Number(v.fair_value_min).toFixed(2)} - ₹${Number(v.fair_value_max).toFixed(2)})`,
+      `Margin of Safety Discount: +${Number(v.margin_of_safety_pct).toFixed(1)}%`,
+      `Quality Metrics: ROE: ${f.roe_pct}% | P/E: ${f.pe_ratio}x | Debt/Equity: ${f.debt_to_equity} | YoY Growth: ${f.earnings_growth_yoy_pct}%`,
+      `Tranche Accumulation Plan:`,
+      `  • Tranche 1 (40%): ₹${Number(v.tranche_plan?.tranche_1_initial?.price_target || v.current_price).toFixed(2)} (${v.tranche_plan?.tranche_1_initial?.trigger || "Immediate on approval"})`,
+      `  • Tranche 2 (30%): ₹${Number(v.tranche_plan?.tranche_2_pullback?.price_target || 0).toFixed(2)} (${v.tranche_plan?.tranche_2_pullback?.trigger || "5% Dip"})`,
+      `  • Tranche 3 (30%): ₹${Number(v.tranche_plan?.tranche_3_deep_value?.price_target || 0).toFixed(2)} (${v.tranche_plan?.tranche_3_deep_value?.trigger || "10% Dip"})`,
+      `Quarterly Review Date: ${v.quarterly_review_date || "2027-02-15"}`,
+      `Educational Decision Support only. Not investment advice.`,
+    ].join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedThesisSymbol(v.symbol);
+      setTimeout(() => setCopiedThesisSymbol(null), 2500);
+    } catch {
+      alert("Clipboard permission denied.");
+    }
+  };
 
   // Calculator computations
   const riskAmount = (calcCapital * calcRiskPct) / 100;
@@ -305,6 +344,17 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
             <Bell className="w-3.5 h-3.5 text-amber-400" />
             Telegram Alerts Stream ({telegramAlerts.length})
           </button>
+          <button
+            onClick={() => setActiveTab("value")}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+              activeTab === "value"
+                ? "bg-cyan-600 text-white shadow-lg shadow-cyan-600/30"
+                : "bg-gray-800/80 text-gray-400 hover:text-white"
+            }`}
+          >
+            <Gem className="w-3.5 h-3.5 text-cyan-400" />
+            Undervalued Stocks ({valuePicksList.length})
+          </button>
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5 w-full lg:w-auto">
@@ -340,6 +390,21 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
           >
             <Calculator className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Risk Calc</span>
+          </button>
+
+          {/* Undervalued Intrinsic Scan Trigger */}
+          <button
+            onClick={() => {
+              setActiveTab("value");
+              if (onRunValueScan) onRunValueScan();
+            }}
+            disabled={isLoadingValueScan}
+            className="flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold bg-cyan-700 hover:bg-cyan-600 text-white transition-all disabled:opacity-50 shadow-lg shadow-cyan-700/20"
+            title="Scan NSE equities trading below their intrinsic fair worth with Margin of Safety & dispatch dedicated Telegram alert"
+          >
+            <Gem className={`w-3.5 h-3.5 ${isLoadingValueScan ? "animate-spin" : ""}`} />
+            <span className="hidden sm:inline">{isLoadingValueScan ? "Valuing..." : "Scan Undervalued"}</span>
+            <span className="sm:hidden">Value</span>
           </button>
 
           {/* Pre-Market Scan Trigger */}
@@ -883,6 +948,299 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                 </div>
               ))}
             </div>
+          )}
+        </div>
+      )}
+
+      {/* Tab: Undervalued Value Compounders */}
+      {activeTab === "value" && (
+        <div className="space-y-4">
+          {/* Top Screener Banner */}
+          <div className="aura-card p-5 border border-cyan-800/40 bg-gradient-to-r from-[#07131e] via-[#0d1a29] to-[#0a101d] space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-cyan-900/30 pb-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/30">
+                  <Gem className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    Institutional Value & Intrinsic Worth Screener
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-800">
+                      Margin of Safety
+                    </span>
+                  </h3>
+                  <p className="text-xs text-gray-400">
+                    Finds companies trading at a discount to intrinsic fair value with fortress fundamentals (ROE ≥ 15%, D/E ≤ 0.8, Cap ≥ ₹2,000 Cr).
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={onRunValueScan}
+                  disabled={isLoadingValueScan}
+                  className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 text-white transition-all disabled:opacity-50 shadow-md"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${isLoadingValueScan ? "animate-spin" : ""}`} />
+                  {isLoadingValueScan ? "Scanning..." : "Re-Scan Value Universe"}
+                </button>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-gray-300 pt-1">
+              <div className="flex flex-wrap items-center gap-4">
+                <span className="text-gray-400">
+                  Screened: <strong className="text-white">{valuePicksData?.total_screened || 30} NSE Equities</strong>
+                </span>
+                <span className="text-gray-400">
+                  Undervalued Found: <strong className="text-cyan-400">{valuePicksList.length} Compounders</strong>
+                </span>
+                <span className="text-gray-400">
+                  Horizon: <strong className="text-emerald-400">1 to 3+ Years (Long-Term Compounding)</strong>
+                </span>
+                {valuePicksData?.scan_timestamp && (
+                  <span className="text-gray-400">
+                    As of: <span className="text-gray-300">{valuePicksData.scan_timestamp}</span>
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-1.5 text-[11px] text-cyan-400/90 font-medium bg-cyan-950/40 px-2.5 py-1 rounded-md border border-cyan-800/40">
+                <Send className="w-3 h-3" />
+                <span>Dispatches dedicated alerts to Telegram independently from swing alerts</span>
+              </div>
+            </div>
+          </div>
+
+          {filteredValuePicks.length === 0 ? (
+            <div className="aura-card p-12 text-center border border-gray-800/80 space-y-3">
+              <Gem className="w-12 h-12 text-cyan-400 mx-auto opacity-60" />
+              <h3 className="text-base font-bold text-white">No Undervalued Stocks Found</h3>
+              <p className="text-xs text-gray-400 max-w-md mx-auto">
+                No equities currently meet the strict institutional quality filters (ROE ≥ 15%, Debt/Equity ≤ 0.8) and offer a positive Margin of Safety discount.
+              </p>
+              <button
+                onClick={onRunValueScan}
+                disabled={isLoadingValueScan}
+                className="px-4 py-2 rounded-lg text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 text-white"
+              >
+                Run Value Screener Now
+              </button>
+            </div>
+          ) : (
+            filteredValuePicks.map((v: any, idx: number) => {
+              const f = v.fundamentals || {};
+              const t1 = v.tranche_plan?.tranche_1_initial;
+              const t2 = v.tranche_plan?.tranche_2_pullback;
+              const t3 = v.tranche_plan?.tranche_3_deep_value;
+              const isCopied = copiedThesisSymbol === v.symbol;
+              const discountRupees = Math.max(0, (v.fair_value_mid || 0) - (v.current_price || 0));
+
+              return (
+                <div
+                  key={v.symbol || idx}
+                  className="aura-card p-5 border border-cyan-900/40 hover:border-cyan-500/50 transition-all space-y-4 bg-gray-900/60"
+                >
+                  {/* Card Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-800/80 pb-3">
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <span className="text-lg font-bold text-white tracking-wide">{v.symbol}</span>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-950 text-cyan-300 border border-cyan-800">
+                        {v.sector || "EQUITY"}
+                      </span>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-950 text-indigo-300 border border-indigo-800">
+                        1–3+ Years Horizon
+                      </span>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-gray-800 text-gray-300 border border-gray-700">
+                        Target Weight: {v.target_weight_pct || 5.0}%
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <div className="text-right">
+                        <div className="text-[10px] uppercase tracking-wider text-gray-400 font-medium">Margin of Safety</div>
+                        <div className="text-base font-bold text-emerald-400">
+                          +{Number(v.margin_of_safety_pct || 0).toFixed(1)}% Discount
+                        </div>
+                      </div>
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400 animate-pulse" />
+                    </div>
+                  </div>
+
+                  {/* Valuation vs Market Price Comparison Grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded-xl bg-gray-950/70 border border-gray-800">
+                    <div>
+                      <span className="text-[10px] uppercase text-gray-400 block font-medium">Current Market Price</span>
+                      <div className="text-base font-bold text-white mt-0.5">
+                        ₹{Number(v.current_price || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </div>
+                      <span className="text-[10px] text-gray-400">
+                        200-SMA: ₹{Number(v.sma_200 || 0).toFixed(1)}
+                      </span>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] uppercase text-cyan-400 block font-medium">Intrinsic Fair Worth (Mid)</span>
+                      <div className="text-base font-bold text-cyan-400 mt-0.5">
+                        ₹{Number(v.fair_value_mid || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </div>
+                      <span className="text-[10px] text-gray-400">
+                        Range: ₹{Number(v.fair_value_min || 0).toFixed(0)} - ₹{Number(v.fair_value_max || 0).toFixed(0)}
+                      </span>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] uppercase text-emerald-400 block font-medium">Rupee Discount to Worth</span>
+                      <div className="text-base font-bold text-emerald-400 mt-0.5">
+                        +₹{discountRupees.toFixed(2)}
+                      </div>
+                      <span className="text-[10px] text-emerald-300">
+                        Trading {(v.margin_of_safety_pct || 0).toFixed(1)}% below intrinsic
+                      </span>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] uppercase text-indigo-400 block font-medium">Market Capitalization</span>
+                      <div className="text-base font-bold text-gray-200 mt-0.5">
+                        ₹{Math.round(f.market_cap_cr || 0).toLocaleString("en-IN")} Cr
+                      </div>
+                      <span className="text-[10px] text-gray-400">
+                        Source: {f.source || "yfinance_info"}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Quality & Balance Sheet Fortress Audit */}
+                  <div className="space-y-1.5">
+                    <span className="text-[10px] uppercase tracking-wider text-gray-400 font-bold block">
+                      Balance Sheet & Quality Fortress Gates:
+                    </span>
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs">
+                      <div className="p-2 rounded bg-gray-900 border border-gray-800">
+                        <span className="text-gray-400 block text-[10px]">Return on Equity (ROE)</span>
+                        <span className="font-bold text-emerald-400 flex items-center gap-1">
+                          <Check className="w-3 h-3 text-emerald-400" />
+                          {f.roe_pct !== undefined ? `${f.roe_pct}%` : "N/A"}
+                        </span>
+                        <span className="text-[9px] text-gray-500">Gate: ≥ 15%</span>
+                      </div>
+
+                      <div className="p-2 rounded bg-gray-900 border border-gray-800">
+                        <span className="text-gray-400 block text-[10px]">Debt-to-Equity</span>
+                        <span className="font-bold text-emerald-400 flex items-center gap-1">
+                          <Check className="w-3 h-3 text-emerald-400" />
+                          {f.debt_to_equity !== undefined ? f.debt_to_equity : "N/A"}
+                        </span>
+                        <span className="text-[9px] text-gray-500">Gate: ≤ 0.80</span>
+                      </div>
+
+                      <div className="p-2 rounded bg-gray-900 border border-gray-800">
+                        <span className="text-gray-400 block text-[10px]">Trailing P/E Ratio</span>
+                        <span className="font-bold text-cyan-300">
+                          {f.pe_ratio !== undefined ? `${f.pe_ratio}x` : "N/A"}
+                        </span>
+                        <span className="text-[9px] text-gray-500">P/B: {f.pb_ratio ? `${f.pb_ratio}x` : "N/A"}</span>
+                      </div>
+
+                      <div className="p-2 rounded bg-gray-900 border border-gray-800">
+                        <span className="text-gray-400 block text-[10px]">YoY Revenue Growth</span>
+                        <span className={`font-bold ${(f.rev_growth_yoy_pct || 0) >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
+                          {(f.rev_growth_yoy_pct || 0) >= 0 ? `+${f.rev_growth_yoy_pct}%` : `${f.rev_growth_yoy_pct}%`}
+                        </span>
+                        <span className="text-[9px] text-gray-500">Gate: Positive</span>
+                      </div>
+
+                      <div className="p-2 rounded bg-gray-900 border border-gray-800">
+                        <span className="text-gray-400 block text-[10px]">YoY Profit Growth</span>
+                        <span className={`font-bold ${(f.earnings_growth_yoy_pct || 0) >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
+                          {(f.earnings_growth_yoy_pct || 0) >= 0 ? `+${f.earnings_growth_yoy_pct}%` : `${f.earnings_growth_yoy_pct}%`}
+                        </span>
+                        <span className="text-[9px] text-gray-500">Gate: Positive</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 3-Tranche Accumulation Plan */}
+                  <div className="space-y-1.5">
+                    <span className="text-[10px] uppercase tracking-wider text-gray-400 font-bold block">
+                      Institutional 3-Tranche Staggered Entry Plan:
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                      <div className="p-2.5 rounded-lg bg-gray-900/90 border border-indigo-900/50">
+                        <div className="flex items-center justify-between text-[11px] font-semibold text-indigo-300 mb-1">
+                          <span>Tranche 1 ({t1?.pct || 40}%)</span>
+                          <span className="text-white font-bold">₹{Number(t1?.price_target || v.current_price).toFixed(2)}</span>
+                        </div>
+                        <p className="text-[10px] text-gray-400 leading-tight">
+                          Trigger: {t1?.trigger || "Immediate on approval"}
+                        </p>
+                      </div>
+
+                      <div className="p-2.5 rounded-lg bg-gray-900/90 border border-cyan-900/50">
+                        <div className="flex items-center justify-between text-[11px] font-semibold text-cyan-300 mb-1">
+                          <span>Tranche 2 ({t2?.pct || 30}%)</span>
+                          <span className="text-white font-bold">₹{Number(t2?.price_target || 0).toFixed(2)}</span>
+                        </div>
+                        <p className="text-[10px] text-gray-400 leading-tight">
+                          Trigger: {t2?.trigger || "5% dip or 50-EMA test"}
+                        </p>
+                      </div>
+
+                      <div className="p-2.5 rounded-lg bg-gray-900/90 border border-emerald-900/50">
+                        <div className="flex items-center justify-between text-[11px] font-semibold text-emerald-300 mb-1">
+                          <span>Tranche 3 ({t3?.pct || 30}%)</span>
+                          <span className="text-white font-bold">₹{Number(t3?.price_target || 0).toFixed(2)}</span>
+                        </div>
+                        <p className="text-[10px] text-gray-400 leading-tight">
+                          Trigger: {t3?.trigger || "10% dip or 200-SMA support"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Thesis Protection & Calendar Dates */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs border-t border-gray-800/80 pt-3">
+                    <div className="flex flex-wrap items-center gap-4 text-gray-400 text-[11px]">
+                      <span>
+                        Quarterly Review: <strong className="text-gray-300">{v.quarterly_review_date || "2027-02-15"}</strong>
+                      </span>
+                      <span>
+                        LTCG (12M Flag): <strong className="text-emerald-400">{v.tax_12m_flag_date || "2027-11-18"}</strong>
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() =>
+                          setSelectedChartCandidate({
+                            symbol: v.symbol,
+                            setup_tag: "INTRINSIC_VALUE",
+                            entry_price: v.current_price,
+                            stop_loss: v.sma_200,
+                            target_price: v.fair_value_mid,
+                            id: 9000 + idx,
+                          })
+                        }
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-cyan-400 border border-cyan-800/40 transition-all"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        Live Chart
+                      </button>
+
+                      <button
+                        onClick={() => handleCopyValueThesis(v)}
+                        className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                          isCopied
+                            ? "bg-emerald-600 text-white"
+                            : "bg-cyan-700 hover:bg-cyan-600 text-white"
+                        }`}
+                      >
+                        {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                        {isCopied ? "Copied Thesis" : "Copy Value Thesis"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })
           )}
         </div>
       )}

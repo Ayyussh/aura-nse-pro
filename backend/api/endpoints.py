@@ -651,8 +651,41 @@ def api_run_job_now(
     elif payload.job_name == "1545_post_market_grading":
         summary = run_post_market_grading()
         return {"status": "SUCCESS", "job": payload.job_name, "grading_summary": summary}
+    elif payload.job_name in ("value_investing_scan", "value_scan", "scan_undervalued"):
+        from backend.core.pipeline import run_value_investing_scan
+        summary = run_value_investing_scan()
+        return {"status": "SUCCESS", "job": payload.job_name, "value_summary": summary}
     else:
         return run_job_now(payload.job_name)
+
+
+@router.post("/scan/value")
+def api_trigger_value_scan(
+    limit: int = Query(default=30, ge=5, le=100),
+    user: UserProfile = Depends(get_current_user),
+):
+    """Trigger institutional value investing and intrinsic worth scan.
+
+    Screens equities with positive Margin of Safety and institutional fundamentals.
+    Dispatches a dedicated Telegram alert separate from daily swing trading alerts.
+    """
+    from backend.core.pipeline import run_value_investing_scan
+    result = run_value_investing_scan(universe_limit=limit, send_alert=True)
+    return {"status": "SUCCESS", "data": result}
+
+
+@router.get("/scan/value")
+def api_get_latest_value_picks():
+    """Return the latest cached value investing picks and intrinsic worth estimations."""
+    from backend.core.config import PROJECT_ROOT
+    target = PROJECT_ROOT / "data" / "snapshots" / "value_picks.json"
+    if target.exists():
+        try:
+            with open(target, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {"scan_date": None, "undervalued_count": 0, "value_picks": []}
 
 
 @router.get("/system/health")

@@ -838,3 +838,120 @@ def run_weekly_mistake_audit() -> dict[str, Any]:
         }
     finally:
         db.close()
+
+
+def run_value_investing_scan(universe_limit: int = 30, send_alert: bool = True) -> dict[str, Any]:
+    """Execute Long-Term Institutional Valuation Screener for Multi-Year Compounders.
+
+    Identifies high-quality NSE equities trading below their estimated intrinsic fair value
+    (positive Margin of Safety) with strong balance sheets and profitability.
+    Dispatches a dedicated Telegram report separate from daily swing trading alerts.
+    """
+    from backend.strategies.long_term import long_term_engine
+    from backend.data.universe import get_universe_symbols
+    from backend.data.provider import data_provider
+
+    today = get_ist_now().date()
+    logger.info(f"Starting Institutional Value & Intrinsic Worth Screener for {today}...")
+
+    symbols = get_universe_symbols(limit=universe_limit)
+    value_picks: list[dict[str, Any]] = []
+    screened_out: list[dict[str, Any]] = []
+
+    for sym in symbols:
+        try:
+            df = data_provider.fetch_history(sym, period="1y", interval="1d")
+            if df.empty or len(df) < 50:
+                continue
+            fundamentals = data_provider.fetch_fundamentals(sym)
+            pick = long_term_engine.evaluate(sym, df, fundamentals)
+
+            pick_dict = pick.to_dict()
+            if pick.passed and pick.margin_of_safety_pct > 0:
+                value_picks.append(pick_dict)
+            else:
+                screened_out.append({
+                    "symbol": sym,
+                    "passed": pick.passed,
+                    "margin_of_safety_pct": pick.margin_of_safety_pct,
+                    "reasons": pick.rejection_reasons or ["Trading above fair value (No margin of safety)"],
+                })
+        except Exception as e:
+            logger.warning(f"Error evaluating {sym} for value investing: {e}")
+
+    # Sort value picks by Margin of Safety (highest discount first)
+    value_picks.sort(key=lambda x: x.get("margin_of_safety_pct", 0), reverse=True)
+
+    result_payload: dict[str, Any] = {
+        "scan_date": today.isoformat(),
+        "scan_timestamp": get_ist_now().strftime("%Y-%m-%d %H:%M:%S IST"),
+        "total_screened": len(symbols),
+        "undervalued_count": len(value_picks),
+        "value_picks": value_picks,
+        "screened_out_count": len(screened_out),
+        "screened_out": screened_out[:20],
+        "investment_horizon": "1 to 3+ Years (Fundamental Value Compounder)",
+        "methodology": "DCF / Sustainable Earnings Growth Multiplier with Quality & Balance Sheet Filters",
+    }
+
+    # Save to snapshots for frontend GitOps
+    try:
+        from backend.core.config import PROJECT_ROOT
+        snapshots_dir = PROJECT_ROOT / "data" / "snapshots"
+        frontend_dir = PROJECT_ROOT / "frontend" / "public" / "data"
+        dist_dir = PROJECT_ROOT / "frontend" / "dist" / "data"
+        snapshots_dir.mkdir(parents=True, exist_ok=True)
+        frontend_dir.mkdir(parents=True, exist_ok=True)
+
+        for d in [snapshots_dir, frontend_dir, dist_dir]:
+            if d.parent.exists():
+                d.mkdir(parents=True, exist_ok=True)
+                target = d / "value_picks.json"
+                with open(target, "w", encoding="utf-8") as f:
+                    json.dump(result_payload, f, indent=2)
+        logger.info(f"Value picks saved to snapshots ({len(value_picks)} picks).")
+    except Exception as e:
+        logger.warning(f"Could not persist value picks snapshot: {e}")
+
+    # Build and send separate Telegram message
+    if send_alert:
+        msg_lines = [
+            "💎 *AURA Long-Term Value Screener — Undervalued Compounders*",
+            f"📅 *Date:* {today.isoformat()} | *Universe Scanned:* {len(symbols)} Equities",
+            f"🎯 *Identified Under-Valued Compounders:* {len(value_picks)}\n",
+        ]
+
+        if not value_picks:
+            msg_lines.append("🚫 *NO UNDERVALUED COMPOUNDERS FOUND TODAY*")
+            msg_lines.append("All screened equities are either trading at/above estimated fair value, or fail institutional balance-sheet/ROE safety gates.")
+            msg_lines.append("Capital preservation remains paramount.\n")
+        else:
+            for idx, p in enumerate(value_picks[:5], 1):
+                sym = p["symbol"]
+                sector = p.get("sector", "Diversified")
+                cp = p.get("current_price", 0.0)
+                fv = p.get("fair_value_mid", 0.0)
+                mos = p.get("margin_of_safety_pct", 0.0)
+                funds = p.get("fundamentals", {})
+                roe = funds.get("roe_pct", "N/A")
+                pe = funds.get("pe_ratio", "N/A")
+                de = funds.get("debt_to_equity", "N/A")
+                tp = p.get("tranche_plan", {})
+                t1 = tp.get("tranche_1_initial", {}).get("price_target", cp)
+                t2 = tp.get("tranche_2_pullback", {}).get("price_target", cp * 0.95)
+                t3 = tp.get("tranche_3_deep_value", {}).get("price_target", cp * 0.90)
+
+                msg_lines.append(f"*{idx}. {sym}* ({sector})")
+                msg_lines.append(f"💵 *Market Price:* ₹{cp:,.2f} | *Fair Worth:* ₹{fv:,.2f}")
+                msg_lines.append(f"🛡️ *Margin of Safety:* *+{mos:.1f}% Discount*")
+                msg_lines.append(f"📊 *Health:* ROE: {roe}% | P/E: {pe} | D/E: {de}")
+                msg_lines.append(f"📥 *Staggered Plan:* T1: ₹{t1:,.2f} (40%) | T2: ₹{t2:,.2f} (30%) | T3: ₹{t3:,.2f} (30%)\n")
+
+        msg_lines.append("📌 *Investment Horizon:* 1 to 3+ Years (Fundamental Value Investing).")
+        msg_lines.append("_Separate alert from daily 10-day swing momentum signals._")
+        msg_lines.append("_Educational decision support, not financial advice._")
+
+        full_message = "\n".join(msg_lines)
+        send_telegram_alert(full_message)
+
+    return result_payload

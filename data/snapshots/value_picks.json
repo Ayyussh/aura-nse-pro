@@ -1,0 +1,220 @@
+{
+  "scan_date": "2026-11-17",
+  "scan_timestamp": "2026-11-17 13:44:13 IST",
+  "total_screened": 10,
+  "undervalued_count": 3,
+  "value_picks": [
+    {
+      "symbol": "TCS.NS",
+      "passed": true,
+      "sector": "IT",
+      "current_price": 2417.9,
+      "sma_200": 2391.78,
+      "fair_value_min": 2310.91,
+      "fair_value_max": 2952.83,
+      "fair_value_mid": 2567.68,
+      "margin_of_safety_pct": 5.83,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 2417.89990234375,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 2297.0,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 2176.11,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-15",
+      "tax_12m_flag_date": "2027-11-18",
+      "fundamentals": {
+        "symbol": "TCS.NS",
+        "market_cap_cr": 875034.4175616,
+        "pe_ratio": 16.95,
+        "pb_ratio": 7.35,
+        "roe_pct": 45.57,
+        "debt_to_equity": 0.1,
+        "rev_growth_yoy_pct": 11.2,
+        "earnings_growth_yoy_pct": 15.0,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": []
+    },
+    {
+      "symbol": "TECHM.NS",
+      "passed": true,
+      "sector": "IT",
+      "current_price": 1758.3,
+      "sma_200": 1533.54,
+      "fair_value_min": 1668.1,
+      "fair_value_max": 2131.46,
+      "fair_value_mid": 1853.44,
+      "margin_of_safety_pct": 5.13,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 1758.300048828125,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 1670.39,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 1582.47,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-15",
+      "tax_12m_flag_date": "2027-11-18",
+      "fundamentals": {
+        "symbol": "TECHM.NS",
+        "market_cap_cr": 172349.456384,
+        "pe_ratio": 28.46,
+        "pb_ratio": 5.25,
+        "roe_pct": 19.19,
+        "debt_to_equity": 0.07,
+        "rev_growth_yoy_pct": 15.6,
+        "earnings_growth_yoy_pct": 32.5,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": []
+    },
+    {
+      "symbol": "MPHASIS.NS",
+      "passed": true,
+      "sector": "IT",
+      "current_price": 2409.9,
+      "sma_200": 2353.73,
+      "fair_value_min": 2237.4,
+      "fair_value_max": 2858.9,
+      "fair_value_mid": 2486.0,
+      "margin_of_safety_pct": 3.06,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 2409.89990234375,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 2289.4,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 2168.91,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-15",
+      "tax_12m_flag_date": "2027-11-18",
+      "fundamentals": {
+        "symbol": "MPHASIS.NS",
+        "market_cap_cr": 46034.7539456,
+        "pe_ratio": 22.8,
+        "pb_ratio": 4.26,
+        "roe_pct": 19.61,
+        "debt_to_equity": 0.3,
+        "rev_growth_yoy_pct": 17.4,
+        "earnings_growth_yoy_pct": 19.6,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": []
+    }
+  ],
+  "screened_out_count": 6,
+  "screened_out": [
+    {
+      "symbol": "INFY.NS",
+      "passed": false,
+      "margin_of_safety_pct": -0.33,
+      "reasons": [
+        "Price \u20b91130.50 is below 200-day SMA \u20b91188.52 (long-term downtrend).",
+        "YoY Revenue Growth 1.4% below 10.0%."
+      ]
+    },
+    {
+      "symbol": "HCLTECH.NS",
+      "passed": false,
+      "margin_of_safety_pct": -34.13,
+      "reasons": [
+        "YoY Revenue Growth 2.2% below 10.0%.",
+        "YoY Earnings Growth 10.8% below 12.0%."
+      ]
+    },
+    {
+      "symbol": "WIPRO.NS",
+      "passed": false,
+      "margin_of_safety_pct": 0.07,
+      "reasons": [
+        "YoY Revenue Growth 9.1% below 10.0%.",
+        "YoY Earnings Growth 4.5% below 12.0%."
+      ]
+    },
+    {
+      "symbol": "PERSISTENT.NS",
+      "passed": false,
+      "margin_of_safety_pct": -245.53,
+      "reasons": [
+        "P/E ratio 51.8 exceeds hard cap of 35.0.",
+        "YoY Earnings Growth -26.3% below 12.0%."
+      ]
+    },
+    {
+      "symbol": "COFORGE.NS",
+      "passed": false,
+      "margin_of_safety_pct": -72.66,
+      "reasons": [
+        "ROE 13.3% below institutional minimum of 15.0%.",
+        "P/E ratio 39.8 exceeds hard cap of 35.0."
+      ]
+    },
+    {
+      "symbol": "TATAELXSI.NS",
+      "passed": false,
+      "margin_of_safety_pct": -130.27,
+      "reasons": [
+        "Price \u20b93715.00 is below 200-day SMA \u20b94025.27 (long-term downtrend).",
+        "YoY Earnings Growth 10.0% below 12.0%."
+      ]
+    }
+  ],
+  "investment_horizon": "1 to 3+ Years (Fundamental Value Compounder)",
+  "methodology": "DCF / Sustainable Earnings Growth Multiplier with Quality & Balance Sheet Filters"
+}

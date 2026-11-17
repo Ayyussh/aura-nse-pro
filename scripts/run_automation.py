@@ -28,6 +28,7 @@ from backend.core.pipeline import (
     refresh_portfolio_prices,
     run_bhavcopy_reconciliation,
     run_weekly_mistake_audit,
+    run_value_investing_scan,
 )
 
 logging.basicConfig(
@@ -55,7 +56,7 @@ def main():
     parser = argparse.ArgumentParser(description="AURA-NSE Pro Headless Automation Engine")
     parser.add_argument(
         "--mode",
-        choices=["premarket", "open_check", "midday", "postmarket", "refresh_portfolio", "eod_recon", "retrain", "full_cycle"],
+        choices=["premarket", "open_check", "midday", "postmarket", "refresh_portfolio", "eod_recon", "retrain", "full_cycle", "value_scan"],
         required=True,
         help="Automation phase to execute",
     )
@@ -136,6 +137,11 @@ def main():
             refresh_portfolio_prices()
             run_weekly_mistake_audit()
             logger.info("Full Cycle Completed successfully.")
+
+        elif args.mode == "value_scan":
+            logger.info(f"Running Long-Term Institutional Value Screener on top {args.limit} candidates...")
+            res = run_value_investing_scan(universe_limit=args.limit, send_alert=True)
+            logger.info(f"Value Scan Complete: {res.get('undervalued_count', 0)} Undervalued Compounders identified.")
 
         # Always export latest static snapshots for serverless GitHub Pages dashboard
         try:

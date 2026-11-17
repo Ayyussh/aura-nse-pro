@@ -60,8 +60,10 @@ export function App() {
   const [accuracyTracker, setAccuracyTracker] = useState<any>(null);
   const [telegramAlerts, setTelegramAlerts] = useState<any[]>([]);
   const [sectorMatrix, setSectorMatrix] = useState<any>(null);
+  const [valuePicksData, setValuePicksData] = useState<any>(null);
 
   const [isLoadingScan, setIsLoadingScan] = useState<boolean>(false);
+  const [isLoadingValueScan, setIsLoadingValueScan] = useState<boolean>(false);
   const [isValidatingKeys, setIsValidatingKeys] = useState<boolean>(false);
   const [wsConnected, setWsConnected] = useState<boolean>(false);
   const [isDemoMode, setIsDemoMode] = useState<boolean>(false);
@@ -129,6 +131,7 @@ export function App() {
         sectorData,
         portfolioData,
         mistakesData,
+        valueData,
       ] = await Promise.all([
         fetchSnapshot("market_status.json", null),
         fetchSnapshot("regime.json", null),
@@ -139,6 +142,7 @@ export function App() {
         fetchSnapshot("sector_matrix.json", null),
         fetchSnapshot("portfolio.json", []),
         fetchSnapshot("mistakes.json", []),
+        fetchSnapshot("value_picks.json", null),
       ]);
 
       if (statusData) setMarketStatus(statusData);
@@ -166,6 +170,9 @@ export function App() {
       if (mistakesData && Array.isArray(mistakesData) && mistakesData.length > 0) {
         setMistakes(mistakesData);
       }
+      if (valueData) {
+        setValuePicksData(valueData);
+      }
       setIsDemoMode(false);
     } catch (e) {
       console.warn("Snapshot loading fallback:", e);
@@ -192,6 +199,7 @@ export function App() {
     fetchAccuracyTracker();
     fetchTelegramAlerts();
     fetchSectorMatrix();
+    fetchValuePicks();
 
     // WebSocket setup (only on live host)
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
@@ -396,6 +404,52 @@ export function App() {
     } catch {
       const snap = await fetchSnapshot("sector_matrix.json", DEMO_SECTOR_MATRIX);
       setSectorMatrix(snap);
+    }
+  };
+
+  const fetchValuePicks = async () => {
+    try {
+      const res = await fetch("/api/scan/value");
+      if (res.ok) {
+        setValuePicksData(await res.json());
+      } else {
+        const snap = await fetchSnapshot("value_picks.json", null);
+        if (snap) setValuePicksData(snap);
+      }
+    } catch {
+      const snap = await fetchSnapshot("value_picks.json", null);
+      if (snap) setValuePicksData(snap);
+    }
+  };
+
+  const handleRunValueScan = async () => {
+    if (isStaticHost) {
+      showToast("Cloud Analytics Mode: Value investing scans run automatically via GitHub Actions or manual dispatch. Run .\\start.bat for live on-demand scans.", "info");
+      return;
+    }
+    setIsLoadingValueScan(true);
+    showToast("Scanning NSE Universe for Undervalued Compounders & dispatching Telegram alert...", "info");
+    try {
+      const res = await fetch("/api/scan/value", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ limit: 30 }),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        const scanData = json.data || json;
+        setValuePicksData(scanData);
+        const count = scanData?.undervalued_count ?? scanData?.value_picks?.length ?? 0;
+        showToast(`Scan complete: Found ${count} undervalued compounders! Separate alert sent to Telegram.`, "success");
+      } else {
+        showToast("Value scan failed or backend offline.", "info");
+      }
+    } catch (e) {
+      console.error(e);
+      showToast("Value scan error. Check backend connection.", "info");
+    } finally {
+      setIsLoadingValueScan(false);
+      fetchTelegramAlerts();
     }
   };
 
@@ -709,8 +763,11 @@ export function App() {
             accuracyTracker={accuracyTracker}
             telegramAlerts={telegramAlerts}
             sectorMatrix={sectorMatrix}
+            valuePicksData={valuePicksData}
             onRefreshScan={handleRunScanNow}
+            onRunValueScan={handleRunValueScan}
             isLoading={isLoadingScan}
+            isLoadingValueScan={isLoadingValueScan}
           />
         )}
 

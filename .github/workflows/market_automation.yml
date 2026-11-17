@@ -33,6 +33,7 @@ on:
           - eod_recon
           - retrain
           - full_cycle
+          - value_scan
           - audit_and_build
         default: premarket
       limit:

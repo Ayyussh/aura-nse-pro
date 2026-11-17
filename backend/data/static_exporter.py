@@ -269,6 +269,31 @@ def export_all_static_snapshots() -> Dict[str, int]:
         _write_json("mistakes.json", mistakes_list)
         exported_counts["mistakes"] = len(mistakes_list)
 
+        # 10. Long-Term Value & Intrinsic Worth Picks
+        val_path = PROJECT_ROOT / "data" / "snapshots" / "value_picks.json"
+        if val_path.exists():
+            try:
+                with open(val_path, "r", encoding="utf-8") as f:
+                    val_data = json.load(f)
+                _write_json("value_picks.json", val_data)
+                exported_counts["value_picks"] = val_data.get("undervalued_count", 0)
+            except Exception:
+                pass
+        else:
+            default_val = {
+                "scan_date": str(today),
+                "scan_timestamp": get_ist_now().strftime("%Y-%m-%d %H:%M:%S IST"),
+                "total_screened": 0,
+                "undervalued_count": 0,
+                "value_picks": [],
+                "screened_out_count": 0,
+                "screened_out": [],
+                "investment_horizon": "1 to 3+ Years (Fundamental Value Compounder)",
+                "methodology": "DCF / Sustainable Earnings Growth Multiplier with Quality & Balance Sheet Filters",
+            }
+            _write_json("value_picks.json", default_val)
+            exported_counts["value_picks"] = 0
+
     finally:
         db.close()
 
