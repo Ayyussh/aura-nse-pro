@@ -1,6 +1,6 @@
 {
   "scan_date": "2026-11-17",
-  "scan_timestamp": "2026-11-17 18:47:26 IST",
+  "scan_timestamp": "2026-11-17 20:36:43 IST",
   "total_screened": 750,
   "undervalued_count": 18,
   "value_picks": [
@@ -10,10 +10,10 @@
       "sector": "Diversified/Other",
       "current_price": 1410.4,
       "sma_200": 1184.98,
-      "fair_value_min": 7609.24,
-      "fair_value_max": 9722.92,
-      "fair_value_mid": 8454.71,
-      "margin_of_safety_pct": 83.32,
+      "fair_value_min": 7588.57,
+      "fair_value_max": 9696.5,
+      "fair_value_mid": 8431.74,
+      "margin_of_safety_pct": 83.27,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
@@ -43,7 +43,7 @@
       "fundamentals": {
         "symbol": "CHENNPETRO.NS",
         "market_cap_cr": 21002.4628224,
-        "pe_ratio": 3.67,
+        "pe_ratio": 3.68,
         "pb_ratio": 1.55,
         "roe_pct": 50.87,
         "debt_to_equity": 0.16,
@@ -168,7 +168,7 @@
       "tax_12m_flag_date": "2027-11-18",
       "fundamentals": {
         "symbol": "IOC.NS",
-        "market_cap_cr": 205548.7488,
+        "market_cap_cr": "UNKNOWN",
         "pe_ratio": 4.24,
         "pb_ratio": 0.86,
         "roe_pct": 22.62,
@@ -179,7 +179,9 @@
         "as_of_date": "2026-11-17"
       },
       "rejection_reasons": [],
-      "unverified_badges": [],
+      "unverified_badges": [
+        "\u26a0\ufe0f Market Cap Unverified"
+      ],
       "conviction_tier": "HIGH_CONVICTION",
       "gemini_audit": {
         "verdict": "REJECTED_CYCLICAL_TRAP",
@@ -524,10 +526,10 @@
       "sector": "Auto",
       "current_price": 5329.0,
       "sma_200": 5259.68,
-      "fair_value_min": 6473.93,
-      "fair_value_max": 8272.24,
-      "fair_value_mid": 7193.25,
-      "margin_of_safety_pct": 25.92,
+      "fair_value_min": 6503.18,
+      "fair_value_max": 8309.62,
+      "fair_value_mid": 7225.76,
+      "margin_of_safety_pct": 26.25,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
@@ -557,7 +559,7 @@
       "fundamentals": {
         "symbol": "HEROMOTOCO.NS",
         "market_cap_cr": 106666.2363136,
-        "pe_ratio": 17.78,
+        "pe_ratio": 17.7,
         "pb_ratio": 4.56,
         "roe_pct": 26.93,
         "debt_to_equity": 0.06,
@@ -568,6 +570,61 @@
       },
       "rejection_reasons": [],
       "unverified_badges": [],
+      "conviction_tier": "HIGH_CONVICTION",
+      "gemini_audit": null
+    },
+    {
+      "symbol": "ANTELOPUS.NS",
+      "passed": true,
+      "sector": "Diversified/Other",
+      "current_price": 875.05,
+      "sma_200": 794.41,
+      "fair_value_min": 997.47,
+      "fair_value_max": 1274.54,
+      "fair_value_mid": 1108.3,
+      "margin_of_safety_pct": 21.05,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 875.0499877929688,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 831.3,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 787.54,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-15",
+      "tax_12m_flag_date": "2027-11-18",
+      "fundamentals": {
+        "symbol": "ANTELOPUS.NS",
+        "market_cap_cr": 3087.860736,
+        "pe_ratio": 17.37,
+        "pb_ratio": 4.02,
+        "roe_pct": "UNKNOWN",
+        "debt_to_equity": 0.01,
+        "rev_growth_yoy_pct": 116.0,
+        "earnings_growth_yoy_pct": 384.4,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": [
+        "\u26a0\ufe0f ROE Unverified"
+      ],
       "conviction_tier": "HIGH_CONVICTION",
       "gemini_audit": null
     },
@@ -609,7 +666,7 @@
       "tax_12m_flag_date": "2027-11-18",
       "fundamentals": {
         "symbol": "TCS.NS",
-        "market_cap_cr": 870728.9645056,
+        "market_cap_cr": "UNKNOWN",
         "pe_ratio": 16.87,
         "pb_ratio": 7.32,
         "roe_pct": 45.57,
@@ -620,61 +677,8 @@
         "as_of_date": "2026-11-17"
       },
       "rejection_reasons": [],
-      "unverified_badges": [],
-      "conviction_tier": "HIGH_CONVICTION",
-      "gemini_audit": null
-    },
-    {
-      "symbol": "ANTELOPUS.NS",
-      "passed": true,
-      "sector": "Diversified/Other",
-      "current_price": 875.05,
-      "sma_200": 794.41,
-      "fair_value_min": 972.28,
-      "fair_value_max": 1242.36,
-      "fair_value_mid": 1080.31,
-      "margin_of_safety_pct": 19.0,
-      "target_weight_pct": 5.0,
-      "tranche_plan": {
-        "tranche_1_initial": {
-          "pct": 40.0,
-          "price_target": 875.0499877929688,
-          "trigger": "Immediate on approval"
-        },
-        "tranche_2_pullback": {
-          "pct": 30.0,
-          "price_target": 831.3,
-          "trigger": "5% dip or 50-EMA test"
-        },
-        "tranche_3_deep_value": {
-          "pct": 30.0,
-          "price_target": 787.54,
-          "trigger": "10% dip or 200-SMA support"
-        }
-      },
-      "thesis_break_triggers": [
-        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
-        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
-        "ROE drops below 12% on trailing 12-month basis.",
-        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
-      ],
-      "quarterly_review_date": "2027-02-15",
-      "tax_12m_flag_date": "2027-11-18",
-      "fundamentals": {
-        "symbol": "ANTELOPUS.NS",
-        "market_cap_cr": 3087.860736,
-        "pe_ratio": 17.82,
-        "pb_ratio": 4.02,
-        "roe_pct": "UNKNOWN",
-        "debt_to_equity": 0.01,
-        "rev_growth_yoy_pct": 116.0,
-        "earnings_growth_yoy_pct": 384.4,
-        "source": "yfinance_info",
-        "as_of_date": "2026-11-17"
-      },
-      "rejection_reasons": [],
       "unverified_badges": [
-        "\u26a0\ufe0f ROE Unverified"
+        "\u26a0\ufe0f Market Cap Unverified"
       ],
       "conviction_tier": "HIGH_CONVICTION",
       "gemini_audit": null
@@ -738,10 +742,10 @@
       "sector": "Metals",
       "current_price": 1332.0,
       "sma_200": 1253.86,
-      "fair_value_min": 1460.68,
-      "fair_value_max": 1866.43,
-      "fair_value_mid": 1622.98,
-      "margin_of_safety_pct": 17.93,
+      "fair_value_min": 1465.79,
+      "fair_value_max": 1872.95,
+      "fair_value_mid": 1628.65,
+      "margin_of_safety_pct": 18.21,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
@@ -771,7 +775,7 @@
       "fundamentals": {
         "symbol": "JSWSTEEL.NS",
         "market_cap_cr": 325258.6020864,
-        "pe_ratio": 11.49,
+        "pe_ratio": 11.45,
         "pb_ratio": 2.87,
         "roe_pct": 31.93,
         "debt_to_equity": 0.62,
@@ -982,7 +986,7 @@
       "tax_12m_flag_date": "2027-11-18",
       "fundamentals": {
         "symbol": "BAJAJ-AUTO.NS",
-        "market_cap_cr": 295720.2161664,
+        "market_cap_cr": 295963.7479424,
         "pe_ratio": 22.97,
         "pb_ratio": 8.11,
         "roe_pct": 35.56,
@@ -1101,9 +1105,9 @@
     {
       "symbol": "BSE.NS",
       "passed": false,
-      "margin_of_safety_pct": -113.67,
+      "margin_of_safety_pct": -115.25,
       "reasons": [
-        "P/E ratio 51.3 exceeds hard cap of 35.0."
+        "P/E ratio 51.7 exceeds hard cap of 35.0."
       ]
     },
     {
