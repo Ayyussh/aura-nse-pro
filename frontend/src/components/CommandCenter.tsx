@@ -25,6 +25,7 @@ import {
   Activity,
   Lock,
   Gem,
+  Sparkles,
 } from "lucide-react";
 
 import { TradingViewChartModal } from "./TradingViewChartModal";
@@ -45,6 +46,7 @@ interface CommandCenterProps {
   isLoading: boolean;
   isLoadingValueScan?: boolean;
   onCopyTicket?: (ticket: string) => void;
+  initialTab?: "value" | "approved" | "rejected" | "accuracy" | "alerts" | "sectors";
 }
 
 export const CommandCenter: React.FC<CommandCenterProps> = ({
@@ -61,8 +63,15 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
   onRunValueScan,
   isLoading,
   isLoadingValueScan = false,
+  initialTab = "value",
 }) => {
-  const [activeTab, setActiveTab] = useState<"approved" | "rejected" | "accuracy" | "alerts" | "sectors" | "value">("approved");
+  const [activeTab, setActiveTab] = useState<"approved" | "rejected" | "accuracy" | "alerts" | "sectors" | "value">(initialTab);
+
+  React.useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab]);
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [showFiiDiiModal, setShowFiiDiiModal] = useState<boolean>(false);
   const [showCalculatorModal, setShowCalculatorModal] = useState<boolean>(false);
@@ -292,68 +301,59 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-b border-gray-800 pb-4">
         <div className="flex flex-wrap items-center gap-2">
           <button
-            onClick={() => setActiveTab("approved")}
-            className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
-              activeTab === "approved"
-                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
-                : "bg-gray-800/80 text-gray-400 hover:text-white"
-            }`}
-          >
-            Today's Approved Setups ({predictions.length})
-          </button>
-          <button
-            onClick={() => setActiveTab("sectors")}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
-              activeTab === "sectors"
-                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
-                : "bg-gray-800/80 text-gray-400 hover:text-white"
-            }`}
-          >
-            <PieChart className="w-3.5 h-3.5 text-indigo-400" />
-            Sector RS Heatmap
-          </button>
-          <button
-            onClick={() => setActiveTab("rejected")}
-            className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
-              activeTab === "rejected"
-                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
-                : "bg-gray-800/80 text-gray-400 hover:text-white"
-            }`}
-          >
-            Screened Out & Why Not ({rejectedCandidates.length})
-          </button>
-          <button
-            onClick={() => setActiveTab("accuracy")}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
-              activeTab === "accuracy"
-                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
-                : "bg-gray-800/80 text-gray-400 hover:text-white"
-            }`}
-          >
-            <Target className="w-3.5 h-3.5 text-cyan-400" />
-            Accuracy & Improvement ({accuracyTracker?.true_prediction_rate_pct ?? 0}%)
-          </button>
-          <button
-            onClick={() => setActiveTab("alerts")}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
-              activeTab === "alerts"
-                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
-                : "bg-gray-800/80 text-gray-400 hover:text-white"
-            }`}
-          >
-            <Bell className="w-3.5 h-3.5 text-amber-400" />
-            Telegram Alerts Stream ({telegramAlerts.length})
-          </button>
-          <button
             onClick={() => setActiveTab("value")}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               activeTab === "value"
-                ? "bg-cyan-600 text-white shadow-lg shadow-cyan-600/30"
+                ? "bg-cyan-600 text-white shadow-sm"
                 : "bg-gray-800/80 text-gray-400 hover:text-white"
             }`}
           >
             <Gem className="w-3.5 h-3.5 text-cyan-400" />
-            Undervalued Stocks ({valuePicksList.length})
+            Value Compounders ({valuePicksList.length})
+          </button>
+          <button
+            onClick={() => setActiveTab("approved")}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              activeTab === "approved"
+                ? "bg-indigo-600 text-white shadow-sm"
+                : "bg-gray-800/80 text-gray-400 hover:text-white"
+            }`}
+          >
+            <TrendingUp className="w-3.5 h-3.5 text-indigo-400" />
+            Swing Signals ({predictions.length})
+          </button>
+          <button
+            onClick={() => setActiveTab("sectors")}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              activeTab === "sectors"
+                ? "bg-indigo-600 text-white shadow-sm"
+                : "bg-gray-800/80 text-gray-400 hover:text-white"
+            }`}
+          >
+            <PieChart className="w-3.5 h-3.5 text-indigo-400" />
+            Sector Heatmap
+          </button>
+          <button
+            onClick={() => setActiveTab("rejected")}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              activeTab === "rejected"
+                ? "bg-indigo-600 text-white shadow-sm"
+                : "bg-gray-800/80 text-gray-400 hover:text-white"
+            }`}
+          >
+            <Shield className="w-3.5 h-3.5 text-gray-400" />
+            Screened Out ({rejectedCandidates.length})
+          </button>
+          <button
+            onClick={() => setActiveTab("alerts")}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              activeTab === "alerts"
+                ? "bg-indigo-600 text-white shadow-sm"
+                : "bg-gray-800/80 text-gray-400 hover:text-white"
+            }`}
+          >
+            <Bell className="w-3.5 h-3.5 text-amber-400" />
+            Telegram Stream ({telegramAlerts.length})
           </button>
         </div>
 
@@ -1057,18 +1057,18 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                         {v.sector || "EQUITY"}
                       </span>
                       {v.conviction_tier === "HIGH_CONVICTION" && (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-700 flex items-center gap-1">
-                          🌟 High Conviction
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-700 tracking-wider">
+                          HIGH CONVICTION
                         </span>
                       )}
                       {v.conviction_tier === "QUALITY_COMPOUNDER" && (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-950 text-cyan-300 border border-cyan-700 flex items-center gap-1">
-                          💎 Quality Compounder
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-950 text-cyan-300 border border-cyan-700 tracking-wider">
+                          QUALITY COMPOUNDER
                         </span>
                       )}
                       {v.conviction_tier === "THIN_DISCOUNT" && (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-950 text-amber-300 border border-amber-700 flex items-center gap-1">
-                          🔍 Watchlist / Thin
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-zinc-800 text-zinc-300 border border-zinc-700 tracking-wider">
+                          WATCHLIST
                         </span>
                       )}
                       <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-950 text-indigo-300 border border-indigo-800">
@@ -1220,6 +1220,35 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                       </div>
                     </div>
                   </div>
+
+                  {/* Institutional AI Moat & Multiple Audit */}
+                  {v.gemini_audit && (
+                    <div className="p-3 rounded-xl bg-zinc-950/90 border border-zinc-800 space-y-2 text-xs">
+                      <div className="flex items-center justify-between border-b border-zinc-800/80 pb-1.5">
+                        <div className="flex items-center gap-1.5 font-bold text-white">
+                          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                          <span>AI Moat & Quality Audit</span>
+                        </div>
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-950 text-cyan-300 border border-cyan-800 font-mono">
+                          Conviction: {v.gemini_audit.ai_conviction_pct || 75}%
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[11px] text-zinc-300">
+                        <div className="space-y-0.5">
+                          <span className="text-zinc-500 font-semibold uppercase text-[9px] block">Institutional Bull Thesis</span>
+                          <p className="text-emerald-400/90 leading-relaxed">
+                            {v.gemini_audit.bull_thesis || v.gemini_audit.moat_assessment}
+                          </p>
+                        </div>
+                        <div className="space-y-0.5">
+                          <span className="text-zinc-500 font-semibold uppercase text-[9px] block">Primary Risk & Thesis Invalidation</span>
+                          <p className="text-amber-400/90 leading-relaxed">
+                            {v.gemini_audit.bear_risk || "Margin compression > 300 bps or promoter pledge increase > 5%"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Thesis Protection & Calendar Dates */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs border-t border-gray-800/80 pt-3">

@@ -1,29 +1,21 @@
 import React, { useState, useEffect } from "react";
 import {
-  LayoutDashboard,
   TrendingUp,
   Shield,
-  Bug,
-  Key,
-  MessageSquare,
   Receipt,
-  Sparkles,
   Clock,
-  ExternalLink,
   CheckCircle2,
   AlertCircle,
-  Database,
-  Activity,
+  Gem,
+  Settings as SettingsIcon,
+  X,
+  RefreshCw,
 } from "lucide-react";
 
-import { AuraAvatar } from "./components/AuraAvatar";
-import type { AuraState } from "./components/AuraAvatar";
 import { CommandCenter } from "./components/CommandCenter";
 import { StressTestLedger } from "./components/StressTestLedger";
 import { PortfolioGuard } from "./components/PortfolioGuard";
-import { MistakeLab } from "./components/MistakeLab";
 import { VaultSettings } from "./components/VaultSettings";
-import { ResearchConsole } from "./components/ResearchConsole";
 import { JournalTaxCenter } from "./components/JournalTaxCenter";
 import { SystemHealth } from "./components/SystemHealth";
 
@@ -41,12 +33,8 @@ import {
 } from "./utils/demoData";
 
 export function App() {
-  const [activeView, setActiveView] = useState<
-    "command" | "stress" | "portfolio" | "mistakes" | "vault" | "research" | "tax" | "health"
-  >("command");
-
-  const [auraState, setAuraState] = useState<AuraState>("Idle");
-  const [briefingScript, setBriefingScript] = useState<string>(DEMO_VOICE_BRIEFING);
+  const [activeView, setActiveView] = useState<"value" | "momentum" | "portfolio" | "tax">("value");
+  const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
   const [marketStatus, setMarketStatus] = useState<any>(DEMO_MARKET_STATUS);
   const [regime, setRegime] = useState<any>(DEMO_REGIME);
   const [todayPredictions, setTodayPredictions] = useState<any[]>([]);
@@ -621,141 +609,115 @@ export function App() {
       )}
 
       {/* Institutional Top Navigation Header */}
-      <header className="border-b border-gray-800/80 bg-[#0e1420]/95 backdrop-blur-md sticky top-0 z-50 px-4 lg:px-8 py-3">
+      <header className="border-b border-zinc-800 bg-[#090D14]/95 backdrop-blur-md sticky top-0 z-40 px-4 lg:px-8 py-2.5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
-          {/* Brand & Market Status */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-600/30">
-              <Sparkles className="w-5 h-5 text-white" />
+          {/* Brand & Market Telemetry */}
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2">
+              <span className="text-base font-extrabold tracking-tight text-white font-mono">AURA</span>
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">
+                NSE TERMINAL
+              </span>
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-base font-extrabold tracking-tight text-white">AURA-NSE Pro</span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-950 text-indigo-400 border border-indigo-800">
-                  v2.0
-                </span>
-                {isStaticHost ? (
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-cyan-950/80 text-cyan-300 border border-cyan-800 flex items-center gap-1">
-                    🌐 GITOPS CLOUD SYNC
-                  </span>
-                ) : isDemoMode ? (
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-800 flex items-center gap-1">
-                    ⚡ OFFLINE PREVIEW
-                  </span>
-                ) : (
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-800 flex items-center gap-1">
-                    🟢 BACKEND LIVE (127.0.0.1:8000)
-                  </span>
-                )}
-              </div>
-              <div className="text-[11px] text-gray-400 flex items-center gap-2">
-                <span>Institutional Decision Support & Walk-Forward Platform</span>
-                <span className="text-gray-600">•</span>
-                <span className="font-mono text-cyan-400 flex items-center gap-1">
-                  <Clock className="w-3 h-3 inline" /> {currentTimeIst || "IST"}
-                </span>
-              </div>
+
+            <div className="h-4 w-px bg-zinc-800 hidden sm:block" />
+
+            {/* Live Telemetry Pills */}
+            <div className="flex items-center gap-2 text-[11px] font-mono">
+              <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                NSE: {marketStatus?.market_status || "LIVE"}
+              </span>
+              <span className="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-300 hidden sm:inline">
+                VIX: <strong className="text-cyan-400">{regime?.india_vix || "13.4"}</strong>
+              </span>
+              <span className="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-emerald-400 hidden md:inline">
+                Upstox v3 Live
+              </span>
+              <span className="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-400 flex items-center gap-1">
+                <Clock className="w-3 h-3 text-cyan-400" />
+                {currentTimeIst || "IST"}
+              </span>
             </div>
           </div>
 
-          {/* Navigation Tabs */}
-          <nav className="flex flex-wrap items-center gap-1.5 text-xs font-semibold">
+          {/* Central Navigation Tabs */}
+          <nav className="flex items-center gap-1 bg-zinc-900/80 p-1 rounded-xl border border-zinc-800 text-xs font-semibold">
             <button
-              onClick={() => setActiveView("command")}
+              onClick={() => setActiveView("value")}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
-                activeView === "command"
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                  : "text-gray-400 hover:text-white hover:bg-gray-800"
+                activeView === "value"
+                  ? "bg-cyan-600 text-white shadow-sm"
+                  : "text-zinc-400 hover:text-white"
               }`}
             >
-              <LayoutDashboard className="w-3.5 h-3.5" /> Command Center
+              <Gem className="w-3.5 h-3.5 text-cyan-300" />
+              <span>Value Screener</span>
             </button>
             <button
-              onClick={() => setActiveView("stress")}
+              onClick={() => setActiveView("momentum")}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
-                activeView === "stress"
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                  : "text-gray-400 hover:text-white hover:bg-gray-800"
+                activeView === "momentum"
+                  ? "bg-indigo-600 text-white shadow-sm"
+                  : "text-zinc-400 hover:text-white"
               }`}
             >
-              <TrendingUp className="w-3.5 h-3.5" /> 30-Day Stress Test
+              <TrendingUp className="w-3.5 h-3.5 text-indigo-300" />
+              <span>Momentum Setups</span>
             </button>
             <button
               onClick={() => setActiveView("portfolio")}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
                 activeView === "portfolio"
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                  : "text-gray-400 hover:text-white hover:bg-gray-800"
+                  ? "bg-emerald-600 text-white shadow-sm"
+                  : "text-zinc-400 hover:text-white"
               }`}
             >
-              <Shield className="w-3.5 h-3.5" /> Risk & Portfolio
-            </button>
-            <button
-              onClick={() => setActiveView("mistakes")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
-                activeView === "mistakes"
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                  : "text-gray-400 hover:text-white hover:bg-gray-800"
-              }`}
-            >
-              <Bug className="w-3.5 h-3.5" /> Mistake Lab
-            </button>
-            <button
-              onClick={() => setActiveView("vault")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
-                activeView === "vault"
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                  : "text-gray-400 hover:text-white hover:bg-gray-800"
-              }`}
-            >
-              <Key className="w-3.5 h-3.5" /> Key Vault
-            </button>
-            <button
-              onClick={() => setActiveView("research")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
-                activeView === "research"
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                  : "text-gray-400 hover:text-white hover:bg-gray-800"
-              }`}
-            >
-              <MessageSquare className="w-3.5 h-3.5" /> AI Research
+              <Shield className="w-3.5 h-3.5 text-emerald-300" />
+              <span>Portfolio & Risk</span>
             </button>
             <button
               onClick={() => setActiveView("tax")}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
                 activeView === "tax"
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                  : "text-gray-400 hover:text-white hover:bg-gray-800"
+                  ? "bg-zinc-800 text-white shadow-sm"
+                  : "text-zinc-400 hover:text-white"
               }`}
             >
-              <Receipt className="w-3.5 h-3.5" /> Tax & Charges
-            </button>
-            <button
-              onClick={() => setActiveView("health")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
-                activeView === "health"
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                  : "text-gray-400 hover:text-white hover:bg-gray-800"
-              }`}
-            >
-              <Activity className="w-3.5 h-3.5" /> System Health
+              <Receipt className="w-3.5 h-3.5 text-zinc-300" />
+              <span className="hidden sm:inline">Tax & Ledger</span>
             </button>
           </nav>
+
+          {/* Fast Action Controls & Settings */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => handleRunValueScan("all")}
+              disabled={isLoadingValueScan}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-700 hover:bg-cyan-600 text-white transition-all disabled:opacity-50"
+              title="Run Institutional Value Screener across NSE equities"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isLoadingValueScan ? "animate-spin" : ""}`} />
+              <span className="hidden sm:inline">{isLoadingValueScan ? "Scanning..." : "Scan Value"}</span>
+            </button>
+
+            <button
+              onClick={() => setShowSettingsModal(true)}
+              className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 border border-zinc-800 transition-all"
+              title="System Connectivity, Upstox Feeds & API Vault"
+            >
+              <SettingsIcon className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </header>
 
       {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8 space-y-6">
-        {/* Persistent AURA Humanoid Persona Header */}
-        <AuraAvatar
-          state={auraState}
-          briefingScript={briefingScript}
-          regime={regime?.regime_label || "GREEN"}
-        />
-
         {/* Dynamic Views */}
-        {activeView === "command" && (
+        {activeView === "value" && (
           <CommandCenter
+            initialTab="value"
             predictions={todayPredictions}
             rejectedCandidates={rejectedCandidates}
             marketStatus={marketStatus}
@@ -772,44 +734,71 @@ export function App() {
           />
         )}
 
-        {activeView === "stress" && (
-          <StressTestLedger
-            metrics={stressMetrics}
-            history={tradeHistory}
+        {activeView === "momentum" && (
+          <CommandCenter
+            initialTab="approved"
+            predictions={todayPredictions}
+            rejectedCandidates={rejectedCandidates}
+            marketStatus={marketStatus}
+            regime={regime}
+            fiiDii={fiiDiiData}
+            accuracyTracker={accuracyTracker}
+            telegramAlerts={telegramAlerts}
+            sectorMatrix={sectorMatrix}
+            valuePicksData={valuePicksData}
+            onRefreshScan={handleRunScanNow}
+            onRunValueScan={handleRunValueScan}
+            isLoading={isLoadingScan}
+            isLoadingValueScan={isLoadingValueScan}
           />
         )}
 
         {activeView === "portfolio" && (
-          <PortfolioGuard
-            portfolio={portfolio}
-            onAddHolding={handleAddHolding}
-            onDeleteHolding={handleDeleteHolding}
-          />
-        )}
-
-        {activeView === "mistakes" && (
-          <MistakeLab
-            mistakes={mistakes}
-            onResolveMistake={handleResolveMistake}
-          />
-        )}
-
-        {activeView === "vault" && (
-          <VaultSettings
-            keys={vaultKeys}
-            onValidateAll={handleValidateAllKeys}
-            isValidating={isValidatingKeys}
-            onSaveKey={handleSaveKey}
-          />
-        )}
-
-        {activeView === "research" && (
-          <ResearchConsole onSendQuery={handleSendResearchQuery} />
+          <div className="space-y-6">
+            <PortfolioGuard
+              portfolio={portfolio}
+              onAddHolding={handleAddHolding}
+              onDeleteHolding={handleDeleteHolding}
+            />
+            <StressTestLedger
+              metrics={stressMetrics}
+              history={tradeHistory}
+            />
+          </div>
         )}
 
         {activeView === "tax" && <JournalTaxCenter />}
-        {activeView === "health" && <SystemHealth />}
       </main>
+
+      {/* Slide-Over Settings & Feeds Modal */}
+      {showSettingsModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in">
+          <div className="w-full max-w-2xl bg-[#0e1420] border border-zinc-800 rounded-2xl p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+              <div className="flex items-center gap-2">
+                <SettingsIcon className="w-5 h-5 text-cyan-400" />
+                <h3 className="text-base font-bold text-white">System Settings & Data Feeds</h3>
+              </div>
+              <button
+                onClick={() => setShowSettingsModal(false)}
+                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              <VaultSettings
+                keys={vaultKeys}
+                onValidateAll={handleValidateAllKeys}
+                isValidating={isValidatingKeys}
+                onSaveKey={handleSaveKey}
+              />
+              <SystemHealth />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Toast Notification Popup */}
       {toast && (
