@@ -1,6 +1,6 @@
 {
   "scan_date": "2026-11-17",
-  "scan_timestamp": "2026-11-17 18:28:10 IST",
+  "scan_timestamp": "2026-11-17 18:47:26 IST",
   "total_screened": 750,
   "undervalued_count": 18,
   "value_picks": [
@@ -1053,7 +1053,7 @@
       "gemini_audit": null
     }
   ],
-  "screened_out_count": 715,
+  "screened_out_count": 717,
   "screened_out": [
     {
       "symbol": "CHOLAFIN.NS",
