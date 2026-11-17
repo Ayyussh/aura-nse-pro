@@ -840,21 +840,28 @@ def run_weekly_mistake_audit() -> dict[str, Any]:
         db.close()
 
 
-def run_value_investing_scan(universe_limit: int = 30, send_alert: bool = True) -> dict[str, Any]:
+def run_value_investing_scan(universe_limit: int | None = None, mode: str = "all", send_alert: bool = True) -> dict[str, Any]:
     """Execute Long-Term Institutional Valuation Screener for Multi-Year Compounders.
 
     Identifies high-quality NSE equities trading below their estimated intrinsic fair value
     (positive Margin of Safety) with strong balance sheets and profitability.
+    Supports scanning ALL ~2,760 listed NSE stocks, sector-diversified bluechips, or curated universe.
     Dispatches a dedicated Telegram report separate from daily swing trading alerts.
     """
     from backend.strategies.long_term import long_term_engine
-    from backend.data.universe import get_diversified_universe_symbols
+    from backend.data.universe import get_universe_symbols, get_diversified_universe_symbols
     from backend.data.provider import data_provider
 
     today = get_ist_now().date()
-    logger.info(f"Starting Institutional Value & Intrinsic Worth Screener for {today}...")
+    logger.info(f"Starting Institutional Value & Intrinsic Worth Screener for {today} (mode={mode}, limit={universe_limit})...")
 
-    symbols = get_diversified_universe_symbols(limit=universe_limit or 40)
+    if mode == "all":
+        symbols = get_universe_symbols(limit=universe_limit, mode="all")
+    elif mode == "diversified":
+        symbols = get_diversified_universe_symbols(limit=universe_limit or 40)
+    else:
+        symbols = get_universe_symbols(limit=universe_limit, mode="curated")
+
     value_picks: list[dict[str, Any]] = []
     screened_out: list[dict[str, Any]] = []
 
@@ -863,6 +870,21 @@ def run_value_investing_scan(universe_limit: int = 30, send_alert: bool = True) 
             df = data_provider.fetch_history(sym, period="1y", interval="1d")
             if df.empty or len(df) < 50:
                 continue
+
+            # Fast-path check: If price <= 200-SMA, it cannot pass criterion #1
+            # Skip fetching fundamental data to accelerate full-universe scans
+            if len(df) >= 200:
+                c_last = float(df["close"].iloc[-1])
+                sma200 = df["close"].rolling(200).mean().iloc[-1]
+                if not pd.isna(sma200) and c_last <= sma200:
+                    screened_out.append({
+                        "symbol": sym,
+                        "passed": False,
+                        "margin_of_safety_pct": 0.0,
+                        "reasons": [f"Price ₹{c_last:.2f} is below 200-day SMA ₹{sma200:.2f} (downtrend)"],
+                    })
+                    continue
+
             fundamentals = data_provider.fetch_fundamentals(sym)
             pick = long_term_engine.evaluate(sym, df, fundamentals)
 

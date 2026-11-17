@@ -422,18 +422,17 @@ export function App() {
     }
   };
 
-  const handleRunValueScan = async () => {
+  const handleRunValueScan = async (mode: string = "all") => {
     if (isStaticHost) {
       showToast("Cloud Analytics Mode: Value investing scans run automatically via GitHub Actions or manual dispatch. Run .\\start.bat for live on-demand scans.", "info");
       return;
     }
     setIsLoadingValueScan(true);
-    showToast("Scanning NSE Universe for Undervalued Compounders & dispatching Telegram alert...", "info");
+    showToast(`Scanning ${mode === "all" ? "All Listed NSE Equities (~2,760 stocks)" : "Diversified Bluechip Universe"} for Undervalued Compounders...`, "info");
     try {
-      const res = await fetch("/api/scan/value", {
+      const res = await fetch(`/api/scan/value?mode=${mode}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ limit: 30 }),
       });
       if (res.ok) {
         const json = await res.json();

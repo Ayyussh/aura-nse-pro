@@ -67,6 +67,12 @@ def main():
         help="Universe scan candidate limit (default 25)",
     )
     parser.add_argument(
+        "--universe-mode",
+        choices=["all", "diversified", "curated"],
+        default="all",
+        help="Universe scope: 'all' (all 2,760 listed NSE stocks), 'diversified' (bluechips), 'curated' (191)",
+    )
+    parser.add_argument(
         "--force",
         action="store_true",
         help="Force execution even if current day is a holiday/weekend",
@@ -139,9 +145,9 @@ def main():
             logger.info("Full Cycle Completed successfully.")
 
         elif args.mode == "value_scan":
-            logger.info(f"Running Long-Term Institutional Value Screener on top {args.limit} candidates...")
-            res = run_value_investing_scan(universe_limit=args.limit, send_alert=True)
-            logger.info(f"Value Scan Complete: {res.get('undervalued_count', 0)} Undervalued Compounders identified.")
+            logger.info(f"Running Long-Term Institutional Value Screener across '{args.universe_mode}' universe (limit={args.limit})...")
+            res = run_value_investing_scan(universe_limit=args.limit, mode=args.universe_mode, send_alert=True)
+            logger.info(f"Value Scan Complete: {res.get('undervalued_count', 0)} Undervalued Compounders identified from {res.get('total_screened', 0)} screened.")
 
         # Always export latest static snapshots for serverless GitHub Pages dashboard
         try:

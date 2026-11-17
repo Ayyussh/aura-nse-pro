@@ -240,9 +240,48 @@ def get_sector_for_symbol(symbol: str) -> str:
     return SYMBOL_SECTOR_MAP.get(clean, "Diversified/Other")
 
 
-def get_universe_symbols(limit: int | None = None) -> List[str]:
-    """Return filtered equity universe symbols."""
-    symbols = [s for s in NIFTY_500_SYMBOLS if s not in EXCLUDED_SURVEILLANCE_SYMBOLS]
+# ---------------------------------------------------------------------------
+# Complete Master Universe of All Listed NSE Equities (2,760+ instruments)
+# ---------------------------------------------------------------------------
+def _load_all_listed_nse_symbols() -> List[str]:
+    """Dynamically load all official listed symbols on the National Stock Exchange."""
+    try:
+        from pathlib import Path
+        all_json = Path(__file__).resolve().parent.parent.parent / "data" / "all_nse_symbols.json"
+        if all_json.exists():
+            import json
+            with open(all_json, "r", encoding="utf-8") as f:
+                syms = json.load(f)
+                if isinstance(syms, list) and len(syms) > 1000:
+                    return syms
+    except Exception:
+        pass
+    return NIFTY_500_SYMBOLS
+
+
+ALL_LISTED_NSE_SYMBOLS: List[str] = _load_all_listed_nse_symbols()
+
+
+def get_all_listed_symbols() -> List[str]:
+    """Return the complete master universe of all ~2,760 listed NSE equities."""
+    return [s for s in ALL_LISTED_NSE_SYMBOLS if s not in EXCLUDED_SURVEILLANCE_SYMBOLS]
+
+
+def get_universe_symbols(limit: int | None = None, mode: str = "curated") -> List[str]:
+    """Return filtered equity universe symbols.
+
+    Modes:
+      - 'all': All ~2,760 listed NSE stocks.
+      - 'diversified': Sector-stratified bluechips.
+      - 'curated': Liquid institutional universe (191 core mapped stocks).
+    """
+    if mode == "all":
+        symbols = [s for s in ALL_LISTED_NSE_SYMBOLS if s not in EXCLUDED_SURVEILLANCE_SYMBOLS]
+    elif mode == "diversified":
+        return get_diversified_universe_symbols(limit=limit or 40)
+    else:
+        symbols = [s for s in NIFTY_500_SYMBOLS if s not in EXCLUDED_SURVEILLANCE_SYMBOLS]
+
     if limit:
         return symbols[:limit]
     return symbols

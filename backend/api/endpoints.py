@@ -661,16 +661,18 @@ def api_run_job_now(
 
 @router.post("/scan/value")
 def api_trigger_value_scan(
-    limit: int = Query(default=30, ge=5, le=100),
+    limit: Optional[int] = Query(default=None, ge=5, le=3000),
+    mode: str = Query(default="all", pattern="^(all|diversified|curated)$"),
     user: UserProfile = Depends(get_current_user),
 ):
     """Trigger institutional value investing and intrinsic worth scan.
 
-    Screens equities with positive Margin of Safety and institutional fundamentals.
+    Screens equities with positive Margin of Safety and institutional fundamentals across
+    the complete ~2,760 listed NSE universe, diversified bluechips, or curated universe.
     Dispatches a dedicated Telegram alert separate from daily swing trading alerts.
     """
     from backend.core.pipeline import run_value_investing_scan
-    result = run_value_investing_scan(universe_limit=limit, send_alert=True)
+    result = run_value_investing_scan(universe_limit=limit, mode=mode, send_alert=True)
     return {"status": "SUCCESS", "data": result}
 
 

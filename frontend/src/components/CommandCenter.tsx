@@ -41,7 +41,7 @@ interface CommandCenterProps {
   sectorMatrix?: any;
   valuePicksData?: any;
   onRefreshScan: () => void;
-  onRunValueScan?: () => void;
+  onRunValueScan?: (mode?: string) => void;
   isLoading: boolean;
   isLoadingValueScan?: boolean;
   onCopyTicket?: (ticket: string) => void;
@@ -976,12 +976,22 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
               </div>
               <div className="flex items-center gap-2">
                 <button
-                  onClick={onRunValueScan}
+                  onClick={() => onRunValueScan && onRunValueScan("diversified")}
                   disabled={isLoadingValueScan}
-                  className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 text-white transition-all disabled:opacity-50 shadow-md"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-cyan-300 border border-cyan-800/40 transition-all disabled:opacity-50"
+                  title="Fast scan of sector-stratified bluechips"
                 >
                   <RefreshCw className={`w-3.5 h-3.5 ${isLoadingValueScan ? "animate-spin" : ""}`} />
-                  {isLoadingValueScan ? "Scanning..." : "Re-Scan Value Universe"}
+                  Scan Bluechips
+                </button>
+                <button
+                  onClick={() => onRunValueScan && onRunValueScan("all")}
+                  disabled={isLoadingValueScan}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 text-white transition-all disabled:opacity-50 shadow-md"
+                  title="Deep scan across all 2,760 listed NSE stocks"
+                >
+                  <Gem className={`w-3.5 h-3.5 ${isLoadingValueScan ? "animate-spin" : ""}`} />
+                  {isLoadingValueScan ? "Scanning All Stocks..." : "Scan All Listed (2,760)"}
                 </button>
               </div>
             </div>
