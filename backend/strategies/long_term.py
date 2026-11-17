@@ -35,6 +35,7 @@ class LongTermPick:
     fundamentals: Dict[str, Any]
     rejection_reasons: List[str]
     unverified_badges: List[str] = field(default_factory=list)
+    conviction_tier: str = "THIN_DISCOUNT"
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -150,6 +151,13 @@ class LongTermStrategyEngine:
 
         passed = len(rejection_reasons) == 0
 
+        if margin_of_safety >= 15.0:
+            tier = "HIGH_CONVICTION"
+        elif margin_of_safety >= 5.0:
+            tier = "QUALITY_COMPOUNDER"
+        else:
+            tier = "THIN_DISCOUNT"
+
         return LongTermPick(
             symbol=symbol,
             passed=passed,
@@ -168,6 +176,7 @@ class LongTermStrategyEngine:
             fundamentals=fundamentals,
             rejection_reasons=rejection_reasons,
             unverified_badges=unverified_badges,
+            conviction_tier=tier,
         )
 
 

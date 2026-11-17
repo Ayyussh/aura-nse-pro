@@ -848,13 +848,13 @@ def run_value_investing_scan(universe_limit: int = 30, send_alert: bool = True) 
     Dispatches a dedicated Telegram report separate from daily swing trading alerts.
     """
     from backend.strategies.long_term import long_term_engine
-    from backend.data.universe import get_universe_symbols
+    from backend.data.universe import get_diversified_universe_symbols
     from backend.data.provider import data_provider
 
     today = get_ist_now().date()
     logger.info(f"Starting Institutional Value & Intrinsic Worth Screener for {today}...")
 
-    symbols = get_universe_symbols(limit=universe_limit)
+    symbols = get_diversified_universe_symbols(limit=universe_limit or 40)
     value_picks: list[dict[str, Any]] = []
     screened_out: list[dict[str, Any]] = []
 
@@ -913,12 +913,23 @@ def run_value_investing_scan(universe_limit: int = 30, send_alert: bool = True) 
     except Exception as e:
         logger.warning(f"Could not persist value picks snapshot: {e}")
 
-    # Build and send separate Telegram message
+    # Build and send separate Telegram message with Sector Diversification
     if send_alert:
+        # Enforce Sector Diversity: at most 2 stocks per sector in top broadcast
+        sector_counts: dict[str, int] = {}
+        broadcast_picks: list[dict[str, Any]] = []
+        for p in value_picks:
+            sec = p.get("sector", "Diversified")
+            if sector_counts.get(sec, 0) < 2:
+                broadcast_picks.append(p)
+                sector_counts[sec] = sector_counts.get(sec, 0) + 1
+            if len(broadcast_picks) >= 6:
+                break
+
         msg_lines = [
             "💎 *AURA Long-Term Value Screener — Undervalued Compounders*",
-            f"📅 *Date:* {today.isoformat()} | *Universe Scanned:* {len(symbols)} Equities",
-            f"🎯 *Identified Under-Valued Compounders:* {len(value_picks)}\n",
+            f"📅 *Date:* {today.isoformat()} | *Universe Scanned:* {len(symbols)} Equities (Sector-Stratified)",
+            f"🎯 *Identified Under-Valued Compounders:* {len(value_picks)} (Broadcasting Top {len(broadcast_picks)})\n",
         ]
 
         if not value_picks:
@@ -926,12 +937,14 @@ def run_value_investing_scan(universe_limit: int = 30, send_alert: bool = True) 
             msg_lines.append("All screened equities are either trading at/above estimated fair value, or fail institutional balance-sheet/ROE safety gates.")
             msg_lines.append("Capital preservation remains paramount.\n")
         else:
-            for idx, p in enumerate(value_picks[:5], 1):
+            for idx, p in enumerate(broadcast_picks, 1):
                 sym = p["symbol"]
                 sector = p.get("sector", "Diversified")
                 cp = p.get("current_price", 0.0)
                 fv = p.get("fair_value_mid", 0.0)
                 mos = p.get("margin_of_safety_pct", 0.0)
+                tier = p.get("conviction_tier", "QUALITY_COMPOUNDER")
+                tier_badge = "🌟 HIGH CONVICTION" if tier == "HIGH_CONVICTION" else ("💎 QUALITY COMPOUNDER" if tier == "QUALITY_COMPOUNDER" else "🔍 WATCHLIST")
                 funds = p.get("fundamentals", {})
                 roe = funds.get("roe_pct", "N/A")
                 pe = funds.get("pe_ratio", "N/A")
@@ -941,7 +954,7 @@ def run_value_investing_scan(universe_limit: int = 30, send_alert: bool = True) 
                 t2 = tp.get("tranche_2_pullback", {}).get("price_target", cp * 0.95)
                 t3 = tp.get("tranche_3_deep_value", {}).get("price_target", cp * 0.90)
 
-                msg_lines.append(f"*{idx}. {sym}* ({sector})")
+                msg_lines.append(f"*{idx}. {sym}* ({sector}) — {tier_badge}")
                 msg_lines.append(f"💵 *Market Price:* ₹{cp:,.2f} | *Fair Worth:* ₹{fv:,.2f}")
                 msg_lines.append(f"🛡️ *Margin of Safety:* *+{mos:.1f}% Discount*")
                 msg_lines.append(f"📊 *Health:* ROE: {roe}% | P/E: {pe} | D/E: {de}")

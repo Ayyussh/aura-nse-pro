@@ -246,3 +246,28 @@ def get_universe_symbols(limit: int | None = None) -> List[str]:
     if limit:
         return symbols[:limit]
     return symbols
+
+
+def get_diversified_universe_symbols(limit: int = 40) -> List[str]:
+    """Return a sector-stratified, high-liquidity universe ensuring representation across all major sectors."""
+    sectors_pool: Dict[str, List[str]] = {
+        "Banking": ["ICICIBANK.NS", "HDFCBANK.NS", "SBIN.NS", "KOTAKBANK.NS", "AXISBANK.NS", "BANKBARODA.NS", "FEDERALBNK.NS"],
+        "NBFC": ["CHOLAFIN.NS", "BAJFINANCE.NS", "MUTHOOTFIN.NS", "SHRIRAMFIN.NS", "BAJAJFINSV.NS", "PFC.NS", "RECLTD.NS"],
+        "IT": ["TCS.NS", "INFY.NS", "HCLTECH.NS", "TECHM.NS", "WIPRO.NS", "PERSISTENT.NS", "COFORGE.NS", "MPHASIS.NS"],
+        "Automobiles": ["BAJAJ-AUTO.NS", "M&M.NS", "MARUTI.NS", "HEROMOTOCO.NS", "EICHERMOT.NS", "TVSMOTOR.NS", "BHARATFORG.NS"],
+        "Metals": ["JSWSTEEL.NS", "TATASTEEL.NS", "HINDALCO.NS", "VEDL.NS", "JINDALSTEL.NS", "COALINDIA.NS"],
+        "FMCG": ["ITC.NS", "HINDUNILVR.NS", "NESTLEIND.NS", "BRITANNIA.NS", "TATACONSUM.NS", "DABUR.NS", "MARICO.NS", "COLPAL.NS"],
+        "Energy": ["RELIANCE.NS", "ONGC.NS", "NTPC.NS", "POWERGRID.NS", "BPCL.NS", "IOC.NS", "GAIL.NS"],
+        "Pharma": ["SUNPHARMA.NS", "CIPLA.NS", "DRREDDY.NS", "DIVISLAB.NS", "LUPIN.NS", "APOLLOHOSP.NS", "MAXHEALTH.NS"],
+        "Capital Goods": ["LT.NS", "SIEMENS.NS", "ABB.NS", "POLYCAB.NS", "KEI.NS", "BHEL.NS", "CUMMINSIND.NS"],
+        "Financial Services": ["BSE.NS", "MCX.NS", "CDSL.NS", "CAMS.NS", "CRISIL.NS"],
+    }
+    selected: List[str] = []
+    max_len = max(len(lst) for lst in sectors_pool.values())
+    for i in range(max_len):
+        for sec, lst in sectors_pool.items():
+            if i < len(lst) and lst[i] not in selected:
+                selected.append(lst[i])
+                if len(selected) >= limit:
+                    return selected
+    return selected

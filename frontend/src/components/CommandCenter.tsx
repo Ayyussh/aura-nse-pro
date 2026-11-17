@@ -1046,6 +1046,21 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                       <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-950 text-cyan-300 border border-cyan-800">
                         {v.sector || "EQUITY"}
                       </span>
+                      {v.conviction_tier === "HIGH_CONVICTION" && (
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-700 flex items-center gap-1">
+                          🌟 High Conviction
+                        </span>
+                      )}
+                      {v.conviction_tier === "QUALITY_COMPOUNDER" && (
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-950 text-cyan-300 border border-cyan-700 flex items-center gap-1">
+                          💎 Quality Compounder
+                        </span>
+                      )}
+                      {v.conviction_tier === "THIN_DISCOUNT" && (
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-950 text-amber-300 border border-amber-700 flex items-center gap-1">
+                          🔍 Watchlist / Thin
+                        </span>
+                      )}
                       <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-950 text-indigo-300 border border-indigo-800">
                         1–3+ Years Horizon
                       </span>
