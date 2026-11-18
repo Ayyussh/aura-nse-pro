@@ -3,15 +3,15 @@
   "is_shadow_mode": false,
   "sizing_multiplier": 1.0,
   "description": "Favorable / Bullish: NIFTY trading above key short-term EMAs and India VIX remains subdued (<= 18).",
-  "nifty_close": 25253.1,
-  "nifty_20_ema": 24328.73,
-  "nifty_50_ema": 23809.61,
-  "nifty_200_sma": 23993.93,
+  "nifty_close": 25254.2,
+  "nifty_20_ema": 24328.84,
+  "nifty_50_ema": 23809.65,
+  "nifty_200_sma": 23993.94,
   "nifty_above_20ema": true,
   "nifty_above_50ema": true,
   "nifty_above_200sma": true,
-  "india_vix": 15.66,
-  "vix_5d_change": -1.9,
+  "india_vix": 15.68,
+  "vix_5d_change": -1.88,
   "top_leading_sectors": [
     "Banking",
     "Pharma"
@@ -19,41 +19,41 @@
   "sector_rankings": [
     {
       "sector": "Banking",
-      "monthly_return_pct": 11.95,
-      "relative_strength": 1.62,
+      "monthly_return_pct": 12.14,
+      "relative_strength": 1.81,
       "is_outperforming": true
     },
     {
       "sector": "Pharma",
-      "monthly_return_pct": 10.86,
-      "relative_strength": 0.53,
+      "monthly_return_pct": 10.72,
+      "relative_strength": 0.38,
       "is_outperforming": true
     },
     {
       "sector": "Auto",
-      "monthly_return_pct": 7.41,
-      "relative_strength": -2.92,
+      "monthly_return_pct": 7.33,
+      "relative_strength": -3.01,
       "is_outperforming": false
     },
     {
       "sector": "Energy",
-      "monthly_return_pct": 2.54,
-      "relative_strength": -7.79,
+      "monthly_return_pct": 2.45,
+      "relative_strength": -7.89,
       "is_outperforming": false
     },
     {
       "sector": "Metals",
-      "monthly_return_pct": 1.93,
-      "relative_strength": -8.4,
+      "monthly_return_pct": 1.85,
+      "relative_strength": -8.49,
       "is_outperforming": false
     },
     {
       "sector": "IT",
-      "monthly_return_pct": -0.22,
-      "relative_strength": -10.55,
+      "monthly_return_pct": -0.31,
+      "relative_strength": -10.64,
       "is_outperforming": false
     }
   ],
-  "evaluated_at": "2026-11-18T06:09:47.096225",
-  "snapshot_generated_at": "2026-11-18T11:39:47.082434+05:30"
+  "evaluated_at": "2026-11-18T06:23:12.660395",
+  "snapshot_generated_at": "2026-11-18T11:53:11.807114+05:30"
 }
