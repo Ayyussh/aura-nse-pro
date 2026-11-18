@@ -73,45 +73,57 @@ def log_alert_to_audit(message: str, channel: str = "TELEGRAM") -> None:
 
 
 def send_telegram_alert(message: str) -> bool:
-    """Send alert to owner's private Telegram chat with Markdown and plain-text fallback."""
+    """Send alert to owner's Telegram chat(s) with Markdown and plain-text fallback.
+
+    Supports single chat ID, comma-separated multiple chat IDs (for multiple devices/accounts),
+    or channel/group IDs (e.g. -100...).
+    """
     # Always log to internal audit feed so it appears on frontend
     log_alert_to_audit(message)
 
     token = settings.TELEGRAM_BOT_TOKEN
-    chat_id = settings.TELEGRAM_CHAT_ID
-    if not token or not chat_id:
+    raw_chat_id = settings.TELEGRAM_CHAT_ID
+    if not token or not raw_chat_id:
         logger.warning("Telegram alert skipped: TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not configured in settings/env.")
         return False
 
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
-    payload = {
-        "chat_id": chat_id,
-        "text": message,
-        "parse_mode": "Markdown",
-    }
-    try:
-        with httpx.Client(timeout=10.0) as client:
-            resp = client.post(url, json=payload)
-            if resp.status_code == 200:
-                logger.info("Telegram alert successfully sent.")
-                return True
-
-            # If Markdown parsing failed (e.g. unescaped underscores/asterisks), fallback to plain text
-            logger.warning(f"Telegram Markdown send returned HTTP {resp.status_code}: {resp.text}. Retrying plain-text fallback...")
-            plain_payload = {
-                "chat_id": chat_id,
-                "text": message.replace("*", "").replace("_", "").replace("`", ""),
-            }
-            resp_plain = client.post(url, json=plain_payload)
-            if resp_plain.status_code == 200:
-                logger.info("Telegram plain-text alert successfully sent.")
-                return True
-            else:
-                logger.error(f"Telegram alert delivery failed (HTTP {resp_plain.status_code}): {resp_plain.text}")
-                return False
-    except Exception as e:
-        logger.error(f"Could not send Telegram alert due to connection error: {e}")
+    chat_ids = [c.strip() for c in str(raw_chat_id).replace(";", ",").split(",") if c.strip()]
+    if not chat_ids:
         return False
+
+    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    any_success = False
+
+    with httpx.Client(timeout=10.0) as client:
+        for cid in chat_ids:
+            payload = {
+                "chat_id": cid,
+                "text": message,
+                "parse_mode": "Markdown",
+            }
+            try:
+                resp = client.post(url, json=payload)
+                if resp.status_code == 200:
+                    logger.info(f"Telegram alert successfully sent to {cid}.")
+                    any_success = True
+                    continue
+
+                # If Markdown parsing failed, fallback to plain text
+                logger.warning(f"Telegram Markdown send returned HTTP {resp.status_code} for {cid}: {resp.text}. Retrying plain-text fallback...")
+                plain_payload = {
+                    "chat_id": cid,
+                    "text": message.replace("*", "").replace("_", "").replace("`", ""),
+                }
+                resp_plain = client.post(url, json=plain_payload)
+                if resp_plain.status_code == 200:
+                    logger.info(f"Telegram plain-text alert successfully sent to {cid}.")
+                    any_success = True
+                else:
+                    logger.error(f"Telegram alert delivery failed for {cid} (HTTP {resp_plain.status_code}): {resp_plain.text}")
+            except Exception as e:
+                logger.error(f"Could not send Telegram alert to {cid} due to connection error: {e}")
+
+    return any_success
 
 
 def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False, is_shadow: bool = False) -> dict[str, Any]:
@@ -490,6 +502,36 @@ def run_open_check_pipeline() -> dict[str, Any]:
             updated += 1
 
         db.commit()
+
+        # Send dedicated 09:15 AM Market Open Check alert to Telegram
+        if open_preds:
+            tg_text = (
+                f"⚡ *AURA 9:15 AM — Market Open Gap Verification*\n"
+                f"📅 *Date:* {today.isoformat()}\n"
+                f"📊 *Trades Evaluated:* {len(open_preds)} | *Fills Confirmed:* {updated} | *Skipped:* {skipped_gaps}\n\n"
+            )
+            for p in open_preds:
+                st = getattr(p, "status", "OPEN")
+                sym = getattr(p, "symbol", "")
+                ep = getattr(p, "entry_price", 0.0)
+                sl = getattr(p, "stop_loss", 0.0)
+                tgt = getattr(p, "target_price", 0.0)
+                qty = getattr(p, "quantity", 0)
+                if st == "OPEN":
+                    tg_text += f"• *{sym}*: Filled @ ₹{ep:,.2f} (Qty: {qty}, SL: ₹{sl:,.2f}, Target: ₹{tgt:,.2f})\n"
+                else:
+                    reason = getattr(p, "exit_reason", "Gap boundary breach")
+                    tg_text += f"• *{sym}*: _{st}_ ({reason})\n"
+            tg_text += "\n_Capital preservation active. Mathematical trailing stops engaged._"
+        else:
+            tg_text = (
+                f"⚡ *AURA 9:15 AM — Market Open Check Completed*\n"
+                f"📅 *Date:* {today.isoformat()}\n"
+                f"📊 *Open Positions Checked:* 0 (No active swing momentum orders pending execution today).\n"
+                f"_Capital preservation gate active._"
+            )
+        send_telegram_alert(tg_text)
+
         return {
             "status": "SUCCESS",
             "trades_verified": len(open_preds),
