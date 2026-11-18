@@ -73,22 +73,30 @@ def log_alert_to_audit(message: str, channel: str = "TELEGRAM") -> None:
 
 
 def send_telegram_alert(message: str) -> bool:
-    """Send alert to owner's Telegram chat(s) with Markdown and plain-text fallback.
+    """Send alert to all registered Telegram devices/subscribers with Markdown and plain-text fallback.
 
-    Supports single chat ID, comma-separated multiple chat IDs (for multiple devices/accounts),
-    or channel/group IDs (e.g. -100...).
+    Dynamically queries Telegram getUpdates to auto-discover any new device that added or
+    started the bot (/start), supports channels (-100...) and group chats, and persists
+    active subscribers to `data/telegram_subscribers.json`.
     """
     # Always log to internal audit feed so it appears on frontend
     log_alert_to_audit(message)
 
     token = settings.TELEGRAM_BOT_TOKEN
-    raw_chat_id = settings.TELEGRAM_CHAT_ID
-    if not token or not raw_chat_id:
-        logger.warning("Telegram alert skipped: TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not configured in settings/env.")
+    if not token:
+        logger.warning("Telegram alert skipped: TELEGRAM_BOT_TOKEN not configured in settings/env.")
         return False
 
-    chat_ids = [c.strip() for c in str(raw_chat_id).replace(";", ",").split(",") if c.strip()]
+    try:
+        from backend.core.telegram_subscribers import sync_subscribers, remove_subscriber
+        chat_ids = sync_subscribers(token)
+    except Exception as e:
+        logger.warning(f"Subscriber auto-sync encountered an error: {e}. Falling back to settings.")
+        raw_chat_id = settings.TELEGRAM_CHAT_ID or ""
+        chat_ids = [c.strip() for c in str(raw_chat_id).replace(";", ",").split(",") if c.strip()]
+
     if not chat_ids:
+        logger.warning("Telegram alert skipped: No registered subscribers or chat IDs found.")
         return False
 
     url = f"https://api.telegram.org/bot{token}/sendMessage"
@@ -106,6 +114,15 @@ def send_telegram_alert(message: str) -> bool:
                 if resp.status_code == 200:
                     logger.info(f"Telegram alert successfully sent to {cid}.")
                     any_success = True
+                    continue
+
+                # Auto-cleanup if bot was blocked or chat deleted
+                if resp.status_code == 403 or (resp.status_code == 400 and "chat not found" in resp.text.lower()):
+                    logger.info(f"Subscriber {cid} blocked bot or chat deleted. Cleaning up registry.")
+                    try:
+                        remove_subscriber(cid)
+                    except Exception:
+                        pass
                     continue
 
                 # If Markdown parsing failed, fallback to plain text

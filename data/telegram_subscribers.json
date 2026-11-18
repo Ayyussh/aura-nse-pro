@@ -1,0 +1,26 @@
+{
+  "updated_at_ist": "2026-11-18 11:43:26 IST",
+  "last_update_id": 982310026,
+  "subscribers": {
+    "805289376": {
+      "source": "ENV_SEED",
+      "added_at_ist": "2026-11-18 11:42:02 IST",
+      "type": "unknown"
+    },
+    "8143210729": {
+      "username": "",
+      "first_name": "Sehdev",
+      "type": "private",
+      "source": "AUTO_DISCOVERED",
+      "last_seen_ist": "2026-11-18 11:42:04 IST"
+    },
+    "1959067746": {
+      "username": "",
+      "first_name": "Gunjan",
+      "type": "private",
+      "source": "AUTO_DISCOVERED",
+      "last_seen_ist": "2026-11-18 11:42:04 IST",
+      "added_at_ist": "2026-11-18 11:42:04 IST"
+    }
+  }
+}

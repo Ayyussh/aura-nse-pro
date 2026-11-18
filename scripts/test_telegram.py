@@ -26,49 +26,41 @@ def main():
     token = args.token or os.environ.get("TELEGRAM_BOT_TOKEN") or getattr(settings, "TELEGRAM_BOT_TOKEN", "")
     chat_id = args.chat_id or os.environ.get("TELEGRAM_CHAT_ID") or getattr(settings, "TELEGRAM_CHAT_ID", "")
 
+    from backend.core.telegram_subscribers import sync_subscribers, load_subscribers_data
+    sub_data = load_subscribers_data()
+    all_subscribers = sync_subscribers(token if token else None)
+
     print("\n--- AURA-NSE Pro Telegram Diagnostic Check ---")
     print(f"Token configured: {'YES (masked: ' + token[:6] + '...' + token[-4:] + ')' if token else 'NO (Missing)'}")
-    print(f"Chat ID configured: {'YES (' + str(chat_id) + ')' if chat_id else 'NO (Missing)'}")
+    print(f"Registered Devices / Subscribers ({len(all_subscribers)}): {', '.join(all_subscribers) if all_subscribers else 'None'}")
 
-    if not token or not chat_id:
-        print("\n❌ ERROR: Telegram credentials not found.")
-        print("Please configure them via one of these two methods:")
-        print("1. In your local .env file:")
-        print("   TELEGRAM_BOT_TOKEN=123456789:ABCdefGhIJKlmNoPQRstuVWXyz")
-        print("   TELEGRAM_CHAT_ID=123456789")
-        print("\n2. Pass them directly to this script:")
-        print("   python scripts/test_telegram.py --token <BOT_TOKEN> --chat-id <CHAT_ID>")
-        print("\n3. OR run manually via GitHub Actions (where your GitHub Secrets are already set).")
+    if not token:
+        print("\n❌ ERROR: TELEGRAM_BOT_TOKEN not found.")
+        print("Please configure TELEGRAM_BOT_TOKEN in .env or via --token.")
         sys.exit(1)
 
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    if not all_subscribers and not chat_id:
+        print("\n❌ ERROR: No Telegram subscribers found.")
+        print("Open the bot on any Telegram device and tap /start, or set TELEGRAM_CHAT_ID in .env")
+        sys.exit(1)
+
+    from backend.core.pipeline import send_telegram_alert
     now_ist = get_ist_now().strftime("%Y-%m-%d %I:%M:%S %p IST")
     test_message = (
         f"🤖 *AURA-NSE Pro — Telegram Alert Test*\n\n"
-        f"✅ Connection verified successfully!\n"
+        f"✅ Broadcast verified successfully!\n"
+        f"📱 *Active Subscribers:* {len(all_subscribers)}\n"
         f"🕒 *Timestamp:* `{now_ist}`\n\n"
         f"_Educational decision support, not investment advice._"
     )
 
-    payload = {
-        "chat_id": chat_id,
-        "text": test_message,
-        "parse_mode": "Markdown",
-    }
-
-    print(f"\nSending test ping to Telegram API for chat {chat_id}...")
-    try:
-        with httpx.Client(timeout=10.0) as client:
-            resp = client.post(url, json=payload)
-            if resp.status_code == 200:
-                print("🎉 SUCCESS: Alert delivered! Check your Telegram app.")
-                sys.exit(0)
-            else:
-                print(f"❌ Telegram API returned error HTTP {resp.status_code}:")
-                print(resp.text)
-                sys.exit(1)
-    except Exception as e:
-        print(f"❌ Connection error: {e}")
+    print(f"\nBroadcasting test ping to all {len(all_subscribers)} registered devices...")
+    success = send_telegram_alert(test_message)
+    if success:
+        print("🎉 SUCCESS: Alert delivered to registered devices! Check your Telegram app.")
+        sys.exit(0)
+    else:
+        print("❌ Alert delivery failed.")
         sys.exit(1)
 
 
