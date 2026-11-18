@@ -1,7 +1,7 @@
 {
-  "status": "MARKET_OPEN",
+  "status": "MARKET_CLOSED",
   "is_trading_day": true,
-  "current_time_ist": "11:39:47",
-  "next_trading_day": "2026-11-18",
-  "snapshot_generated_at": "2026-11-18T11:39:47.082434+05:30"
+  "current_time_ist": "18:14:34",
+  "next_trading_day": "2026-11-19",
+  "snapshot_generated_at": "2026-11-18T18:14:34.612386+05:30"
 }

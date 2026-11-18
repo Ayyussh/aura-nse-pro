@@ -267,7 +267,7 @@ def get_all_listed_symbols() -> List[str]:
     return [s for s in ALL_LISTED_NSE_SYMBOLS if s not in EXCLUDED_SURVEILLANCE_SYMBOLS]
 
 
-def get_universe_symbols(limit: int | None = None, mode: str = "curated") -> List[str]:
+def get_universe_symbols(limit: int | None = None, mode: str = "all") -> List[str]:
     """Return filtered equity universe symbols.
 
     Modes:

@@ -63,8 +63,8 @@ def main():
     parser.add_argument(
         "--limit",
         type=int,
-        default=None,
-        help="Universe scan candidate limit (defaults: 25 for premarket, 750 for value_scan)",
+        default=750,
+        help="Universe scan candidate limit (default: 750 across institutional universe)",
     )
     parser.add_argument(
         "--universe-mode",
@@ -93,8 +93,8 @@ def main():
 
     try:
         if args.mode == "premarket":
-            scan_limit = args.limit or 25
-            logger.info(f"Running 09:00 AM IST Pre-Market Screening on top {scan_limit} candidates...")
+            scan_limit = args.limit or 750
+            logger.info(f"Running Pre-Market Screening on top {scan_limit} candidates...")
             res = run_pre_market_pipeline(universe_limit=scan_limit, force=args.force)
             logger.info(f"Pre-Market Run Complete: {res.get('approved_count', 0)} Approved Setups, Regime: {res.get('regime', {}).get('regime_label')}")
             print("\n--- AURA Spoken Briefing ---")
@@ -137,7 +137,7 @@ def main():
 
         elif args.mode == "full_cycle":
             logger.info("Running full end-to-end pipeline cycle...")
-            run_pre_market_pipeline(universe_limit=args.limit, force=args.force)
+            run_pre_market_pipeline(universe_limit=args.limit or 750, force=args.force)
             run_open_check_pipeline()
             run_midday_stop_check()
             run_post_market_grading()

@@ -628,5 +628,25 @@
       "start": "2025-09-01",
       "end": "2026-11-13"
     }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1795005540",
+    "timestamp": "2026-11-18T12:39:00.442865+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1795005576",
+    "timestamp": "2026-11-18T12:39:36.245899+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
   }
 ]

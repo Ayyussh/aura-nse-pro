@@ -104,27 +104,27 @@ jobs:
             case "$CRON_SCHEDULE" in
               "25 3 * * 1-5"|"30 3 * * 1-5")
                 echo "mode=premarket" >> $GITHUB_OUTPUT
-                echo "limit=25" >> $GITHUB_OUTPUT
+                echo "limit=750" >> $GITHUB_OUTPUT
                 echo "force=false" >> $GITHUB_OUTPUT
                 ;;
               "45 3 * * 1-5")
                 echo "mode=open_check" >> $GITHUB_OUTPUT
-                echo "limit=25" >> $GITHUB_OUTPUT
+                echo "limit=750" >> $GITHUB_OUTPUT
                 echo "force=false" >> $GITHUB_OUTPUT
                 ;;
               "30 7 * * 1-5")
                 echo "mode=midday" >> $GITHUB_OUTPUT
-                echo "limit=25" >> $GITHUB_OUTPUT
+                echo "limit=750" >> $GITHUB_OUTPUT
                 echo "force=false" >> $GITHUB_OUTPUT
                 ;;
               "15 10 * * 1-5")
                 echo "mode=postmarket" >> $GITHUB_OUTPUT
-                echo "limit=25" >> $GITHUB_OUTPUT
+                echo "limit=750" >> $GITHUB_OUTPUT
                 echo "force=false" >> $GITHUB_OUTPUT
                 ;;
               "20 10 * * 1-5")
                 echo "mode=refresh_portfolio" >> $GITHUB_OUTPUT
-                echo "limit=25" >> $GITHUB_OUTPUT
+                echo "limit=750" >> $GITHUB_OUTPUT
                 echo "force=false" >> $GITHUB_OUTPUT
                 ;;
               "0 11 * * 1-5")
@@ -134,17 +134,17 @@ jobs:
                 ;;
               "0 13 * * 1-5")
                 echo "mode=eod_recon" >> $GITHUB_OUTPUT
-                echo "limit=25" >> $GITHUB_OUTPUT
+                echo "limit=750" >> $GITHUB_OUTPUT
                 echo "force=false" >> $GITHUB_OUTPUT
                 ;;
               "30 4 * * 6")
                 echo "mode=retrain" >> $GITHUB_OUTPUT
-                echo "limit=25" >> $GITHUB_OUTPUT
+                echo "limit=750" >> $GITHUB_OUTPUT
                 echo "force=false" >> $GITHUB_OUTPUT
                 ;;
               *)
                 echo "mode=premarket" >> $GITHUB_OUTPUT
-                echo "limit=25" >> $GITHUB_OUTPUT
+                echo "limit=750" >> $GITHUB_OUTPUT
                 echo "force=false" >> $GITHUB_OUTPUT
                 ;;
             esac

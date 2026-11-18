@@ -143,12 +143,12 @@ def send_telegram_alert(message: str) -> bool:
     return any_success
 
 
-def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False, is_shadow: bool = False) -> dict[str, Any]:
-    """Execute complete 9:00 AM IST pre-market screening and prediction generation."""
+def run_pre_market_pipeline(universe_limit: int = 750, force: bool = False, is_shadow: bool = False) -> dict[str, Any]:
+    """Execute complete pre-market screening and prediction generation across the institutional universe."""
     today = get_ist_now().date()
     config_hash = compute_config_hash()
 
-    logger.info(f"Starting Pre-Market Pipeline for {today}...")
+    logger.info(f"Starting Pre-Market Pipeline for {today} (universe_limit={universe_limit})...")
 
     # 1. Macro Regime Check
     regime = evaluate_market_regime()
@@ -158,14 +158,15 @@ def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False, is_sh
     try:
         from backend.data.holiday_calendar import get_previous_trading_day
         from backend.data.reconciliation import reconciliation_engine
-        symbols_for_gate = get_universe_symbols(limit=universe_limit)
+        symbols_for_gate = get_universe_symbols(limit=universe_limit, mode="all")
         target_recon_date = get_previous_trading_day(today)
         can_run, gate_reason, gate_stats = reconciliation_engine.evaluate_run_gate(symbols_for_gate, target_recon_date)
         gate_pct = gate_stats.get("confidence_agreement_pct", gate_stats.get("confidence_coverage_pct", 100.0)) if isinstance(gate_stats, dict) else 100.0
         unverified_set = set(gate_stats.get("unverified_symbols", [])) if isinstance(gate_stats, dict) else set()
         if not can_run and not force:
+            now_time = get_ist_now().strftime("%I:%M %p IST")
             msg = (
-                f"🚦 *AURA 9:00 AM Pre-Market — HELD*\n"
+                f"🚦 *AURA Pre-Market Run-Gate ({now_time}) — HELD*\n"
                 f"📅 *Date:* {today.isoformat()} | *Regime:* {regime['regime_label']}\n"
                 f"⚠️ {gate_reason}\n"
                 f"Pipeline HELD to prevent decisions on stale/mismatched data.\n"
@@ -192,7 +193,7 @@ def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False, is_sh
     # 3. Benchmark data
     nifty_df = data_provider.fetch_history("^NSEI", period="1y", interval="1d")
 
-    symbols = get_universe_symbols(limit=universe_limit)
+    symbols = get_universe_symbols(limit=universe_limit, mode="all")
     approved_candidates: list[dict[str, Any]] = []
     rejected_candidates: list[dict[str, Any]] = []
 
@@ -211,7 +212,12 @@ def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False, is_sh
             for p in open_db_preds
         ]
 
-        for symbol in symbols:
+        for idx, symbol in enumerate(symbols):
+            # Adaptive pacing: when scanning large universes (>120 symbols), introduce a light 150ms sleep
+            # every 10 tickers to ensure zero 429 rate-limiting from upstream data gateways.
+            if len(symbols) > 120 and idx % 10 == 0 and idx > 0:
+                time.sleep(0.15)
+
             if symbol in unverified_set:
                 logger.warning(f"Quarantining unverified/mismatched symbol {symbol} from pre-market screening.")
                 rejected_candidates.append({"symbol": symbol, "reason": "Data reconciliation unverified or quarantined."})
@@ -399,7 +405,7 @@ def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False, is_sh
         if approved_candidates:
             picks_text = ", ".join([f"{p['symbol']} at {p['entry_price']:.0f} rupees with {p['win_probability_pct']}% probability" for p in approved_candidates])
             briefing_script = (
-                f"Good morning. This is your 9:00 AM market briefing for {today.strftime('%B %d, %Y')}. "
+                f"Good morning. This is your market briefing for {today.strftime('%B %d, %Y')} ({now_time}). "
                 f"The NSE Macro Regime is currently {regime['regime_label']}. NIFTY 50 is trading at {regime['nifty_close']:,.0f}, and India VIX is at {regime['india_vix']:.1f}. "
                 f"Today, our quantitative models screened {len(symbols)} stocks and approved {len(approved_candidates)} high-conviction swing setups: {picks_text}. "
                 f"Position sizing has been computed to keep trade risk strictly within one point five percent. "
@@ -407,18 +413,19 @@ def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False, is_sh
             )
         else:
             briefing_script = (
-                f"Good morning. This is your 9:00 AM market briefing for {today.strftime('%B %d, %Y')}. "
+                f"Good morning. This is your market briefing for {today.strftime('%B %d, %Y')} ({now_time}). "
                 f"The NSE Macro Regime is {regime['regime_label']}. NIFTY 50 is at {regime['nifty_close']:,.0f} and India VIX is at {regime['india_vix']:.1f}. "
                 f"Today, our models screened {len(symbols)} candidates, but none satisfied all institutional criteria with positive expected value. "
                 f"Our ruling today is NO TRADE TODAY. Cash is a valid position during market uncertainty."
             )
 
-        # Dispatch Telegram Alert — ALWAYS send at 9:00 AM (M3 fix: no silent runs)
+        # Dispatch Telegram Alert — ALWAYS send (M3 fix: no silent runs)
         if approved_candidates:
             tg_text = (
-                f"🚀 *AURA-NSE Pro 9:00 AM Pre-Market Signals*\n"
+                f"🚀 *AURA Pre-Market Signals ({now_time})*\n"
                 f"📅 *Date:* {today.isoformat()} | *Regime:* {regime['regime_label']}\n"
-                f"📈 *NIFTY 50:* {regime['nifty_close']} | *VIX:* {regime['india_vix']}\n\n"
+                f"📈 *NIFTY 50:* {regime['nifty_close']} | *VIX:* {regime['india_vix']}\n"
+                f"🔍 *Screened:* {len(symbols)} stocks | *Approved:* {len(approved_candidates)}\n\n"
             )
             for p in approved_candidates:
                 tg_text += (
@@ -431,7 +438,7 @@ def run_pre_market_pipeline(universe_limit: int = 15, force: bool = False, is_sh
         else:
             # M3: Always notify — user must know pipeline ran and found nothing
             tg_text = (
-                f"📊 *AURA 9:00 AM — Pipeline Completed*\n"
+                f"📊 *AURA Pre-Market Routine ({now_time}) — Completed*\n"
                 f"📅 *Date:* {today.isoformat()} | *Regime:* {regime['regime_label']}\n"
                 f"📈 *NIFTY 50:* {regime.get('nifty_close', 'N/A')} | *VIX:* {regime.get('india_vix', 'N/A')}\n"
                 f"🔍 *Screened:* {len(symbols)} stocks | *Approved:* 0\n"
@@ -520,10 +527,11 @@ def run_open_check_pipeline() -> dict[str, Any]:
 
         db.commit()
 
-        # Send dedicated 09:15 AM Market Open Check alert to Telegram
+        # Send dedicated Market Open Check alert to Telegram
+        now_time = get_ist_now().strftime("%I:%M %p IST")
         if open_preds:
             tg_text = (
-                f"⚡ *AURA 9:15 AM — Market Open Gap Verification*\n"
+                f"⚡ *AURA Market Open Gap Verification ({now_time})*\n"
                 f"📅 *Date:* {today.isoformat()}\n"
                 f"📊 *Trades Evaluated:* {len(open_preds)} | *Fills Confirmed:* {updated} | *Skipped:* {skipped_gaps}\n\n"
             )
@@ -542,7 +550,7 @@ def run_open_check_pipeline() -> dict[str, Any]:
             tg_text += "\n_Capital preservation active. Mathematical trailing stops engaged._"
         else:
             tg_text = (
-                f"⚡ *AURA 9:15 AM — Market Open Check Completed*\n"
+                f"⚡ *AURA Market Open Check ({now_time}) — Completed*\n"
                 f"📅 *Date:* {today.isoformat()}\n"
                 f"📊 *Open Positions Checked:* 0 (No active swing momentum orders pending execution today).\n"
                 f"_Capital preservation gate active._"
@@ -661,8 +669,9 @@ def run_midday_stop_check() -> dict[str, Any]:
                 pred_sl = float(pred.stop_loss or 0.0)
                 if pred_sl > 0 and latest_price <= pred_sl:
                     pct_below = ((pred_sl - latest_price) / pred_sl) * 100.0
+                    now_time = get_ist_now().strftime("%I:%M %p IST")
                     msg = (
-                        f"⚠️ *AURA Mid-Day Stop Alert — 13:00 IST*\n"
+                        f"⚠️ *AURA Mid-Day Stop Alert ({now_time})*\n"
                         f"🔴 *{pred.symbol}* has breached its stop loss!\n"
                         f"📉 *Current Price:* ₹{latest_price:.2f} | *Stop Loss:* ₹{pred.stop_loss:.2f}\n"
                         f"📊 *Below Stop By:* {pct_below:.2f}%\n"
