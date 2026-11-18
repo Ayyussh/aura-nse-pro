@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-17T08:23:50.798206",
+  "updated_at": "2026-11-18T13:27:56.321768",
   "rules": [
     "Scrutinize high India VIX environments (>18) for sudden momentum reversals.",
     "Verify breakout volume is at least 1.2x above the 20-day average to avoid bull traps.",
