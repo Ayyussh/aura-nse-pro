@@ -1034,6 +1034,24 @@ def run_value_investing_scan(universe_limit: int | None = None, mode: str = "all
         snapshots_dir.mkdir(parents=True, exist_ok=True)
         frontend_dir.mkdir(parents=True, exist_ok=True)
 
+        target_file = snapshots_dir / "value_picks.json"
+        # Safety Preservation Guard: If current scan finds 0 picks due to gateway throttling,
+        # preserve existing verified long-term portfolio picks rather than zeroing it out.
+        if len(value_picks) == 0 and target_file.exists():
+            try:
+                with open(target_file, "r", encoding="utf-8") as f:
+                    prev_data = json.load(f)
+                    if prev_data.get("undervalued_count", 0) > 0:
+                        logger.warning(
+                            f"Current value scan identified 0 picks (likely upstream rate limit); "
+                            f"preserving previous {prev_data.get('undervalued_count')} verified value compounders."
+                        )
+                        result_payload["value_picks"] = prev_data.get("value_picks", [])
+                        result_payload["undervalued_count"] = prev_data.get("undervalued_count", 0)
+                        value_picks = result_payload["value_picks"]
+            except Exception as pe:
+                logger.warning(f"Failed to load previous value picks: {pe}")
+
         for d in [snapshots_dir, frontend_dir, dist_dir]:
             if d.parent.exists():
                 d.mkdir(parents=True, exist_ok=True)

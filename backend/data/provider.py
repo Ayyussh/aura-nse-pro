@@ -222,6 +222,18 @@ class MarketDataProvider:
             except Exception as e:
                 logger.debug(f"Failed to read cached fundamentals for {symbol}: {e}")
 
+        # Check curated repository master baseline (audited quarterly metrics)
+        if not force_refresh:
+            master_path = PROJECT_ROOT / "data" / "fundamentals_master.json"
+            if master_path.exists():
+                try:
+                    with open(master_path, "r", encoding="utf-8") as f:
+                        master_db = json.load(f)
+                        if symbol in master_db and master_db[symbol].get("pe_ratio") != "UNKNOWN":
+                            return master_db[symbol]
+                except Exception as me:
+                    logger.debug(f"Could not read fundamentals master for {symbol}: {me}")
+
         try:
             import time
             time.sleep(0.12)  # Polite throttle to protect against Yahoo HTTP 429
@@ -263,7 +275,16 @@ class MarketDataProvider:
 
             return result
         except Exception as e:
-            logger.warning(f"Could not fetch fundamentals for {symbol}: {e}")
+            logger.warning(f"Could not fetch fundamentals from gateway for {symbol}: {e}")
+            master_path = PROJECT_ROOT / "data" / "fundamentals_master.json"
+            if master_path.exists():
+                try:
+                    with open(master_path, "r", encoding="utf-8") as f:
+                        master_db = json.load(f)
+                        if symbol in master_db and master_db[symbol].get("pe_ratio") != "UNKNOWN":
+                            return master_db[symbol]
+                except Exception:
+                    pass
             return {
                 "symbol": symbol,
                 "market_cap_cr": "UNKNOWN",
