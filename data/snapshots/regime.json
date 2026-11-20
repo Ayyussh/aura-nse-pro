@@ -10,11 +10,10 @@
   "nifty_above_20ema": true,
   "nifty_above_50ema": true,
   "nifty_above_200sma": true,
-  "india_vix": 17.32,
-  "vix_5d_change": 1.82,
+  "india_vix": 16.11,
+  "vix_5d_change": -0.51,
   "top_leading_sectors": [
-    "Banking",
-    "Auto"
+    "Banking"
   ],
   "sector_rankings": [
     {
@@ -25,26 +24,26 @@
     },
     {
       "sector": "Auto",
-      "monthly_return_pct": 15.1,
-      "relative_strength": 1.38,
-      "is_outperforming": true
+      "monthly_return_pct": 13.51,
+      "relative_strength": -0.21,
+      "is_outperforming": false
     },
     {
       "sector": "Pharma",
-      "monthly_return_pct": 10.9,
-      "relative_strength": -2.82,
+      "monthly_return_pct": 10.98,
+      "relative_strength": -2.75,
       "is_outperforming": false
     },
     {
       "sector": "Energy",
-      "monthly_return_pct": 6.32,
-      "relative_strength": -7.4,
+      "monthly_return_pct": 5.44,
+      "relative_strength": -8.28,
       "is_outperforming": false
     },
     {
       "sector": "Metals",
-      "monthly_return_pct": 4.01,
-      "relative_strength": -9.71,
+      "monthly_return_pct": 3.71,
+      "relative_strength": -10.01,
       "is_outperforming": false
     },
     {
@@ -54,6 +53,6 @@
       "is_outperforming": false
     }
   ],
-  "evaluated_at": "2026-11-20T11:58:49.532516",
-  "snapshot_generated_at": "2026-11-20T17:28:49.517908+05:30"
+  "evaluated_at": "2026-11-20T12:11:48.534416",
+  "snapshot_generated_at": "2026-11-20T17:41:47.196984+05:30"
 }
