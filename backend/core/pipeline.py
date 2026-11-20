@@ -196,6 +196,7 @@ def run_pre_market_pipeline(universe_limit: int = 750, force: bool = False, is_s
     symbols = get_universe_symbols(limit=universe_limit, mode="all")
     approved_candidates: list[dict[str, Any]] = []
     rejected_candidates: list[dict[str, Any]] = []
+    tier_2_pool: list[dict[str, Any]] = []
 
     db = SessionLocal()
     try:
@@ -238,6 +239,20 @@ def run_pre_market_pipeline(universe_limit: int = 750, force: bool = False, is_s
                 cand = swing_engine.evaluate(symbol, df, nifty_df)
                 if not cand.passed:
                     rejected_candidates.append({"symbol": symbol, "reason": "; ".join(cand.rejection_reasons)})
+                    if getattr(cand, "is_tier_2", False):
+                        high_20d = float(df["high"].tail(20).max())
+                        tier_2_pool.append({
+                            "symbol": symbol,
+                            "current_price": cand.entry_price,
+                            "setup_tag": cand.setup_tag,
+                            "tier_2_score": cand.tier_2_score,
+                            "tier_2_reason": cand.tier_2_reason,
+                            "rs_vs_nifty_20d": cand.rs_vs_nifty_20d,
+                            "rsi_14": cand.indicators.get("rsi_14", 50.0),
+                            "volume_ratio": cand.indicators.get("volume_ratio_20d", 1.0),
+                            "ema_20": cand.indicators.get("ema_20", round(cand.entry_price * 0.97, 2)),
+                            "watch_trigger": round(high_20d, 2),
+                        })
                     continue
 
                 # ML Probability Scoring & EV_R Gate
@@ -400,6 +415,18 @@ def run_pre_market_pipeline(universe_limit: int = 750, force: bool = False, is_s
                 logger.error(f"Error processing candidate {symbol}: {e}")
                 rejected_candidates.append({"symbol": symbol, "reason": str(e)})
 
+        # Sort Tier-2 Watchlist by composite momentum score and pick Top 5
+        tier_2_candidates = sorted(tier_2_pool, key=lambda x: x.get("tier_2_score", 0.0), reverse=True)[:5]
+
+        # Persist Tier-2 Watchlist Snapshot
+        try:
+            t2_path = PROJECT_ROOT / "data" / "snapshots" / "tier_2_watchlist.json"
+            t2_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(t2_path, "w", encoding="utf-8") as f:
+                json.dump({"date": str(today), "count": len(tier_2_candidates), "watchlist": tier_2_candidates}, f, indent=2)
+        except Exception as e:
+            logger.warning(f"Could not persist tier_2_watchlist snapshot: {e}")
+
         # Generate Spoken Briefing Script for AURA Humanoid Avatar
         now_time = get_ist_now().strftime("%I:%M %p IST")
         if approved_candidates:
@@ -412,39 +439,59 @@ def run_pre_market_pipeline(universe_limit: int = 750, force: bool = False, is_s
                 f"Market open will be verified at 9:15 AM to filter out chasing gap-ups. Trade safely."
             )
         else:
+            t2_str = f" However, our Tier-2 momentum radar flagged {len(tier_2_candidates)} market leaders consolidating near breakout." if tier_2_candidates else ""
             briefing_script = (
                 f"Good morning. This is your market briefing for {today.strftime('%B %d, %Y')} ({now_time}). "
                 f"The NSE Macro Regime is {regime['regime_label']}. NIFTY 50 is at {regime['nifty_close']:,.0f} and India VIX is at {regime['india_vix']:.1f}. "
-                f"Today, our models screened {len(symbols)} candidates, but none satisfied all institutional criteria with positive expected value. "
-                f"Our ruling today is NO TRADE TODAY. Cash is a valid position during market uncertainty."
+                f"Today, our models screened {len(symbols)} candidates, but none satisfied all immediate breakout criteria with positive expected value.{t2_str} "
+                f"Capital preservation remains active."
             )
 
         # Dispatch Telegram Alert — ALWAYS send (M3 fix: no silent runs)
         if approved_candidates:
             tg_text = (
-                f"🚀 *AURA Pre-Market Signals ({now_time})*\n"
+                f"🚀 *AURA Swing Signals ({now_time})*\n"
                 f"📅 *Date:* {today.isoformat()} | *Regime:* {regime['regime_label']}\n"
                 f"📈 *NIFTY 50:* {regime['nifty_close']} | *VIX:* {regime['india_vix']}\n"
-                f"🔍 *Screened:* {len(symbols)} stocks | *Approved:* {len(approved_candidates)}\n\n"
+                f"🔍 *Screened:* {len(symbols)} stocks | *Tier 1 Approved:* {len(approved_candidates)}\n\n"
             )
             for p in approved_candidates:
                 tg_text += (
-                    f"🔹 *{p['symbol']}* ({p['setup_tag'].upper()})\n"
+                    f"🎯 *{p['symbol']}* ({p['setup_tag'].upper()})\n"
                     f"   Entry: ₹{p['entry_price']} | Stop: ₹{p['stop_loss']} | Target: ₹{p['target_price']}\n"
                     f"   Qty: {p['quantity']} | Capital: ₹{p['capital_required']:,.0f} | Risk: ₹{p['total_risk_rupees']:,.0f}\n"
                     f"   Win Prob: {p['win_probability_pct']}% | EV: +{p['ev_r']}R | Verdict: {p['verdict']}\n\n"
                 )
+            if tier_2_candidates:
+                tg_text += "👀 *Tier-2 Momentum Watchlist (Setting Up):*\n"
+                for idx, t in enumerate(tier_2_candidates, 1):
+                    clean_sym = t['symbol'].replace('.NS', '')
+                    tg_text += f"{idx}. *{clean_sym}* — ₹{t['current_price']} | RS: +{t['rs_vs_nifty_20d']:.1f}% vs NIFTY | Watch: ₹{t['watch_trigger']}\n"
+                tg_text += "\n"
             tg_text += "_Educational decision support only. Backtests do not guarantee future returns._"
         else:
-            # M3: Always notify — user must know pipeline ran and found nothing
+            # When Tier 1 is 0, give full visibility into Tier 2 leaders
             tg_text = (
-                f"📊 *AURA Pre-Market Routine ({now_time}) — Completed*\n"
+                f"📊 *AURA Swing Screener ({now_time}) — Completed*\n"
                 f"📅 *Date:* {today.isoformat()} | *Regime:* {regime['regime_label']}\n"
                 f"📈 *NIFTY 50:* {regime.get('nifty_close', 'N/A')} | *VIX:* {regime.get('india_vix', 'N/A')}\n"
-                f"🔍 *Screened:* {len(symbols)} stocks | *Approved:* 0\n"
-                f"🚫 *Decision:* NO TRADE TODAY — No setup passed all institutional gates.\n"
-                f"_Educational decision support only. Backtests do not guarantee future returns._"
+                f"🔍 *Screened:* {len(symbols)} stocks | *Tier 1 Approved:* 0 (Volume breakout dry)\n"
+                f"🚫 *Decision:* NO IMMEDIATE BUY EXECUTION TODAY (Capital Preservation)\n\n"
             )
+            if tier_2_candidates:
+                tg_text += (
+                    f"👀 *Tier-2 Momentum Watchlist — Setting Up ({len(tier_2_candidates)} Leaders)*\n"
+                    f"_Stocks in strong primary uptrend consolidating near breakout:_\n\n"
+                )
+                for idx, t in enumerate(tier_2_candidates, 1):
+                    clean_sym = t['symbol'].replace('.NS', '')
+                    tg_text += (
+                        f"{idx}. *{clean_sym}* — ₹{t['current_price']}\n"
+                        f"   RS: +{t['rs_vs_nifty_20d']:.1f}% vs NIFTY | RSI: {t['rsi_14']:.0f} | 20-EMA: ₹{t['ema_20']}\n"
+                        f"   Breakout Trigger: ₹{t['watch_trigger']} | _{t['tier_2_reason']}_\n\n"
+                    )
+                tg_text += "💡 *Strategy:* Watch for volume expansion above breakout triggers during market hours.\n\n"
+            tg_text += "_Educational decision support only. Backtests do not guarantee future returns._"
         send_telegram_alert(tg_text)
 
         return {
@@ -453,6 +500,8 @@ def run_pre_market_pipeline(universe_limit: int = 750, force: bool = False, is_s
             "regime": regime,
             "approved_count": len(approved_candidates),
             "approved_candidates": approved_candidates,
+            "tier_2_count": len(tier_2_candidates),
+            "tier_2_candidates": tier_2_candidates,
             "rejected_count": len(rejected_candidates),
             "rejected_candidates": rejected_candidates,
             "briefing_script": briefing_script,

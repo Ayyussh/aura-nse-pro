@@ -56,7 +56,7 @@ def main():
     parser = argparse.ArgumentParser(description="AURA-NSE Pro Headless Automation Engine")
     parser.add_argument(
         "--mode",
-        choices=["premarket", "open_check", "midday", "postmarket", "refresh_portfolio", "eod_recon", "retrain", "full_cycle", "value_scan"],
+        choices=["premarket", "open_check", "midday", "postmarket", "refresh_portfolio", "eod_recon", "retrain", "full_cycle", "value_scan", "eod_master"],
         required=True,
         help="Automation phase to execute",
     )
@@ -150,6 +150,22 @@ def main():
             logger.info(f"Running Long-Term Institutional Value Screener across '{args.universe_mode}' universe (limit={scan_limit})...")
             res = run_value_investing_scan(universe_limit=scan_limit, mode=args.universe_mode, send_alert=True)
             logger.info(f"Value Scan Complete: {res.get('undervalued_count', 0)} Undervalued Compounders identified from {res.get('total_screened', 0)} screened.")
+
+        elif args.mode == "eod_master":
+            logger.info("Running EOD Master Workflow (Portfolio Refresh + Trade Grading + Long-Term Quality Compounder Screener)...")
+            # 1. Refresh holding prices with EOD close
+            p_res = refresh_portfolio_prices()
+            logger.info(f"Portfolio Refresh: {p_res.get('holdings_updated', 0)} holdings updated.")
+
+            # 2. Grade any active/closed trades
+            g_res = run_post_market_grading()
+            logger.info(f"Post-Market Trade Grading: {g_res.get('trades_graded', 0)} trades graded.")
+
+            # 3. Run Quality Compounders Screener (Long-Term Investing)
+            scan_limit = args.limit or 750
+            logger.info(f"Running Long-Term Quality Compounders to Invest Screener across '{args.universe_mode}' universe (limit={scan_limit})...")
+            v_res = run_value_investing_scan(universe_limit=scan_limit, mode=args.universe_mode, send_alert=True)
+            logger.info(f"Quality Compounders Identified: {v_res.get('undervalued_count', 0)} from {v_res.get('total_screened', 0)} screened.")
 
         # Always export latest static snapshots for serverless GitHub Pages dashboard
         try:

@@ -38,6 +38,7 @@ export function App() {
   const [marketStatus, setMarketStatus] = useState<any>(DEMO_MARKET_STATUS);
   const [regime, setRegime] = useState<any>(DEMO_REGIME);
   const [todayPredictions, setTodayPredictions] = useState<any[]>([]);
+  const [tier2Watchlist, setTier2Watchlist] = useState<any[]>([]);
   const [rejectedCandidates, setRejectedCandidates] = useState<any[]>([]);
   const [stressMetrics, setStressMetrics] = useState<any>(null);
   const [tradeHistory, setTradeHistory] = useState<any[]>([]);
@@ -135,8 +136,13 @@ export function App() {
 
       if (statusData) setMarketStatus(statusData);
       if (regimeData) setRegime(regimeData);
-      if (predsData && Array.isArray(predsData.predictions)) {
-        setTodayPredictions(predsData.predictions);
+      if (predsData) {
+        if (Array.isArray(predsData.predictions)) {
+          setTodayPredictions(predsData.predictions);
+        }
+        if (Array.isArray(predsData.tier_2_watchlist)) {
+          setTier2Watchlist(predsData.tier_2_watchlist);
+        }
       }
       if (predsData?.snapshot_updated_at) {
         setSnapshotTimestamp(predsData.snapshot_updated_at);
@@ -253,13 +259,16 @@ export function App() {
         const data = await res.json();
         const preds = data.predictions || [];
         setTodayPredictions(preds);
+        if (Array.isArray(data.tier_2_watchlist)) setTier2Watchlist(data.tier_2_watchlist);
       } else {
         const snap = await fetchSnapshot("today_predictions.json", { predictions: [] });
         setTodayPredictions(snap?.predictions || []);
+        if (Array.isArray(snap?.tier_2_watchlist)) setTier2Watchlist(snap.tier_2_watchlist);
       }
     } catch {
       const snap = await fetchSnapshot("today_predictions.json", { predictions: [] });
       setTodayPredictions(snap?.predictions || []);
+      if (Array.isArray(snap?.tier_2_watchlist)) setTier2Watchlist(snap.tier_2_watchlist);
     }
   };
 
@@ -719,6 +728,7 @@ export function App() {
           <CommandCenter
             initialTab="value"
             predictions={todayPredictions}
+            tier2Watchlist={tier2Watchlist}
             rejectedCandidates={rejectedCandidates}
             marketStatus={marketStatus}
             regime={regime}
@@ -738,6 +748,7 @@ export function App() {
           <CommandCenter
             initialTab="approved"
             predictions={todayPredictions}
+            tier2Watchlist={tier2Watchlist}
             rejectedCandidates={rejectedCandidates}
             marketStatus={marketStatus}
             regime={regime}

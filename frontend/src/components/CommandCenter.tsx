@@ -26,6 +26,7 @@ import {
   Lock,
   Gem,
   Sparkles,
+  Flame,
 } from "lucide-react";
 
 import { TradingViewChartModal } from "./TradingViewChartModal";
@@ -33,6 +34,7 @@ import { downloadKiteBasketJson } from "../utils/kiteBasket";
 
 interface CommandCenterProps {
   predictions: any[];
+  tier2Watchlist?: any[];
   rejectedCandidates?: any[];
   marketStatus: any;
   regime: any;
@@ -51,6 +53,7 @@ interface CommandCenterProps {
 
 export const CommandCenter: React.FC<CommandCenterProps> = ({
   predictions,
+  tier2Watchlist = [],
   rejectedCandidates = [],
   marketStatus,
   regime,
@@ -321,6 +324,11 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
           >
             <TrendingUp className="w-3.5 h-3.5 text-indigo-400" />
             Swing Signals ({predictions.length})
+            {tier2Watchlist.length > 0 && (
+              <span className="ml-1 text-[10px] px-1.5 py-0.5 rounded bg-cyan-900/50 text-cyan-300 border border-cyan-800/40">
+                +{tier2Watchlist.length} Watchlist
+              </span>
+            )}
           </button>
           <button
             onClick={() => setActiveTab("sectors")}
@@ -423,19 +431,25 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
       {activeTab === "approved" && (
         <div className="space-y-4">
           {filteredPredictions.length === 0 ? (
-            <div className="aura-card p-12 text-center border border-gray-800/80">
-              <CheckCircle2 className="w-12 h-12 text-indigo-400 mx-auto mb-3 opacity-60" />
-              <h3 className="text-base font-bold text-white mb-1">NO TRADE TODAY Ruling</h3>
-              <p className="text-xs text-gray-400 max-w-md mx-auto mb-4">
-                No screened NSE setups cleared all institutional risk-reward, ML probability, and Bull/Bear debate gates. Preserving capital is the highest priority.
-              </p>
-              <button
-                onClick={onRefreshScan}
-                disabled={isLoading}
-                className="px-4 py-2 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white"
-              >
-                Trigger Scan Pipeline
-              </button>
+            <div className="aura-card p-6 border border-gray-800/80 bg-gray-900/40 rounded-xl">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <CheckCircle2 className="w-8 h-8 text-indigo-400 opacity-80 flex-shrink-0" />
+                  <div>
+                    <h3 className="text-sm font-bold text-white">Tier-1 Breakout Triggers: 0 Approved (Volume Expansion Dry)</h3>
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      No immediate breakout setup passed all institutional risk-reward and volume explosion gates. Capital preservation active.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={onRefreshScan}
+                  disabled={isLoading}
+                  className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white flex-shrink-0"
+                >
+                  Refresh Scan
+                </button>
+              </div>
             </div>
           ) : (
             filteredPredictions.map((p) => {
@@ -661,6 +675,69 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
                 </div>
               );
             })
+          )}
+
+          {/* Tier-2 Momentum Watchlist Section (Always visible if watchlist candidates exist) */}
+          {tier2Watchlist && tier2Watchlist.length > 0 && (
+            <div className="space-y-3 pt-4 border-t border-gray-800/80">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Flame className="w-4 h-4 text-cyan-400" />
+                  <h3 className="text-sm font-bold text-white">
+                    Tier-2 Momentum Watchlist — Setting Up ({tier2Watchlist.length} Leaders)
+                  </h3>
+                </div>
+                <span className="text-[11px] text-gray-400 bg-gray-900/80 px-2.5 py-1 rounded border border-gray-800">
+                  Uptrend + Institutional RS Alpha (Consolidating near Breakout)
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                {tier2Watchlist.map((item: any, idx: number) => {
+                  const cleanSym = String(item.symbol || "").replace(".NS", "");
+                  return (
+                    <div
+                      key={item.symbol || idx}
+                      className="aura-card p-4 border border-cyan-900/40 bg-gradient-to-br from-gray-900/90 to-gray-950/90 rounded-xl space-y-3 relative overflow-hidden"
+                    >
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-xs font-bold text-cyan-400">#{idx + 1}</span>
+                            <span className="text-sm font-extrabold text-white">{cleanSym}</span>
+                          </div>
+                          <span className="text-[11px] text-gray-400">LTP: ₹{item.current_price?.toLocaleString("en-IN") || item.current_price}</span>
+                        </div>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-800/50">
+                          RS: +{Number(item.rs_vs_nifty_20d || 0).toFixed(1)}% vs NIFTY
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2 text-[11px] bg-gray-950/60 p-2.5 rounded-lg border border-gray-800/60">
+                        <div>
+                          <span className="text-gray-500 block text-[10px]">Breakout Trigger</span>
+                          <span className="font-bold text-cyan-300">₹{item.watch_trigger}</span>
+                        </div>
+                        <div>
+                          <span className="text-gray-500 block text-[10px]">20-EMA Support</span>
+                          <span className="font-bold text-gray-300">₹{item.ema_20}</span>
+                        </div>
+                      </div>
+
+                      <p className="text-[11px] text-gray-400 italic line-clamp-2">
+                        {item.tier_2_reason || "Consolidating near 20-day high with institutional accumulation"}
+                      </p>
+
+                      <div className="flex items-center justify-between text-[10px] text-gray-500 pt-1 border-t border-gray-900">
+                        <span>RSI: {Number(item.rsi_14 || 50).toFixed(0)}</span>
+                        <span>Vol Ratio: {Number(item.volume_ratio || 1).toFixed(2)}x</span>
+                        <span className="text-cyan-400 font-semibold">Tier-2 Radar</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           )}
         </div>
       )}

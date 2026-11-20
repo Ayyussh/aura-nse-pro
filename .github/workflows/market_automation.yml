@@ -2,23 +2,12 @@ name: "AURA Market Automation & Self-Improving Pipeline"
 
 on:
   schedule:
-    # 08:55 AM IST (03:25 UTC) Mon-Fri: Pre-Market Screening & Telegram Alert
-    # (Triggered at :25 to offset high-traffic top-of-hour GitHub runner queues)
-    - cron: '25 3 * * 1-5'
-    # 09:15 AM IST (03:45 UTC) Mon-Fri: Market Open Anti-Chase Gap Verification
-    - cron: '45 3 * * 1-5'
-    # 13:00 PM IST (07:30 UTC) Mon-Fri: Mid-Day Intraday Stop Loss Monitoring
-    - cron: '30 7 * * 1-5'
-    # 15:45 PM IST (10:15 UTC) Mon-Fri: Post-Market Trade Grading & P&L Attribution
-    - cron: '15 10 * * 1-5'
-    # 15:50 PM IST (10:20 UTC) Mon-Fri: Portfolio Holding Price Refresh
-    - cron: '20 10 * * 1-5'
-    # 16:30 PM IST (11:00 UTC) Mon-Fri: Daily Long-Term Value & Intrinsic Worth Screener
-    - cron: '0 11 * * 1-5'
-    # 18:30 PM IST (13:00 UTC) Mon-Fri: EOD Official Bhavcopy Reconciliation
-    - cron: '0 13 * * 1-5'
-    # 10:00 AM IST (04:30 UTC) Saturday: Weekly Mistake Audit & Self-Improving ML Retraining
-    - cron: '30 4 * * 6'
+    # 02:00 AM IST (20:30 UTC Sun-Thu): Early Swing Screener (Tier 1 Buys + Tier 2 Momentum Watchlist)
+    # (Runs ~7 hours before 9:15 AM market open, so even with GitHub runner delays, data is ready before wake-up)
+    - cron: '30 20 * * 0-4'
+    # 03:15 PM IST (09:45 UTC Mon-Fri): EOD Master Run (Portfolio Refresh + Trade Grading + 750 Compounder Screener + Single Daily Deploy)
+    # (Runs around 3:15 PM market close, so daily candles are final and results are recorded immediately)
+    - cron: '45 9 * * 1-5'
 
   workflow_dispatch:
     inputs:
@@ -27,17 +16,13 @@ on:
         required: true
         type: choice
         options:
+          - eod_master
           - premarket
-          - open_check
-          - midday
-          - postmarket
-          - refresh_portfolio
-          - eod_recon
-          - retrain
-          - full_cycle
           - value_scan
+          - open_check
+          - full_cycle
           - audit_and_build
-        default: premarket
+        default: eod_master
       limit:
         description: "Candidate Scan Limit (750 for Institutional Universe, 2760 for Full NSE)"
         required: false
@@ -102,43 +87,13 @@ jobs:
             CRON_SCHEDULE="${{ github.event.schedule }}"
             echo "Triggered by cron: $CRON_SCHEDULE"
             case "$CRON_SCHEDULE" in
-              "25 3 * * 1-5"|"30 3 * * 1-5")
+              "30 20 * * 0-4")
                 echo "mode=premarket" >> $GITHUB_OUTPUT
                 echo "limit=750" >> $GITHUB_OUTPUT
                 echo "force=false" >> $GITHUB_OUTPUT
                 ;;
-              "45 3 * * 1-5")
-                echo "mode=open_check" >> $GITHUB_OUTPUT
-                echo "limit=750" >> $GITHUB_OUTPUT
-                echo "force=false" >> $GITHUB_OUTPUT
-                ;;
-              "30 7 * * 1-5")
-                echo "mode=midday" >> $GITHUB_OUTPUT
-                echo "limit=750" >> $GITHUB_OUTPUT
-                echo "force=false" >> $GITHUB_OUTPUT
-                ;;
-              "15 10 * * 1-5")
-                echo "mode=postmarket" >> $GITHUB_OUTPUT
-                echo "limit=750" >> $GITHUB_OUTPUT
-                echo "force=false" >> $GITHUB_OUTPUT
-                ;;
-              "20 10 * * 1-5")
-                echo "mode=refresh_portfolio" >> $GITHUB_OUTPUT
-                echo "limit=750" >> $GITHUB_OUTPUT
-                echo "force=false" >> $GITHUB_OUTPUT
-                ;;
-              "0 11 * * 1-5")
-                echo "mode=value_scan" >> $GITHUB_OUTPUT
-                echo "limit=750" >> $GITHUB_OUTPUT
-                echo "force=false" >> $GITHUB_OUTPUT
-                ;;
-              "0 13 * * 1-5")
-                echo "mode=eod_recon" >> $GITHUB_OUTPUT
-                echo "limit=750" >> $GITHUB_OUTPUT
-                echo "force=false" >> $GITHUB_OUTPUT
-                ;;
-              "30 4 * * 6")
-                echo "mode=retrain" >> $GITHUB_OUTPUT
+              "45 9 * * 1-5"|"30 9 * * 1-5"|"0 10 * * 1-5")
+                echo "mode=eod_master" >> $GITHUB_OUTPUT
                 echo "limit=750" >> $GITHUB_OUTPUT
                 echo "force=false" >> $GITHUB_OUTPUT
                 ;;
@@ -176,6 +131,7 @@ jobs:
           git push origin main || echo "Push skipped or branch up-to-date."
 
       - name: "Set up Node.js for Frontend Deployment"
+        if: steps.select-mode.outputs.mode != 'premarket' && steps.select-mode.outputs.mode != 'open_check'
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -183,12 +139,14 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: "Build Production Frontend with Fresh Snapshots"
+        if: steps.select-mode.outputs.mode != 'premarket' && steps.select-mode.outputs.mode != 'open_check'
         working-directory: frontend
         run: |
           npm ci
           npm run build
 
       - name: "Audit frontend/dist Production Build & Verify Demo-Only Snapshots (Directive 7)"
+        if: steps.select-mode.outputs.mode != 'premarket' && steps.select-mode.outputs.mode != 'open_check'
         run: |
           python -c "
           import os, sys, json
@@ -218,15 +176,18 @@ jobs:
           "
 
       - name: "Setup GitHub Pages"
+        if: steps.select-mode.outputs.mode != 'premarket' && steps.select-mode.outputs.mode != 'open_check'
         uses: actions/configure-pages@v5
         with:
           enablement: true
 
       - name: "Upload Pages Artifact"
+        if: steps.select-mode.outputs.mode != 'premarket' && steps.select-mode.outputs.mode != 'open_check'
         uses: actions/upload-pages-artifact@v3
         with:
           path: frontend/dist
 
       - name: "Deploy to GitHub Pages"
+        if: steps.select-mode.outputs.mode != 'premarket' && steps.select-mode.outputs.mode != 'open_check'
         id: deployment
         uses: actions/deploy-pages@v4

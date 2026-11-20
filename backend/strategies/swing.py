@@ -40,6 +40,9 @@ class SwingCandidate:
     rs_vs_nifty_20d: float
     indicators: Dict[str, Any]
     rejection_reasons: List[str]
+    is_tier_2: bool = False
+    tier_2_score: float = 0.0
+    tier_2_reason: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -213,6 +216,29 @@ class SwingStrategyEngine:
 
         passed = len(rejection_reasons) == 0
 
+        # Tier 2 Momentum Watchlist Evaluation (Setting Up / Consolidating Leaders)
+        # Criteria:
+        # 1. Primary Institutional Uptrend: Close > EMA50 > SMA200
+        # 2. Relative Strength: RS vs NIFTY 50 > 0.0
+        # 3. Healthy Momentum Range: 42.0 <= RSI14 <= 78.0
+        # 4. Proximity to Breakout: within 10% of 20-day high (close >= high_20d * 0.90)
+        # 5. Not Overextended: chase_ratio <= 3.0
+        is_tier_2 = False
+        tier_2_score = 0.0
+        tier_2_reason = ""
+
+        if not passed:
+            if (c_last > ema50_last > sma200_last) and (rs_20d > 0.0) and (42.0 <= rsi_last <= 78.0) and (c_last >= high_20d * 0.90) and (chase_ratio <= 3.0):
+                is_tier_2 = True
+                tier_2_score = round((rs_20d * 0.4) + (adx_last * 0.3) + (min(vol_ratio, 3.0) * 10.0), 2)
+                dist_from_high_pct = round(((high_20d - c_last) / high_20d) * 100.0, 1)
+                if dist_from_high_pct <= 2.5:
+                    tier_2_reason = f"Coiling {dist_from_high_pct}% below 20D high (₹{high_20d:.1f}); watch for volume breakout"
+                elif abs(c_last - ema20_last) <= atr_last:
+                    tier_2_reason = f"Orderly pullback to 20-EMA (₹{ema20_last:.1f}) in strong uptrend (+{rs_20d:.1f}% vs NIFTY)"
+                else:
+                    tier_2_reason = f"Base consolidation with institutional accumulation (+{rs_20d:.1f}% vs NIFTY)"
+
         return SwingCandidate(
             symbol=symbol,
             passed=passed,
@@ -228,6 +254,9 @@ class SwingStrategyEngine:
             rs_vs_nifty_20d=round(rs_20d, 2),
             indicators=indicators_meta,
             rejection_reasons=rejection_reasons,
+            is_tier_2=is_tier_2,
+            tier_2_score=tier_2_score,
+            tier_2_reason=tier_2_reason,
         )
 
 

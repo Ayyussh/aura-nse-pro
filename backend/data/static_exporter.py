@@ -108,16 +108,36 @@ def export_all_static_snapshots() -> Dict[str, int]:
                 "entry_date": p.entry_date.isoformat(),
             })
 
+        # Load Tier-2 Watchlist if present
+        t2_watchlist = []
+        t2_path = PROJECT_ROOT / "data" / "snapshots" / "tier_2_watchlist.json"
+        if t2_path.exists():
+            try:
+                with open(t2_path, "r", encoding="utf-8") as f:
+                    t2_data = json.load(f)
+                    t2_watchlist = t2_data.get("watchlist", [])
+            except Exception:
+                pass
+
         today_payload = {
             "date": today.isoformat(),
             "count": len(pred_items),
             "predictions": pred_items,
+            "tier_2_count": len(t2_watchlist),
+            "tier_2_watchlist": t2_watchlist,
             "status": "ACTIVE_SIGNALS" if pred_items else "NO_TRADE_TODAY",
             "snapshot_updated_at": now_ist.strftime("%Y-%m-%d %H:%M:%S IST"),
             "compliance_note": "Educational decision support, not investment advice. Backtests and paper results do not guarantee future returns.",
         }
         _write_json("today_predictions.json", today_payload)
+        _write_json("swing_watchlist.json", {
+            "date": today.isoformat(),
+            "tier_1_buys": pred_items,
+            "tier_2_watchlist": t2_watchlist,
+            "snapshot_updated_at": now_ist.strftime("%Y-%m-%d %H:%M:%S IST"),
+        })
         exported_counts["today_predictions"] = len(pred_items)
+        exported_counts["swing_watchlist"] = len(t2_watchlist)
 
         # 4. Accuracy Tracker & Graded History (Clean Real Data Only)
         all_preds = db.query(Prediction).all()
