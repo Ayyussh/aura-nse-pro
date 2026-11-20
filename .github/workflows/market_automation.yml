@@ -16,13 +16,9 @@ on:
         required: true
         type: choice
         options:
-          - eod_master
           - premarket
-          - value_scan
-          - open_check
-          - full_cycle
-          - audit_and_build
-        default: eod_master
+          - eod_master
+        default: premarket
       limit:
         description: "Candidate Scan Limit (750 for Institutional Universe, 2760 for Full NSE)"
         required: false
@@ -131,7 +127,7 @@ jobs:
           git push origin main || echo "Push skipped or branch up-to-date."
 
       - name: "Set up Node.js for Frontend Deployment"
-        if: steps.select-mode.outputs.mode != 'premarket' && steps.select-mode.outputs.mode != 'open_check'
+        if: steps.select-mode.outputs.mode == 'eod_master'
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -139,14 +135,14 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: "Build Production Frontend with Fresh Snapshots"
-        if: steps.select-mode.outputs.mode != 'premarket' && steps.select-mode.outputs.mode != 'open_check'
+        if: steps.select-mode.outputs.mode == 'eod_master'
         working-directory: frontend
         run: |
           npm ci
           npm run build
 
       - name: "Audit frontend/dist Production Build & Verify Demo-Only Snapshots (Directive 7)"
-        if: steps.select-mode.outputs.mode != 'premarket' && steps.select-mode.outputs.mode != 'open_check'
+        if: steps.select-mode.outputs.mode == 'eod_master'
         run: |
           python -c "
           import os, sys, json
@@ -176,18 +172,18 @@ jobs:
           "
 
       - name: "Setup GitHub Pages"
-        if: steps.select-mode.outputs.mode != 'premarket' && steps.select-mode.outputs.mode != 'open_check'
+        if: steps.select-mode.outputs.mode == 'eod_master'
         uses: actions/configure-pages@v5
         with:
           enablement: true
 
       - name: "Upload Pages Artifact"
-        if: steps.select-mode.outputs.mode != 'premarket' && steps.select-mode.outputs.mode != 'open_check'
+        if: steps.select-mode.outputs.mode == 'eod_master'
         uses: actions/upload-pages-artifact@v3
         with:
           path: frontend/dist
 
       - name: "Deploy to GitHub Pages"
-        if: steps.select-mode.outputs.mode != 'premarket' && steps.select-mode.outputs.mode != 'open_check'
+        if: steps.select-mode.outputs.mode == 'eod_master'
         id: deployment
         uses: actions/deploy-pages@v4
