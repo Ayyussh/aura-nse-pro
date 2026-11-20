@@ -300,6 +300,69 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
         </div>
       </div>
 
+      {/* Institutional Telemetry Strip: Macro Factors & F&O Derivatives */}
+      <div className="bg-gray-900/60 border border-gray-800/80 rounded-xl p-3 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex items-center gap-1.5 text-cyan-400 font-semibold tracking-wide uppercase text-[10px]">
+            <Activity className="w-3.5 h-3.5 text-cyan-400" />
+            Macro Transmission
+          </div>
+          <div className="flex items-center gap-3 text-gray-300 text-[11px]">
+            <span>
+              Brent: <strong className="text-white">${regime?.macro_factors?.factors?.brent_crude?.price ?? 74.2}</strong>
+            </span>
+            <span className="text-gray-600">|</span>
+            <span>
+              US 10Y: <strong className="text-white">{regime?.macro_factors?.factors?.us_10y_yield?.price ?? 4.42}%</strong>
+            </span>
+            <span className="text-gray-600">|</span>
+            <span>
+              USD/INR: <strong className="text-white">₹{regime?.macro_factors?.factors?.usdinr?.price ?? 84.45}</strong>
+            </span>
+            <span className="text-gray-600">|</span>
+            <span className="flex items-center gap-1">
+              MPI:{" "}
+              <strong className={Number(regime?.macro_pressure_index || 40) >= 70 ? "text-amber-400" : "text-emerald-400"}>
+                {regime?.macro_pressure_index ?? 38}/100
+              </strong>
+            </span>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex items-center gap-1.5 text-indigo-400 font-semibold tracking-wide uppercase text-[10px]">
+            <Layers className="w-3.5 h-3.5 text-indigo-400" />
+            F&O Derivatives
+          </div>
+          <div className="flex items-center gap-3 text-gray-300 text-[11px]">
+            <span>
+              NIFTY PCR: <strong className="text-emerald-400">{regime?.derivatives_telemetry?.pcr ?? 0.95}</strong>
+            </span>
+            <span className="text-gray-600">|</span>
+            <span>
+              Max Pain:{" "}
+              <strong className="text-white">
+                ₹{Number(regime?.derivatives_telemetry?.max_pain_strike || 24500).toLocaleString("en-IN")}
+              </strong>
+            </span>
+            <span className="text-gray-600">|</span>
+            <span>
+              Put Wall:{" "}
+              <strong className="text-emerald-400">
+                ₹{Number(regime?.derivatives_telemetry?.put_support_wall || 24000).toLocaleString("en-IN")}
+              </strong>
+            </span>
+            <span className="text-gray-600">|</span>
+            <span>
+              Call Wall:{" "}
+              <strong className="text-rose-400">
+                ₹{Number(regime?.derivatives_telemetry?.call_resistance_wall || 25000).toLocaleString("en-IN")}
+              </strong>
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* Action Header & Tabs & Quick Tools */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-b border-gray-800 pb-4">
         <div className="flex flex-wrap items-center gap-2">

@@ -51,6 +51,8 @@ class CompounderEvaluation:
     summary_verdict: str
     key_strengths: List[str]
     key_risks: List[str]
+    forward_estimates: Optional[Dict[str, Any]] = None
+    event_risk_level: str = "CLEAN"
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
@@ -125,6 +127,13 @@ class CompounderScorecardEngine:
                 is_vetoed = True
                 veto_reason = f"Severe Governance Red Flag: {con}"
                 break
+
+        # Check Corporate Event Risk Shield (Regulatory, Auditor Resignation, FDA Form 483)
+        from backend.data.corporate_events import corporate_event_shield
+        event_risk = corporate_event_shield.check_symbol_event_risk(symbol)
+        if event_risk.veto_trade:
+            is_vetoed = True
+            veto_reason = f"Corporate Governance Event Shield: {event_risk.veto_reason}"
 
         # -----------------------------------------------------------------
         # Category 1: Financial Quality (Weight: 20 pts)
@@ -338,6 +347,16 @@ class CompounderScorecardEngine:
             c4_notes.append(f"Trading near intrinsic fair worth ({margin_of_safety_pct:+.1f}%) (+2.0/5)")
         else:
             c4_notes.append(f"Trading at a premium to estimated fair value ({margin_of_safety_pct:+.1f}%) (+0/5)")
+
+        # Forward Consensus & Value Trap Check (Adjusts Valuation Score)
+        from backend.fundamental.forward_estimates import forward_estimates_engine
+        forward_est = forward_estimates_engine.fetch_estimates(symbol)
+        if forward_est.is_value_trap:
+            c4_score = max(0.0, c4_score - 8.0)
+            c4_notes.append(f"CRITICAL VALUE TRAP WARNING: {forward_est.value_trap_reason} (-8.0 pts)")
+        elif forward_est.forward_growth_pct >= 15.0 and forward_est.analyst_upside_pct >= 15.0:
+            c4_score = min(20.0, c4_score + 2.0)
+            c4_notes.append(f"Consensus EPS Growth (+{forward_est.forward_growth_pct:.1f}%) & Analyst Upside (+{forward_est.analyst_upside_pct:.1f}%) (+2.0 pts)")
 
         c4 = CategoryScore("Valuation", 20.0, round(c4_score, 1), 20.0, round((c4_score / 20.0) * 100, 1), c4_notes)
 
@@ -571,6 +590,8 @@ class CompounderScorecardEngine:
             summary_verdict=summary_verdict,
             key_strengths=key_strengths[:4],
             key_risks=key_risks[:4],
+            forward_estimates=forward_est.to_dict() if 'forward_est' in locals() and forward_est else None,
+            event_risk_level=event_risk.risk_level if 'event_risk' in locals() and event_risk else "CLEAN",
         )
 
 

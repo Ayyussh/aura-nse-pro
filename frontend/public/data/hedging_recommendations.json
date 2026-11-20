@@ -1,0 +1,15 @@
+{
+  "regime": "GREEN",
+  "hedge_required": false,
+  "portfolio_value": 1000000.0,
+  "portfolio_beta": 1.05,
+  "nifty_ltp": 24500.0,
+  "lot_size": 25,
+  "recommended_strike": 0.0,
+  "contract_count": 0,
+  "estimated_premium_pts": 0.0,
+  "estimated_cost_rupees": 0.0,
+  "hedge_ratio_pct": 0.0,
+  "recommended_expiry": "NONE",
+  "rationale": "Macro regime is GREEN. Institutional equity exposure unhedged to capture alpha."
+}

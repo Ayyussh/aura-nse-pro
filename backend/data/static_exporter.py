@@ -332,6 +332,38 @@ def export_all_static_snapshots() -> Dict[str, int]:
         except Exception as de:
             logger.debug(f"Could not export derivatives matrix: {de}")
 
+        # 13. Corporate Governance & Regulatory Event Shield
+        try:
+            from backend.data.corporate_events import CACHE_FILE
+            events_data = {}
+            if CACHE_FILE.exists():
+                with open(CACHE_FILE, "r", encoding="utf-8") as ef:
+                    events_data = json.load(ef)
+            _write_json("corporate_events.json", {
+                "as_of_date": now_ist.strftime("%Y-%m-%d"),
+                "total_flagged_symbols": len(events_data),
+                "events": events_data,
+            })
+            exported_counts["corporate_events"] = len(events_data)
+        except Exception as ce:
+            logger.debug(f"Could not export corporate events: {ce}")
+
+        # 14. Tail-Risk Put Hedging & Market-Neutral Protection
+        try:
+            from backend.strategies.hedging import hedging_engine
+            # Compute based on current regime
+            curr_regime = regime_data.get("regime", "GREEN") if "regime_data" in locals() else "GREEN"
+            hedge_rec = hedging_engine.calculate_nifty_put_hedge(
+                portfolio_value=1_000_000.0,
+                portfolio_beta=1.05,
+                nifty_ltp=status_data.get("nifty_ltp", 24_500.0) if "status_data" in locals() else 24_500.0,
+                macro_regime=curr_regime,
+            )
+            _write_json("hedging_recommendations.json", hedge_rec.to_dict())
+            exported_counts["hedging_recommendations"] = 1
+        except Exception as he:
+            logger.debug(f"Could not export hedging recommendation: {he}")
+
     finally:
         db.close()
 

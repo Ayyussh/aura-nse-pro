@@ -185,6 +185,12 @@ class SwingStrategyEngine:
         if net_rr < min_net_rr:
             rejection_reasons.append(f"Net R:R after Indian costs {net_rr:.2f} is below minimum {min_net_rr} requirement.")
 
+        # 10. Corporate Governance & Regulatory Event Shield
+        from backend.data.corporate_events import corporate_event_shield
+        event_risk = corporate_event_shield.check_symbol_event_risk(symbol)
+        if event_risk.veto_trade:
+            rejection_reasons.append(f"Corporate Governance Event Shield: {event_risk.veto_reason}")
+
         # Setup Tagging
         high_20d = float(high.tail(20).max())
         if c_last >= high_20d * 0.99:
@@ -246,7 +252,7 @@ class SwingStrategyEngine:
         tier_2_score = 0.0
         tier_2_reason = ""
 
-        if not passed:
+        if not passed and not (event_risk and event_risk.veto_trade):
             if (c_last > ema50_last > sma200_last) and (rs_20d > 0.0) and (42.0 <= rsi_last <= 78.0) and (c_last >= high_20d * 0.90) and (chase_ratio <= 3.0):
                 is_tier_2 = True
                 # Boost Tier-2 score if backed by real institutional demat accumulation

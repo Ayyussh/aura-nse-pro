@@ -1,99 +1,98 @@
 {
-  "split": "holdout",
-  "generated_at": "2026-11-18T12:39:49.489032+00:00",
+  "split": "train",
+  "generated_at": "2026-11-20T13:04:02.937251+00:00",
   "starting_capital_rupees": 1000000.0,
-  "final_equity_rupees": 1008963.76,
-  "total_return_pct": 0.9,
-  "max_drawdown_rupees": 75121.67,
-  "max_drawdown_pct": 7.47,
-  "annualized_sharpe_ratio": 0.194,
-  "total_candidates_scanned": 144,
-  "total_setups_taken": 82,
-  "total_trades_completed": 80,
+  "final_equity_rupees": 1092134.74,
+  "total_return_pct": 9.21,
+  "max_drawdown_rupees": 47349.53,
+  "max_drawdown_pct": 4.35,
+  "annualized_sharpe_ratio": 0.835,
+  "total_candidates_scanned": 609,
+  "total_setups_taken": 196,
+  "total_trades_completed": 194,
   "overall_metrics": {
-    "sample_size": 80,
-    "raw_win_rate_pct": 16.25,
-    "net_positive_win_rate_pct": 42.5,
+    "sample_size": 194,
+    "raw_win_rate_pct": 14.43,
+    "net_positive_win_rate_pct": 50.52,
     "net_win_rate_ci_95": [
-      31.25,
-      53.75
+      43.8015,
+      57.2165
     ],
-    "net_expectancy_r": -0.0716,
+    "net_expectancy_r": 0.0868,
     "net_expectancy_r_ci_95": [
-      -0.3424,
-      0.1903
+      -0.0466,
+      0.2427
     ],
-    "profit_factor": 1.055,
-    "total_net_pnl_rupees": 8632.56
+    "profit_factor": 1.293,
+    "total_net_pnl_rupees": 92728.29
   },
   "breakdown_by_setup": {
     "pullback_ema": {
-      "sample_size": 54,
-      "raw_win_rate_pct": 16.67,
-      "net_positive_win_rate_pct": 46.3,
+      "sample_size": 112,
+      "raw_win_rate_pct": 16.07,
+      "net_positive_win_rate_pct": 45.54,
       "net_win_rate_ci_95": [
-        33.3333,
-        59.2593
+        35.7143,
+        54.4643
       ],
-      "net_expectancy_r": -0.0304,
+      "net_expectancy_r": -0.0022,
       "net_expectancy_r_ci_95": [
-        -0.3411,
-        0.2808
+        -0.2235,
+        0.2155
       ],
-      "profit_factor": 1.136,
-      "total_net_pnl_rupees": 14418.12
+      "profit_factor": 0.981,
+      "total_net_pnl_rupees": -4190.51
     },
     "breakout_52w": {
-      "sample_size": 19,
-      "raw_win_rate_pct": 15.79,
-      "net_positive_win_rate_pct": 31.58,
+      "sample_size": 59,
+      "raw_win_rate_pct": 11.86,
+      "net_positive_win_rate_pct": 47.46,
       "net_win_rate_ci_95": [
-        10.5263,
-        52.6316
+        35.5932,
+        61.0169
       ],
-      "net_expectancy_r": -0.2147,
+      "net_expectancy_r": 0.0314,
       "net_expectancy_r_ci_95": [
-        -0.7111,
-        0.3405
+        -0.2121,
+        0.2854
       ],
-      "profit_factor": 0.747,
-      "total_net_pnl_rupees": -9010.08,
-      "warning": "INSUFFICIENT SAMPLE (N < 30)"
+      "profit_factor": 1.188,
+      "total_net_pnl_rupees": 15810.02
     },
     "mean_reversion_rsi": {
-      "sample_size": 7,
-      "raw_win_rate_pct": 14.29,
-      "net_positive_win_rate_pct": 42.86,
+      "sample_size": 23,
+      "raw_win_rate_pct": 13.04,
+      "net_positive_win_rate_pct": 82.61,
       "net_win_rate_ci_95": [
-        0.0,
-        71.7857
+        65.2174,
+        95.6522
       ],
-      "net_expectancy_r": -0.0014,
+      "net_expectancy_r": 0.6622,
       "net_expectancy_r_ci_95": [
-        -0.8415,
-        0.9443
+        0.2856,
+        1.04
       ],
-      "profit_factor": 1.205,
-      "total_net_pnl_rupees": 3224.52,
+      "profit_factor": 7.525,
+      "total_net_pnl_rupees": 81108.78,
       "warning": "INSUFFICIENT SAMPLE (N < 30)"
     }
   },
   "breakdown_by_regime": {
     "GREEN": {
-      "sample_size": 80,
-      "raw_win_rate_pct": 16.25,
-      "net_positive_win_rate_pct": 42.5,
+      "sample_size": 194,
+      "raw_win_rate_pct": 14.43,
+      "net_positive_win_rate_pct": 50.52,
       "net_win_rate_ci_95": [
-        31.25,
-        53.75
+        43.8015,
+        57.2165
       ],
-      "net_expectancy_r": -0.0716,
+      "net_expectancy_r": 0.0868,
       "net_expectancy_r_ci_95": [
-        -0.3424,
-        0.1903
+        -0.0466,
+        0.2427
       ],
-      "profit_factor": 1.055,
-      "total_net_pnl_rupees": 8632.56
+      "profit_factor": 1.293,
+      "total_net_pnl_rupees": 92728.29
     },
     "AMBER": {
       "sample_size": 0,
@@ -118,73 +117,89 @@
       "warning": "INSUFFICIENT SAMPLE (N < 30)"
     },
     "D4": {
-      "sample_size": 33,
-      "raw_win_rate_pct": 9.09,
-      "net_positive_win_rate_pct": 33.33,
+      "sample_size": 72,
+      "raw_win_rate_pct": 13.89,
+      "net_positive_win_rate_pct": 45.83,
       "net_win_rate_ci_95": [
-        18.1818,
-        48.4848
+        34.7222,
+        56.9792
       ],
-      "net_expectancy_r": -0.3721,
+      "net_expectancy_r": 0.0432,
       "net_expectancy_r_ci_95": [
-        -0.7155,
-        0.006
+        -0.2215,
+        0.325
       ],
-      "profit_factor": 0.582,
-      "total_net_pnl_rupees": -32290.65
+      "profit_factor": 1.201,
+      "total_net_pnl_rupees": 24810.77
     },
     "D5": {
-      "sample_size": 25,
-      "raw_win_rate_pct": 20.0,
-      "net_positive_win_rate_pct": 32.0,
+      "sample_size": 61,
+      "raw_win_rate_pct": 16.39,
+      "net_positive_win_rate_pct": 50.82,
       "net_win_rate_ci_95": [
-        16.0,
-        52.0
+        39.3443,
+        62.3361
       ],
-      "net_expectancy_r": -0.246,
+      "net_expectancy_r": 0.1557,
       "net_expectancy_r_ci_95": [
-        -0.684,
-        0.2856
+        -0.1177,
+        0.4235
       ],
-      "profit_factor": 0.645,
-      "total_net_pnl_rupees": -22159.56,
-      "warning": "INSUFFICIENT SAMPLE (N < 30)"
+      "profit_factor": 1.487,
+      "total_net_pnl_rupees": 44958.03
     },
     "D6": {
-      "sample_size": 11,
-      "raw_win_rate_pct": 27.27,
-      "net_positive_win_rate_pct": 72.73,
+      "sample_size": 27,
+      "raw_win_rate_pct": 22.22,
+      "net_positive_win_rate_pct": 66.67,
       "net_win_rate_ci_95": [
-        45.4545,
-        91.1364
+        48.1481,
+        85.1852
       ],
-      "net_expectancy_r": 0.72,
+      "net_expectancy_r": 0.3156,
       "net_expectancy_r_ci_95": [
-        0.0813,
-        1.2791
+        -0.0775,
+        0.7415
       ],
-      "profit_factor": 8.352,
-      "total_net_pnl_rupees": 42866.73,
+      "profit_factor": 2.079,
+      "total_net_pnl_rupees": 34403.02,
       "warning": "INSUFFICIENT SAMPLE (N < 30)"
     },
     "D7": {
-      "sample_size": 5,
+      "sample_size": 13,
       "raw_win_rate_pct": 0.0,
-      "net_positive_win_rate_pct": 40.0,
+      "net_positive_win_rate_pct": 38.46,
       "net_win_rate_ci_95": [
-        0.0,
-        80.0
+        15.3846,
+        61.5385
       ],
-      "net_expectancy_r": -0.22,
+      "net_expectancy_r": -0.4446,
       "net_expectancy_r_ci_95": [
-        -0.8662,
-        0.482
+        -0.8278,
+        -0.0477
       ],
-      "profit_factor": 0.409,
-      "total_net_pnl_rupees": -5429.71,
+      "profit_factor": 0.417,
+      "total_net_pnl_rupees": -20337.7,
       "warning": "INSUFFICIENT SAMPLE (N < 30)"
     },
     "D8": {
+      "sample_size": 11,
+      "raw_win_rate_pct": 18.18,
+      "net_positive_win_rate_pct": 81.82,
+      "net_win_rate_ci_95": [
+        54.5455,
+        100.0
+      ],
+      "net_expectancy_r": 0.6327,
+      "net_expectancy_r_ci_95": [
+        0.1345,
+        1.1129
+      ],
+      "profit_factor": 8.395,
+      "total_net_pnl_rupees": 34628.53,
+      "warning": "INSUFFICIENT SAMPLE (N < 30)"
+    },
+    "D9": {
       "sample_size": 2,
       "raw_win_rate_pct": 0.0,
       "net_positive_win_rate_pct": 50.0,
@@ -192,2336 +207,4760 @@
         0.0,
         100.0
       ],
-      "net_expectancy_r": 0.26,
+      "net_expectancy_r": -0.09,
       "net_expectancy_r_ci_95": [
-        -0.41,
-        0.93
+        -1.03,
+        0.85
       ],
-      "profit_factor": 2.172,
-      "total_net_pnl_rupees": 2581.63,
-      "warning": "INSUFFICIENT SAMPLE (N < 30)"
-    },
-    "D9": {
-      "sample_size": 1,
-      "raw_win_rate_pct": 0.0,
-      "net_positive_win_rate_pct": 100.0,
-      "net_win_rate_ci_95": [
-        100.0,
-        100.0
-      ],
-      "net_expectancy_r": 0.39,
-      "net_expectancy_r_ci_95": [
-        0.39,
-        0.39
-      ],
-      "profit_factor": 999.0,
-      "total_net_pnl_rupees": 1504.56,
+      "profit_factor": 0.386,
+      "total_net_pnl_rupees": -4743.15,
       "warning": "INSUFFICIENT SAMPLE (N < 30)"
     },
     "D10": {
-      "sample_size": 3,
-      "raw_win_rate_pct": 66.67,
-      "net_positive_win_rate_pct": 100.0,
+      "sample_size": 8,
+      "raw_win_rate_pct": 0.0,
+      "net_positive_win_rate_pct": 12.5,
       "net_win_rate_ci_95": [
-        100.0,
-        100.0
+        0.0,
+        37.5
       ],
-      "net_expectancy_r": 1.6567,
+      "net_expectancy_r": -0.6625,
       "net_expectancy_r_ci_95": [
-        1.09,
-        1.95
+        -0.9788,
+        -0.311
       ],
-      "profit_factor": 999.0,
-      "total_net_pnl_rupees": 21559.56,
+      "profit_factor": 0.02,
+      "total_net_pnl_rupees": -20991.21,
       "warning": "INSUFFICIENT SAMPLE (N < 30)"
     }
   },
   "breakdown_by_sector": {
     "Diversified": {
-      "sample_size": 49,
-      "raw_win_rate_pct": 14.29,
-      "net_positive_win_rate_pct": 44.9,
+      "sample_size": 129,
+      "raw_win_rate_pct": 16.28,
+      "net_positive_win_rate_pct": 52.71,
       "net_win_rate_ci_95": [
-        32.6531,
-        59.1837
+        43.4109,
+        61.2403
       ],
-      "net_expectancy_r": -0.0196,
+      "net_expectancy_r": 0.1216,
       "net_expectancy_r_ci_95": [
-        -0.2983,
-        0.3108
+        -0.0812,
+        0.3106
       ],
-      "profit_factor": 1.118,
-      "total_net_pnl_rupees": 11717.58
+      "profit_factor": 1.367,
+      "total_net_pnl_rupees": 80962.73
     },
     "Financial Services": {
-      "sample_size": 20,
-      "raw_win_rate_pct": 25.0,
-      "net_positive_win_rate_pct": 35.0,
+      "sample_size": 35,
+      "raw_win_rate_pct": 17.14,
+      "net_positive_win_rate_pct": 51.43,
       "net_win_rate_ci_95": [
-        15.0,
-        55.0
+        34.2857,
+        68.5714
       ],
-      "net_expectancy_r": -0.189,
+      "net_expectancy_r": 0.2203,
       "net_expectancy_r_ci_95": [
-        -0.706,
-        0.4221
+        -0.1652,
+        0.6258
       ],
-      "profit_factor": 0.906,
-      "total_net_pnl_rupees": -3497.53,
-      "warning": "INSUFFICIENT SAMPLE (N < 30)"
+      "profit_factor": 1.726,
+      "total_net_pnl_rupees": 33579.92
     },
     "Information Technology": {
-      "sample_size": 11,
-      "raw_win_rate_pct": 9.09,
-      "net_positive_win_rate_pct": 45.45,
+      "sample_size": 30,
+      "raw_win_rate_pct": 3.33,
+      "net_positive_win_rate_pct": 40.0,
       "net_win_rate_ci_95": [
-        18.1818,
-        72.7273
+        23.25,
+        56.6667
       ],
-      "net_expectancy_r": -0.09,
+      "net_expectancy_r": -0.2187,
       "net_expectancy_r_ci_95": [
-        -0.6827,
-        0.4973
+        -0.5444,
+        0.1064
       ],
-      "profit_factor": 1.02,
-      "total_net_pnl_rupees": 412.51,
-      "warning": "INSUFFICIENT SAMPLE (N < 30)"
+      "profit_factor": 0.56,
+      "total_net_pnl_rupees": -21814.36
     }
   },
   "equity_curve_sample": [
     {
-      "date": "2025-09-01",
+      "date": "2021-11-15",
       "cash": 1000000.0,
       "mtm_positions": 0.0,
       "total_equity": 1000000.0,
       "active_positions_count": 0
     },
     {
-      "date": "2025-09-19",
-      "cash": 804117.08,
-      "mtm_positions": 199782.9,
-      "total_equity": 1003899.98,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-10-10",
-      "cash": 606283.7,
-      "mtm_positions": 392793.91,
-      "total_equity": 999077.61,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2025-10-31",
-      "cash": 801955.72,
-      "mtm_positions": 198165.6,
-      "total_equity": 1000121.32,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-11-21",
-      "cash": 700196.11,
-      "mtm_positions": 292715.1,
-      "total_equity": 992911.21,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2025-12-11",
-      "cash": 884368.21,
-      "mtm_positions": 98005.8,
-      "total_equity": 982374.01,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-01-01",
-      "cash": 786411.84,
-      "mtm_positions": 195572.0,
-      "total_equity": 981983.84,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-01-22",
-      "cash": 877959.27,
-      "mtm_positions": 95530.5,
-      "total_equity": 973489.77,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-02-12",
-      "cash": 784377.64,
-      "mtm_positions": 195952.6,
-      "total_equity": 980330.24,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-03-05",
-      "cash": 777346.03,
-      "mtm_positions": 183373.5,
-      "total_equity": 960719.53,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-03-25",
-      "cash": 844141.89,
-      "mtm_positions": 97270.8,
-      "total_equity": 941412.69,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-04-20",
-      "cash": 686328.34,
-      "mtm_positions": 278748.5,
-      "total_equity": 965076.84,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-05-11",
-      "cash": 871077.23,
-      "mtm_positions": 93323.1,
-      "total_equity": 964400.33,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-06-01",
-      "cash": 774968.79,
-      "mtm_positions": 187577.4,
-      "total_equity": 962546.19,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-06-19",
-      "cash": 781812.32,
-      "mtm_positions": 193101.3,
-      "total_equity": 974913.62,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-07-10",
-      "cash": 973141.48,
+      "date": "2021-12-30",
+      "cash": 1000000.0,
       "mtm_positions": 0.0,
-      "total_equity": 973141.48,
+      "total_equity": 1000000.0,
       "active_positions_count": 0
     },
     {
-      "date": "2026-07-30",
-      "cash": 794788.22,
-      "mtm_positions": 190578.4,
-      "total_equity": 985366.62,
+      "date": "2022-02-15",
+      "cash": 702410.27,
+      "mtm_positions": 299026.72,
+      "total_equity": 1001436.99,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-04-04",
+      "cash": 807919.57,
+      "mtm_positions": 197502.1,
+      "total_equity": 1005421.67,
       "active_positions_count": 2
     },
     {
-      "date": "2026-08-19",
-      "cash": 986123.73,
-      "mtm_positions": 0.0,
-      "total_equity": 986123.73,
-      "active_positions_count": 0
+      "date": "2022-05-23",
+      "cash": 699383.21,
+      "mtm_positions": 304331.59,
+      "total_equity": 1003714.8,
+      "active_positions_count": 3
     },
     {
-      "date": "2026-09-08",
-      "cash": 884518.74,
-      "mtm_positions": 95040.0,
-      "total_equity": 979558.74,
+      "date": "2022-07-06",
+      "cash": 800881.43,
+      "mtm_positions": 204037.51,
+      "total_equity": 1004918.94,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-08-23",
+      "cash": 938489.33,
+      "mtm_positions": 105114.8,
+      "total_equity": 1043604.13,
       "active_positions_count": 1
     },
     {
-      "date": "2026-09-29",
-      "cash": 872563.1,
-      "mtm_positions": 96702.4,
-      "total_equity": 969265.5,
+      "date": "2022-10-10",
+      "cash": 731447.5,
+      "mtm_positions": 311223.68,
+      "total_equity": 1042671.18,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-11-25",
+      "cash": 853850.88,
+      "mtm_positions": 214537.05,
+      "total_equity": 1068387.93,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-01-10",
+      "cash": 738462.56,
+      "mtm_positions": 309113.0,
+      "total_equity": 1047575.56,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-02-24",
+      "cash": 845909.45,
+      "mtm_positions": 208719.75,
+      "total_equity": 1054629.2,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-04-18",
+      "cash": 733547.22,
+      "mtm_positions": 314168.14,
+      "total_equity": 1047715.36,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-06-02",
+      "cash": 747131.72,
+      "mtm_positions": 318978.44,
+      "total_equity": 1066110.16,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-07-19",
+      "cash": 763428.07,
+      "mtm_positions": 324846.98,
+      "total_equity": 1088275.05,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-09-04",
+      "cash": 743396.92,
+      "mtm_positions": 309846.3,
+      "total_equity": 1053243.22,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-10-20",
+      "cash": 841480.71,
+      "mtm_positions": 208236.89,
+      "total_equity": 1049717.6,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-12-08",
+      "cash": 955988.08,
+      "mtm_positions": 107150.1,
+      "total_equity": 1063138.18,
       "active_positions_count": 1
     },
     {
-      "date": "2026-10-21",
-      "cash": 881672.57,
-      "mtm_positions": 100277.8,
-      "total_equity": 981950.37,
-      "active_positions_count": 1
+      "date": "2024-01-25",
+      "cash": 752508.72,
+      "mtm_positions": 324217.3,
+      "total_equity": 1076726.02,
+      "active_positions_count": 3
     },
     {
-      "date": "2026-11-11",
-      "cash": 706645.15,
-      "mtm_positions": 303928.2,
-      "total_equity": 1010573.35,
+      "date": "2024-03-13",
+      "cash": 844190.6,
+      "mtm_positions": 213203.95,
+      "total_equity": 1057394.55,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-05-03",
+      "cash": 864673.31,
+      "mtm_positions": 214218.59,
+      "total_equity": 1078891.9,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-06-20",
+      "cash": 769585.91,
+      "mtm_positions": 324153.25,
+      "total_equity": 1093739.16,
       "active_positions_count": 3
     }
   ],
   "daily_equity_curve": [
     {
-      "date": "2025-09-01",
+      "date": "2021-11-15",
       "cash": 1000000.0,
       "mtm_positions": 0.0,
       "total_equity": 1000000.0,
       "active_positions_count": 0
     },
     {
-      "date": "2025-09-02",
+      "date": "2021-11-16",
       "cash": 1000000.0,
       "mtm_positions": 0.0,
       "total_equity": 1000000.0,
       "active_positions_count": 0
     },
     {
-      "date": "2025-09-03",
-      "cash": 900285.4,
-      "mtm_positions": 99714.6,
+      "date": "2021-11-17",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
       "total_equity": 1000000.0,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-09-04",
-      "cash": 900285.4,
-      "mtm_positions": 99733.2,
-      "total_equity": 1000018.6,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-09-05",
-      "cash": 900285.4,
-      "mtm_positions": 99798.3,
-      "total_equity": 1000083.7,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-09-08",
-      "cash": 900285.4,
-      "mtm_positions": 102430.2,
-      "total_equity": 1002715.6,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-09-09",
-      "cash": 900285.4,
-      "mtm_positions": 102718.5,
-      "total_equity": 1003003.9,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-09-10",
-      "cash": 900285.4,
-      "mtm_positions": 102411.6,
-      "total_equity": 1002697.0,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-09-11",
-      "cash": 800771.8,
-      "mtm_positions": 201720.6,
-      "total_equity": 1002492.4,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-09-12",
-      "cash": 800771.8,
-      "mtm_positions": 202863.7,
-      "total_equity": 1003635.5,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-09-15",
-      "cash": 800771.8,
-      "mtm_positions": 203161.1,
-      "total_equity": 1003932.9,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-09-16",
-      "cash": 701036.5,
-      "mtm_positions": 304382.49,
-      "total_equity": 1005418.99,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2025-09-17",
-      "cash": 804117.08,
-      "mtm_positions": 199887.4,
-      "total_equity": 1004004.48,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-09-18",
-      "cash": 804117.08,
-      "mtm_positions": 200896.49,
-      "total_equity": 1005013.57,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-09-19",
-      "cash": 804117.08,
-      "mtm_positions": 199782.9,
-      "total_equity": 1003899.98,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-09-22",
-      "cash": 704517.58,
-      "mtm_positions": 301796.0,
-      "total_equity": 1006313.58,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2025-09-23",
-      "cash": 704517.58,
-      "mtm_positions": 300124.21,
-      "total_equity": 1004641.79,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2025-09-24",
-      "cash": 704517.58,
-      "mtm_positions": 298103.29,
-      "total_equity": 1002620.87,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2025-09-25",
-      "cash": 801863.77,
-      "mtm_positions": 197613.9,
-      "total_equity": 999477.67,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-09-26",
-      "cash": 897639.84,
-      "mtm_positions": 98903.7,
-      "total_equity": 996543.54,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-09-29",
-      "cash": 897639.84,
-      "mtm_positions": 100277.1,
-      "total_equity": 997916.94,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-09-30",
-      "cash": 998879.7,
-      "mtm_positions": 0.0,
-      "total_equity": 998879.7,
       "active_positions_count": 0
     },
     {
-      "date": "2025-10-01",
-      "cash": 998879.7,
+      "date": "2021-11-18",
+      "cash": 1000000.0,
       "mtm_positions": 0.0,
-      "total_equity": 998879.7,
+      "total_equity": 1000000.0,
       "active_positions_count": 0
     },
     {
-      "date": "2025-10-03",
-      "cash": 998879.7,
+      "date": "2021-11-22",
+      "cash": 1000000.0,
       "mtm_positions": 0.0,
-      "total_equity": 998879.7,
+      "total_equity": 1000000.0,
       "active_positions_count": 0
     },
     {
-      "date": "2025-10-06",
-      "cash": 998879.7,
+      "date": "2021-11-23",
+      "cash": 1000000.0,
       "mtm_positions": 0.0,
-      "total_equity": 998879.7,
+      "total_equity": 1000000.0,
       "active_positions_count": 0
     },
     {
-      "date": "2025-10-07",
-      "cash": 801870.9,
-      "mtm_positions": 197008.8,
-      "total_equity": 998879.7,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-10-08",
-      "cash": 705000.5,
-      "mtm_positions": 292244.0,
-      "total_equity": 997244.5,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2025-10-09",
-      "cash": 606283.7,
-      "mtm_positions": 392687.59,
-      "total_equity": 998971.29,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2025-10-10",
-      "cash": 606283.7,
-      "mtm_positions": 392793.91,
-      "total_equity": 999077.61,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2025-10-13",
-      "cash": 606283.7,
-      "mtm_positions": 392830.8,
-      "total_equity": 999114.5,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2025-10-14",
-      "cash": 606283.7,
-      "mtm_positions": 390927.5,
-      "total_equity": 997211.2,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2025-10-15",
-      "cash": 606283.7,
-      "mtm_positions": 392203.61,
-      "total_equity": 998487.31,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2025-10-16",
-      "cash": 606283.7,
-      "mtm_positions": 396230.9,
-      "total_equity": 1002514.6,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2025-10-17",
-      "cash": 610240.26,
-      "mtm_positions": 392288.5,
-      "total_equity": 1002528.76,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2025-10-20",
-      "cash": 706946.73,
-      "mtm_positions": 293052.69,
-      "total_equity": 999999.42,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2025-10-21",
-      "cash": 807007.56,
-      "mtm_positions": 193024.4,
-      "total_equity": 1000031.96,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-10-23",
-      "cash": 905116.11,
-      "mtm_positions": 95608.8,
-      "total_equity": 1000724.91,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-10-24",
-      "cash": 1000097.32,
+      "date": "2021-11-24",
+      "cash": 1000000.0,
       "mtm_positions": 0.0,
-      "total_equity": 1000097.32,
+      "total_equity": 1000000.0,
       "active_positions_count": 0
     },
     {
-      "date": "2025-10-27",
-      "cash": 1000097.32,
+      "date": "2021-11-25",
+      "cash": 1000000.0,
       "mtm_positions": 0.0,
-      "total_equity": 1000097.32,
+      "total_equity": 1000000.0,
       "active_positions_count": 0
     },
     {
-      "date": "2025-10-28",
-      "cash": 900624.52,
-      "mtm_positions": 99472.8,
-      "total_equity": 1000097.32,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-10-29",
-      "cash": 801955.72,
-      "mtm_positions": 200132.4,
-      "total_equity": 1002088.12,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-10-30",
-      "cash": 801955.72,
-      "mtm_positions": 199732.8,
-      "total_equity": 1001688.52,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-10-31",
-      "cash": 801955.72,
-      "mtm_positions": 198165.6,
-      "total_equity": 1000121.32,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-11-03",
-      "cash": 801955.72,
-      "mtm_positions": 197320.8,
-      "total_equity": 999276.52,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-11-04",
-      "cash": 897845.65,
-      "mtm_positions": 99237.6,
-      "total_equity": 997083.25,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-11-06",
-      "cash": 897845.65,
-      "mtm_positions": 98179.2,
-      "total_equity": 996024.85,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-11-07",
-      "cash": 799019.45,
-      "mtm_positions": 197249.0,
-      "total_equity": 996268.45,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-11-10",
-      "cash": 799019.45,
-      "mtm_positions": 200816.41,
-      "total_equity": 999835.86,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-11-11",
-      "cash": 799019.45,
-      "mtm_positions": 201110.4,
-      "total_equity": 1000129.85,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-11-12",
-      "cash": 800966.93,
-      "mtm_positions": 196776.2,
-      "total_equity": 997743.13,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-11-13",
-      "cash": 702568.03,
-      "mtm_positions": 293890.4,
-      "total_equity": 996458.43,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2025-11-14",
-      "cash": 702568.03,
-      "mtm_positions": 293215.8,
-      "total_equity": 995783.83,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2025-11-17",
-      "cash": 604167.53,
-      "mtm_positions": 391060.3,
-      "total_equity": 995227.83,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2025-11-18",
-      "cash": 604167.53,
-      "mtm_positions": 389669.91,
-      "total_equity": 993837.44,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2025-11-19",
-      "cash": 604167.53,
-      "mtm_positions": 390838.1,
-      "total_equity": 995005.63,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2025-11-20",
-      "cash": 604167.53,
-      "mtm_positions": 393241.9,
-      "total_equity": 997409.43,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2025-11-21",
-      "cash": 700196.11,
-      "mtm_positions": 292715.1,
-      "total_equity": 992911.21,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2025-11-24",
-      "cash": 700196.11,
-      "mtm_positions": 293616.1,
-      "total_equity": 993812.21,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2025-11-25",
-      "cash": 796199.59,
-      "mtm_positions": 196223.2,
-      "total_equity": 992422.79,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-11-26",
-      "cash": 795891.68,
-      "mtm_positions": 198928.0,
-      "total_equity": 994819.68,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-11-27",
-      "cash": 697045.48,
-      "mtm_positions": 296744.69,
-      "total_equity": 993790.17,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2025-11-28",
-      "cash": 697045.48,
-      "mtm_positions": 297038.81,
-      "total_equity": 994084.29,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2025-12-01",
-      "cash": 796864.01,
-      "mtm_positions": 198011.1,
-      "total_equity": 994875.11,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-12-02",
-      "cash": 796864.01,
-      "mtm_positions": 196253.0,
-      "total_equity": 993117.01,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-12-03",
-      "cash": 890919.14,
-      "mtm_positions": 98796.5,
-      "total_equity": 989715.64,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-12-04",
-      "cash": 890919.14,
-      "mtm_positions": 98455.7,
-      "total_equity": 989374.84,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-12-05",
-      "cash": 693499.34,
-      "mtm_positions": 296287.3,
-      "total_equity": 989786.64,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2025-12-08",
-      "cash": 693499.34,
-      "mtm_positions": 292075.9,
-      "total_equity": 985575.24,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2025-12-09",
-      "cash": 787765.96,
-      "mtm_positions": 196317.59,
-      "total_equity": 984083.55,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-12-10",
-      "cash": 884368.21,
-      "mtm_positions": 99408.0,
-      "total_equity": 983776.21,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-12-11",
-      "cash": 884368.21,
-      "mtm_positions": 98005.8,
-      "total_equity": 982374.01,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-12-12",
-      "cash": 884368.21,
-      "mtm_positions": 98929.2,
-      "total_equity": 983297.41,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-12-15",
-      "cash": 884368.21,
-      "mtm_positions": 98820.9,
-      "total_equity": 983189.11,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-12-16",
-      "cash": 787382.21,
-      "mtm_positions": 194763.8,
-      "total_equity": 982146.01,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-12-17",
-      "cash": 787382.21,
-      "mtm_positions": 191409.9,
-      "total_equity": 978792.11,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-12-18",
-      "cash": 787382.21,
-      "mtm_positions": 192035.8,
-      "total_equity": 979418.01,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-12-19",
-      "cash": 881679.05,
-      "mtm_positions": 96141.1,
-      "total_equity": 977820.15,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-12-22",
-      "cash": 881679.05,
-      "mtm_positions": 97163.5,
-      "total_equity": 978842.55,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2025-12-23",
-      "cash": 784326.05,
-      "mtm_positions": 194126.0,
-      "total_equity": 978452.05,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-12-24",
-      "cash": 784326.05,
-      "mtm_positions": 195018.21,
-      "total_equity": 979344.26,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-12-26",
-      "cash": 784326.05,
-      "mtm_positions": 194362.4,
-      "total_equity": 978688.45,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-12-29",
-      "cash": 784326.05,
-      "mtm_positions": 193904.71,
-      "total_equity": 978230.76,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-12-30",
-      "cash": 786411.84,
-      "mtm_positions": 191507.0,
-      "total_equity": 977918.84,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2025-12-31",
-      "cash": 786411.84,
-      "mtm_positions": 192157.6,
-      "total_equity": 978569.44,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-01-01",
-      "cash": 786411.84,
-      "mtm_positions": 195572.0,
-      "total_equity": 981983.84,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-01-02",
-      "cash": 786411.84,
-      "mtm_positions": 198328.8,
-      "total_equity": 984740.64,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-01-05",
-      "cash": 786411.84,
-      "mtm_positions": 197774.2,
-      "total_equity": 984186.04,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-01-06",
-      "cash": 594620.84,
-      "mtm_positions": 393114.2,
-      "total_equity": 987735.04,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2026-01-07",
-      "cash": 795809.23,
-      "mtm_positions": 194083.7,
-      "total_equity": 989892.93,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-01-08",
-      "cash": 795809.23,
-      "mtm_positions": 191928.1,
-      "total_equity": 987737.33,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-01-09",
-      "cash": 795809.23,
-      "mtm_positions": 189922.9,
-      "total_equity": 985732.13,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-01-12",
-      "cash": 887798.89,
-      "mtm_positions": 97503.9,
-      "total_equity": 985302.79,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-01-13",
-      "cash": 789758.89,
-      "mtm_positions": 197193.0,
-      "total_equity": 986951.89,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-01-14",
-      "cash": 789758.89,
-      "mtm_positions": 193644.6,
-      "total_equity": 983403.49,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-01-16",
-      "cash": 787808.59,
-      "mtm_positions": 194199.6,
-      "total_equity": 982008.19,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-01-19",
-      "cash": 882811.19,
-      "mtm_positions": 96922.8,
-      "total_equity": 979733.99,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-01-20",
-      "cash": 785129.39,
-      "mtm_positions": 191726.1,
-      "total_equity": 976855.49,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-01-21",
-      "cash": 877959.27,
-      "mtm_positions": 95779.0,
-      "total_equity": 973738.27,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-01-22",
-      "cash": 877959.27,
-      "mtm_positions": 95530.5,
-      "total_equity": 973489.77,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-01-23",
-      "cash": 877959.27,
-      "mtm_positions": 95381.4,
-      "total_equity": 973340.67,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-01-27",
-      "cash": 875523.96,
-      "mtm_positions": 96659.4,
-      "total_equity": 972183.36,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-01-28",
-      "cash": 875523.96,
-      "mtm_positions": 97106.7,
-      "total_equity": 972630.66,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-01-29",
-      "cash": 780403.96,
-      "mtm_positions": 193355.6,
-      "total_equity": 973759.56,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-01-30",
-      "cash": 780403.96,
-      "mtm_positions": 192180.0,
-      "total_equity": 972583.96,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-02-02",
-      "cash": 780403.96,
-      "mtm_positions": 191013.8,
-      "total_equity": 971417.76,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-02-03",
-      "cash": 683823.16,
-      "mtm_positions": 291204.5,
-      "total_equity": 975027.66,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-02-04",
-      "cash": 683823.16,
-      "mtm_positions": 295537.9,
-      "total_equity": 979361.06,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-02-05",
-      "cash": 683823.16,
-      "mtm_positions": 293792.6,
-      "total_equity": 977615.76,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-02-06",
-      "cash": 683823.16,
-      "mtm_positions": 294323.5,
-      "total_equity": 978146.66,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-02-09",
-      "cash": 683823.16,
-      "mtm_positions": 295938.7,
-      "total_equity": 979761.86,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-02-10",
-      "cash": 783449.47,
-      "mtm_positions": 196133.4,
-      "total_equity": 979582.87,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-02-11",
-      "cash": 783449.47,
-      "mtm_positions": 196906.0,
-      "total_equity": 980355.47,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-02-12",
-      "cash": 784377.64,
-      "mtm_positions": 195952.6,
-      "total_equity": 980330.24,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-02-13",
-      "cash": 687458.44,
-      "mtm_positions": 290547.8,
-      "total_equity": 978006.24,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-02-16",
-      "cash": 687458.44,
-      "mtm_positions": 291170.0,
-      "total_equity": 978628.44,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-02-17",
-      "cash": 785954.22,
-      "mtm_positions": 193536.4,
-      "total_equity": 979490.62,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-02-18",
-      "cash": 696134.22,
-      "mtm_positions": 282593.99,
-      "total_equity": 978728.21,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-02-19",
-      "cash": 696134.22,
-      "mtm_positions": 278403.8,
-      "total_equity": 974538.02,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-02-20",
-      "cash": 790067.29,
-      "mtm_positions": 184966.2,
-      "total_equity": 975033.49,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-02-23",
-      "cash": 790067.29,
-      "mtm_positions": 185496.3,
-      "total_equity": 975563.59,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-02-24",
-      "cash": 692901.69,
-      "mtm_positions": 278279.8,
-      "total_equity": 971181.49,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-02-25",
-      "cash": 596267.19,
-      "mtm_positions": 380414.3,
-      "total_equity": 976681.49,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2026-02-26",
-      "cash": 689303.47,
-      "mtm_positions": 283245.3,
-      "total_equity": 972548.77,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-02-27",
-      "cash": 784019.49,
-      "mtm_positions": 184896.6,
-      "total_equity": 968916.09,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-03-02",
-      "cash": 779390.38,
-      "mtm_positions": 184298.8,
-      "total_equity": 963689.18,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-03-04",
-      "cash": 872479.03,
-      "mtm_positions": 86872.5,
-      "total_equity": 959351.53,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-03-05",
-      "cash": 777346.03,
-      "mtm_positions": 183373.5,
-      "total_equity": 960719.53,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-03-06",
-      "cash": 777346.03,
-      "mtm_positions": 181043.1,
-      "total_equity": 958389.13,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-03-09",
-      "cash": 856795.53,
-      "mtm_positions": 94601.6,
-      "total_equity": 951397.13,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-03-10",
-      "cash": 770305.53,
-      "mtm_positions": 183570.6,
-      "total_equity": 953876.13,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-03-11",
-      "cash": 770305.53,
-      "mtm_positions": 179747.9,
-      "total_equity": 950053.43,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-03-12",
-      "cash": 852852.6,
-      "mtm_positions": 93721.0,
-      "total_equity": 946573.6,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-03-13",
-      "cash": 852852.6,
-      "mtm_positions": 92855.2,
-      "total_equity": 945707.8,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-03-16",
-      "cash": 852852.6,
-      "mtm_positions": 94194.6,
-      "total_equity": 947047.2,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-03-17",
-      "cash": 852852.6,
-      "mtm_positions": 95363.8,
-      "total_equity": 948216.4,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-03-18",
-      "cash": 852852.6,
-      "mtm_positions": 95408.2,
-      "total_equity": 948260.8,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-03-19",
-      "cash": 852852.6,
-      "mtm_positions": 92507.4,
-      "total_equity": 945360.0,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-03-20",
-      "cash": 758115.0,
-      "mtm_positions": 186897.2,
-      "total_equity": 945012.2,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-03-23",
-      "cash": 937789.29,
+      "date": "2021-11-26",
+      "cash": 1000000.0,
       "mtm_positions": 0.0,
-      "total_equity": 937789.29,
+      "total_equity": 1000000.0,
       "active_positions_count": 0
     },
     {
-      "date": "2026-03-24",
-      "cash": 844141.89,
-      "mtm_positions": 93647.4,
-      "total_equity": 937789.29,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-03-25",
-      "cash": 844141.89,
-      "mtm_positions": 97270.8,
-      "total_equity": 941412.69,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-03-27",
-      "cash": 844141.89,
-      "mtm_positions": 93475.8,
-      "total_equity": 937617.69,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-03-30",
-      "cash": 844141.89,
-      "mtm_positions": 89410.2,
-      "total_equity": 933552.09,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-04-01",
-      "cash": 844141.89,
-      "mtm_positions": 90657.6,
-      "total_equity": 934799.49,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-04-02",
-      "cash": 748070.71,
-      "mtm_positions": 183121.2,
-      "total_equity": 931191.91,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-04-06",
-      "cash": 656119.51,
-      "mtm_positions": 275307.09,
-      "total_equity": 931426.6,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-04-07",
-      "cash": 563952.51,
-      "mtm_positions": 372833.5,
-      "total_equity": 936786.01,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2026-04-08",
-      "cash": 563952.51,
-      "mtm_positions": 390893.3,
-      "total_equity": 954845.81,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2026-04-09",
-      "cash": 563952.51,
-      "mtm_positions": 389779.5,
-      "total_equity": 953732.01,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2026-04-10",
-      "cash": 579380.15,
-      "mtm_positions": 377940.01,
-      "total_equity": 957320.16,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2026-04-13",
-      "cash": 584421.53,
-      "mtm_positions": 371947.4,
-      "total_equity": 956368.93,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2026-04-15",
-      "cash": 584421.53,
-      "mtm_positions": 376389.89,
-      "total_equity": 960811.42,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2026-04-16",
-      "cash": 584421.53,
-      "mtm_positions": 376362.2,
-      "total_equity": 960783.73,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2026-04-17",
-      "cash": 584421.53,
-      "mtm_positions": 378217.31,
-      "total_equity": 962638.84,
-      "active_positions_count": 4
-    },
-    {
-      "date": "2026-04-20",
-      "cash": 686328.34,
-      "mtm_positions": 278748.5,
-      "total_equity": 965076.84,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-04-21",
-      "cash": 686328.34,
-      "mtm_positions": 281295.0,
-      "total_equity": 967623.34,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-04-22",
-      "cash": 686328.34,
-      "mtm_positions": 276905.0,
-      "total_equity": 963233.34,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-04-23",
-      "cash": 686328.34,
-      "mtm_positions": 274589.5,
-      "total_equity": 960917.84,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-04-24",
-      "cash": 686328.34,
-      "mtm_positions": 273195.49,
-      "total_equity": 959523.83,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-04-27",
-      "cash": 677618.13,
-      "mtm_positions": 283645.9,
-      "total_equity": 961264.03,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-04-28",
-      "cash": 767957.61,
-      "mtm_positions": 191463.3,
-      "total_equity": 959420.91,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-04-29",
-      "cash": 767957.61,
-      "mtm_positions": 192490.79,
-      "total_equity": 960448.4,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-04-30",
-      "cash": 672620.71,
-      "mtm_positions": 286656.5,
-      "total_equity": 959277.21,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-05-04",
-      "cash": 672620.71,
-      "mtm_positions": 289825.2,
-      "total_equity": 962445.91,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-05-05",
-      "cash": 766322.98,
-      "mtm_positions": 195766.1,
-      "total_equity": 962089.08,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-05-06",
-      "cash": 871077.23,
-      "mtm_positions": 94980.6,
-      "total_equity": 966057.83,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-05-07",
-      "cash": 871077.23,
-      "mtm_positions": 93654.6,
-      "total_equity": 964731.83,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-05-08",
-      "cash": 871077.23,
-      "mtm_positions": 93381.6,
-      "total_equity": 964458.83,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-05-11",
-      "cash": 871077.23,
-      "mtm_positions": 93323.1,
-      "total_equity": 964400.33,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-05-12",
-      "cash": 962151.4,
+      "date": "2021-11-29",
+      "cash": 1000000.0,
       "mtm_positions": 0.0,
-      "total_equity": 962151.4,
+      "total_equity": 1000000.0,
       "active_positions_count": 0
     },
     {
-      "date": "2026-05-13",
-      "cash": 866533.9,
-      "mtm_positions": 95617.5,
-      "total_equity": 962151.4,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-05-14",
-      "cash": 866533.9,
-      "mtm_positions": 97267.5,
-      "total_equity": 963801.4,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-05-15",
-      "cash": 866533.9,
-      "mtm_positions": 95910.0,
-      "total_equity": 962443.9,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-05-18",
-      "cash": 866533.9,
-      "mtm_positions": 96960.0,
-      "total_equity": 963493.9,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-05-19",
-      "cash": 866533.9,
-      "mtm_positions": 96390.0,
-      "total_equity": 962923.9,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-05-20",
-      "cash": 866533.9,
-      "mtm_positions": 96240.0,
-      "total_equity": 962773.9,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-05-21",
-      "cash": 866533.9,
-      "mtm_positions": 96097.5,
-      "total_equity": 962631.4,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-05-22",
-      "cash": 866533.9,
-      "mtm_positions": 96412.5,
-      "total_equity": 962946.4,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-05-25",
-      "cash": 866533.9,
-      "mtm_positions": 96705.0,
-      "total_equity": 963238.9,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-05-26",
-      "cash": 771196.9,
-      "mtm_positions": 192357.0,
-      "total_equity": 963553.9,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-05-27",
-      "cash": 869162.19,
-      "mtm_positions": 97276.5,
-      "total_equity": 966438.69,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-05-29",
-      "cash": 869162.19,
-      "mtm_positions": 94140.0,
-      "total_equity": 963302.19,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-06-01",
-      "cash": 774968.79,
-      "mtm_positions": 187577.4,
-      "total_equity": 962546.19,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-06-02",
-      "cash": 774968.79,
-      "mtm_positions": 192851.9,
-      "total_equity": 967820.69,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-06-03",
-      "cash": 774968.79,
-      "mtm_positions": 184240.7,
-      "total_equity": 959209.49,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-06-04",
-      "cash": 774968.79,
-      "mtm_positions": 185139.0,
-      "total_equity": 960107.79,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-06-05",
-      "cash": 770441.61,
-      "mtm_positions": 187779.6,
-      "total_equity": 958221.21,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-06-08",
-      "cash": 770441.61,
-      "mtm_positions": 183807.0,
-      "total_equity": 954248.61,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-06-09",
-      "cash": 674816.61,
-      "mtm_positions": 281491.2,
-      "total_equity": 956307.81,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-06-10",
-      "cash": 670551.33,
-      "mtm_positions": 285006.31,
-      "total_equity": 955557.64,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-06-11",
-      "cash": 670551.33,
-      "mtm_positions": 286606.21,
-      "total_equity": 957157.54,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-06-12",
-      "cash": 670551.33,
-      "mtm_positions": 296670.3,
-      "total_equity": 967221.63,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-06-15",
-      "cash": 772393.83,
-      "mtm_positions": 201414.3,
-      "total_equity": 973808.13,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-06-16",
-      "cash": 781812.32,
-      "mtm_positions": 191355.31,
-      "total_equity": 973167.63,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-06-17",
-      "cash": 781812.32,
-      "mtm_positions": 192254.39,
-      "total_equity": 974066.71,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-06-18",
-      "cash": 781812.32,
-      "mtm_positions": 193309.8,
-      "total_equity": 975122.12,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-06-19",
-      "cash": 781812.32,
-      "mtm_positions": 193101.3,
-      "total_equity": 974913.62,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-06-22",
-      "cash": 781812.32,
-      "mtm_positions": 194151.6,
-      "total_equity": 975963.92,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-06-23",
-      "cash": 781812.32,
-      "mtm_positions": 191541.3,
-      "total_equity": 973353.62,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-06-24",
-      "cash": 873462.14,
-      "mtm_positions": 102195.3,
-      "total_equity": 975657.44,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-06-25",
-      "cash": 777444.14,
-      "mtm_positions": 198572.4,
-      "total_equity": 976016.54,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-06-29",
-      "cash": 777444.14,
-      "mtm_positions": 197245.2,
-      "total_equity": 974689.34,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-06-30",
-      "cash": 777444.14,
-      "mtm_positions": 197677.8,
-      "total_equity": 975121.94,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-07-01",
-      "cash": 879995.05,
-      "mtm_positions": 94863.6,
-      "total_equity": 974858.65,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-07-02",
-      "cash": 879995.05,
-      "mtm_positions": 95456.4,
-      "total_equity": 975451.45,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-07-03",
-      "cash": 879995.05,
-      "mtm_positions": 95955.6,
-      "total_equity": 975950.65,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-07-06",
-      "cash": 783769.05,
-      "mtm_positions": 193195.6,
-      "total_equity": 976964.65,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-07-07",
-      "cash": 783769.05,
-      "mtm_positions": 193596.0,
-      "total_equity": 977365.05,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-07-08",
-      "cash": 876231.85,
-      "mtm_positions": 95121.0,
-      "total_equity": 971352.85,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-07-09",
-      "cash": 876231.85,
-      "mtm_positions": 95612.4,
-      "total_equity": 971844.25,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-07-10",
-      "cash": 973141.48,
+      "date": "2021-11-30",
+      "cash": 1000000.0,
       "mtm_positions": 0.0,
-      "total_equity": 973141.48,
+      "total_equity": 1000000.0,
       "active_positions_count": 0
     },
     {
-      "date": "2026-07-13",
-      "cash": 877155.48,
-      "mtm_positions": 95986.0,
-      "total_equity": 973141.48,
-      "active_positions_count": 1
+      "date": "2021-12-01",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
     },
     {
-      "date": "2026-07-14",
-      "cash": 780024.18,
-      "mtm_positions": 193957.7,
-      "total_equity": 973981.88,
-      "active_positions_count": 2
+      "date": "2021-12-02",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
     },
     {
-      "date": "2026-07-15",
-      "cash": 780024.18,
-      "mtm_positions": 194042.59,
-      "total_equity": 974066.77,
-      "active_positions_count": 2
+      "date": "2021-12-03",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
     },
     {
-      "date": "2026-07-16",
-      "cash": 780024.18,
-      "mtm_positions": 194699.8,
-      "total_equity": 974723.98,
-      "active_positions_count": 2
+      "date": "2021-12-06",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
     },
     {
-      "date": "2026-07-17",
-      "cash": 683514.78,
-      "mtm_positions": 296002.11,
-      "total_equity": 979516.89,
-      "active_positions_count": 3
+      "date": "2021-12-07",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
     },
     {
-      "date": "2026-07-20",
-      "cash": 683514.78,
-      "mtm_positions": 297848.2,
-      "total_equity": 981362.98,
-      "active_positions_count": 3
+      "date": "2021-12-08",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
     },
     {
-      "date": "2026-07-21",
-      "cash": 683514.78,
-      "mtm_positions": 297539.5,
-      "total_equity": 981054.28,
-      "active_positions_count": 3
+      "date": "2021-12-09",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
     },
     {
-      "date": "2026-07-22",
-      "cash": 595526.78,
-      "mtm_positions": 383379.7,
-      "total_equity": 978906.48,
+      "date": "2021-12-10",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2021-12-13",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2021-12-14",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2021-12-15",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2021-12-16",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2021-12-17",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2021-12-20",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2021-12-21",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2021-12-22",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2021-12-23",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2021-12-24",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2021-12-27",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2021-12-28",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2021-12-29",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2021-12-30",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2021-12-31",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-03",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-04",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-05",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-06",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-07",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-10",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-11",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-12",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-13",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-14",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-17",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-18",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-19",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-20",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-21",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-24",
+      "cash": 1000000.0,
+      "mtm_positions": 0.0,
+      "total_equity": 1000000.0,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-01-25",
+      "cash": 604719.95,
+      "mtm_positions": 395280.46,
+      "total_equity": 1000000.41,
       "active_positions_count": 4
     },
     {
-      "date": "2026-07-23",
-      "cash": 595526.78,
-      "mtm_positions": 385193.4,
-      "total_equity": 980720.18,
+      "date": "2022-01-27",
+      "cash": 604719.95,
+      "mtm_positions": 389062.43,
+      "total_equity": 993782.38,
       "active_positions_count": 4
     },
     {
-      "date": "2026-07-24",
-      "cash": 595526.78,
-      "mtm_positions": 383881.71,
-      "total_equity": 979408.49,
+      "date": "2022-01-28",
+      "cash": 604719.95,
+      "mtm_positions": 387676.45,
+      "total_equity": 992396.4,
       "active_positions_count": 4
     },
     {
-      "date": "2026-07-27",
-      "cash": 696297.59,
-      "mtm_positions": 286300.09,
-      "total_equity": 982597.68,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-07-28",
-      "cash": 794788.22,
-      "mtm_positions": 188250.2,
-      "total_equity": 983038.42,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-07-29",
-      "cash": 794788.22,
-      "mtm_positions": 190278.8,
-      "total_equity": 985067.02,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-07-30",
-      "cash": 794788.22,
-      "mtm_positions": 190578.4,
-      "total_equity": 985366.62,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-07-31",
-      "cash": 795569.34,
-      "mtm_positions": 190208.7,
-      "total_equity": 985778.04,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-08-03",
-      "cash": 889675.46,
-      "mtm_positions": 100074.6,
-      "total_equity": 989750.06,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-08-04",
-      "cash": 889675.46,
-      "mtm_positions": 99375.0,
-      "total_equity": 989050.46,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-08-05",
-      "cash": 791255.46,
-      "mtm_positions": 198060.0,
-      "total_equity": 989315.46,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-08-06",
-      "cash": 791255.46,
-      "mtm_positions": 199604.6,
-      "total_equity": 990860.06,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-08-07",
-      "cash": 791255.46,
-      "mtm_positions": 195071.6,
-      "total_equity": 986327.06,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-08-10",
-      "cash": 791255.46,
-      "mtm_positions": 198108.0,
-      "total_equity": 989363.46,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-08-11",
-      "cash": 885957.93,
-      "mtm_positions": 101463.2,
-      "total_equity": 987421.13,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-08-12",
-      "cash": 885957.93,
-      "mtm_positions": 101632.8,
-      "total_equity": 987590.73,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-08-13",
-      "cash": 885957.93,
-      "mtm_positions": 102178.7,
-      "total_equity": 988136.63,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-08-14",
-      "cash": 986123.73,
-      "mtm_positions": 0.0,
-      "total_equity": 986123.73,
-      "active_positions_count": 0
-    },
-    {
-      "date": "2026-08-17",
-      "cash": 986123.73,
-      "mtm_positions": 0.0,
-      "total_equity": 986123.73,
-      "active_positions_count": 0
-    },
-    {
-      "date": "2026-08-18",
-      "cash": 986123.73,
-      "mtm_positions": 0.0,
-      "total_equity": 986123.73,
-      "active_positions_count": 0
-    },
-    {
-      "date": "2026-08-19",
-      "cash": 986123.73,
-      "mtm_positions": 0.0,
-      "total_equity": 986123.73,
-      "active_positions_count": 0
-    },
-    {
-      "date": "2026-08-20",
-      "cash": 888646.23,
-      "mtm_positions": 97477.5,
-      "total_equity": 986123.73,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-08-21",
-      "cash": 888646.23,
-      "mtm_positions": 97027.5,
-      "total_equity": 985673.73,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-08-24",
-      "cash": 888646.23,
-      "mtm_positions": 99525.0,
-      "total_equity": 988171.23,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-08-25",
-      "cash": 888646.23,
-      "mtm_positions": 99022.5,
-      "total_equity": 987668.73,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-08-26",
-      "cash": 888646.23,
-      "mtm_positions": 100575.0,
-      "total_equity": 989221.23,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-08-27",
-      "cash": 888646.23,
-      "mtm_positions": 100312.5,
-      "total_equity": 988958.73,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-08-28",
-      "cash": 695002.23,
-      "mtm_positions": 293761.5,
-      "total_equity": 988763.73,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-08-31",
-      "cash": 597584.23,
-      "mtm_positions": 393306.1,
-      "total_equity": 990890.33,
+      "date": "2022-01-31",
+      "cash": 604719.95,
+      "mtm_positions": 392551.71,
+      "total_equity": 997271.66,
       "active_positions_count": 4
     },
     {
-      "date": "2026-09-01",
-      "cash": 597584.23,
-      "mtm_positions": 393244.5,
-      "total_equity": 990828.73,
+      "date": "2022-02-01",
+      "cash": 604719.95,
+      "mtm_positions": 400706.63,
+      "total_equity": 1005426.58,
       "active_positions_count": 4
     },
     {
-      "date": "2026-09-02",
-      "cash": 692539.92,
-      "mtm_positions": 293606.0,
-      "total_equity": 986145.92,
-      "active_positions_count": 3
+      "date": "2022-02-02",
+      "cash": 604719.95,
+      "mtm_positions": 402384.62,
+      "total_equity": 1007104.57,
+      "active_positions_count": 4
     },
     {
-      "date": "2026-09-03",
-      "cash": 790405.59,
-      "mtm_positions": 192804.2,
-      "total_equity": 983209.79,
-      "active_positions_count": 2
+      "date": "2022-02-03",
+      "cash": 604719.95,
+      "mtm_positions": 397172.78,
+      "total_equity": 1001892.73,
+      "active_positions_count": 4
     },
     {
-      "date": "2026-09-04",
-      "cash": 790405.59,
-      "mtm_positions": 192120.0,
-      "total_equity": 982525.59,
-      "active_positions_count": 2
+      "date": "2022-02-04",
+      "cash": 604719.95,
+      "mtm_positions": 396265.45,
+      "total_equity": 1000985.4,
+      "active_positions_count": 4
     },
     {
-      "date": "2026-09-07",
-      "cash": 790405.59,
-      "mtm_positions": 189740.0,
-      "total_equity": 980145.59,
-      "active_positions_count": 2
+      "date": "2022-02-07",
+      "cash": 604719.95,
+      "mtm_positions": 389187.16,
+      "total_equity": 993907.11,
+      "active_positions_count": 4
     },
     {
-      "date": "2026-09-08",
-      "cash": 884518.74,
-      "mtm_positions": 95040.0,
-      "total_equity": 979558.74,
-      "active_positions_count": 1
+      "date": "2022-02-08",
+      "cash": 604719.95,
+      "mtm_positions": 390201.11,
+      "total_equity": 994921.06,
+      "active_positions_count": 4
     },
     {
-      "date": "2026-09-09",
-      "cash": 787581.74,
-      "mtm_positions": 191257.0,
-      "total_equity": 978838.74,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-09-10",
-      "cash": 787581.74,
-      "mtm_positions": 192671.0,
-      "total_equity": 980252.74,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-09-11",
-      "cash": 880150.37,
-      "mtm_positions": 97832.7,
-      "total_equity": 977983.07,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-09-15",
-      "cash": 880150.37,
-      "mtm_positions": 94954.8,
-      "total_equity": 975105.17,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-09-16",
-      "cash": 787406.37,
-      "mtm_positions": 186320.8,
-      "total_equity": 973727.17,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-09-17",
-      "cash": 880195.64,
-      "mtm_positions": 92000.0,
-      "total_equity": 972195.64,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-09-18",
-      "cash": 783250.04,
-      "mtm_positions": 188257.6,
-      "total_equity": 971507.64,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-09-21",
-      "cash": 783250.04,
-      "mtm_positions": 188093.6,
-      "total_equity": 971343.64,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-09-22",
-      "cash": 783250.04,
-      "mtm_positions": 187196.0,
-      "total_equity": 970446.04,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-09-23",
-      "cash": 783250.04,
-      "mtm_positions": 189832.8,
-      "total_equity": 973082.84,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-09-24",
-      "cash": 783250.04,
-      "mtm_positions": 186427.2,
-      "total_equity": 969677.24,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-09-25",
-      "cash": 783250.04,
-      "mtm_positions": 187300.0,
-      "total_equity": 970550.04,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-09-28",
-      "cash": 872563.1,
-      "mtm_positions": 96071.6,
-      "total_equity": 968634.7,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-09-29",
-      "cash": 872563.1,
-      "mtm_positions": 96702.4,
-      "total_equity": 969265.5,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-09-30",
-      "cash": 785571.1,
-      "mtm_positions": 182250.4,
-      "total_equity": 967821.5,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-10-01",
-      "cash": 963204.28,
+      "date": "2022-02-09",
+      "cash": 997525.17,
       "mtm_positions": 0.0,
-      "total_equity": 963204.28,
+      "total_equity": 997525.17,
       "active_positions_count": 0
     },
     {
-      "date": "2026-10-05",
-      "cash": 772152.28,
-      "mtm_positions": 191052.0,
-      "total_equity": 963204.28,
-      "active_positions_count": 2
+      "date": "2022-02-10",
+      "cash": 997525.17,
+      "mtm_positions": 0.0,
+      "total_equity": 997525.17,
+      "active_positions_count": 0
     },
     {
-      "date": "2026-10-06",
-      "cash": 772152.28,
-      "mtm_positions": 191181.6,
-      "total_equity": 963333.88,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-10-07",
-      "cash": 772152.28,
-      "mtm_positions": 191353.5,
-      "total_equity": 963505.78,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-10-08",
-      "cash": 772152.28,
-      "mtm_positions": 190548.0,
-      "total_equity": 962700.28,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-10-09",
-      "cash": 772152.28,
-      "mtm_positions": 194580.0,
-      "total_equity": 966732.28,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-10-12",
-      "cash": 772152.28,
-      "mtm_positions": 192105.0,
-      "total_equity": 964257.28,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-10-13",
-      "cash": 772152.28,
-      "mtm_positions": 200052.9,
-      "total_equity": 972205.18,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-10-14",
-      "cash": 780384.98,
-      "mtm_positions": 192827.59,
-      "total_equity": 973212.57,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-10-15",
-      "cash": 780384.98,
-      "mtm_positions": 198469.6,
-      "total_equity": 978854.58,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-10-16",
-      "cash": 780384.98,
-      "mtm_positions": 200320.6,
-      "total_equity": 980705.58,
-      "active_positions_count": 2
-    },
-    {
-      "date": "2026-10-19",
-      "cash": 881672.57,
-      "mtm_positions": 101786.6,
-      "total_equity": 983459.17,
+      "date": "2022-02-11",
+      "cash": 898822.17,
+      "mtm_positions": 98703.74,
+      "total_equity": 997525.91,
       "active_positions_count": 1
     },
     {
-      "date": "2026-10-21",
-      "cash": 881672.57,
-      "mtm_positions": 100277.8,
-      "total_equity": 981950.37,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-10-22",
-      "cash": 881672.57,
-      "mtm_positions": 100040.0,
-      "total_equity": 981712.57,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-10-23",
-      "cash": 881672.57,
-      "mtm_positions": 97211.0,
-      "total_equity": 978883.57,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-10-26",
-      "cash": 881672.57,
-      "mtm_positions": 103320.0,
-      "total_equity": 984992.57,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-10-27",
-      "cash": 881672.57,
-      "mtm_positions": 102721.4,
-      "total_equity": 984393.97,
-      "active_positions_count": 1
-    },
-    {
-      "date": "2026-10-28",
-      "cash": 784324.97,
-      "mtm_positions": 199125.99,
-      "total_equity": 983450.96,
+      "date": "2022-02-14",
+      "cash": 801744.67,
+      "mtm_positions": 194209.14,
+      "total_equity": 995953.81,
       "active_positions_count": 2
     },
     {
-      "date": "2026-10-29",
-      "cash": 789108.43,
-      "mtm_positions": 198985.8,
-      "total_equity": 988094.23,
+      "date": "2022-02-15",
+      "cash": 702410.27,
+      "mtm_positions": 299026.72,
+      "total_equity": 1001436.99,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-02-16",
+      "cash": 702410.27,
+      "mtm_positions": 297160.85,
+      "total_equity": 999571.12,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-02-17",
+      "cash": 702410.27,
+      "mtm_positions": 295924.73,
+      "total_equity": 998335.0,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-02-18",
+      "cash": 702410.27,
+      "mtm_positions": 295198.02,
+      "total_equity": 997608.29,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-02-21",
+      "cash": 797248.9,
+      "mtm_positions": 196384.21,
+      "total_equity": 993633.11,
       "active_positions_count": 2
     },
     {
-      "date": "2026-10-30",
-      "cash": 789108.43,
-      "mtm_positions": 197106.0,
-      "total_equity": 986214.43,
+      "date": "2022-02-22",
+      "cash": 792066.38,
+      "mtm_positions": 198125.87,
+      "total_equity": 990192.25,
       "active_positions_count": 2
     },
     {
-      "date": "2026-11-02",
-      "cash": 789108.43,
-      "mtm_positions": 204509.4,
-      "total_equity": 993617.83,
+      "date": "2022-02-23",
+      "cash": 792066.38,
+      "mtm_positions": 196461.03,
+      "total_equity": 988527.41,
       "active_positions_count": 2
     },
     {
-      "date": "2026-11-03",
-      "cash": 690817.93,
-      "mtm_positions": 305200.5,
-      "total_equity": 996018.43,
-      "active_positions_count": 3
+      "date": "2022-02-24",
+      "cash": 978584.9,
+      "mtm_positions": 0.0,
+      "total_equity": 978584.9,
+      "active_positions_count": 0
     },
     {
-      "date": "2026-11-04",
-      "cash": 690817.93,
-      "mtm_positions": 307470.9,
-      "total_equity": 998288.83,
-      "active_positions_count": 3
-    },
-    {
-      "date": "2026-11-05",
-      "cash": 798989.7,
-      "mtm_positions": 209236.8,
-      "total_equity": 1008226.5,
+      "date": "2022-02-25",
+      "cash": 784040.5,
+      "mtm_positions": 194543.72,
+      "total_equity": 978584.22,
       "active_positions_count": 2
     },
     {
-      "date": "2026-11-06",
-      "cash": 706645.15,
-      "mtm_positions": 302939.4,
-      "total_equity": 1009584.55,
+      "date": "2022-02-28",
+      "cash": 784040.5,
+      "mtm_positions": 202456.09,
+      "total_equity": 986496.59,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-03-02",
+      "cash": 784040.5,
+      "mtm_positions": 206907.39,
+      "total_equity": 990947.89,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-03-03",
+      "cash": 784040.5,
+      "mtm_positions": 207693.93,
+      "total_equity": 991734.43,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-03-04",
+      "cash": 784040.5,
+      "mtm_positions": 201746.02,
+      "total_equity": 985786.52,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-03-07",
+      "cash": 784040.5,
+      "mtm_positions": 198942.24,
+      "total_equity": 982982.74,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-03-08",
+      "cash": 683862.74,
+      "mtm_positions": 295948.55,
+      "total_equity": 979811.29,
       "active_positions_count": 3
     },
     {
-      "date": "2026-11-09",
-      "cash": 706645.15,
-      "mtm_positions": 303984.0,
-      "total_equity": 1010629.15,
+      "date": "2022-03-09",
+      "cash": 683862.74,
+      "mtm_positions": 297748.25,
+      "total_equity": 981610.99,
       "active_positions_count": 3
     },
     {
-      "date": "2026-11-11",
-      "cash": 706645.15,
-      "mtm_positions": 303928.2,
-      "total_equity": 1010573.35,
+      "date": "2022-03-10",
+      "cash": 683862.74,
+      "mtm_positions": 305091.44,
+      "total_equity": 988954.18,
       "active_positions_count": 3
     },
     {
-      "date": "2026-11-12",
-      "cash": 706645.15,
-      "mtm_positions": 304138.8,
-      "total_equity": 1010783.95,
+      "date": "2022-03-11",
+      "cash": 683862.74,
+      "mtm_positions": 308404.35,
+      "total_equity": 992267.09,
       "active_positions_count": 3
     },
     {
-      "date": "2026-11-13",
-      "cash": 811546.96,
-      "mtm_positions": 197416.8,
-      "total_equity": 1008963.76,
+      "date": "2022-03-14",
+      "cash": 693488.22,
+      "mtm_positions": 301447.93,
+      "total_equity": 994936.15,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-03-15",
+      "cash": 693488.22,
+      "mtm_positions": 300957.77,
+      "total_equity": 994445.99,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-03-16",
+      "cash": 693488.22,
+      "mtm_positions": 305209.78,
+      "total_equity": 998698.0,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-03-17",
+      "cash": 693488.22,
+      "mtm_positions": 309762.88,
+      "total_equity": 1003251.1,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-03-21",
+      "cash": 693488.22,
+      "mtm_positions": 306400.13,
+      "total_equity": 999888.35,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-03-22",
+      "cash": 693488.22,
+      "mtm_positions": 310681.0,
+      "total_equity": 1004169.22,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-03-23",
+      "cash": 900382.24,
+      "mtm_positions": 103856.19,
+      "total_equity": 1004238.43,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-03-24",
+      "cash": 900382.24,
+      "mtm_positions": 105030.75,
+      "total_equity": 1005412.99,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-03-25",
+      "cash": 900382.24,
+      "mtm_positions": 104412.56,
+      "total_equity": 1004794.8,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-03-28",
+      "cash": 801088.64,
+      "mtm_positions": 205231.03,
+      "total_equity": 1006319.67,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-03-29",
+      "cash": 905774.47,
+      "mtm_positions": 102530.4,
+      "total_equity": 1008304.87,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-03-30",
+      "cash": 905774.47,
+      "mtm_positions": 97586.8,
+      "total_equity": 1003361.27,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-03-31",
+      "cash": 905774.47,
+      "mtm_positions": 99640.4,
+      "total_equity": 1005414.87,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-04-01",
+      "cash": 905774.47,
+      "mtm_positions": 99579.2,
+      "total_equity": 1005353.67,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-04-04",
+      "cash": 807919.57,
+      "mtm_positions": 197502.1,
+      "total_equity": 1005421.67,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-04-05",
+      "cash": 807919.57,
+      "mtm_positions": 198801.4,
+      "total_equity": 1006720.97,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-04-06",
+      "cash": 807919.57,
+      "mtm_positions": 199133.2,
+      "total_equity": 1007052.77,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-04-07",
+      "cash": 807919.57,
+      "mtm_positions": 197873.3,
+      "total_equity": 1005792.87,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-04-08",
+      "cash": 807919.57,
+      "mtm_positions": 201966.7,
+      "total_equity": 1009886.27,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-04-11",
+      "cash": 912042.96,
+      "mtm_positions": 98465.9,
+      "total_equity": 1010508.86,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-04-12",
+      "cash": 812383.26,
+      "mtm_positions": 196173.0,
+      "total_equity": 1008556.26,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-04-13",
+      "cash": 812383.26,
+      "mtm_positions": 195002.45,
+      "total_equity": 1007385.71,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-04-18",
+      "cash": 908977.75,
+      "mtm_positions": 96579.6,
+      "total_equity": 1005557.35,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-04-19",
+      "cash": 809040.25,
+      "mtm_positions": 195021.66,
+      "total_equity": 1004061.91,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-04-20",
+      "cash": 905546.41,
+      "mtm_positions": 102874.27,
+      "total_equity": 1008420.68,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-04-21",
+      "cash": 805471.81,
+      "mtm_positions": 205357.57,
+      "total_equity": 1010829.38,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-04-22",
+      "cash": 805471.81,
+      "mtm_positions": 202430.03,
+      "total_equity": 1007901.84,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-04-25",
+      "cash": 702213.85,
+      "mtm_positions": 301469.1,
+      "total_equity": 1003682.95,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-04-26",
+      "cash": 702213.85,
+      "mtm_positions": 310374.34,
+      "total_equity": 1012588.19,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-04-27",
+      "cash": 808956.83,
+      "mtm_positions": 203433.65,
+      "total_equity": 1012390.48,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-04-28",
+      "cash": 713964.09,
+      "mtm_positions": 302116.7,
+      "total_equity": 1016080.79,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-04-29",
+      "cash": 713964.09,
+      "mtm_positions": 300977.05,
+      "total_equity": 1014941.14,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-05-02",
+      "cash": 713964.09,
+      "mtm_positions": 299214.55,
+      "total_equity": 1013178.64,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-05-04",
+      "cash": 907054.71,
+      "mtm_positions": 99099.0,
+      "total_equity": 1006153.71,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-05-05",
+      "cash": 1004111.65,
+      "mtm_positions": 0.0,
+      "total_equity": 1004111.65,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-05-06",
+      "cash": 803338.05,
+      "mtm_positions": 200776.34,
+      "total_equity": 1004114.39,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-05-09",
+      "cash": 803338.05,
+      "mtm_positions": 195462.83,
+      "total_equity": 998800.88,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-05-10",
+      "cash": 801167.56,
+      "mtm_positions": 194808.19,
+      "total_equity": 995975.75,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-05-11",
+      "cash": 897059.16,
+      "mtm_positions": 97546.95,
+      "total_equity": 994606.11,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-05-12",
+      "cash": 897059.16,
+      "mtm_positions": 96795.0,
+      "total_equity": 993854.16,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-05-13",
+      "cash": 798219.16,
+      "mtm_positions": 197176.7,
+      "total_equity": 995395.86,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-05-16",
+      "cash": 798219.16,
+      "mtm_positions": 199515.15,
+      "total_equity": 997734.31,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-05-17",
+      "cash": 798219.16,
+      "mtm_positions": 200934.3,
+      "total_equity": 999153.46,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-05-18",
+      "cash": 798219.16,
+      "mtm_positions": 203067.2,
+      "total_equity": 1001286.36,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-05-19",
+      "cash": 798219.16,
+      "mtm_positions": 198936.05,
+      "total_equity": 997155.21,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-05-20",
+      "cash": 798219.16,
+      "mtm_positions": 204823.4,
+      "total_equity": 1003042.56,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-05-23",
+      "cash": 699383.21,
+      "mtm_positions": 304331.59,
+      "total_equity": 1003714.8,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-05-24",
+      "cash": 801294.33,
+      "mtm_positions": 200341.66,
+      "total_equity": 1001635.99,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-05-25",
+      "cash": 801294.33,
+      "mtm_positions": 201210.05,
+      "total_equity": 1002504.38,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-05-26",
+      "cash": 701436.63,
+      "mtm_positions": 301913.6,
+      "total_equity": 1003350.23,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-05-27",
+      "cash": 802434.21,
+      "mtm_positions": 202092.6,
+      "total_equity": 1004526.81,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-05-30",
+      "cash": 802434.21,
+      "mtm_positions": 201573.35,
+      "total_equity": 1004007.56,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-05-31",
+      "cash": 604843.91,
+      "mtm_positions": 402012.7,
+      "total_equity": 1006856.61,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-06-01",
+      "cash": 604843.91,
+      "mtm_positions": 403805.33,
+      "total_equity": 1008649.24,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-06-02",
+      "cash": 604843.91,
+      "mtm_positions": 406193.44,
+      "total_equity": 1011037.35,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-06-03",
+      "cash": 604843.91,
+      "mtm_positions": 404765.13,
+      "total_equity": 1009609.04,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-06-06",
+      "cash": 708400.28,
+      "mtm_positions": 301925.47,
+      "total_equity": 1010325.75,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-06-07",
+      "cash": 708400.28,
+      "mtm_positions": 296897.58,
+      "total_equity": 1005297.86,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-06-08",
+      "cash": 708400.28,
+      "mtm_positions": 297204.99,
+      "total_equity": 1005605.27,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-06-09",
+      "cash": 710880.72,
+      "mtm_positions": 296648.87,
+      "total_equity": 1007529.59,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-06-10",
+      "cash": 710880.72,
+      "mtm_positions": 292835.71,
+      "total_equity": 1003716.43,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-06-13",
+      "cash": 896269.46,
+      "mtm_positions": 100912.5,
+      "total_equity": 997181.96,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-06-14",
+      "cash": 794190.82,
+      "mtm_positions": 197728.0,
+      "total_equity": 991918.82,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-06-15",
+      "cash": 794190.82,
+      "mtm_positions": 200268.0,
+      "total_equity": 994458.82,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-06-16",
+      "cash": 794190.82,
+      "mtm_positions": 197880.0,
+      "total_equity": 992070.82,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-06-17",
+      "cash": 695052.77,
+      "mtm_positions": 300646.81,
+      "total_equity": 995699.58,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-06-20",
+      "cash": 695052.77,
+      "mtm_positions": 297282.42,
+      "total_equity": 992335.19,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-06-21",
+      "cash": 598694.27,
+      "mtm_positions": 398342.21,
+      "total_equity": 997036.48,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-06-22",
+      "cash": 598694.27,
+      "mtm_positions": 394188.31,
+      "total_equity": 992882.58,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-06-23",
+      "cash": 598694.27,
+      "mtm_positions": 401734.32,
+      "total_equity": 1000428.59,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-06-24",
+      "cash": 598694.27,
+      "mtm_positions": 405262.29,
+      "total_equity": 1003956.56,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-06-27",
+      "cash": 598694.27,
+      "mtm_positions": 405855.53,
+      "total_equity": 1004549.8,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-06-28",
+      "cash": 803024.56,
+      "mtm_positions": 201895.99,
+      "total_equity": 1004920.55,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-06-29",
+      "cash": 704192.31,
+      "mtm_positions": 300726.11,
+      "total_equity": 1004918.42,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-06-30",
+      "cash": 604477.11,
+      "mtm_positions": 400125.96,
+      "total_equity": 1004603.07,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-07-01",
+      "cash": 704623.73,
+      "mtm_positions": 298641.72,
+      "total_equity": 1003265.45,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-07-04",
+      "cash": 704623.73,
+      "mtm_positions": 301177.96,
+      "total_equity": 1005801.69,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-07-05",
+      "cash": 800881.43,
+      "mtm_positions": 202277.49,
+      "total_equity": 1003158.92,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-07-06",
+      "cash": 800881.43,
+      "mtm_positions": 204037.51,
+      "total_equity": 1004918.94,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-07-07",
+      "cash": 700943.63,
+      "mtm_positions": 307168.19,
+      "total_equity": 1008111.82,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-07-08",
+      "cash": 700943.63,
+      "mtm_positions": 306936.75,
+      "total_equity": 1007880.38,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-07-11",
+      "cash": 707681.34,
+      "mtm_positions": 301855.15,
+      "total_equity": 1009536.49,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-07-12",
+      "cash": 707681.34,
+      "mtm_positions": 303604.04,
+      "total_equity": 1011285.38,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-07-13",
+      "cash": 707681.34,
+      "mtm_positions": 305478.26,
+      "total_equity": 1013159.6,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-07-14",
+      "cash": 707681.34,
+      "mtm_positions": 302133.83,
+      "total_equity": 1009815.17,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-07-15",
+      "cash": 807320.7,
+      "mtm_positions": 200782.5,
+      "total_equity": 1008103.2,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-07-18",
+      "cash": 807320.7,
+      "mtm_positions": 207634.21,
+      "total_equity": 1014954.91,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-07-19",
+      "cash": 706616.85,
+      "mtm_positions": 313028.56,
+      "total_equity": 1019645.41,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-07-20",
+      "cash": 608508.05,
+      "mtm_positions": 409791.1,
+      "total_equity": 1018299.15,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-07-21",
+      "cash": 612331.19,
+      "mtm_positions": 408891.85,
+      "total_equity": 1021223.04,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-07-22",
+      "cash": 612331.19,
+      "mtm_positions": 410641.4,
+      "total_equity": 1022972.59,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-07-25",
+      "cash": 612331.19,
+      "mtm_positions": 411291.3,
+      "total_equity": 1023622.49,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-07-26",
+      "cash": 612331.19,
+      "mtm_positions": 406221.35,
+      "total_equity": 1018552.54,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-07-27",
+      "cash": 612331.19,
+      "mtm_positions": 411462.3,
+      "total_equity": 1023793.49,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-07-28",
+      "cash": 612331.19,
+      "mtm_positions": 417865.94,
+      "total_equity": 1030197.13,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-07-29",
+      "cash": 723390.89,
+      "mtm_positions": 311017.15,
+      "total_equity": 1034408.04,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-08-01",
+      "cash": 624058.39,
+      "mtm_positions": 411251.8,
+      "total_equity": 1035310.19,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-08-02",
+      "cash": 729302.27,
+      "mtm_positions": 304154.65,
+      "total_equity": 1033456.92,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-08-03",
+      "cash": 832586.04,
+      "mtm_positions": 202104.85,
+      "total_equity": 1034690.89,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-08-04",
+      "cash": 933810.18,
+      "mtm_positions": 100292.5,
+      "total_equity": 1034102.68,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-08-05",
+      "cash": 830711.58,
+      "mtm_positions": 203426.1,
+      "total_equity": 1034137.68,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-08-08",
+      "cash": 728251.18,
+      "mtm_positions": 305971.5,
+      "total_equity": 1034222.68,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-08-10",
+      "cash": 728251.18,
+      "mtm_positions": 309155.9,
+      "total_equity": 1037407.08,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-08-11",
+      "cash": 728251.18,
+      "mtm_positions": 311141.0,
+      "total_equity": 1039392.18,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-08-12",
+      "cash": 728251.18,
+      "mtm_positions": 311902.4,
+      "total_equity": 1040153.58,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-08-16",
+      "cash": 728251.18,
+      "mtm_positions": 313964.9,
+      "total_equity": 1042216.08,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-08-17",
+      "cash": 829708.39,
+      "mtm_positions": 212558.95,
+      "total_equity": 1042267.34,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-08-18",
+      "cash": 938489.33,
+      "mtm_positions": 106094.8,
+      "total_equity": 1044584.13,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-08-19",
+      "cash": 938489.33,
+      "mtm_positions": 108418.8,
+      "total_equity": 1046908.13,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-08-22",
+      "cash": 938489.33,
+      "mtm_positions": 105316.4,
+      "total_equity": 1043805.73,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-08-23",
+      "cash": 938489.33,
+      "mtm_positions": 105114.8,
+      "total_equity": 1043604.13,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-08-24",
+      "cash": 1044268.41,
+      "mtm_positions": 0.0,
+      "total_equity": 1044268.41,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-08-25",
+      "cash": 1044268.41,
+      "mtm_positions": 0.0,
+      "total_equity": 1044268.41,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-08-26",
+      "cash": 1044268.41,
+      "mtm_positions": 0.0,
+      "total_equity": 1044268.41,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-08-29",
+      "cash": 735847.41,
+      "mtm_positions": 308422.31,
+      "total_equity": 1044269.72,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-08-30",
+      "cash": 735847.41,
+      "mtm_positions": 314004.17,
+      "total_equity": 1049851.58,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-09-01",
+      "cash": 631799.76,
+      "mtm_positions": 412102.55,
+      "total_equity": 1043902.31,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-09-02",
+      "cash": 631799.76,
+      "mtm_positions": 409492.1,
+      "total_equity": 1041291.86,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-09-05",
+      "cash": 631799.76,
+      "mtm_positions": 410508.71,
+      "total_equity": 1042308.47,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-09-06",
+      "cash": 626565.24,
+      "mtm_positions": 416043.99,
+      "total_equity": 1042609.23,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-09-07",
+      "cash": 626565.24,
+      "mtm_positions": 415346.92,
+      "total_equity": 1041912.16,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-09-08",
+      "cash": 626565.24,
+      "mtm_positions": 418741.31,
+      "total_equity": 1045306.55,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-09-09",
+      "cash": 626565.24,
+      "mtm_positions": 418596.59,
+      "total_equity": 1045161.83,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-09-12",
+      "cash": 626565.24,
+      "mtm_positions": 422254.92,
+      "total_equity": 1048820.16,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-09-13",
+      "cash": 837816.79,
+      "mtm_positions": 211219.1,
+      "total_equity": 1049035.89,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-09-14",
+      "cash": 837816.79,
+      "mtm_positions": 211789.54,
+      "total_equity": 1049606.33,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-09-15",
+      "cash": 948712.98,
+      "mtm_positions": 102271.2,
+      "total_equity": 1050984.18,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-09-16",
+      "cash": 942823.0,
+      "mtm_positions": 104249.2,
+      "total_equity": 1047072.2,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-09-19",
+      "cash": 942823.0,
+      "mtm_positions": 103352.4,
+      "total_equity": 1046175.4,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-09-20",
+      "cash": 838860.7,
+      "mtm_positions": 208690.3,
+      "total_equity": 1047551.0,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-09-21",
+      "cash": 838860.7,
+      "mtm_positions": 207301.39,
+      "total_equity": 1046162.09,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-09-22",
+      "cash": 838860.7,
+      "mtm_positions": 206773.2,
+      "total_equity": 1045633.9,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-09-23",
+      "cash": 838860.7,
+      "mtm_positions": 206693.4,
+      "total_equity": 1045554.1,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-09-26",
+      "cash": 938814.53,
+      "mtm_positions": 102679.8,
+      "total_equity": 1041494.33,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-09-27",
+      "cash": 834864.63,
+      "mtm_positions": 206226.79,
+      "total_equity": 1041091.42,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-09-28",
+      "cash": 731652.53,
+      "mtm_positions": 309030.97,
+      "total_equity": 1040683.5,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-09-29",
+      "cash": 728043.57,
+      "mtm_positions": 311914.45,
+      "total_equity": 1039958.02,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-09-30",
+      "cash": 728043.57,
+      "mtm_positions": 313942.06,
+      "total_equity": 1041985.63,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-10-03",
+      "cash": 728043.57,
+      "mtm_positions": 310369.08,
+      "total_equity": 1038412.65,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-10-04",
+      "cash": 731447.5,
+      "mtm_positions": 312965.9,
+      "total_equity": 1044413.4,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-10-06",
+      "cash": 731447.5,
+      "mtm_positions": 313242.59,
+      "total_equity": 1044690.09,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-10-07",
+      "cash": 731447.5,
+      "mtm_positions": 312378.79,
+      "total_equity": 1043826.29,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-10-10",
+      "cash": 731447.5,
+      "mtm_positions": 311223.68,
+      "total_equity": 1042671.18,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-10-11",
+      "cash": 731447.5,
+      "mtm_positions": 307572.46,
+      "total_equity": 1039019.96,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-10-12",
+      "cash": 627245.5,
+      "mtm_positions": 417602.19,
+      "total_equity": 1044847.69,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-10-13",
+      "cash": 732508.83,
+      "mtm_positions": 307141.37,
+      "total_equity": 1039650.2,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-10-14",
+      "cash": 835876.28,
+      "mtm_positions": 206880.6,
+      "total_equity": 1042756.88,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-10-17",
+      "cash": 734264.28,
+      "mtm_positions": 311097.35,
+      "total_equity": 1045361.63,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-10-18",
+      "cash": 734264.28,
+      "mtm_positions": 314043.2,
+      "total_equity": 1048307.48,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-10-19",
+      "cash": 839264.16,
+      "mtm_positions": 209415.8,
+      "total_equity": 1048679.96,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-10-20",
+      "cash": 734949.76,
+      "mtm_positions": 314324.21,
+      "total_equity": 1049273.97,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-10-21",
+      "cash": 734949.76,
+      "mtm_positions": 314839.1,
+      "total_equity": 1049788.86,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-10-24",
+      "cash": 734949.76,
+      "mtm_positions": 318010.7,
+      "total_equity": 1052960.46,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-10-25",
+      "cash": 847737.84,
+      "mtm_positions": 209276.9,
+      "total_equity": 1057014.74,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-10-27",
+      "cash": 847737.84,
+      "mtm_positions": 214238.0,
+      "total_equity": 1061975.84,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-10-28",
+      "cash": 847737.84,
+      "mtm_positions": 214066.0,
+      "total_equity": 1061803.84,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-10-31",
+      "cash": 847737.84,
+      "mtm_positions": 214687.5,
+      "total_equity": 1062425.34,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-11-01",
+      "cash": 750588.46,
+      "mtm_positions": 315210.24,
+      "total_equity": 1065798.7,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-11-02",
+      "cash": 750588.46,
+      "mtm_positions": 314415.8,
+      "total_equity": 1065004.26,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-11-03",
+      "cash": 750588.46,
+      "mtm_positions": 313705.0,
+      "total_equity": 1064293.46,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-11-04",
+      "cash": 852129.34,
+      "mtm_positions": 214362.05,
+      "total_equity": 1066491.39,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-11-07",
+      "cash": 746616.84,
+      "mtm_positions": 321118.3,
+      "total_equity": 1067735.14,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-11-09",
+      "cash": 746616.84,
+      "mtm_positions": 318930.15,
+      "total_equity": 1065546.99,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-11-10",
+      "cash": 746616.84,
+      "mtm_positions": 317682.05,
+      "total_equity": 1064298.89,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-11-11",
+      "cash": 746616.84,
+      "mtm_positions": 320072.45,
+      "total_equity": 1066689.29,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-11-14",
+      "cash": 746616.84,
+      "mtm_positions": 318754.26,
+      "total_equity": 1065371.1,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-11-15",
+      "cash": 746616.84,
+      "mtm_positions": 322205.94,
+      "total_equity": 1068822.78,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-11-16",
+      "cash": 960817.24,
+      "mtm_positions": 105064.0,
+      "total_equity": 1065881.24,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-11-17",
+      "cash": 960817.24,
+      "mtm_positions": 105777.0,
+      "total_equity": 1066594.24,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-11-18",
+      "cash": 854461.04,
+      "mtm_positions": 212196.45,
+      "total_equity": 1066657.49,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-11-21",
+      "cash": 854461.04,
+      "mtm_positions": 212347.0,
+      "total_equity": 1066808.04,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-11-22",
+      "cash": 960434.18,
+      "mtm_positions": 105946.45,
+      "total_equity": 1066380.63,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-11-23",
+      "cash": 960434.18,
+      "mtm_positions": 107078.85,
+      "total_equity": 1067513.03,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-11-24",
+      "cash": 853850.88,
+      "mtm_positions": 214168.74,
+      "total_equity": 1068019.62,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-11-25",
+      "cash": 853850.88,
+      "mtm_positions": 214537.05,
+      "total_equity": 1068387.93,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-11-28",
+      "cash": 853850.88,
+      "mtm_positions": 214254.56,
+      "total_equity": 1068105.44,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-11-29",
+      "cash": 747814.88,
+      "mtm_positions": 321243.28,
+      "total_equity": 1069058.16,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-11-30",
+      "cash": 747814.88,
+      "mtm_positions": 321366.25,
+      "total_equity": 1069181.13,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-12-01",
+      "cash": 643545.38,
+      "mtm_positions": 426419.21,
+      "total_equity": 1069964.59,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2022-12-02",
+      "cash": 752304.94,
+      "mtm_positions": 314668.76,
+      "total_equity": 1066973.7,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-12-05",
+      "cash": 752304.94,
+      "mtm_positions": 314138.93,
+      "total_equity": 1066443.87,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-12-06",
+      "cash": 956652.97,
+      "mtm_positions": 109149.76,
+      "total_equity": 1065802.73,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-12-07",
+      "cash": 850605.72,
+      "mtm_positions": 215019.05,
+      "total_equity": 1065624.77,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-12-08",
+      "cash": 851913.52,
+      "mtm_positions": 213385.8,
+      "total_equity": 1065299.32,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-12-09",
+      "cash": 745678.57,
+      "mtm_positions": 318721.9,
+      "total_equity": 1064400.47,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-12-12",
+      "cash": 745678.57,
+      "mtm_positions": 318657.6,
+      "total_equity": 1064336.17,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-12-13",
+      "cash": 745678.57,
+      "mtm_positions": 320188.9,
+      "total_equity": 1065867.47,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-12-14",
+      "cash": 745678.57,
+      "mtm_positions": 320605.05,
+      "total_equity": 1066283.62,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-12-15",
+      "cash": 745678.57,
+      "mtm_positions": 318447.35,
+      "total_equity": 1064125.92,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-12-16",
+      "cash": 745678.57,
+      "mtm_positions": 316625.55,
+      "total_equity": 1062304.12,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-12-19",
+      "cash": 745678.57,
+      "mtm_positions": 316968.4,
+      "total_equity": 1062646.97,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-12-20",
+      "cash": 848842.24,
+      "mtm_positions": 211752.7,
+      "total_equity": 1060594.94,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-12-21",
+      "cash": 848842.24,
+      "mtm_positions": 212767.9,
+      "total_equity": 1061610.14,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-12-22",
+      "cash": 951957.51,
+      "mtm_positions": 108139.55,
+      "total_equity": 1060097.06,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2022-12-23",
+      "cash": 1058869.16,
+      "mtm_positions": 0.0,
+      "total_equity": 1058869.16,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-12-26",
+      "cash": 1058869.16,
+      "mtm_positions": 0.0,
+      "total_equity": 1058869.16,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-12-27",
+      "cash": 1058869.16,
+      "mtm_positions": 0.0,
+      "total_equity": 1058869.16,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2022-12-28",
+      "cash": 849609.51,
+      "mtm_positions": 209259.65,
+      "total_equity": 1058869.16,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2022-12-29",
+      "cash": 744275.71,
+      "mtm_positions": 312504.0,
+      "total_equity": 1056779.71,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2022-12-30",
+      "cash": 744275.71,
+      "mtm_positions": 313024.55,
+      "total_equity": 1057300.26,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-01-02",
+      "cash": 744275.71,
+      "mtm_positions": 314447.0,
+      "total_equity": 1058722.71,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-01-03",
+      "cash": 744275.71,
+      "mtm_positions": 314638.4,
+      "total_equity": 1058914.11,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-01-04",
+      "cash": 744275.71,
+      "mtm_positions": 311510.75,
+      "total_equity": 1055786.46,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-01-05",
+      "cash": 841381.01,
+      "mtm_positions": 209360.65,
+      "total_equity": 1050741.66,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-01-06",
+      "cash": 841381.01,
+      "mtm_positions": 206865.9,
+      "total_equity": 1048246.91,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-01-09",
+      "cash": 738462.56,
+      "mtm_positions": 311106.85,
+      "total_equity": 1049569.41,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-01-10",
+      "cash": 738462.56,
+      "mtm_positions": 309113.0,
+      "total_equity": 1047575.56,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-01-11",
+      "cash": 840819.2,
+      "mtm_positions": 208023.5,
+      "total_equity": 1048842.7,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-01-12",
+      "cash": 736608.0,
+      "mtm_positions": 313695.6,
+      "total_equity": 1050303.6,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-01-13",
+      "cash": 736608.0,
+      "mtm_positions": 319610.95,
+      "total_equity": 1056218.95,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-01-16",
+      "cash": 736608.0,
+      "mtm_positions": 313961.95,
+      "total_equity": 1050569.95,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-01-17",
+      "cash": 736608.0,
+      "mtm_positions": 313595.7,
+      "total_equity": 1050203.7,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-01-18",
+      "cash": 736608.0,
+      "mtm_positions": 316923.05,
+      "total_equity": 1053531.05,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-01-19",
+      "cash": 737441.98,
+      "mtm_positions": 315718.71,
+      "total_equity": 1053160.69,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-01-20",
+      "cash": 737441.98,
+      "mtm_positions": 315103.8,
+      "total_equity": 1052545.78,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-01-23",
+      "cash": 843054.99,
+      "mtm_positions": 211086.6,
+      "total_equity": 1054141.59,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-01-24",
+      "cash": 843054.99,
+      "mtm_positions": 211821.0,
+      "total_equity": 1054875.99,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-01-25",
+      "cash": 943813.71,
+      "mtm_positions": 109196.8,
+      "total_equity": 1053010.51,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-01-27",
+      "cash": 1051465.95,
+      "mtm_positions": 0.0,
+      "total_equity": 1051465.95,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2023-01-30",
+      "cash": 946881.45,
+      "mtm_positions": 104584.5,
+      "total_equity": 1051465.95,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-01-31",
+      "cash": 842785.85,
+      "mtm_positions": 209746.9,
+      "total_equity": 1052532.75,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-02-01",
+      "cash": 737709.05,
+      "mtm_positions": 317898.41,
+      "total_equity": 1055607.46,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-02-02",
+      "cash": 737709.05,
+      "mtm_positions": 318799.0,
+      "total_equity": 1056508.05,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-02-03",
+      "cash": 737709.05,
+      "mtm_positions": 321249.95,
+      "total_equity": 1058959.0,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-02-06",
+      "cash": 737709.05,
+      "mtm_positions": 316460.0,
+      "total_equity": 1054169.05,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-02-07",
+      "cash": 737709.05,
+      "mtm_positions": 317229.35,
+      "total_equity": 1054938.4,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-02-08",
+      "cash": 737709.05,
+      "mtm_positions": 318918.15,
+      "total_equity": 1056627.2,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-02-09",
+      "cash": 737709.05,
+      "mtm_positions": 318764.19,
+      "total_equity": 1056473.24,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-02-10",
+      "cash": 737709.05,
+      "mtm_positions": 317996.4,
+      "total_equity": 1055705.45,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-02-13",
+      "cash": 845488.46,
+      "mtm_positions": 211360.9,
+      "total_equity": 1056849.36,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-02-14",
+      "cash": 846951.02,
+      "mtm_positions": 209916.08,
+      "total_equity": 1056867.1,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-02-15",
+      "cash": 845909.45,
+      "mtm_positions": 210019.83,
+      "total_equity": 1055929.28,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-02-16",
+      "cash": 845909.45,
+      "mtm_positions": 210033.11,
+      "total_equity": 1055942.56,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-02-17",
+      "cash": 845909.45,
+      "mtm_positions": 210705.88,
+      "total_equity": 1056615.33,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-02-20",
+      "cash": 845909.45,
+      "mtm_positions": 209764.41,
+      "total_equity": 1055673.86,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-02-21",
+      "cash": 845909.45,
+      "mtm_positions": 210126.77,
+      "total_equity": 1056036.22,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-02-22",
+      "cash": 845909.45,
+      "mtm_positions": 208169.69,
+      "total_equity": 1054079.14,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-02-23",
+      "cash": 845909.45,
+      "mtm_positions": 208700.65,
+      "total_equity": 1054610.1,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-02-24",
+      "cash": 845909.45,
+      "mtm_positions": 208719.75,
+      "total_equity": 1054629.2,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-02-27",
+      "cash": 845909.45,
+      "mtm_positions": 207239.1,
+      "total_equity": 1053148.55,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-02-28",
+      "cash": 842656.67,
+      "mtm_positions": 207412.1,
+      "total_equity": 1050068.77,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-03-01",
+      "cash": 842656.67,
+      "mtm_positions": 210301.0,
+      "total_equity": 1052957.67,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-03-02",
+      "cash": 738468.67,
+      "mtm_positions": 313744.2,
+      "total_equity": 1052212.87,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-03-03",
+      "cash": 738468.67,
+      "mtm_positions": 317166.4,
+      "total_equity": 1055635.07,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-03-06",
+      "cash": 748384.26,
+      "mtm_positions": 316229.5,
+      "total_equity": 1064613.76,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-03-08",
+      "cash": 643281.86,
+      "mtm_positions": 421020.79,
+      "total_equity": 1064302.65,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-03-09",
+      "cash": 638753.2,
+      "mtm_positions": 419677.31,
+      "total_equity": 1058430.51,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-03-10",
+      "cash": 638753.2,
+      "mtm_positions": 416204.25,
+      "total_equity": 1054957.45,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-03-13",
+      "cash": 942420.21,
+      "mtm_positions": 105796.6,
+      "total_equity": 1048216.81,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-03-14",
+      "cash": 734438.46,
+      "mtm_positions": 313062.95,
+      "total_equity": 1047501.41,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-03-15",
+      "cash": 734068.78,
+      "mtm_positions": 312240.25,
+      "total_equity": 1046309.03,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-03-16",
+      "cash": 734068.78,
+      "mtm_positions": 309544.51,
+      "total_equity": 1043613.29,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-03-17",
+      "cash": 632331.18,
+      "mtm_positions": 414934.85,
+      "total_equity": 1047266.03,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-03-20",
+      "cash": 632331.18,
+      "mtm_positions": 409411.6,
+      "total_equity": 1041742.78,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-03-21",
+      "cash": 632331.18,
+      "mtm_positions": 412445.29,
+      "total_equity": 1044776.47,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-03-22",
+      "cash": 632331.18,
+      "mtm_positions": 414400.1,
+      "total_equity": 1046731.28,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-03-23",
+      "cash": 632331.18,
+      "mtm_positions": 413090.22,
+      "total_equity": 1045421.4,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-03-24",
+      "cash": 730180.74,
+      "mtm_positions": 308277.01,
+      "total_equity": 1038457.75,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-03-27",
+      "cash": 830029.35,
+      "mtm_positions": 206001.1,
+      "total_equity": 1036030.45,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-03-28",
+      "cash": 833388.99,
+      "mtm_positions": 202941.95,
+      "total_equity": 1036330.94,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-03-29",
+      "cash": 730231.39,
+      "mtm_positions": 309049.25,
+      "total_equity": 1039280.64,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-03-31",
+      "cash": 626715.89,
+      "mtm_positions": 415689.99,
+      "total_equity": 1042405.88,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-04-03",
+      "cash": 728872.02,
+      "mtm_positions": 315892.19,
+      "total_equity": 1044764.21,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-04-05",
+      "cash": 625198.42,
+      "mtm_positions": 422113.65,
+      "total_equity": 1047312.07,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-04-06",
+      "cash": 737037.66,
+      "mtm_positions": 311570.8,
+      "total_equity": 1048608.46,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-04-10",
+      "cash": 737037.66,
+      "mtm_positions": 311800.3,
+      "total_equity": 1048837.96,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-04-11",
+      "cash": 632852.06,
+      "mtm_positions": 416053.4,
+      "total_equity": 1048905.46,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-04-12",
+      "cash": 632852.06,
+      "mtm_positions": 419371.8,
+      "total_equity": 1052223.86,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-04-13",
+      "cash": 632852.06,
+      "mtm_positions": 417704.11,
+      "total_equity": 1050556.17,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-04-17",
+      "cash": 629295.78,
+      "mtm_positions": 419116.9,
+      "total_equity": 1048412.68,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-04-18",
+      "cash": 733547.22,
+      "mtm_positions": 314168.14,
+      "total_equity": 1047715.36,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-04-19",
+      "cash": 838542.46,
+      "mtm_positions": 207419.9,
+      "total_equity": 1045962.36,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-04-20",
+      "cash": 838542.46,
+      "mtm_positions": 206965.2,
+      "total_equity": 1045507.66,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-04-21",
+      "cash": 733977.86,
+      "mtm_positions": 312630.25,
+      "total_equity": 1046608.11,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-04-24",
+      "cash": 733977.86,
+      "mtm_positions": 314622.06,
+      "total_equity": 1048599.92,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-04-25",
+      "cash": 629844.56,
+      "mtm_positions": 420203.85,
+      "total_equity": 1050048.41,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-04-26",
+      "cash": 735218.1,
+      "mtm_positions": 315435.09,
+      "total_equity": 1050653.19,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-04-27",
+      "cash": 633829.5,
+      "mtm_positions": 417835.2,
+      "total_equity": 1051664.7,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-04-28",
+      "cash": 633829.5,
+      "mtm_positions": 421780.65,
+      "total_equity": 1055610.15,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-05-02",
+      "cash": 739819.6,
+      "mtm_positions": 317290.09,
+      "total_equity": 1057109.69,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-05-03",
+      "cash": 739819.6,
+      "mtm_positions": 316913.71,
+      "total_equity": 1056733.31,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-05-04",
+      "cash": 739819.6,
+      "mtm_positions": 316356.02,
+      "total_equity": 1056175.62,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-05-05",
+      "cash": 850020.45,
+      "mtm_positions": 208323.6,
+      "total_equity": 1058344.05,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-05-08",
+      "cash": 850020.45,
+      "mtm_positions": 211553.35,
+      "total_equity": 1061573.8,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-05-09",
+      "cash": 850020.45,
+      "mtm_positions": 210685.16,
+      "total_equity": 1060705.61,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-05-10",
+      "cash": 956478.93,
+      "mtm_positions": 104786.85,
+      "total_equity": 1061265.78,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-05-11",
+      "cash": 956478.93,
+      "mtm_positions": 104601.7,
+      "total_equity": 1061080.63,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-05-12",
+      "cash": 849564.73,
+      "mtm_positions": 211065.37,
+      "total_equity": 1060630.1,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-05-15",
+      "cash": 849564.73,
+      "mtm_positions": 213347.57,
+      "total_equity": 1062912.3,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-05-16",
+      "cash": 849564.73,
+      "mtm_positions": 211959.98,
+      "total_equity": 1061524.71,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-05-17",
+      "cash": 849564.73,
+      "mtm_positions": 211729.8,
+      "total_equity": 1061294.53,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-05-18",
+      "cash": 849564.73,
+      "mtm_positions": 209286.87,
+      "total_equity": 1058851.6,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-05-19",
+      "cash": 849564.73,
+      "mtm_positions": 209594.57,
+      "total_equity": 1059159.3,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-05-22",
+      "cash": 849564.73,
+      "mtm_positions": 212438.54,
+      "total_equity": 1062003.27,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-05-23",
+      "cash": 849564.73,
+      "mtm_positions": 213469.35,
+      "total_equity": 1063034.08,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-05-24",
+      "cash": 849564.73,
+      "mtm_positions": 213347.6,
+      "total_equity": 1062912.33,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-05-25",
+      "cash": 849564.73,
+      "mtm_positions": 215367.71,
+      "total_equity": 1064932.44,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-05-26",
+      "cash": 747131.72,
+      "mtm_positions": 318664.84,
+      "total_equity": 1065796.56,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-05-29",
+      "cash": 747131.72,
+      "mtm_positions": 318831.85,
+      "total_equity": 1065963.57,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-05-30",
+      "cash": 747131.72,
+      "mtm_positions": 317706.8,
+      "total_equity": 1064838.52,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-05-31",
+      "cash": 747131.72,
+      "mtm_positions": 316444.12,
+      "total_equity": 1063575.84,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-06-01",
+      "cash": 747131.72,
+      "mtm_positions": 318611.93,
+      "total_equity": 1065743.65,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-06-02",
+      "cash": 747131.72,
+      "mtm_positions": 318978.44,
+      "total_equity": 1066110.16,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-06-05",
+      "cash": 747131.72,
+      "mtm_positions": 320377.59,
+      "total_equity": 1067509.31,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-06-06",
+      "cash": 850762.2,
+      "mtm_positions": 215772.4,
+      "total_equity": 1066534.6,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-06-07",
+      "cash": 850762.2,
+      "mtm_positions": 216657.82,
+      "total_equity": 1067420.02,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-06-08",
+      "cash": 850762.2,
+      "mtm_positions": 213713.1,
+      "total_equity": 1064475.3,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-06-09",
+      "cash": 958911.31,
+      "mtm_positions": 103972.0,
+      "total_equity": 1062883.31,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-06-12",
+      "cash": 855010.51,
+      "mtm_positions": 206858.59,
+      "total_equity": 1061869.1,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-06-13",
+      "cash": 749237.71,
+      "mtm_positions": 313164.8,
+      "total_equity": 1062402.51,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-06-14",
+      "cash": 749237.71,
+      "mtm_positions": 313188.61,
+      "total_equity": 1062426.32,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-06-15",
+      "cash": 749237.71,
+      "mtm_positions": 313657.21,
+      "total_equity": 1062894.92,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-06-16",
+      "cash": 850301.18,
+      "mtm_positions": 212297.6,
+      "total_equity": 1062598.78,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-06-19",
+      "cash": 850301.18,
+      "mtm_positions": 212815.4,
+      "total_equity": 1063116.58,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-06-20",
+      "cash": 850301.18,
+      "mtm_positions": 212510.4,
+      "total_equity": 1062811.58,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-06-21",
+      "cash": 850301.18,
+      "mtm_positions": 214253.4,
+      "total_equity": 1064554.58,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-06-22",
+      "cash": 744765.68,
+      "mtm_positions": 317469.7,
+      "total_equity": 1062235.38,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-06-23",
+      "cash": 849656.48,
+      "mtm_positions": 209933.4,
+      "total_equity": 1059589.88,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-06-26",
+      "cash": 849656.48,
+      "mtm_positions": 209178.9,
+      "total_equity": 1058835.38,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-06-27",
+      "cash": 744216.07,
+      "mtm_positions": 316913.99,
+      "total_equity": 1061130.06,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-06-28",
+      "cash": 744216.07,
+      "mtm_positions": 322398.3,
+      "total_equity": 1066614.37,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-06-30",
+      "cash": 751006.28,
+      "mtm_positions": 319390.49,
+      "total_equity": 1070396.77,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-07-03",
+      "cash": 751006.28,
+      "mtm_positions": 321123.4,
+      "total_equity": 1072129.68,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-07-04",
+      "cash": 864199.78,
+      "mtm_positions": 209454.6,
+      "total_equity": 1073654.38,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-07-05",
+      "cash": 864199.78,
+      "mtm_positions": 216793.1,
+      "total_equity": 1080992.88,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-07-06",
+      "cash": 757033.38,
+      "mtm_positions": 324725.89,
+      "total_equity": 1081759.27,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-07-07",
+      "cash": 864668.86,
+      "mtm_positions": 213303.73,
+      "total_equity": 1077972.59,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-07-10",
+      "cash": 864668.86,
+      "mtm_positions": 218830.71,
+      "total_equity": 1083499.57,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-07-11",
+      "cash": 868867.57,
+      "mtm_positions": 216749.48,
+      "total_equity": 1085617.05,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-07-12",
+      "cash": 868867.57,
+      "mtm_positions": 217525.62,
+      "total_equity": 1086393.19,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-07-13",
+      "cash": 868867.57,
+      "mtm_positions": 216241.65,
+      "total_equity": 1085109.22,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-07-14",
+      "cash": 763428.07,
+      "mtm_positions": 321318.22,
+      "total_equity": 1084746.29,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-07-17",
+      "cash": 763428.07,
+      "mtm_positions": 323296.11,
+      "total_equity": 1086724.18,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-07-18",
+      "cash": 763428.07,
+      "mtm_positions": 323326.82,
+      "total_equity": 1086754.89,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-07-19",
+      "cash": 763428.07,
+      "mtm_positions": 324846.98,
+      "total_equity": 1088275.05,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-07-20",
+      "cash": 654907.67,
+      "mtm_positions": 434625.68,
+      "total_equity": 1089533.35,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-07-21",
+      "cash": 756781.16,
+      "mtm_positions": 327382.03,
+      "total_equity": 1084163.19,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-07-24",
+      "cash": 755010.41,
+      "mtm_positions": 326226.6,
+      "total_equity": 1081237.01,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-07-25",
+      "cash": 865350.22,
+      "mtm_positions": 215311.7,
+      "total_equity": 1080661.92,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-07-26",
+      "cash": 757574.47,
+      "mtm_positions": 325012.25,
+      "total_equity": 1082586.72,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-07-27",
+      "cash": 757574.47,
+      "mtm_positions": 321682.83,
+      "total_equity": 1079257.3,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-07-28",
+      "cash": 757574.47,
+      "mtm_positions": 324188.76,
+      "total_equity": 1081763.23,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-07-31",
+      "cash": 651509.52,
+      "mtm_positions": 430775.22,
+      "total_equity": 1082284.74,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-08-01",
+      "cash": 651509.52,
+      "mtm_positions": 429559.53,
+      "total_equity": 1081069.05,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-08-02",
+      "cash": 651509.52,
+      "mtm_positions": 426150.59,
+      "total_equity": 1077660.11,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-08-03",
+      "cash": 756935.09,
+      "mtm_positions": 315937.73,
+      "total_equity": 1072872.82,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-08-04",
+      "cash": 756935.09,
+      "mtm_positions": 318485.26,
+      "total_equity": 1075420.35,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-08-07",
+      "cash": 968475.65,
+      "mtm_positions": 108005.55,
+      "total_equity": 1076481.2,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-08-08",
+      "cash": 861666.55,
+      "mtm_positions": 214397.71,
+      "total_equity": 1076064.26,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-08-09",
+      "cash": 647195.85,
+      "mtm_positions": 427832.5,
+      "total_equity": 1075028.35,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-08-10",
+      "cash": 747982.12,
+      "mtm_positions": 319887.0,
+      "total_equity": 1067869.12,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-08-11",
+      "cash": 745712.46,
+      "mtm_positions": 319304.03,
+      "total_equity": 1065016.49,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-08-14",
+      "cash": 852404.04,
+      "mtm_positions": 210884.38,
+      "total_equity": 1063288.42,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-08-16",
+      "cash": 954782.09,
+      "mtm_positions": 106868.72,
+      "total_equity": 1061650.81,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-08-17",
+      "cash": 954782.09,
+      "mtm_positions": 105327.0,
+      "total_equity": 1060109.09,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-08-18",
+      "cash": 954782.09,
+      "mtm_positions": 106107.2,
+      "total_equity": 1060889.29,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-08-21",
+      "cash": 954782.09,
+      "mtm_positions": 104580.0,
+      "total_equity": 1059362.09,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-08-22",
+      "cash": 954782.09,
+      "mtm_positions": 104555.1,
+      "total_equity": 1059337.19,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-08-23",
+      "cash": 848795.69,
+      "mtm_positions": 210657.7,
+      "total_equity": 1059453.39,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-08-24",
+      "cash": 848795.69,
+      "mtm_positions": 207749.55,
+      "total_equity": 1056545.24,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-08-25",
+      "cash": 1053489.82,
+      "mtm_positions": 0.0,
+      "total_equity": 1053489.82,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2023-08-28",
+      "cash": 1053489.82,
+      "mtm_positions": 0.0,
+      "total_equity": 1053489.82,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2023-08-29",
+      "cash": 1053489.82,
+      "mtm_positions": 0.0,
+      "total_equity": 1053489.82,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2023-08-30",
+      "cash": 1053489.82,
+      "mtm_positions": 0.0,
+      "total_equity": 1053489.82,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2023-08-31",
+      "cash": 1053489.82,
+      "mtm_positions": 0.0,
+      "total_equity": 1053489.82,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2023-09-01",
+      "cash": 845951.92,
+      "mtm_positions": 207537.91,
+      "total_equity": 1053489.83,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-09-04",
+      "cash": 743396.92,
+      "mtm_positions": 309846.3,
+      "total_equity": 1053243.22,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-09-05",
+      "cash": 743396.92,
+      "mtm_positions": 312389.21,
+      "total_equity": 1055786.13,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-09-06",
+      "cash": 743396.92,
+      "mtm_positions": 311877.6,
+      "total_equity": 1055274.52,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-09-07",
+      "cash": 743396.92,
+      "mtm_positions": 313944.9,
+      "total_equity": 1057341.82,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-09-08",
+      "cash": 743396.92,
+      "mtm_positions": 314014.59,
+      "total_equity": 1057411.51,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-09-11",
+      "cash": 743396.92,
+      "mtm_positions": 317312.79,
+      "total_equity": 1060709.71,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-09-12",
+      "cash": 641219.16,
+      "mtm_positions": 420995.41,
+      "total_equity": 1062214.57,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-09-13",
+      "cash": 641219.16,
+      "mtm_positions": 419560.05,
+      "total_equity": 1060779.21,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-09-14",
+      "cash": 641219.16,
+      "mtm_positions": 419862.15,
+      "total_equity": 1061081.31,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-09-15",
+      "cash": 645851.24,
+      "mtm_positions": 418364.27,
+      "total_equity": 1064215.51,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-09-18",
+      "cash": 645851.24,
+      "mtm_positions": 420152.86,
+      "total_equity": 1066004.1,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-09-20",
+      "cash": 645851.24,
+      "mtm_positions": 420165.86,
+      "total_equity": 1066017.1,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-09-21",
+      "cash": 747988.9,
+      "mtm_positions": 311680.23,
+      "total_equity": 1059669.13,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-09-22",
+      "cash": 747988.9,
+      "mtm_positions": 309487.11,
+      "total_equity": 1057476.01,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-09-25",
+      "cash": 747988.9,
+      "mtm_positions": 308688.18,
+      "total_equity": 1056677.08,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-09-26",
+      "cash": 747988.9,
+      "mtm_positions": 310175.6,
+      "total_equity": 1058164.5,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-09-27",
+      "cash": 851830.45,
+      "mtm_positions": 207052.37,
+      "total_equity": 1058882.82,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-09-28",
+      "cash": 851830.45,
+      "mtm_positions": 204535.61,
+      "total_equity": 1056366.06,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-09-29",
+      "cash": 851830.45,
+      "mtm_positions": 206542.21,
+      "total_equity": 1058372.66,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-10-03",
+      "cash": 846024.65,
+      "mtm_positions": 209809.7,
+      "total_equity": 1055834.35,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-10-04",
+      "cash": 846024.65,
+      "mtm_positions": 204554.1,
+      "total_equity": 1050578.75,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-10-05",
+      "cash": 741933.5,
+      "mtm_positions": 310093.85,
+      "total_equity": 1052027.35,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-10-06",
+      "cash": 741933.5,
+      "mtm_positions": 312648.6,
+      "total_equity": 1054582.1,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-10-09",
+      "cash": 741933.5,
+      "mtm_positions": 312494.16,
+      "total_equity": 1054427.66,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-10-10",
+      "cash": 741933.5,
+      "mtm_positions": 315590.7,
+      "total_equity": 1057524.2,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-10-11",
+      "cash": 741933.5,
+      "mtm_positions": 315517.69,
+      "total_equity": 1057451.19,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-10-12",
+      "cash": 741933.5,
+      "mtm_positions": 312059.85,
+      "total_equity": 1053993.35,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-10-13",
+      "cash": 741933.5,
+      "mtm_positions": 314256.26,
+      "total_equity": 1056189.76,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-10-16",
+      "cash": 741933.5,
+      "mtm_positions": 312300.84,
+      "total_equity": 1054234.34,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-10-17",
+      "cash": 950238.83,
+      "mtm_positions": 101704.45,
+      "total_equity": 1051943.28,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-10-18",
+      "cash": 845279.43,
+      "mtm_positions": 206089.65,
+      "total_equity": 1051369.08,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-10-19",
+      "cash": 841480.71,
+      "mtm_positions": 208045.9,
+      "total_equity": 1049526.61,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-10-20",
+      "cash": 841480.71,
+      "mtm_positions": 208236.89,
+      "total_equity": 1049717.6,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-10-23",
+      "cash": 943071.68,
+      "mtm_positions": 102702.6,
+      "total_equity": 1045774.28,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-10-25",
+      "cash": 839208.28,
+      "mtm_positions": 205464.39,
+      "total_equity": 1044672.67,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-10-26",
+      "cash": 939764.82,
+      "mtm_positions": 102419.0,
+      "total_equity": 1042183.82,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-10-27",
+      "cash": 838198.32,
+      "mtm_positions": 205793.3,
+      "total_equity": 1043991.62,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-10-30",
+      "cash": 838198.32,
+      "mtm_positions": 208797.25,
+      "total_equity": 1046995.57,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-10-31",
+      "cash": 838198.32,
+      "mtm_positions": 207760.15,
+      "total_equity": 1045958.47,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-11-01",
+      "cash": 838198.32,
+      "mtm_positions": 207015.9,
+      "total_equity": 1045214.22,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-11-02",
+      "cash": 838198.32,
+      "mtm_positions": 208862.7,
+      "total_equity": 1047061.02,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-11-03",
+      "cash": 838198.32,
+      "mtm_positions": 208599.95,
+      "total_equity": 1046798.27,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-11-06",
+      "cash": 838198.32,
+      "mtm_positions": 211734.75,
+      "total_equity": 1049933.07,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-11-07",
+      "cash": 733907.32,
+      "mtm_positions": 314831.3,
+      "total_equity": 1048738.62,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-11-08",
+      "cash": 736682.45,
+      "mtm_positions": 312232.85,
+      "total_equity": 1048915.3,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-11-09",
+      "cash": 736682.45,
+      "mtm_positions": 312595.55,
+      "total_equity": 1049278.0,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-11-10",
+      "cash": 842598.6,
+      "mtm_positions": 207401.5,
+      "total_equity": 1050000.1,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-11-13",
+      "cash": 842598.6,
+      "mtm_positions": 207821.3,
+      "total_equity": 1050419.9,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-11-15",
+      "cash": 640809.0,
+      "mtm_positions": 411963.9,
+      "total_equity": 1052772.9,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-11-16",
+      "cash": 640809.0,
+      "mtm_positions": 413954.4,
+      "total_equity": 1054763.4,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2023-11-17",
+      "cash": 742136.94,
+      "mtm_positions": 312534.9,
+      "total_equity": 1054671.84,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-11-20",
+      "cash": 742136.94,
+      "mtm_positions": 312426.0,
+      "total_equity": 1054562.94,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-11-21",
+      "cash": 742136.94,
+      "mtm_positions": 314713.5,
+      "total_equity": 1056850.44,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-11-22",
+      "cash": 742136.94,
+      "mtm_positions": 315478.5,
+      "total_equity": 1057615.44,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-11-23",
+      "cash": 853209.4,
+      "mtm_positions": 205976.75,
+      "total_equity": 1059186.15,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-11-24",
+      "cash": 853209.4,
+      "mtm_positions": 204528.1,
+      "total_equity": 1057737.5,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-11-28",
+      "cash": 747855.8,
+      "mtm_positions": 311426.64,
+      "total_equity": 1059282.44,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-11-29",
+      "cash": 747855.8,
+      "mtm_positions": 314232.45,
+      "total_equity": 1062088.25,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-11-30",
+      "cash": 852237.13,
+      "mtm_positions": 208147.14,
+      "total_equity": 1060384.27,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-12-01",
+      "cash": 852237.13,
+      "mtm_positions": 208132.05,
+      "total_equity": 1060369.18,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-12-04",
+      "cash": 747169.93,
+      "mtm_positions": 316984.9,
+      "total_equity": 1064154.83,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-12-05",
+      "cash": 747169.93,
+      "mtm_positions": 319068.4,
+      "total_equity": 1066238.33,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-12-06",
+      "cash": 750004.43,
+      "mtm_positions": 315252.36,
+      "total_equity": 1065256.79,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-12-07",
+      "cash": 750004.43,
+      "mtm_positions": 314028.62,
+      "total_equity": 1064033.05,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-12-08",
+      "cash": 955988.08,
+      "mtm_positions": 107150.1,
+      "total_equity": 1063138.18,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-12-11",
+      "cash": 955988.08,
+      "mtm_positions": 107812.6,
+      "total_equity": 1063800.68,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-12-12",
+      "cash": 955988.08,
+      "mtm_positions": 107664.2,
+      "total_equity": 1063652.28,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2023-12-13",
+      "cash": 849941.48,
+      "mtm_positions": 213520.0,
+      "total_equity": 1063461.48,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-12-14",
+      "cash": 853901.22,
+      "mtm_positions": 211577.21,
+      "total_equity": 1065478.43,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-12-15",
+      "cash": 853901.22,
+      "mtm_positions": 213241.3,
+      "total_equity": 1067142.52,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-12-18",
+      "cash": 853901.22,
+      "mtm_positions": 215090.3,
+      "total_equity": 1068991.52,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-12-19",
+      "cash": 853901.22,
+      "mtm_positions": 214535.6,
+      "total_equity": 1068436.82,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-12-20",
+      "cash": 853901.22,
+      "mtm_positions": 212531.8,
+      "total_equity": 1066433.02,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2023-12-21",
+      "cash": 747434.82,
+      "mtm_positions": 318159.71,
+      "total_equity": 1065594.53,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-12-22",
+      "cash": 747434.82,
+      "mtm_positions": 319918.51,
+      "total_equity": 1067353.33,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-12-26",
+      "cash": 747434.82,
+      "mtm_positions": 319861.4,
+      "total_equity": 1067296.22,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-12-27",
+      "cash": 747434.82,
+      "mtm_positions": 321724.39,
+      "total_equity": 1069159.21,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-12-28",
+      "cash": 749362.11,
+      "mtm_positions": 319255.17,
+      "total_equity": 1068617.28,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2023-12-29",
+      "cash": 857450.14,
+      "mtm_positions": 211540.82,
+      "total_equity": 1068990.96,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-01-01",
+      "cash": 857450.14,
+      "mtm_positions": 213201.21,
+      "total_equity": 1070651.35,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-01-02",
+      "cash": 751161.74,
+      "mtm_positions": 318198.81,
+      "total_equity": 1069360.55,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-01-03",
+      "cash": 751161.74,
+      "mtm_positions": 320167.71,
+      "total_equity": 1071329.45,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-01-04",
+      "cash": 751161.74,
+      "mtm_positions": 321478.21,
+      "total_equity": 1072639.95,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-01-05",
+      "cash": 856241.37,
+      "mtm_positions": 215233.33,
+      "total_equity": 1071474.7,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-01-08",
+      "cash": 856241.37,
+      "mtm_positions": 213715.02,
+      "total_equity": 1069956.39,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-01-09",
+      "cash": 856241.37,
+      "mtm_positions": 215030.7,
+      "total_equity": 1071272.07,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-01-10",
+      "cash": 856241.37,
+      "mtm_positions": 214813.93,
+      "total_equity": 1071055.3,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-01-11",
+      "cash": 855945.0,
+      "mtm_positions": 214004.7,
+      "total_equity": 1069949.7,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-01-12",
+      "cash": 855945.0,
+      "mtm_positions": 215644.44,
+      "total_equity": 1071589.44,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-01-15",
+      "cash": 855945.0,
+      "mtm_positions": 217748.45,
+      "total_equity": 1073693.45,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-01-16",
+      "cash": 857188.28,
+      "mtm_positions": 213423.25,
+      "total_equity": 1070611.53,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-01-17",
+      "cash": 857188.28,
+      "mtm_positions": 211404.84,
+      "total_equity": 1068593.12,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-01-18",
+      "cash": 750662.48,
+      "mtm_positions": 318920.1,
+      "total_equity": 1069582.58,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-01-19",
+      "cash": 750662.48,
+      "mtm_positions": 319263.79,
+      "total_equity": 1069926.27,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-01-23",
+      "cash": 962640.27,
+      "mtm_positions": 106438.5,
+      "total_equity": 1069078.77,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2024-01-24",
+      "cash": 858553.47,
+      "mtm_positions": 212279.55,
+      "total_equity": 1070833.02,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-01-25",
+      "cash": 752508.72,
+      "mtm_positions": 324217.3,
+      "total_equity": 1076726.02,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-01-29",
+      "cash": 752508.72,
+      "mtm_positions": 327486.0,
+      "total_equity": 1079994.72,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-01-30",
+      "cash": 752508.72,
+      "mtm_positions": 325636.2,
+      "total_equity": 1078144.92,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-01-31",
+      "cash": 746398.14,
+      "mtm_positions": 329080.07,
+      "total_equity": 1075478.21,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-02-01",
+      "cash": 754621.71,
+      "mtm_positions": 328553.57,
+      "total_equity": 1083175.28,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-02-02",
+      "cash": 647531.61,
+      "mtm_positions": 433546.96,
+      "total_equity": 1081078.57,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-02-05",
+      "cash": 647531.61,
+      "mtm_positions": 437574.28,
+      "total_equity": 1085105.89,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-02-06",
+      "cash": 647531.61,
+      "mtm_positions": 436476.79,
+      "total_equity": 1084008.4,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-02-07",
+      "cash": 647531.61,
+      "mtm_positions": 436188.91,
+      "total_equity": 1083720.52,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-02-08",
+      "cash": 750065.5,
+      "mtm_positions": 330200.45,
+      "total_equity": 1080265.95,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-02-09",
+      "cash": 750034.91,
+      "mtm_positions": 331202.84,
+      "total_equity": 1081237.75,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-02-12",
+      "cash": 750034.91,
+      "mtm_positions": 325012.04,
+      "total_equity": 1075046.95,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-02-13",
+      "cash": 750034.91,
+      "mtm_positions": 325395.07,
+      "total_equity": 1075429.98,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-02-14",
+      "cash": 856969.63,
+      "mtm_positions": 215610.3,
+      "total_equity": 1072579.93,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-02-15",
+      "cash": 856969.63,
+      "mtm_positions": 214969.51,
+      "total_equity": 1071939.14,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-02-16",
+      "cash": 968174.03,
+      "mtm_positions": 104186.55,
+      "total_equity": 1072360.58,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2024-02-19",
+      "cash": 968174.03,
+      "mtm_positions": 105576.9,
+      "total_equity": 1073750.93,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2024-02-20",
+      "cash": 968174.03,
+      "mtm_positions": 106170.3,
+      "total_equity": 1074344.33,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2024-02-21",
+      "cash": 861329.78,
+      "mtm_positions": 213338.85,
+      "total_equity": 1074668.63,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-02-22",
+      "cash": 755065.18,
+      "mtm_positions": 320665.91,
+      "total_equity": 1075731.09,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-02-23",
+      "cash": 754997.84,
+      "mtm_positions": 318804.6,
+      "total_equity": 1073802.44,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-02-26",
+      "cash": 754997.84,
+      "mtm_positions": 315443.45,
+      "total_equity": 1070441.29,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-02-27",
+      "cash": 754997.84,
+      "mtm_positions": 319325.75,
+      "total_equity": 1074323.59,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-02-28",
+      "cash": 859382.31,
+      "mtm_positions": 210112.1,
+      "total_equity": 1069494.41,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-02-29",
+      "cash": 855247.45,
+      "mtm_positions": 212744.8,
+      "total_equity": 1067992.25,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-03-01",
+      "cash": 643110.95,
+      "mtm_positions": 428368.28,
+      "total_equity": 1071479.23,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-03-04",
+      "cash": 643110.95,
+      "mtm_positions": 428137.05,
+      "total_equity": 1071248.0,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-03-05",
+      "cash": 643110.95,
+      "mtm_positions": 424772.95,
+      "total_equity": 1067883.9,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-03-06",
+      "cash": 638871.21,
+      "mtm_positions": 428948.2,
+      "total_equity": 1067819.41,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-03-07",
+      "cash": 642725.94,
+      "mtm_positions": 420818.73,
+      "total_equity": 1063544.67,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-03-11",
+      "cash": 642725.94,
+      "mtm_positions": 417524.65,
+      "total_equity": 1060250.59,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-03-12",
+      "cash": 741571.62,
+      "mtm_positions": 318323.28,
+      "total_equity": 1059894.9,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-03-13",
+      "cash": 844190.6,
+      "mtm_positions": 213203.95,
+      "total_equity": 1057394.55,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-03-14",
+      "cash": 633836.0,
+      "mtm_positions": 424990.76,
+      "total_equity": 1058826.76,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-03-15",
+      "cash": 637901.11,
+      "mtm_positions": 420901.13,
+      "total_equity": 1058802.24,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-03-18",
+      "cash": 637901.11,
+      "mtm_positions": 418451.65,
+      "total_equity": 1056352.76,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-03-19",
+      "cash": 637901.11,
+      "mtm_positions": 408763.16,
+      "total_equity": 1046664.27,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-03-20",
+      "cash": 637901.11,
+      "mtm_positions": 412643.81,
+      "total_equity": 1050544.92,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-03-21",
+      "cash": 736638.37,
+      "mtm_positions": 324948.8,
+      "total_equity": 1061587.17,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-03-22",
+      "cash": 634954.97,
+      "mtm_positions": 428059.2,
+      "total_equity": 1063014.17,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-03-26",
+      "cash": 634954.97,
+      "mtm_positions": 431596.86,
+      "total_equity": 1066551.83,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-03-27",
+      "cash": 652552.37,
+      "mtm_positions": 419221.2,
+      "total_equity": 1071773.57,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-03-28",
+      "cash": 652552.37,
+      "mtm_positions": 424433.1,
+      "total_equity": 1076985.47,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-04-01",
+      "cash": 761457.07,
+      "mtm_positions": 325930.55,
+      "total_equity": 1087387.62,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-04-02",
+      "cash": 866083.37,
+      "mtm_positions": 220420.63,
+      "total_equity": 1086504.0,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-04-03",
+      "cash": 990558.22,
+      "mtm_positions": 102629.8,
+      "total_equity": 1093188.02,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2024-04-04",
+      "cash": 990558.22,
+      "mtm_positions": 104085.8,
+      "total_equity": 1094644.02,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2024-04-05",
+      "cash": 990558.22,
+      "mtm_positions": 103460.5,
+      "total_equity": 1094018.72,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2024-04-08",
+      "cash": 990558.22,
+      "mtm_positions": 103286.3,
+      "total_equity": 1093844.52,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2024-04-09",
+      "cash": 1092924.5,
+      "mtm_positions": 0.0,
+      "total_equity": 1092924.5,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2024-04-10",
+      "cash": 1092924.5,
+      "mtm_positions": 0.0,
+      "total_equity": 1092924.5,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2024-04-12",
+      "cash": 984886.7,
+      "mtm_positions": 108037.8,
+      "total_equity": 1092924.5,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2024-04-15",
+      "cash": 984886.7,
+      "mtm_positions": 106412.4,
+      "total_equity": 1091299.1,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2024-04-16",
+      "cash": 1089167.64,
+      "mtm_positions": 0.0,
+      "total_equity": 1089167.64,
+      "active_positions_count": 0
+    },
+    {
+      "date": "2024-04-18",
+      "cash": 872553.84,
+      "mtm_positions": 216615.64,
+      "total_equity": 1089169.48,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-04-19",
+      "cash": 872553.84,
+      "mtm_positions": 214443.25,
+      "total_equity": 1086997.09,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-04-22",
+      "cash": 872553.84,
+      "mtm_positions": 215057.9,
+      "total_equity": 1087611.74,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-04-23",
+      "cash": 872553.84,
+      "mtm_positions": 213539.64,
+      "total_equity": 1086093.48,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-04-24",
+      "cash": 872553.84,
+      "mtm_positions": 211678.15,
+      "total_equity": 1084231.99,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-04-25",
+      "cash": 867841.61,
+      "mtm_positions": 216318.31,
+      "total_equity": 1084159.92,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-04-26",
+      "cash": 867841.61,
+      "mtm_positions": 216375.16,
+      "total_equity": 1084216.77,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-04-29",
+      "cash": 759947.66,
+      "mtm_positions": 324746.82,
+      "total_equity": 1084694.48,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-04-30",
+      "cash": 759947.66,
+      "mtm_positions": 323355.17,
+      "total_equity": 1083302.83,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-05-02",
+      "cash": 759947.66,
+      "mtm_positions": 323132.53,
+      "total_equity": 1083080.19,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-05-03",
+      "cash": 864673.31,
+      "mtm_positions": 214218.59,
+      "total_equity": 1078891.9,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-05-06",
+      "cash": 864673.31,
+      "mtm_positions": 214193.15,
+      "total_equity": 1078866.46,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-05-07",
+      "cash": 864673.31,
+      "mtm_positions": 214239.77,
+      "total_equity": 1078913.08,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-05-08",
+      "cash": 968533.83,
+      "mtm_positions": 109133.93,
+      "total_equity": 1077667.76,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2024-05-09",
+      "cash": 967230.15,
+      "mtm_positions": 106162.2,
+      "total_equity": 1073392.35,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2024-05-10",
+      "cash": 967230.15,
+      "mtm_positions": 107781.6,
+      "total_equity": 1075011.75,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2024-05-13",
+      "cash": 861826.95,
+      "mtm_positions": 213310.8,
+      "total_equity": 1075137.75,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-05-14",
+      "cash": 861826.95,
+      "mtm_positions": 216925.4,
+      "total_equity": 1078752.35,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-05-15",
+      "cash": 861826.95,
+      "mtm_positions": 215999.41,
+      "total_equity": 1077826.36,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-05-16",
+      "cash": 756501.3,
+      "mtm_positions": 322527.05,
+      "total_equity": 1079028.35,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-05-17",
+      "cash": 756501.3,
+      "mtm_positions": 319313.1,
+      "total_equity": 1075814.4,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-05-21",
+      "cash": 756501.3,
+      "mtm_positions": 319104.2,
+      "total_equity": 1075605.5,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-05-22",
+      "cash": 756501.3,
+      "mtm_positions": 319877.8,
+      "total_equity": 1076379.1,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-05-23",
+      "cash": 763037.0,
+      "mtm_positions": 320246.55,
+      "total_equity": 1083283.55,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-05-24",
+      "cash": 870161.07,
+      "mtm_positions": 212713.5,
+      "total_equity": 1082874.57,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-05-27",
+      "cash": 870161.07,
+      "mtm_positions": 213430.35,
+      "total_equity": 1083591.42,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-05-28",
+      "cash": 870161.07,
+      "mtm_positions": 213423.3,
+      "total_equity": 1083584.37,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-05-29",
+      "cash": 870161.07,
+      "mtm_positions": 211742.55,
+      "total_equity": 1081903.62,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-05-30",
+      "cash": 864832.85,
+      "mtm_positions": 215956.19,
+      "total_equity": 1080789.04,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-05-31",
+      "cash": 758098.25,
+      "mtm_positions": 324434.4,
+      "total_equity": 1082532.65,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-06-03",
+      "cash": 766077.14,
+      "mtm_positions": 330927.3,
+      "total_equity": 1097004.44,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-06-04",
+      "cash": 974452.21,
+      "mtm_positions": 105900.4,
+      "total_equity": 1080352.61,
+      "active_positions_count": 1
+    },
+    {
+      "date": "2024-06-05",
+      "cash": 759182.16,
+      "mtm_positions": 326079.09,
+      "total_equity": 1085261.25,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-06-06",
+      "cash": 651930.96,
+      "mtm_positions": 438836.05,
+      "total_equity": 1090767.01,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-06-07",
+      "cash": 651930.96,
+      "mtm_positions": 442835.29,
+      "total_equity": 1094766.25,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-06-10",
+      "cash": 651930.96,
+      "mtm_positions": 443389.29,
+      "total_equity": 1095320.25,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-06-11",
+      "cash": 651930.96,
+      "mtm_positions": 439307.0,
+      "total_equity": 1091237.96,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-06-12",
+      "cash": 651930.96,
+      "mtm_positions": 440990.6,
+      "total_equity": 1092921.56,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-06-13",
+      "cash": 660685.11,
+      "mtm_positions": 432873.78,
+      "total_equity": 1093558.89,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-06-14",
+      "cash": 660685.11,
+      "mtm_positions": 432459.29,
+      "total_equity": 1093144.4,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-06-18",
+      "cash": 660685.11,
+      "mtm_positions": 433595.63,
+      "total_equity": 1094280.74,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-06-19",
+      "cash": 660685.11,
+      "mtm_positions": 433772.8,
+      "total_equity": 1094457.91,
+      "active_positions_count": 4
+    },
+    {
+      "date": "2024-06-20",
+      "cash": 769585.91,
+      "mtm_positions": 324153.25,
+      "total_equity": 1093739.16,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-06-21",
+      "cash": 876031.98,
+      "mtm_positions": 216135.11,
+      "total_equity": 1092167.09,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-06-24",
+      "cash": 876031.98,
+      "mtm_positions": 218476.95,
+      "total_equity": 1094508.93,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-06-25",
+      "cash": 876031.98,
+      "mtm_positions": 217580.9,
+      "total_equity": 1093612.88,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-06-26",
+      "cash": 876031.98,
+      "mtm_positions": 216245.4,
+      "total_equity": 1092277.38,
+      "active_positions_count": 2
+    },
+    {
+      "date": "2024-06-27",
+      "cash": 769809.93,
+      "mtm_positions": 325866.2,
+      "total_equity": 1095676.13,
+      "active_positions_count": 3
+    },
+    {
+      "date": "2024-06-28",
+      "cash": 877737.19,
+      "mtm_positions": 214397.55,
+      "total_equity": 1092134.74,
       "active_positions_count": 2
     }
   ],
