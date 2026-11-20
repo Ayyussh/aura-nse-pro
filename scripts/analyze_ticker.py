@@ -34,6 +34,7 @@ from backend.costs.charges import charges_engine
 from backend.data.holiday_calendar import get_ist_now
 from backend.data.provider import data_provider
 from backend.data.universe import get_sector_for_symbol
+from backend.fundamental.compounder_scorecard import compounder_engine
 from backend.llm.debate import debate_engine
 from backend.ml.features import extract_features_from_df
 from backend.ml.predictor import ml_predictor
@@ -59,6 +60,7 @@ def generate_html_dossier(
     value_pick: Any,
     debate_res: dict,
     charges: dict,
+    compounder_eval: Any = None,
 ) -> str:
     """Generate self-contained, publication-grade HTML research dossier."""
     adj = debate_res.get("adjudication", {})
@@ -131,6 +133,58 @@ def generate_html_dossier(
                 <td style="padding: 10px; border-bottom: 1px solid #2D3748; color: #94A3B8;">{trg}</td>
             </tr>
             """
+
+    # 100-Point Compounder Matrix HTML formatting
+    compounder_card_html = ""
+    if compounder_eval:
+        comp_score = compounder_eval.total_score
+        comp_badge_color = "#10B981" if comp_score >= 80 else ("#38BDF8" if comp_score >= 65 else ("#F59E0B" if comp_score >= 50 else "#EF4444"))
+        if compounder_eval.is_vetoed:
+            comp_badge_color = "#DC2626"
+
+        cat_rows = []
+        for cat_k, cat in compounder_eval.categories.items():
+            bar_color = "#10B981" if cat.rating_pct >= 75 else ("#38BDF8" if cat.rating_pct >= 50 else "#EF4444")
+            notes_str = "; ".join(cat.notes[:2])
+            cat_rows.append(f"""
+            <tr>
+                <td style="font-weight: 600; padding: 10px; border-bottom: 1px solid #1E232F;">{cat.name}</td>
+                <td style="text-align: center; color: #94A3B8; padding: 10px; border-bottom: 1px solid #1E232F;">{cat.weight:.0f} pts</td>
+                <td style="text-align: right; font-weight: 700; color: {bar_color}; padding: 10px; border-bottom: 1px solid #1E232F;">{cat.score:.1f} / {cat.max_score:.1f}</td>
+                <td style="font-size: 0.85rem; color: #CBD5E1; padding: 10px; border-bottom: 1px solid #1E232F;">{notes_str}</td>
+            </tr>
+            """)
+
+        cat_tbody = "".join(cat_rows)
+        compounder_card_html = f"""
+        <!-- 100-POINT INSTITUTIONAL COMPOUNDER MATRIX -->
+        <div class="card" style="border-top: 4px solid {comp_badge_color};">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #1E232F; padding-bottom: 12px;">
+                <div>
+                    <div style="font-size: 0.8rem; font-weight: 700; color: #38BDF8; letter-spacing: 0.5px;">INSTITUTIONAL QUALITY & MOAT SCORECARD (SCREENER.IN AUDITED)</div>
+                    <h2 style="font-size: 1.35rem; font-weight: 700; color: #F8FAFC;">100-Point Compounder Matrix</h2>
+                </div>
+                <div style="text-align: right;">
+                    <span class="badge" style="background: {comp_badge_color}; color: #000; font-size: 1.1rem; padding: 6px 14px;">{comp_score:.1f} / 100</span>
+                    <div style="font-size: 0.8rem; color: #94A3B8; margin-top: 4px;">{compounder_eval.grade}</div>
+                </div>
+            </div>
+            <p style="font-size: 0.95rem; color: #E2E8F0; margin-bottom: 16px; line-height: 1.5;"><strong>Verdict:</strong> {compounder_eval.summary_verdict}</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Evaluation Pillar</th>
+                        <th style="text-align: center;">Max Weight</th>
+                        <th style="text-align: right;">Audited Score</th>
+                        <th>Institutional Metrics & Evidence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {cat_tbody}
+                </tbody>
+            </table>
+        </div>
+        """
 
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
@@ -276,6 +330,8 @@ def generate_html_dossier(
             </div>
         </div>
 
+        {compounder_card_html}
+
         <!-- MULTI-AGENT DIALECTICAL DEBATE SECTION -->
         <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid #1E232F; padding-bottom: 12px;">
@@ -372,6 +428,21 @@ def analyze_ticker(
     fundamentals = data_provider.fetch_fundamentals(symbol)
     value_pick = long_term_engine.evaluate(symbol, df, fundamentals)
 
+    # 5b. 100-Point Institutional Compounder Scorecard (Screener.in Audited)
+    tech_data = {
+        "rsi_14": swing_cand.indicators.get("rsi_14") if hasattr(swing_cand, "indicators") and swing_cand.indicators else 52.0,
+        "sma_50": swing_cand.indicators.get("sma_50") if hasattr(swing_cand, "indicators") and swing_cand.indicators else current_price,
+        "sma_200": swing_cand.indicators.get("sma_200") if hasattr(swing_cand, "indicators") and swing_cand.indicators else current_price,
+        "volume_ratio_20d": swing_cand.indicators.get("volume_ratio_20d") if hasattr(swing_cand, "indicators") and swing_cand.indicators else 1.0,
+        "close": current_price,
+    }
+    compounder_eval = compounder_engine.evaluate_equity(
+        symbol=symbol,
+        technical_data=tech_data,
+        macro_regime=regime,
+        margin_of_safety_pct=getattr(value_pick, "margin_of_safety_pct", 0.0),
+    )
+
     # 6. ML Probability & Expected Value (EV_R)
     features = extract_features_from_df(df, nifty_df)
     ml_res = ml_predictor.predict_probability(features)
@@ -443,6 +514,7 @@ def analyze_ticker(
         value_pick=value_pick,
         debate_res=debate_res,
         charges=charges.to_dict(),
+        compounder_eval=compounder_eval,
     )
 
     target_html_path.write_text(html_content, encoding="utf-8")
@@ -450,13 +522,18 @@ def analyze_ticker(
 
     # 10. Terminal Summary Output
     adj = debate_res.get("adjudication", {})
+    fv_mid_val = getattr(value_pick, 'fair_value_mid', current_price) if value_pick else current_price
+    mos_pct_val = getattr(value_pick, 'margin_of_safety_pct', 0.0) if value_pick else 0.0
     print("\n" + "="*70)
     print(f"📊 AURA INSTITUTIONAL RESEARCH DOSSIER: {symbol} ({sector})")
     print("="*70)
     print(f"💵 Market Price:     ₹{current_price:,.2f}")
     print(f"🎯 Target Level:     ₹{target_p:,.2f} | Stop Loss: ₹{stop_p:,.2f}")
     print(f"🧠 Calibrated ML:    Win Prob: {ml_res.get('win_probability_pct', 50):.1f}% | EV_R: +{ml_res.get('ev_r', 0):.2f}R")
-    print(f"💎 Fundamental Fair: ₹{getattr(value_pick, 'fair_value_mid', current_price):,.2f} (Margin of Safety: {getattr(value_pick, 'margin_of_safety_pct', 0):+.1f}%)")
+    print(f"💎 Fundamental Fair: ₹{fv_mid_val:,.2f} (Margin of Safety: {mos_pct_val:+.1f}%)")
+    print(f"🏆 Compounder Score: {compounder_eval.total_score:.1f}/100 [{compounder_eval.grade}]")
+    if compounder_eval.is_vetoed:
+        print(f"🚨 Governance Veto:  {compounder_eval.veto_reason}")
     print(f"⚖️ Final Verdict:     {adj.get('verdict')} (Conviction: {adj.get('confidence_pct', 75):.1f}%)")
     print(f"🏆 Debate Winner:    {adj.get('winner')}")
     print(f"🚨 Invalidation:     {adj.get('invalidation_criteria')}")

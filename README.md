@@ -19,13 +19,13 @@
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
 │                      Tiered Indian Market Feeds                        │
-│   Upstox API v3 (Live Batch Quotes) + NSE Official Daily Bhavcopy      │
+│   Upstox API v3 (Live Telemetry) + NSE Bhavcopy + Screener.in (10Y CF) │
 └───────────────────────────────────┬────────────────────────────────────┘
                                     │
                                     ▼
 ┌────────────────────────────────────────────────────────────────────────┐
 │                   Dual-Horizon Intelligence Engine                     │
-│  • Long-Term Value & Moat Screener: Intrinsic Worth, Margin of Safety  │
+│  • 100-Point Compounder Scorecard: Quality, Growth, Cash Flow, Moat    │
 │  • Tactical Momentum Engine: Volatility-Adjusted 10-Day Swing Alpha    │
 └───────────────────────────────────┬────────────────────────────────────┘
                                     │
@@ -48,12 +48,26 @@
 
 ## Key Modules
 
-### 1. Long-Term Value & Moat Screener (1 to 3+ Years)
-* **Intrinsic Worth & Margin of Safety:** Calculates justified intrinsic valuation bands using sustainable earnings power, ROE durability, and sector-bounded justified multiples.
-* **Cyclical Trap Protection:** Sector-specific valuation constraints prevent naive multiple extrapolation on cyclical commodities (Metals, Energy, Mining) and mature capital goods.
-* **Financial Health Gating:** Institutional filters evaluate Return on Equity (ROE), conservative industrial leverage, and appropriately classified operational funding ratios for Banks and NBFCs.
-* **Staggered 3-Tranche Execution:** Automatically computes risk-mitigated entry ladders (40% initial allocation, 30% on pullback, 30% on deep value support) to optimize cost basis.
-* **AI Moat & Governance Audit:** Deliberates business moat durability, secular growth characteristics, and thesis invalidation triggers.
+### 1. Long-Term Value & 100-Point Compounder Matrix (Screener.in Audited)
+To eliminate **Value Traps** (cheap stocks with decaying businesses or uncollected earnings), AURA integrates audited 10-year Indian financial statements via **Screener.in** and scores equities across an 8-pillar institutional matrix:
+
+| Evaluation Pillar | Weight | Metric Focus & Algorithmic Rubrics |
+| :--- | :---: | :--- |
+| **Financial Quality** | **20 pts** | Consistent ROCE $\ge 20\%$, ROE $\ge 18\%$, Operating Margin (OPM) durability and 3-year margin stability. |
+| **Earnings Growth** | **15 pts** | 3-Year and 5-Year Compounded Revenue CAGR and Net Profit CAGR ($\ge 12-15\%$). |
+| **Cash Flow Integrity** | **15 pts** | Cumulative 5-Year CFO $\div$ 5-Year Net Profit ($\ge 80\%$ cash conversion) & sustainable Free Cash Flow (FCF). |
+| **Valuation** | **20 pts** | Sector-adjusted P/E vs peer benchmark, PEG ratio ($\le 1.5$), P/B vs ROE justification, and Intrinsic Margin of Safety. |
+| **Balance Sheet** | **10 pts** | Debt-to-Equity $\le 0.40$ (exempt Banks/NBFCs), interest coverage $> 5.0\times$, and retained reserves solvency. |
+| **Technicals & Timing** | **10 pts** | Price $> 50\text{ EMA} > 200\text{ SMA}$ alignment, RSI(14) in healthy accumulation band (45–65), 20d Volume ratio $> 1.0$. |
+| **Market Conditions** | **5 pts** | Macro Regime status (GREEN/AMBER) and India VIX volatility benchmark ($< 17$). |
+| **Governance & Hard Veto** | **5 pts** | Zero promoter share pledging and institutional sponsorship. **HARD VETO:** Promoter pledge $> 20\%$ triggers immediate **REJECT / Total Score = 0**. |
+
+* **Grading Tiers:**
+  * **Grade A ($\ge 80/100$):** Institutional Compounder (High Conviction, primary allocation).
+  * **Grade B ($65–79/100$):** Solid Quality Compounder (Selective allocation).
+  * **Grade C ($50–64/100$):** Mediocre / Cyclical (Tactical swing only; avoided for long-term holding).
+  * **Grade D ($< 50/100$) / VETOED:** Value Trap / Governance Hazard (Strict capital preservation rejection).
+* **Staggered 3-Tranche Execution:** Risk-mitigated entry ladders (40% initial allocation, 30% on pullback, 30% on deep value support) to optimize cost basis.
 
 ### 2. Tactical Swing Momentum Engine (10-Day Horizon)
 * **Volatility-Adjusted Swing Setups:** Scans liquid NSE equities for high-probability momentum structures with positive risk-to-reward profiles.

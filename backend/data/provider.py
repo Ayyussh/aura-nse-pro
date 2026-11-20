@@ -266,6 +266,10 @@ class MarketDataProvider:
                 "as_of_date": get_ist_now().strftime("%Y-%m-%d"),
             }
 
+            # If yfinance returned empty or UNKNOWN key metrics, recover with Screener.in
+            if result.get("pe_ratio") == "UNKNOWN" or result.get("roe_pct") == "UNKNOWN":
+                raise ValueError(f"Incomplete metrics from yfinance for {symbol}")
+
             # Cache to disk
             try:
                 with open(fund_cache_path, "w", encoding="utf-8") as f:
@@ -275,7 +279,48 @@ class MarketDataProvider:
 
             return result
         except Exception as e:
-            logger.warning(f"Could not fetch fundamentals from gateway for {symbol}: {e}")
+            logger.info(f"YFinance fundamental fetch missed/errored for {symbol} ({e}). Recovering via Screener.in...")
+            # Fallback to Screener.in for authoritative Indian corporate financials
+            try:
+                from backend.fundamental.screener_client import screener_client
+                sc_data = screener_client.fetch_company_data(symbol)
+                if sc_data.get("status") == "SUCCESS":
+                    tr = sc_data.get("top_ratios", {})
+                    bs = sc_data.get("balance_sheet", {})
+                    rng = sc_data.get("ranges", {})
+                    cf = sc_data.get("cash_flow", {})
+                    sh = sc_data.get("shareholding", {})
+
+                    cur_p = tr.get("current_price") or 1.0
+                    bv = tr.get("book_value") or 1.0
+                    pb_calc = round(cur_p / max(0.1, bv), 2) if tr.get("book_value") else "UNKNOWN"
+
+                    sc_res = {
+                        "symbol": symbol,
+                        "company_name": sc_data.get("company_name", symbol),
+                        "market_cap_cr": tr.get("market_cap_cr") or "UNKNOWN",
+                        "pe_ratio": tr.get("pe_ratio") if tr.get("pe_ratio") is not None else "UNKNOWN",
+                        "pb_ratio": pb_calc,
+                        "roce_pct": tr.get("roce_pct") if tr.get("roce_pct") is not None else "UNKNOWN",
+                        "roe_pct": tr.get("roe_pct") if tr.get("roe_pct") is not None else "UNKNOWN",
+                        "debt_to_equity": bs.get("debt_to_equity") if bs.get("debt_to_equity") is not None else "UNKNOWN",
+                        "rev_growth_yoy_pct": rng.get("sales_growth_3_years") or "UNKNOWN",
+                        "earnings_growth_yoy_pct": rng.get("profit_growth_3_years") or "UNKNOWN",
+                        "cfo_to_pat_5y_pct": cf.get("cfo_to_pat_5y_pct") or "UNKNOWN",
+                        "fcf_latest_cr": cf.get("fcf_latest_cr"),
+                        "pledged_pct": sh.get("pledged_pct", 0.0),
+                        "source": "screener_in",
+                        "as_of_date": get_ist_now().strftime("%Y-%m-%d"),
+                    }
+                    try:
+                        with open(fund_cache_path, "w", encoding="utf-8") as f:
+                            json.dump(sc_res, f, indent=2)
+                    except Exception:
+                        pass
+                    return sc_res
+            except Exception as se:
+                logger.debug(f"Screener fallback attempt note for {symbol}: {se}")
+
             master_path = PROJECT_ROOT / "data" / "fundamentals_master.json"
             if master_path.exists():
                 try:

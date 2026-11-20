@@ -51,4 +51,5 @@ logs/
 data/heartbeat.json
 reports/screenshots/
 reports/*.html
+data/screener_cache/
 data/audit_anchor_history.jsonl

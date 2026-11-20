@@ -37,6 +37,9 @@ class LongTermPick:
     unverified_badges: List[str] = field(default_factory=list)
     conviction_tier: str = "THIN_DISCOUNT"
     gemini_audit: Optional[Dict[str, Any]] = None
+    compounder_score: float = 0.0
+    compounder_grade: str = "UNGRADED"
+    compounder_breakdown: Optional[Dict[str, Any]] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -168,11 +171,36 @@ class LongTermStrategyEngine:
         review_date = (today + datetime.timedelta(days=90)).strftime("%Y-%m-%d")
         tax_12m_date = (today + datetime.timedelta(days=366)).strftime("%Y-%m-%d")
 
+        # 7. 100-Point Institutional Compounder Matrix (Quality + Growth + Cash Flow + Balance Sheet + Governance)
+        from backend.fundamental.compounder_scorecard import compounder_engine
+        tech_meta = {
+            "close": c_last,
+            "sma_50": c_last,
+            "sma_200": sma200_last,
+        }
+        if not df.empty and len(df) >= 50:
+            sma_50_s = compute_sma(df["close"], 50)
+            tech_meta["sma_50"] = float(sma_50_s.iloc[-1]) if not pd.isna(sma_50_s.iloc[-1]) else c_last
+            from backend.strategies.indicators import compute_rsi
+            rsi_s = compute_rsi(df["close"], 14)
+            tech_meta["rsi_14"] = float(rsi_s.iloc[-1]) if not pd.isna(rsi_s.iloc[-1]) else 50.0
+
+        compounder_eval = compounder_engine.evaluate_equity(
+            symbol=symbol,
+            technical_data=tech_meta,
+            margin_of_safety_pct=margin_of_safety,
+        )
+
+        if compounder_eval.is_vetoed:
+            rejection_reasons.append(f"Governance Veto: {compounder_eval.veto_reason}")
+        elif compounder_eval.total_score < 60.0:
+            rejection_reasons.append(f"Compounder Score {compounder_eval.total_score:.1f}/100 below 60.0 hurdle ({compounder_eval.grade}).")
+
         passed = len(rejection_reasons) == 0
 
-        if margin_of_safety >= 15.0:
+        if margin_of_safety >= 15.0 and compounder_eval.total_score >= 75.0:
             tier = "HIGH_CONVICTION"
-        elif margin_of_safety >= 5.0:
+        elif margin_of_safety >= 5.0 and compounder_eval.total_score >= 60.0:
             tier = "QUALITY_COMPOUNDER"
         else:
             tier = "THIN_DISCOUNT"
@@ -196,6 +224,9 @@ class LongTermStrategyEngine:
             rejection_reasons=rejection_reasons,
             unverified_badges=unverified_badges,
             conviction_tier=tier,
+            compounder_score=compounder_eval.total_score,
+            compounder_grade=compounder_eval.grade,
+            compounder_breakdown=compounder_eval.to_dict(),
         )
 
 
