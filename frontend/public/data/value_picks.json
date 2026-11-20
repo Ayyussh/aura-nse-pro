@@ -1,34 +1,34 @@
 {
   "scan_date": "2026-11-20",
-  "scan_timestamp": "2026-11-20 01:00:41 IST",
+  "scan_timestamp": "2026-11-20 16:37:26 IST",
   "total_screened": 750,
-  "undervalued_count": 18,
+  "undervalued_count": 15,
   "value_picks": [
     {
       "symbol": "CHENNPETRO.NS",
       "passed": true,
       "sector": "Diversified/Other",
-      "current_price": 1439.8,
-      "sma_200": 1187.97,
-      "fair_value_min": 7581.92,
-      "fair_value_max": 9688.01,
-      "fair_value_mid": 8424.36,
+      "current_price": 1426.1,
+      "sma_200": 1193.67,
+      "fair_value_min": 7509.78,
+      "fair_value_max": 9595.83,
+      "fair_value_mid": 8344.2,
       "margin_of_safety_pct": 82.91,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
           "pct": 40.0,
-          "price_target": 1439.800048828125,
+          "price_target": 1426.0999755859375,
           "trigger": "Immediate on approval"
         },
         "tranche_2_pullback": {
           "pct": 30.0,
-          "price_target": 1367.81,
+          "price_target": 1354.79,
           "trigger": "5% dip or 50-EMA test"
         },
         "tranche_3_deep_value": {
           "pct": 30.0,
-          "price_target": 1295.82,
+          "price_target": 1283.49,
           "trigger": "10% dip or 200-SMA support"
         }
       },
@@ -38,8 +38,8 @@
         "ROE drops below 12% on trailing 12-month basis.",
         "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
       ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
+      "quarterly_review_date": "2027-02-18",
+      "tax_12m_flag_date": "2027-11-21",
       "fundamentals": {
         "symbol": "CHENNPETRO.NS",
         "market_cap_cr": 21440.2629632,
@@ -65,33 +65,149 @@
         "bull_thesis": "Strong balance sheet with 50.87% ROE and +82.9% discount to fair worth.",
         "bear_risk": "Slower earnings momentum.",
         "summary": "Algorithmic institutional valuation fallback."
+      },
+      "compounder_score": 92.0,
+      "compounder_grade": "GRADE A (Institutional Compounder)",
+      "compounder_breakdown": {
+        "symbol": "CHENNPETRO.NS",
+        "company_name": "Chennai Petroleum Corporation Ltd",
+        "sector": "Diversified/Other",
+        "total_score": 92.0,
+        "max_possible_score": 100.0,
+        "score_percentage": 92.0,
+        "grade": "GRADE A (Institutional Compounder)",
+        "verdict": "APPROVED_COMPOUNDER",
+        "is_vetoed": false,
+        "veto_reason": null,
+        "categories": {
+          "financial_quality": {
+            "name": "Financial Quality",
+            "weight": 20.0,
+            "score": 17.0,
+            "max_score": 20.0,
+            "rating_pct": 85.0,
+            "notes": [
+              "Exceptional ROCE (34.9% >= 25%) indicates strong economic moat (+7.0/7)",
+              "Top-quartile ROE (32.0% >= 20%) (+6.0/6)",
+              "Slim operating margin (10.0%) (+1.0/4)",
+              "Consistent 3-Year ROE track record (23.0% >= 15%) (+3.0/3)"
+            ]
+          },
+          "earnings_growth": {
+            "name": "Earnings Growth",
+            "weight": 15.0,
+            "score": 15.0,
+            "max_score": 15.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "High revenue CAGR (23.0% >= 15%) (+7.5/7.5)",
+              "Robust net profit CAGR (64.0% >= 15%) (+7.5/7.5)"
+            ]
+          },
+          "cash_flow": {
+            "name": "Cash Flow",
+            "weight": 15.0,
+            "score": 15.0,
+            "max_score": 15.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "High-integrity cash conversion: 5Y CFO/PAT is 90.0% (+8.0/8)",
+              "Sustained positive Free Cash Flow generation (Latest FCF: \u20b92,045 Cr) (+7.0/7)"
+            ]
+          },
+          "valuation": {
+            "name": "Valuation",
+            "weight": 20.0,
+            "score": 20.0,
+            "max_score": 20.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Attractive valuation: PEG=0.06 or P/E (3.7x) at steep discount to Diversified/Other benchmark (20.0x) (+10.0/10)",
+              "Price to Book (1.6x) justified by return on capital (+5.0/5)",
+              "Strong Margin of Safety (+82.9% discount to intrinsic worth) (+5.0/5)"
+            ]
+          },
+          "balance_sheet": {
+            "name": "Balance Sheet",
+            "weight": 10.0,
+            "score": 8.5,
+            "max_score": 10.0,
+            "rating_pct": 85.0,
+            "notes": [
+              "Conservative industrial leverage (D/E: 0.16 <= 0.5) (+5.5/7)",
+              "Strong retained earnings buffer and solvency cushions (+3.0/3)"
+            ]
+          },
+          "technicals": {
+            "name": "Technicals",
+            "weight": 10.0,
+            "score": 7.5,
+            "max_score": 10.0,
+            "rating_pct": 75.0,
+            "notes": [
+              "Trading above 200-SMA structural baseline (+2.5/4)",
+              "Healthy momentum: RSI (45.8) in constructive accumulation zone (+3.0/3)",
+              "Normal trading liquidity (Vol Ratio: 1.10x) (+2.0/3)"
+            ]
+          },
+          "market_conditions": {
+            "name": "Market Conditions",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Macro Regime is GREEN: Institutional equity tailwind (+3.0/3)",
+              "India VIX (14.5) reflects stable market regime (+2.0/2)"
+            ]
+          },
+          "governance": {
+            "name": "Governance",
+            "weight": 5.0,
+            "score": 4.0,
+            "max_score": 5.0,
+            "rating_pct": 80.0,
+            "notes": [
+              "Zero promoter share pledging (0.0%) (+3.0/3)",
+              "Moderate institutional backing (FII+DII: 17.0%) (+1.0/2)"
+            ]
+          }
+        },
+        "summary_verdict": "HIGH CONVICTION COMPOUNDER (92.0/100): Exceptional ROCE, cash conversion, and balance sheet strength.",
+        "key_strengths": [
+          "Financial Quality: Exceptional ROCE (34.9% >= 25%) indicates strong economic moat",
+          "Earnings Growth: High revenue CAGR (23.0% >= 15%)",
+          "Cash Flow: High-integrity cash conversion: 5Y CFO/PAT is 90.0%",
+          "Valuation: Attractive valuation: PEG=0.06 or P/E (3.7x) at steep discount to Diversified/Other benchmark (20.0x)"
+        ],
+        "key_risks": []
       }
     },
     {
       "symbol": "UNIONBANK.NS",
       "passed": true,
       "sector": "Banking",
-      "current_price": 207.0,
-      "sma_200": 177.76,
-      "fair_value_min": 622.34,
-      "fair_value_max": 795.21,
-      "fair_value_mid": 691.49,
-      "margin_of_safety_pct": 70.06,
+      "current_price": 218.85,
+      "sma_200": 178.13,
+      "fair_value_min": 655.64,
+      "fair_value_max": 837.76,
+      "fair_value_mid": 728.49,
+      "margin_of_safety_pct": 69.96,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
           "pct": 40.0,
-          "price_target": 207.16000366210938,
+          "price_target": 218.85000610351562,
           "trigger": "Immediate on approval"
         },
         "tranche_2_pullback": {
           "pct": 30.0,
-          "price_target": 196.8,
+          "price_target": 207.91,
           "trigger": "5% dip or 50-EMA test"
         },
         "tranche_3_deep_value": {
           "pct": 30.0,
-          "price_target": 186.44,
+          "price_target": 196.97,
           "trigger": "10% dip or 200-SMA support"
         }
       },
@@ -101,19 +217,19 @@
         "ROE drops below 12% on trailing 12-month basis.",
         "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
       ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
+      "quarterly_review_date": "2027-02-18",
+      "tax_12m_flag_date": "2027-11-21",
       "fundamentals": {
         "symbol": "UNIONBANK.NS",
-        "market_cap_cr": 158099.6100096,
-        "pe_ratio": 7.19,
+        "market_cap_cr": 158702.6591744,
+        "pe_ratio": 7.21,
         "pb_ratio": 1.11,
         "roe_pct": 16.29,
         "debt_to_equity": "UNKNOWN",
         "rev_growth_yoy_pct": 15.6,
         "earnings_growth_yoy_pct": 29.3,
         "source": "yfinance_info",
-        "as_of_date": "2026-11-18"
+        "as_of_date": "2026-11-17"
       },
       "rejection_reasons": [],
       "unverified_badges": [],
@@ -125,36 +241,154 @@
         "moat_assessment": "Moderate economic moat",
         "multiple_sanity_verdict": "Checked against sector bounds",
         "recommended_pe_cap": 22.0,
-        "bull_thesis": "Strong balance sheet with 16.29% ROE and +70.1% discount to fair worth.",
+        "bull_thesis": "Strong balance sheet with 16.29% ROE and +70.0% discount to fair worth.",
         "bear_risk": "Slower earnings momentum.",
         "summary": "Algorithmic institutional valuation fallback."
+      },
+      "compounder_score": 88.0,
+      "compounder_grade": "GRADE A (Institutional Compounder)",
+      "compounder_breakdown": {
+        "symbol": "UNIONBANK.NS",
+        "company_name": "Union Bank of India",
+        "sector": "Banking",
+        "total_score": 88.0,
+        "max_possible_score": 100.0,
+        "score_percentage": 88.0,
+        "grade": "GRADE A (Institutional Compounder)",
+        "verdict": "APPROVED_COMPOUNDER",
+        "is_vetoed": false,
+        "veto_reason": null,
+        "categories": {
+          "financial_quality": {
+            "name": "Financial Quality",
+            "weight": 20.0,
+            "score": 16.5,
+            "max_score": 20.0,
+            "rating_pct": 82.5,
+            "notes": [
+              "Bank ROE (15.7%) healthy (+5.0/7)",
+              "Healthy ROE (15.7% >= 15%) (+4.5/6)",
+              "High operating margin (6.0% >= 20%) (+4.0/4)",
+              "Consistent 3-Year ROE track record (16.0% >= 15%) (+3.0/3)"
+            ]
+          },
+          "earnings_growth": {
+            "name": "Earnings Growth",
+            "weight": 15.0,
+            "score": 13.0,
+            "max_score": 15.0,
+            "rating_pct": 86.7,
+            "notes": [
+              "Steady revenue CAGR (10.0% >= 10%) (+5.5/7.5)",
+              "Robust net profit CAGR (47.0% >= 15%) (+7.5/7.5)"
+            ]
+          },
+          "cash_flow": {
+            "name": "Cash Flow",
+            "weight": 15.0,
+            "score": 13.5,
+            "max_score": 15.0,
+            "rating_pct": 90.0,
+            "notes": [
+              "Banking liquidity & operating cash conversion validated (+7.0/8)",
+              "Bank statutory liquidity & capital ratios sound (+6.5/7)"
+            ]
+          },
+          "valuation": {
+            "name": "Valuation",
+            "weight": 20.0,
+            "score": 20.0,
+            "max_score": 20.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Attractive valuation: PEG=0.16 or P/E (7.6x) at steep discount to Banking benchmark (16.0x) (+10.0/10)",
+              "Price to Book (1.2x) justified by return on capital (+5.0/5)",
+              "Strong Margin of Safety (+70.0% discount to intrinsic worth) (+5.0/5)"
+            ]
+          },
+          "balance_sheet": {
+            "name": "Balance Sheet",
+            "weight": 10.0,
+            "score": 9.0,
+            "max_score": 10.0,
+            "rating_pct": 90.0,
+            "notes": [
+              "Regulated banking balance sheet with institutional deposit franchise (+9.0/10)"
+            ]
+          },
+          "technicals": {
+            "name": "Technicals",
+            "weight": 10.0,
+            "score": 6.0,
+            "max_score": 10.0,
+            "rating_pct": 60.0,
+            "notes": [
+              "Bullish trend alignment: Price > 50-EMA > 200-SMA (+4.0/4)",
+              "Extreme momentum warning: RSI (82.6) (+0/3)",
+              "Normal trading liquidity (Vol Ratio: 1.10x) (+2.0/3)"
+            ]
+          },
+          "market_conditions": {
+            "name": "Market Conditions",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Macro Regime is GREEN: Institutional equity tailwind (+3.0/3)",
+              "India VIX (14.5) reflects stable market regime (+2.0/2)"
+            ]
+          },
+          "governance": {
+            "name": "Governance",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Zero promoter share pledging (0.0%) (+3.0/3)",
+              "Strong institutional ownership (FII+DII: 21.0%) (+2.0/2)"
+            ]
+          }
+        },
+        "summary_verdict": "HIGH CONVICTION COMPOUNDER (88.0/100): Exceptional ROCE, cash conversion, and balance sheet strength.",
+        "key_strengths": [
+          "Financial Quality: Bank ROE (15.7%) healthy",
+          "Earnings Growth: Steady revenue CAGR (10.0% >= 10%)",
+          "Cash Flow: Banking liquidity & operating cash conversion validated",
+          "Valuation: Attractive valuation: PEG=0.16 or P/E (7.6x) at steep discount to Banking benchmark (16.0x)"
+        ],
+        "key_risks": [
+          "Company has low interest coverage ratio.",
+          "The company has delivered a poor sales growth of 9.03% over past five years."
+        ]
       }
     },
     {
-      "symbol": "BEPL.NS",
+      "symbol": "IOC.NS",
       "passed": true,
-      "sector": "Diversified/Other",
-      "current_price": 110.45,
-      "sma_200": 104.42,
-      "fair_value_min": 176.65,
-      "fair_value_max": 225.72,
-      "fair_value_mid": 196.28,
-      "margin_of_safety_pct": 43.73,
+      "sector": "Energy",
+      "current_price": 150.5,
+      "sma_200": 144.41,
+      "fair_value_min": 447.24,
+      "fair_value_max": 571.47,
+      "fair_value_mid": 496.93,
+      "margin_of_safety_pct": 69.71,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
           "pct": 40.0,
-          "price_target": 110.44999694824219,
+          "price_target": 150.5,
           "trigger": "Immediate on approval"
         },
         "tranche_2_pullback": {
           "pct": 30.0,
-          "price_target": 104.93,
+          "price_target": 142.97,
           "trigger": "5% dip or 50-EMA test"
         },
         "tranche_3_deep_value": {
           "pct": 30.0,
-          "price_target": 99.4,
+          "price_target": 135.45,
           "trigger": "10% dip or 200-SMA support"
         }
       },
@@ -164,8 +398,187 @@
         "ROE drops below 12% on trailing 12-month basis.",
         "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
       ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
+      "quarterly_review_date": "2027-02-18",
+      "tax_12m_flag_date": "2027-11-21",
+      "fundamentals": {
+        "symbol": "IOC.NS",
+        "market_cap_cr": 205548.7488,
+        "pe_ratio": 4.24,
+        "pb_ratio": 0.86,
+        "roe_pct": 22.62,
+        "debt_to_equity": 0.58,
+        "rev_growth_yoy_pct": 42.2,
+        "earnings_growth_yoy_pct": 173.6,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": [],
+      "conviction_tier": "HIGH_CONVICTION",
+      "gemini_audit": {
+        "verdict": "REJECTED_CYCLICAL_TRAP",
+        "ai_conviction_pct": 80.0,
+        "is_cyclical": true,
+        "moat_assessment": "No moat (Commodity cyclical)",
+        "multiple_sanity_verdict": "Checked against sector bounds",
+        "recommended_pe_cap": 12.0,
+        "bull_thesis": "Strong balance sheet with 22.62% ROE and +69.7% discount to fair worth.",
+        "bear_risk": "Cyclical downturn in sector or quarterly margin contraction.",
+        "summary": "Algorithmic institutional valuation fallback."
+      },
+      "compounder_score": 85.5,
+      "compounder_grade": "GRADE A (Institutional Compounder)",
+      "compounder_breakdown": {
+        "symbol": "IOC.NS",
+        "company_name": "Indian Oil Corporation Ltd",
+        "sector": "Energy",
+        "total_score": 85.5,
+        "max_possible_score": 100.0,
+        "score_percentage": 85.5,
+        "grade": "GRADE A (Institutional Compounder)",
+        "verdict": "APPROVED_COMPOUNDER",
+        "is_vetoed": false,
+        "veto_reason": null,
+        "categories": {
+          "financial_quality": {
+            "name": "Financial Quality",
+            "weight": 20.0,
+            "score": 15.5,
+            "max_score": 20.0,
+            "rating_pct": 77.5,
+            "notes": [
+              "Solid ROCE (18.7% >= 18%) above cost of capital (+5.5/7)",
+              "Top-quartile ROE (20.5% >= 20%) (+6.0/6)",
+              "Slim operating margin (9.0%) (+1.0/4)",
+              "Consistent 3-Year ROE track record (17.0% >= 15%) (+3.0/3)"
+            ]
+          },
+          "earnings_growth": {
+            "name": "Earnings Growth",
+            "weight": 15.0,
+            "score": 15.0,
+            "max_score": 15.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "High revenue CAGR (17.0% >= 15%) (+7.5/7.5)",
+              "Robust net profit CAGR (62.0% >= 15%) (+7.5/7.5)"
+            ]
+          },
+          "cash_flow": {
+            "name": "Cash Flow",
+            "weight": 15.0,
+            "score": 15.0,
+            "max_score": 15.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "High-integrity cash conversion: 5Y CFO/PAT is 145.3% (+8.0/8)",
+              "Sustained positive Free Cash Flow generation (Latest FCF: \u20b948,881 Cr) (+7.0/7)"
+            ]
+          },
+          "valuation": {
+            "name": "Valuation",
+            "weight": 20.0,
+            "score": 20.0,
+            "max_score": 20.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Attractive valuation: PEG=0.07 or P/E (4.6x) at steep discount to Energy benchmark (22.0x) (+10.0/10)",
+              "Price to Book (0.9x) justified by return on capital (+5.0/5)",
+              "Strong Margin of Safety (+69.7% discount to intrinsic worth) (+5.0/5)"
+            ]
+          },
+          "balance_sheet": {
+            "name": "Balance Sheet",
+            "weight": 10.0,
+            "score": 4.5,
+            "max_score": 10.0,
+            "rating_pct": 45.0,
+            "notes": [
+              "Moderate leverage (D/E: 0.60) (+3.0/7)",
+              "Adequate operational liquidity (+1.5/3)"
+            ]
+          },
+          "technicals": {
+            "name": "Technicals",
+            "weight": 10.0,
+            "score": 6.5,
+            "max_score": 10.0,
+            "rating_pct": 65.0,
+            "notes": [
+              "Trading above 200-SMA structural baseline (+2.5/4)",
+              "Strong momentum: RSI (70.9) near upper threshold (+2.0/3)",
+              "Normal trading liquidity (Vol Ratio: 1.10x) (+2.0/3)"
+            ]
+          },
+          "market_conditions": {
+            "name": "Market Conditions",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Macro Regime is GREEN: Institutional equity tailwind (+3.0/3)",
+              "India VIX (14.5) reflects stable market regime (+2.0/2)"
+            ]
+          },
+          "governance": {
+            "name": "Governance",
+            "weight": 5.0,
+            "score": 4.0,
+            "max_score": 5.0,
+            "rating_pct": 80.0,
+            "notes": [
+              "Zero promoter share pledging (0.0%) (+3.0/3)",
+              "Moderate institutional backing (FII+DII: 18.5%) (+1.0/2)"
+            ]
+          }
+        },
+        "summary_verdict": "HIGH CONVICTION COMPOUNDER (85.5/100): Exceptional ROCE, cash conversion, and balance sheet strength.",
+        "key_strengths": [
+          "Financial Quality: Solid ROCE (18.7% >= 18%) above cost of capital",
+          "Earnings Growth: High revenue CAGR (17.0% >= 15%)",
+          "Cash Flow: High-integrity cash conversion: 5Y CFO/PAT is 145.3%",
+          "Valuation: Attractive valuation: PEG=0.07 or P/E (4.6x) at steep discount to Energy benchmark (22.0x)"
+        ],
+        "key_risks": []
+      }
+    },
+    {
+      "symbol": "BEPL.NS",
+      "passed": true,
+      "sector": "Diversified/Other",
+      "current_price": 110.04,
+      "sma_200": 104.71,
+      "fair_value_min": 176.0,
+      "fair_value_max": 224.88,
+      "fair_value_mid": 195.55,
+      "margin_of_safety_pct": 43.73,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 110.04000091552734,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 104.54,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 99.04,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-18",
+      "tax_12m_flag_date": "2027-11-21",
       "fundamentals": {
         "symbol": "BEPL.NS",
         "market_cap_cr": 2748.6416896,
@@ -193,33 +606,152 @@
         "bull_thesis": "Strong balance sheet with 20.17% ROE and +43.7% discount to fair worth.",
         "bear_risk": "Slower earnings momentum.",
         "summary": "Algorithmic institutional valuation fallback."
+      },
+      "compounder_score": 81.0,
+      "compounder_grade": "GRADE A (Institutional Compounder)",
+      "compounder_breakdown": {
+        "symbol": "BEPL.NS",
+        "company_name": "Bhansali Engineering Polymers Ltd",
+        "sector": "Diversified/Other",
+        "total_score": 81.0,
+        "max_possible_score": 100.0,
+        "score_percentage": 81.0,
+        "grade": "GRADE A (Institutional Compounder)",
+        "verdict": "APPROVED_COMPOUNDER",
+        "is_vetoed": false,
+        "veto_reason": null,
+        "categories": {
+          "financial_quality": {
+            "name": "Financial Quality",
+            "weight": 20.0,
+            "score": 15.5,
+            "max_score": 20.0,
+            "rating_pct": 77.5,
+            "notes": [
+              "Solid ROCE (23.8% >= 18%) above cost of capital (+5.5/7)",
+              "Healthy ROE (17.3% >= 15%) (+4.5/6)",
+              "Moderate operating margin (18.0%) (+2.5/4)",
+              "Consistent 3-Year ROE track record (18.0% >= 15%) (+3.0/3)"
+            ]
+          },
+          "earnings_growth": {
+            "name": "Earnings Growth",
+            "weight": 15.0,
+            "score": 6.5,
+            "max_score": 15.0,
+            "rating_pct": 43.3,
+            "notes": [
+              "Sluggish revenue CAGR (-2.0% < 6%) (+1.0/7.5)",
+              "Healthy net profit CAGR (10.0% >= 10%) (+5.5/7.5)"
+            ]
+          },
+          "cash_flow": {
+            "name": "Cash Flow",
+            "weight": 15.0,
+            "score": 15.0,
+            "max_score": 15.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "High-integrity cash conversion: 5Y CFO/PAT is 105.3% (+8.0/8)",
+              "Sustained positive Free Cash Flow generation (Latest FCF: \u20b9133 Cr) (+7.0/7)"
+            ]
+          },
+          "valuation": {
+            "name": "Valuation",
+            "weight": 20.0,
+            "score": 20.0,
+            "max_score": 20.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Attractive valuation: PEG=1.24 or P/E (12.4x) at steep discount to Diversified/Other benchmark (20.0x) (+10.0/10)",
+              "Price to Book (2.4x) justified by return on capital (+5.0/5)",
+              "Strong Margin of Safety (+43.7% discount to intrinsic worth) (+5.0/5)"
+            ]
+          },
+          "balance_sheet": {
+            "name": "Balance Sheet",
+            "weight": 10.0,
+            "score": 10.0,
+            "max_score": 10.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Virtually debt-free balance sheet (D/E: 0.00) (+7.0/7)",
+              "Strong retained earnings buffer and solvency cushions (+3.0/3)"
+            ]
+          },
+          "technicals": {
+            "name": "Technicals",
+            "weight": 10.0,
+            "score": 6.0,
+            "max_score": 10.0,
+            "rating_pct": 60.0,
+            "notes": [
+              "Trading above 200-SMA structural baseline (+2.5/4)",
+              "Consolidating/oversold pullback: RSI (42.1) (+1.5/3)",
+              "Normal trading liquidity (Vol Ratio: 1.10x) (+2.0/3)"
+            ]
+          },
+          "market_conditions": {
+            "name": "Market Conditions",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Macro Regime is GREEN: Institutional equity tailwind (+3.0/3)",
+              "India VIX (14.5) reflects stable market regime (+2.0/2)"
+            ]
+          },
+          "governance": {
+            "name": "Governance",
+            "weight": 5.0,
+            "score": 3.0,
+            "max_score": 5.0,
+            "rating_pct": 60.0,
+            "notes": [
+              "Zero promoter share pledging (0.0%) (+3.0/3)",
+              "Low institutional participation (FII+DII: 1.7%) (+0/2)"
+            ]
+          }
+        },
+        "summary_verdict": "HIGH CONVICTION COMPOUNDER (81.0/100): Exceptional ROCE, cash conversion, and balance sheet strength.",
+        "key_strengths": [
+          "Financial Quality: Solid ROCE (23.8% >= 18%) above cost of capital",
+          "Cash Flow: High-integrity cash conversion: 5Y CFO/PAT is 105.3%",
+          "Valuation: Attractive valuation: PEG=1.24 or P/E (12.4x) at steep discount to Diversified/Other benchmark (20.0x)",
+          "Balance Sheet: Virtually debt-free balance sheet (D/E: 0.00)"
+        ],
+        "key_risks": [
+          "Earnings Growth: Sluggish revenue CAGR (-2.0% < 6%)",
+          "The company has delivered a poor sales growth of -0.25% over past five years."
+        ]
       }
     },
     {
       "symbol": "INDIANB.NS",
       "passed": true,
       "sector": "Banking",
-      "current_price": 941.8,
-      "sma_200": 868.25,
-      "fair_value_min": 1430.03,
-      "fair_value_max": 1827.26,
-      "fair_value_mid": 1588.92,
-      "margin_of_safety_pct": 40.73,
+      "current_price": 950.0,
+      "sma_200": 869.14,
+      "fair_value_min": 1455.47,
+      "fair_value_max": 1859.77,
+      "fair_value_mid": 1617.19,
+      "margin_of_safety_pct": 41.26,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
           "pct": 40.0,
-          "price_target": 942.2000122070312,
+          "price_target": 950.0,
           "trigger": "Immediate on approval"
         },
         "tranche_2_pullback": {
           "pct": 30.0,
-          "price_target": 895.09,
+          "price_target": 902.5,
           "trigger": "5% dip or 50-EMA test"
         },
         "tranche_3_deep_value": {
           "pct": 30.0,
-          "price_target": 847.98,
+          "price_target": 855.0,
           "trigger": "10% dip or 200-SMA support"
         }
       },
@@ -229,19 +761,19 @@
         "ROE drops below 12% on trailing 12-month basis.",
         "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
       ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
+      "quarterly_review_date": "2027-02-18",
+      "tax_12m_flag_date": "2027-11-21",
       "fundamentals": {
         "symbol": "INDIANB.NS",
-        "market_cap_cr": 126910.9489664,
-        "pe_ratio": 9.63,
-        "pb_ratio": 1.46,
+        "market_cap_cr": 126075.8237184,
+        "pe_ratio": 9.54,
+        "pb_ratio": 1.45,
         "roe_pct": 16.14,
         "debt_to_equity": "UNKNOWN",
         "rev_growth_yoy_pct": 14.4,
         "earnings_growth_yoy_pct": 14.0,
         "source": "yfinance_info",
-        "as_of_date": "2026-11-18"
+        "as_of_date": "2026-11-17"
       },
       "rejection_reasons": [],
       "unverified_badges": [],
@@ -253,103 +785,154 @@
         "moat_assessment": "Moderate economic moat",
         "multiple_sanity_verdict": "Checked against sector bounds",
         "recommended_pe_cap": 22.0,
-        "bull_thesis": "Strong balance sheet with 16.14% ROE and +40.7% discount to fair worth.",
+        "bull_thesis": "Strong balance sheet with 16.14% ROE and +41.3% discount to fair worth.",
         "bear_risk": "Slower earnings momentum.",
         "summary": "Algorithmic institutional valuation fallback."
-      }
-    },
-    {
-      "symbol": "BANKPSU.NS",
-      "passed": true,
-      "sector": "Diversified/Other",
-      "current_price": 96.15,
-      "sma_200": 86.22,
-      "fair_value_min": 143.02,
-      "fair_value_max": 182.75,
-      "fair_value_mid": 158.91,
-      "margin_of_safety_pct": 39.49,
-      "target_weight_pct": 5.0,
-      "tranche_plan": {
-        "tranche_1_initial": {
-          "pct": 40.0,
-          "price_target": 96.1500015258789,
-          "trigger": "Immediate on approval"
-        },
-        "tranche_2_pullback": {
-          "pct": 30.0,
-          "price_target": 91.34,
-          "trigger": "5% dip or 50-EMA test"
-        },
-        "tranche_3_deep_value": {
-          "pct": 30.0,
-          "price_target": 86.54,
-          "trigger": "10% dip or 200-SMA support"
-        }
       },
-      "thesis_break_triggers": [
-        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
-        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
-        "ROE drops below 12% on trailing 12-month basis.",
-        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
-      ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
-      "fundamentals": {
-        "symbol": "BANKPSU.NS",
-        "market_cap_cr": "UNKNOWN",
-        "pe_ratio": 8.35,
-        "pb_ratio": "UNKNOWN",
-        "roe_pct": "UNKNOWN",
-        "debt_to_equity": "UNKNOWN",
-        "rev_growth_yoy_pct": "UNKNOWN",
-        "earnings_growth_yoy_pct": "UNKNOWN",
-        "source": "yfinance_info",
-        "as_of_date": "2026-11-18"
-      },
-      "rejection_reasons": [],
-      "unverified_badges": [
-        "\u26a0\ufe0f Market Cap Unverified",
-        "\u26a0\ufe0f ROE Unverified",
-        "\u26a0\ufe0f Debt/Equity Unverified"
-      ],
-      "conviction_tier": "HIGH_CONVICTION",
-      "gemini_audit": {
-        "verdict": "APPROVED_HIGH_CONVICTION",
-        "ai_conviction_pct": 80.0,
-        "is_cyclical": false,
-        "moat_assessment": "Moderate economic moat",
-        "multiple_sanity_verdict": "Checked against sector bounds",
-        "recommended_pe_cap": 22.0,
-        "bull_thesis": "Strong balance sheet with UNKNOWN% ROE and +39.5% discount to fair worth.",
-        "bear_risk": "Slower earnings momentum.",
-        "summary": "Algorithmic institutional valuation fallback."
+      "compounder_score": 88.5,
+      "compounder_grade": "GRADE A (Institutional Compounder)",
+      "compounder_breakdown": {
+        "symbol": "INDIANB.NS",
+        "company_name": "Indian Bank",
+        "sector": "Banking",
+        "total_score": 88.5,
+        "max_possible_score": 100.0,
+        "score_percentage": 88.5,
+        "grade": "GRADE A (Institutional Compounder)",
+        "verdict": "APPROVED_COMPOUNDER",
+        "is_vetoed": false,
+        "veto_reason": null,
+        "categories": {
+          "financial_quality": {
+            "name": "Financial Quality",
+            "weight": 20.0,
+            "score": 16.5,
+            "max_score": 20.0,
+            "rating_pct": 82.5,
+            "notes": [
+              "Bank ROE (15.4%) healthy (+5.0/7)",
+              "Healthy ROE (15.4% >= 15%) (+4.5/6)",
+              "High operating margin (7.0% >= 20%) (+4.0/4)",
+              "Consistent 3-Year ROE track record (16.0% >= 15%) (+3.0/3)"
+            ]
+          },
+          "earnings_growth": {
+            "name": "Earnings Growth",
+            "weight": 15.0,
+            "score": 13.0,
+            "max_score": 15.0,
+            "rating_pct": 86.7,
+            "notes": [
+              "Steady revenue CAGR (14.0% >= 10%) (+5.5/7.5)",
+              "Robust net profit CAGR (30.0% >= 15%) (+7.5/7.5)"
+            ]
+          },
+          "cash_flow": {
+            "name": "Cash Flow",
+            "weight": 15.0,
+            "score": 13.5,
+            "max_score": 15.0,
+            "rating_pct": 90.0,
+            "notes": [
+              "Banking liquidity & operating cash conversion validated (+7.0/8)",
+              "Bank statutory liquidity & capital ratios sound (+6.5/7)"
+            ]
+          },
+          "valuation": {
+            "name": "Valuation",
+            "weight": 20.0,
+            "score": 20.0,
+            "max_score": 20.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Attractive valuation: PEG=0.33 or P/E (9.8x) at steep discount to Banking benchmark (16.0x) (+10.0/10)",
+              "Price to Book (1.5x) justified by return on capital (+5.0/5)",
+              "Strong Margin of Safety (+41.3% discount to intrinsic worth) (+5.0/5)"
+            ]
+          },
+          "balance_sheet": {
+            "name": "Balance Sheet",
+            "weight": 10.0,
+            "score": 9.0,
+            "max_score": 10.0,
+            "rating_pct": 90.0,
+            "notes": [
+              "Regulated banking balance sheet with institutional deposit franchise (+9.0/10)"
+            ]
+          },
+          "technicals": {
+            "name": "Technicals",
+            "weight": 10.0,
+            "score": 6.5,
+            "max_score": 10.0,
+            "rating_pct": 65.0,
+            "notes": [
+              "Trading above 200-SMA structural baseline (+2.5/4)",
+              "Strong momentum: RSI (72.3) near upper threshold (+2.0/3)",
+              "Normal trading liquidity (Vol Ratio: 1.10x) (+2.0/3)"
+            ]
+          },
+          "market_conditions": {
+            "name": "Market Conditions",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Macro Regime is GREEN: Institutional equity tailwind (+3.0/3)",
+              "India VIX (14.5) reflects stable market regime (+2.0/2)"
+            ]
+          },
+          "governance": {
+            "name": "Governance",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Zero promoter share pledging (0.0%) (+3.0/3)",
+              "Strong institutional ownership (FII+DII: 23.6%) (+2.0/2)"
+            ]
+          }
+        },
+        "summary_verdict": "HIGH CONVICTION COMPOUNDER (88.5/100): Exceptional ROCE, cash conversion, and balance sheet strength.",
+        "key_strengths": [
+          "Financial Quality: Bank ROE (15.4%) healthy",
+          "Earnings Growth: Steady revenue CAGR (14.0% >= 10%)",
+          "Cash Flow: Banking liquidity & operating cash conversion validated",
+          "Valuation: Attractive valuation: PEG=0.33 or P/E (9.8x) at steep discount to Banking benchmark (16.0x)"
+        ],
+        "key_risks": [
+          "Company has low interest coverage ratio.",
+          "The company has delivered a poor sales growth of 11.5% over past five years."
+        ]
       }
     },
     {
       "symbol": "DEEPAKFERT.NS",
       "passed": true,
       "sector": "Diversified/Other",
-      "current_price": 1427.3,
-      "sma_200": 1298.52,
-      "fair_value_min": 1826.79,
-      "fair_value_max": 2334.24,
-      "fair_value_mid": 2029.77,
+      "current_price": 1437.2,
+      "sma_200": 1301.58,
+      "fair_value_min": 1839.46,
+      "fair_value_max": 2350.43,
+      "fair_value_mid": 2043.85,
       "margin_of_safety_pct": 29.68,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
           "pct": 40.0,
-          "price_target": 1427.300048828125,
+          "price_target": 1437.199951171875,
           "trigger": "Immediate on approval"
         },
         "tranche_2_pullback": {
           "pct": 30.0,
-          "price_target": 1355.94,
+          "price_target": 1365.34,
           "trigger": "5% dip or 50-EMA test"
         },
         "tranche_3_deep_value": {
           "pct": 30.0,
-          "price_target": 1284.57,
+          "price_target": 1293.48,
           "trigger": "10% dip or 200-SMA support"
         }
       },
@@ -359,8 +942,8 @@
         "ROE drops below 12% on trailing 12-month basis.",
         "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
       ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
+      "quarterly_review_date": "2027-02-18",
+      "tax_12m_flag_date": "2027-11-21",
       "fundamentals": {
         "symbol": "DEEPAKFERT.NS",
         "market_cap_cr": 18036.1232384,
@@ -377,7 +960,7 @@
       "unverified_badges": [
         "\u26a0\ufe0f ROE Unverified"
       ],
-      "conviction_tier": "HIGH_CONVICTION",
+      "conviction_tier": "QUALITY_COMPOUNDER",
       "gemini_audit": {
         "verdict": "APPROVED_HIGH_CONVICTION",
         "ai_conviction_pct": 80.0,
@@ -388,96 +971,152 @@
         "bull_thesis": "Strong balance sheet with UNKNOWN% ROE and +29.7% discount to fair worth.",
         "bear_risk": "Slower earnings momentum.",
         "summary": "Algorithmic institutional valuation fallback."
-      }
-    },
-    {
-      "symbol": "HEROMOTOCO.NS",
-      "passed": true,
-      "sector": "Auto",
-      "current_price": 5278.5,
-      "sma_200": 5259.15,
-      "fair_value_min": 6472.64,
-      "fair_value_max": 8270.59,
-      "fair_value_mid": 7191.82,
-      "margin_of_safety_pct": 26.6,
-      "target_weight_pct": 5.0,
-      "tranche_plan": {
-        "tranche_1_initial": {
-          "pct": 40.0,
-          "price_target": 5277.0,
-          "trigger": "Immediate on approval"
-        },
-        "tranche_2_pullback": {
-          "pct": 30.0,
-          "price_target": 5013.15,
-          "trigger": "5% dip or 50-EMA test"
-        },
-        "tranche_3_deep_value": {
-          "pct": 30.0,
-          "price_target": 4749.3,
-          "trigger": "10% dip or 200-SMA support"
-        }
       },
-      "thesis_break_triggers": [
-        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
-        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
-        "ROE drops below 12% on trailing 12-month basis.",
-        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
-      ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
-      "fundamentals": {
-        "symbol": "HEROMOTOCO.NS",
-        "market_cap_cr": 105625.3935616,
-        "pe_ratio": 17.61,
-        "pb_ratio": 4.51,
-        "roe_pct": 26.93,
-        "debt_to_equity": 0.06,
-        "rev_growth_yoy_pct": 22.5,
-        "earnings_growth_yoy_pct": 42.2,
-        "source": "yfinance_info",
-        "as_of_date": "2026-11-18"
-      },
-      "rejection_reasons": [],
-      "unverified_badges": [],
-      "conviction_tier": "HIGH_CONVICTION",
-      "gemini_audit": {
-        "verdict": "APPROVED_HIGH_CONVICTION",
-        "ai_conviction_pct": 80.0,
-        "is_cyclical": false,
-        "moat_assessment": "Moderate economic moat",
-        "multiple_sanity_verdict": "Checked against sector bounds",
-        "recommended_pe_cap": 22.0,
-        "bull_thesis": "Strong balance sheet with 26.93% ROE and +26.6% discount to fair worth.",
-        "bear_risk": "Slower earnings momentum.",
-        "summary": "Algorithmic institutional valuation fallback."
+      "compounder_score": 66.0,
+      "compounder_grade": "GRADE B (Solid Quality)",
+      "compounder_breakdown": {
+        "symbol": "DEEPAKFERT.NS",
+        "company_name": "Deepak Fertilisers & Petrochemicals Corp Ltd",
+        "sector": "Diversified/Other",
+        "total_score": 66.0,
+        "max_possible_score": 100.0,
+        "score_percentage": 66.0,
+        "grade": "GRADE B (Solid Quality)",
+        "verdict": "SELECTIVE_COMPOUNDER",
+        "is_vetoed": false,
+        "veto_reason": null,
+        "categories": {
+          "financial_quality": {
+            "name": "Financial Quality",
+            "weight": 20.0,
+            "score": 4.0,
+            "max_score": 20.0,
+            "rating_pct": 20.0,
+            "notes": [
+              "Weak ROCE (11.4% < 13%) shows poor capital efficiency (+0/7)",
+              "Sub-par ROE (11.1% < 12%) (+0/6)",
+              "Moderate operating margin (19.0%) (+2.5/4)",
+              "Stable 3-Year ROE (12.0%) (+1.5/3)"
+            ]
+          },
+          "earnings_growth": {
+            "name": "Earnings Growth",
+            "weight": 15.0,
+            "score": 13.0,
+            "max_score": 15.0,
+            "rating_pct": 86.7,
+            "notes": [
+              "High revenue CAGR (15.0% >= 15%) (+7.5/7.5)",
+              "Healthy net profit CAGR (13.0% >= 10%) (+5.5/7.5)"
+            ]
+          },
+          "cash_flow": {
+            "name": "Cash Flow",
+            "weight": 15.0,
+            "score": 8.0,
+            "max_score": 15.0,
+            "rating_pct": 53.3,
+            "notes": [
+              "High-integrity cash conversion: 5Y CFO/PAT is 99.6% (+8.0/8)",
+              "Negative Free Cash Flow (\u20b9-1,363 Cr) due to heavy capex/working capital (+0/7)"
+            ]
+          },
+          "valuation": {
+            "name": "Valuation",
+            "weight": 20.0,
+            "score": 20.0,
+            "max_score": 20.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Attractive valuation: PEG=1.20 or P/E (15.6x) at steep discount to Diversified/Other benchmark (20.0x) (+10.0/10)",
+              "Price to Book (2.4x) justified by return on capital (+5.0/5)",
+              "Strong Margin of Safety (+29.7% discount to intrinsic worth) (+5.0/5)"
+            ]
+          },
+          "balance_sheet": {
+            "name": "Balance Sheet",
+            "weight": 10.0,
+            "score": 4.5,
+            "max_score": 10.0,
+            "rating_pct": 45.0,
+            "notes": [
+              "Moderate leverage (D/E: 0.72) (+3.0/7)",
+              "Adequate operational liquidity (+1.5/3)"
+            ]
+          },
+          "technicals": {
+            "name": "Technicals",
+            "weight": 10.0,
+            "score": 6.5,
+            "max_score": 10.0,
+            "rating_pct": 65.0,
+            "notes": [
+              "Trading above 200-SMA structural baseline (+2.5/4)",
+              "Strong momentum: RSI (65.4) near upper threshold (+2.0/3)",
+              "Normal trading liquidity (Vol Ratio: 1.10x) (+2.0/3)"
+            ]
+          },
+          "market_conditions": {
+            "name": "Market Conditions",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Macro Regime is GREEN: Institutional equity tailwind (+3.0/3)",
+              "India VIX (14.5) reflects stable market regime (+2.0/2)"
+            ]
+          },
+          "governance": {
+            "name": "Governance",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Zero promoter share pledging (0.0%) (+3.0/3)",
+              "Strong institutional ownership (FII+DII: 24.6%) (+2.0/2)"
+            ]
+          }
+        },
+        "summary_verdict": "APPROVED QUALITY EQUITY (66.0/100): Sound fundamentals with manageable valuation/momentum headwind.",
+        "key_strengths": [
+          "Earnings Growth: High revenue CAGR (15.0% >= 15%)",
+          "Valuation: Attractive valuation: PEG=1.20 or P/E (15.6x) at steep discount to Diversified/Other benchmark (20.0x)",
+          "Market Conditions: Macro Regime is GREEN: Institutional equity tailwind",
+          "Governance: Zero promoter share pledging (0.0%)"
+        ],
+        "key_risks": [
+          "Financial Quality: Weak ROCE (11.4% < 13%) shows poor capital efficiency",
+          "Company has a low return on equity of 11.5% over last 3 years."
+        ]
       }
     },
     {
       "symbol": "CONFIPET.NS",
       "passed": true,
       "sector": "Diversified/Other",
-      "current_price": 66.6,
-      "sma_200": 63.07,
-      "fair_value_min": 81.55,
-      "fair_value_max": 104.2,
-      "fair_value_mid": 90.61,
+      "current_price": 67.03,
+      "sma_200": 63.61,
+      "fair_value_min": 82.08,
+      "fair_value_max": 104.88,
+      "fair_value_mid": 91.2,
       "margin_of_safety_pct": 26.5,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
           "pct": 40.0,
-          "price_target": 66.5999984741211,
+          "price_target": 67.02999877929688,
           "trigger": "Immediate on approval"
         },
         "tranche_2_pullback": {
           "pct": 30.0,
-          "price_target": 63.27,
+          "price_target": 63.68,
           "trigger": "5% dip or 50-EMA test"
         },
         "tranche_3_deep_value": {
           "pct": 30.0,
-          "price_target": 59.94,
+          "price_target": 60.33,
           "trigger": "10% dip or 200-SMA support"
         }
       },
@@ -487,8 +1126,8 @@
         "ROE drops below 12% on trailing 12-month basis.",
         "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
       ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
+      "quarterly_review_date": "2027-02-18",
+      "tax_12m_flag_date": "2027-11-21",
       "fundamentals": {
         "symbol": "CONFIPET.NS",
         "market_cap_cr": 2212.7253504,
@@ -505,7 +1144,7 @@
       "unverified_badges": [
         "\u26a0\ufe0f ROE Unverified"
       ],
-      "conviction_tier": "HIGH_CONVICTION",
+      "conviction_tier": "QUALITY_COMPOUNDER",
       "gemini_audit": {
         "verdict": "APPROVED_HIGH_CONVICTION",
         "ai_conviction_pct": 80.0,
@@ -516,33 +1155,153 @@
         "bull_thesis": "Strong balance sheet with UNKNOWN% ROE and +26.5% discount to fair worth.",
         "bear_risk": "Slower earnings momentum.",
         "summary": "Algorithmic institutional valuation fallback."
+      },
+      "compounder_score": 69.0,
+      "compounder_grade": "GRADE B (Solid Quality)",
+      "compounder_breakdown": {
+        "symbol": "CONFIPET.NS",
+        "company_name": "Confidence Petroleum India Ltd",
+        "sector": "Diversified/Other",
+        "total_score": 69.0,
+        "max_possible_score": 100.0,
+        "score_percentage": 69.0,
+        "grade": "GRADE B (Solid Quality)",
+        "verdict": "SELECTIVE_COMPOUNDER",
+        "is_vetoed": false,
+        "veto_reason": null,
+        "categories": {
+          "financial_quality": {
+            "name": "Financial Quality",
+            "weight": 20.0,
+            "score": 1.0,
+            "max_score": 20.0,
+            "rating_pct": 5.0,
+            "notes": [
+              "Weak ROCE (9.1% < 13%) shows poor capital efficiency (+0/7)",
+              "Sub-par ROE (6.9% < 12%) (+0/6)",
+              "Slim operating margin (7.0%) (+1.0/4)",
+              "Volatile historical returns (+0/3)"
+            ]
+          },
+          "earnings_growth": {
+            "name": "Earnings Growth",
+            "weight": 15.0,
+            "score": 13.0,
+            "max_score": 15.0,
+            "rating_pct": 86.7,
+            "notes": [
+              "High revenue CAGR (40.0% >= 15%) (+7.5/7.5)",
+              "Healthy net profit CAGR (14.0% >= 10%) (+5.5/7.5)"
+            ]
+          },
+          "cash_flow": {
+            "name": "Cash Flow",
+            "weight": 15.0,
+            "score": 15.0,
+            "max_score": 15.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "High-integrity cash conversion: 5Y CFO/PAT is 114.5% (+8.0/8)",
+              "Sustained positive Free Cash Flow generation (Latest FCF: \u20b9285 Cr) (+7.0/7)"
+            ]
+          },
+          "valuation": {
+            "name": "Valuation",
+            "weight": 20.0,
+            "score": 20.0,
+            "max_score": 20.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Attractive valuation: PEG=0.87 or P/E (12.2x) at steep discount to Diversified/Other benchmark (20.0x) (+10.0/10)",
+              "Price to Book (1.4x) justified by return on capital (+5.0/5)",
+              "Strong Margin of Safety (+26.5% discount to intrinsic worth) (+5.0/5)"
+            ]
+          },
+          "balance_sheet": {
+            "name": "Balance Sheet",
+            "weight": 10.0,
+            "score": 4.5,
+            "max_score": 10.0,
+            "rating_pct": 45.0,
+            "notes": [
+              "Moderate leverage (D/E: 0.84) (+3.0/7)",
+              "Adequate operational liquidity (+1.5/3)"
+            ]
+          },
+          "technicals": {
+            "name": "Technicals",
+            "weight": 10.0,
+            "score": 7.5,
+            "max_score": 10.0,
+            "rating_pct": 75.0,
+            "notes": [
+              "Trading above 200-SMA structural baseline (+2.5/4)",
+              "Healthy momentum: RSI (46.2) in constructive accumulation zone (+3.0/3)",
+              "Normal trading liquidity (Vol Ratio: 1.10x) (+2.0/3)"
+            ]
+          },
+          "market_conditions": {
+            "name": "Market Conditions",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Macro Regime is GREEN: Institutional equity tailwind (+3.0/3)",
+              "India VIX (14.5) reflects stable market regime (+2.0/2)"
+            ]
+          },
+          "governance": {
+            "name": "Governance",
+            "weight": 5.0,
+            "score": 3.0,
+            "max_score": 5.0,
+            "rating_pct": 60.0,
+            "notes": [
+              "Zero promoter share pledging (0.0%) (+3.0/3)",
+              "Low institutional participation (FII+DII: 3.2%) (+0/2)"
+            ]
+          }
+        },
+        "summary_verdict": "APPROVED QUALITY EQUITY (69.0/100): Sound fundamentals with manageable valuation/momentum headwind.",
+        "key_strengths": [
+          "Earnings Growth: High revenue CAGR (40.0% >= 15%)",
+          "Cash Flow: High-integrity cash conversion: 5Y CFO/PAT is 114.5%",
+          "Valuation: Attractive valuation: PEG=0.87 or P/E (12.2x) at steep discount to Diversified/Other benchmark (20.0x)",
+          "Technicals: Trading above 200-SMA structural baseline"
+        ],
+        "key_risks": [
+          "Financial Quality: Weak ROCE (9.1% < 13%) shows poor capital efficiency",
+          "Company has a low return on equity of 8.03% over last 3 years.",
+          "Dividend payout has been low at 1.01% of profits over last 3 years"
+        ]
       }
     },
     {
-      "symbol": "ANTELOPUS.NS",
+      "symbol": "HEROMOTOCO.NS",
       "passed": true,
-      "sector": "Diversified/Other",
-      "current_price": 861.5,
-      "sma_200": 796.19,
-      "fair_value_min": 997.52,
-      "fair_value_max": 1274.61,
-      "fair_value_mid": 1108.36,
-      "margin_of_safety_pct": 22.27,
+      "sector": "Auto",
+      "current_price": 5536.0,
+      "sma_200": 5260.03,
+      "fair_value_min": 6755.8,
+      "fair_value_max": 8632.41,
+      "fair_value_mid": 7506.44,
+      "margin_of_safety_pct": 26.25,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
           "pct": 40.0,
-          "price_target": 861.5,
+          "price_target": 5536.0,
           "trigger": "Immediate on approval"
         },
         "tranche_2_pullback": {
           "pct": 30.0,
-          "price_target": 818.42,
+          "price_target": 5259.2,
           "trigger": "5% dip or 50-EMA test"
         },
         "tranche_3_deep_value": {
           "pct": 30.0,
-          "price_target": 775.35,
+          "price_target": 4982.4,
           "trigger": "10% dip or 200-SMA support"
         }
       },
@@ -552,160 +1311,178 @@
         "ROE drops below 12% on trailing 12-month basis.",
         "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
       ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
+      "quarterly_review_date": "2027-02-18",
+      "tax_12m_flag_date": "2027-11-21",
       "fundamentals": {
-        "symbol": "ANTELOPUS.NS",
-        "market_cap_cr": 3040.0456704,
-        "pe_ratio": 17.1,
-        "pb_ratio": 3.96,
-        "roe_pct": "UNKNOWN",
-        "debt_to_equity": 0.01,
-        "rev_growth_yoy_pct": 116.0,
-        "earnings_growth_yoy_pct": 384.4,
+        "symbol": "HEROMOTOCO.NS",
+        "market_cap_cr": 106666.2363136,
+        "pe_ratio": 17.7,
+        "pb_ratio": 4.56,
+        "roe_pct": 26.93,
+        "debt_to_equity": 0.06,
+        "rev_growth_yoy_pct": 22.5,
+        "earnings_growth_yoy_pct": 42.2,
         "source": "yfinance_info",
-        "as_of_date": "2026-11-18"
-      },
-      "rejection_reasons": [],
-      "unverified_badges": [
-        "\u26a0\ufe0f ROE Unverified"
-      ],
-      "conviction_tier": "HIGH_CONVICTION",
-      "gemini_audit": null
-    },
-    {
-      "symbol": "TCS.NS",
-      "passed": true,
-      "sector": "IT",
-      "current_price": 2395.3,
-      "sma_200": 2387.89,
-      "fair_value_min": 2685.93,
-      "fair_value_max": 3432.03,
-      "fair_value_mid": 2984.37,
-      "margin_of_safety_pct": 19.74,
-      "target_weight_pct": 5.0,
-      "tranche_plan": {
-        "tranche_1_initial": {
-          "pct": 40.0,
-          "price_target": 2395.199951171875,
-          "trigger": "Immediate on approval"
-        },
-        "tranche_2_pullback": {
-          "pct": 30.0,
-          "price_target": 2275.44,
-          "trigger": "5% dip or 50-EMA test"
-        },
-        "tranche_3_deep_value": {
-          "pct": 30.0,
-          "price_target": 2155.68,
-          "trigger": "10% dip or 200-SMA support"
-        }
-      },
-      "thesis_break_triggers": [
-        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
-        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
-        "ROE drops below 12% on trailing 12-month basis.",
-        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
-      ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
-      "fundamentals": {
-        "symbol": "TCS.NS",
-        "market_cap_cr": "UNKNOWN",
-        "pe_ratio": 16.79,
-        "pb_ratio": 7.29,
-        "roe_pct": 45.57,
-        "debt_to_equity": 0.1,
-        "rev_growth_yoy_pct": 11.2,
-        "earnings_growth_yoy_pct": 15.0,
-        "source": "yfinance_info",
-        "as_of_date": "2026-11-18"
-      },
-      "rejection_reasons": [],
-      "unverified_badges": [
-        "\u26a0\ufe0f Market Cap Unverified"
-      ],
-      "conviction_tier": "HIGH_CONVICTION",
-      "gemini_audit": null
-    },
-    {
-      "symbol": "JSWSTEEL.NS",
-      "passed": true,
-      "sector": "Metals",
-      "current_price": 1314.7,
-      "sma_200": 1254.58,
-      "fair_value_min": 1465.95,
-      "fair_value_max": 1873.15,
-      "fair_value_mid": 1628.83,
-      "margin_of_safety_pct": 19.29,
-      "target_weight_pct": 5.0,
-      "tranche_plan": {
-        "tranche_1_initial": {
-          "pct": 40.0,
-          "price_target": 1314.699951171875,
-          "trigger": "Immediate on approval"
-        },
-        "tranche_2_pullback": {
-          "pct": 30.0,
-          "price_target": 1248.96,
-          "trigger": "5% dip or 50-EMA test"
-        },
-        "tranche_3_deep_value": {
-          "pct": 30.0,
-          "price_target": 1183.23,
-          "trigger": "10% dip or 200-SMA support"
-        }
-      },
-      "thesis_break_triggers": [
-        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
-        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
-        "ROE drops below 12% on trailing 12-month basis.",
-        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
-      ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
-      "fundamentals": {
-        "symbol": "JSWSTEEL.NS",
-        "market_cap_cr": 321034.125312,
-        "pe_ratio": 11.3,
-        "pb_ratio": 2.83,
-        "roe_pct": 31.93,
-        "debt_to_equity": 0.62,
-        "rev_growth_yoy_pct": 20.7,
-        "earnings_growth_yoy_pct": 225.2,
-        "source": "yfinance_info",
-        "as_of_date": "2026-11-18"
+        "as_of_date": "2026-11-17"
       },
       "rejection_reasons": [],
       "unverified_badges": [],
       "conviction_tier": "HIGH_CONVICTION",
-      "gemini_audit": null
+      "gemini_audit": {
+        "verdict": "APPROVED_HIGH_CONVICTION",
+        "ai_conviction_pct": 80.0,
+        "is_cyclical": false,
+        "moat_assessment": "Moderate economic moat",
+        "multiple_sanity_verdict": "Checked against sector bounds",
+        "recommended_pe_cap": 22.0,
+        "bull_thesis": "Strong balance sheet with 26.93% ROE and +26.2% discount to fair worth.",
+        "bear_risk": "Slower earnings momentum.",
+        "summary": "Algorithmic institutional valuation fallback."
+      },
+      "compounder_score": 94.0,
+      "compounder_grade": "GRADE A (Institutional Compounder)",
+      "compounder_breakdown": {
+        "symbol": "HEROMOTOCO.NS",
+        "company_name": "Hero MotoCorp Ltd",
+        "sector": "Auto",
+        "total_score": 94.0,
+        "max_possible_score": 100.0,
+        "score_percentage": 94.0,
+        "grade": "GRADE A (Institutional Compounder)",
+        "verdict": "APPROVED_COMPOUNDER",
+        "is_vetoed": false,
+        "veto_reason": null,
+        "categories": {
+          "financial_quality": {
+            "name": "Financial Quality",
+            "weight": 20.0,
+            "score": 18.5,
+            "max_score": 20.0,
+            "rating_pct": 92.5,
+            "notes": [
+              "Exceptional ROCE (35.2% >= 25%) indicates strong economic moat (+7.0/7)",
+              "Top-quartile ROE (28.1% >= 20%) (+6.0/6)",
+              "Moderate operating margin (14.0%) (+2.5/4)",
+              "Consistent 3-Year ROE track record (25.0% >= 15%) (+3.0/3)"
+            ]
+          },
+          "earnings_growth": {
+            "name": "Earnings Growth",
+            "weight": 15.0,
+            "score": 13.0,
+            "max_score": 15.0,
+            "rating_pct": 86.7,
+            "notes": [
+              "Steady revenue CAGR (12.0% >= 10%) (+5.5/7.5)",
+              "Robust net profit CAGR (28.0% >= 15%) (+7.5/7.5)"
+            ]
+          },
+          "cash_flow": {
+            "name": "Cash Flow",
+            "weight": 15.0,
+            "score": 15.0,
+            "max_score": 15.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "High-integrity cash conversion: 5Y CFO/PAT is 97.9% (+8.0/8)",
+              "Sustained positive Free Cash Flow generation (Latest FCF: \u20b97,227 Cr) (+7.0/7)"
+            ]
+          },
+          "valuation": {
+            "name": "Valuation",
+            "weight": 20.0,
+            "score": 20.0,
+            "max_score": 20.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Attractive valuation: PEG=0.65 or P/E (18.1x) at steep discount to Auto benchmark (22.0x) (+10.0/10)",
+              "Price to Book (4.7x) justified by return on capital (+5.0/5)",
+              "Strong Margin of Safety (+26.2% discount to intrinsic worth) (+5.0/5)"
+            ]
+          },
+          "balance_sheet": {
+            "name": "Balance Sheet",
+            "weight": 10.0,
+            "score": 10.0,
+            "max_score": 10.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Virtually debt-free balance sheet (D/E: 0.06) (+7.0/7)",
+              "Strong retained earnings buffer and solvency cushions (+3.0/3)"
+            ]
+          },
+          "technicals": {
+            "name": "Technicals",
+            "weight": 10.0,
+            "score": 7.5,
+            "max_score": 10.0,
+            "rating_pct": 75.0,
+            "notes": [
+              "Trading above 200-SMA structural baseline (+2.5/4)",
+              "Healthy momentum: RSI (60.7) in constructive accumulation zone (+3.0/3)",
+              "Normal trading liquidity (Vol Ratio: 1.10x) (+2.0/3)"
+            ]
+          },
+          "market_conditions": {
+            "name": "Market Conditions",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Macro Regime is GREEN: Institutional equity tailwind (+3.0/3)",
+              "India VIX (14.5) reflects stable market regime (+2.0/2)"
+            ]
+          },
+          "governance": {
+            "name": "Governance",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Zero promoter share pledging (0.0%) (+3.0/3)",
+              "Strong institutional ownership (FII+DII: 56.1%) (+2.0/2)"
+            ]
+          }
+        },
+        "summary_verdict": "HIGH CONVICTION COMPOUNDER (94.0/100): Exceptional ROCE, cash conversion, and balance sheet strength.",
+        "key_strengths": [
+          "Financial Quality: Exceptional ROCE (35.2% >= 25%) indicates strong economic moat",
+          "Earnings Growth: Steady revenue CAGR (12.0% >= 10%)",
+          "Cash Flow: High-integrity cash conversion: 5Y CFO/PAT is 97.9%",
+          "Valuation: Attractive valuation: PEG=0.65 or P/E (18.1x) at steep discount to Auto benchmark (22.0x)"
+        ],
+        "key_risks": [
+          "The company has delivered a poor sales growth of 8.90% over past five years."
+        ]
+      }
     },
     {
       "symbol": "ICICIBANK.NS",
       "passed": true,
       "sector": "Banking",
-      "current_price": 1602.6,
-      "sma_200": 1363.36,
-      "fair_value_min": 1758.95,
-      "fair_value_max": 2247.55,
-      "fair_value_mid": 1954.39,
-      "margin_of_safety_pct": 18.0,
+      "current_price": 1640.0,
+      "sma_200": 1365.95,
+      "fair_value_min": 1804.58,
+      "fair_value_max": 2305.85,
+      "fair_value_mid": 2005.09,
+      "margin_of_safety_pct": 18.21,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
           "pct": 40.0,
-          "price_target": 1602.5999755859375,
+          "price_target": 1640.0,
           "trigger": "Immediate on approval"
         },
         "tranche_2_pullback": {
           "pct": 30.0,
-          "price_target": 1522.47,
+          "price_target": 1558.0,
           "trigger": "5% dip or 50-EMA test"
         },
         "tranche_3_deep_value": {
           "pct": 30.0,
-          "price_target": 1442.34,
+          "price_target": 1476.0,
           "trigger": "10% dip or 200-SMA support"
         }
       },
@@ -715,50 +1492,168 @@
         "ROE drops below 12% on trailing 12-month basis.",
         "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
       ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
+      "quarterly_review_date": "2027-02-18",
+      "tax_12m_flag_date": "2027-11-21",
       "fundamentals": {
         "symbol": "ICICIBANK.NS",
-        "market_cap_cr": 1151327.6399616,
-        "pe_ratio": 19.68,
+        "market_cap_cr": 1148002.7103232,
+        "pe_ratio": 19.63,
         "pb_ratio": 2.94,
         "roe_pct": 16.49,
         "debt_to_equity": "UNKNOWN",
         "rev_growth_yoy_pct": 15.8,
         "earnings_growth_yoy_pct": 22.1,
         "source": "yfinance_info",
-        "as_of_date": "2026-11-18"
+        "as_of_date": "2026-11-17"
       },
       "rejection_reasons": [],
       "unverified_badges": [],
       "conviction_tier": "HIGH_CONVICTION",
-      "gemini_audit": null
+      "gemini_audit": null,
+      "compounder_score": 86.5,
+      "compounder_grade": "GRADE A (Institutional Compounder)",
+      "compounder_breakdown": {
+        "symbol": "ICICIBANK.NS",
+        "company_name": "ICICI Bank Ltd",
+        "sector": "Banking",
+        "total_score": 86.5,
+        "max_possible_score": 100.0,
+        "score_percentage": 86.5,
+        "grade": "GRADE A (Institutional Compounder)",
+        "verdict": "APPROVED_COMPOUNDER",
+        "is_vetoed": false,
+        "veto_reason": null,
+        "categories": {
+          "financial_quality": {
+            "name": "Financial Quality",
+            "weight": 20.0,
+            "score": 16.5,
+            "max_score": 20.0,
+            "rating_pct": 82.5,
+            "notes": [
+              "Bank ROE (15.9%) healthy (+5.0/7)",
+              "Healthy ROE (15.9% >= 15%) (+4.5/6)",
+              "High operating margin (-19.0% >= 20%) (+4.0/4)",
+              "Consistent 3-Year ROE track record (17.0% >= 15%) (+3.0/3)"
+            ]
+          },
+          "earnings_growth": {
+            "name": "Earnings Growth",
+            "weight": 15.0,
+            "score": 15.0,
+            "max_score": 15.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "High revenue CAGR (17.0% >= 15%) (+7.5/7.5)",
+              "Robust net profit CAGR (24.0% >= 15%) (+7.5/7.5)"
+            ]
+          },
+          "cash_flow": {
+            "name": "Cash Flow",
+            "weight": 15.0,
+            "score": 13.5,
+            "max_score": 15.0,
+            "rating_pct": 90.0,
+            "notes": [
+              "Banking liquidity & operating cash conversion validated (+7.0/8)",
+              "Bank statutory liquidity & capital ratios sound (+6.5/7)"
+            ]
+          },
+          "valuation": {
+            "name": "Valuation",
+            "weight": 20.0,
+            "score": 16.5,
+            "max_score": 20.0,
+            "rating_pct": 82.5,
+            "notes": [
+              "Attractive valuation: PEG=0.84 or P/E (20.1x) at steep discount to Banking benchmark (16.0x) (+10.0/10)",
+              "Moderate Price to Book (3.0x) (+3.0/5)",
+              "Modest Margin of Safety (+18.2%) (+3.5/5)"
+            ]
+          },
+          "balance_sheet": {
+            "name": "Balance Sheet",
+            "weight": 10.0,
+            "score": 9.0,
+            "max_score": 10.0,
+            "rating_pct": 90.0,
+            "notes": [
+              "Regulated banking balance sheet with institutional deposit franchise (+9.0/10)"
+            ]
+          },
+          "technicals": {
+            "name": "Technicals",
+            "weight": 10.0,
+            "score": 6.0,
+            "max_score": 10.0,
+            "rating_pct": 60.0,
+            "notes": [
+              "Bullish trend alignment: Price > 50-EMA > 200-SMA (+4.0/4)",
+              "Extreme momentum warning: RSI (81.0) (+0/3)",
+              "Normal trading liquidity (Vol Ratio: 1.10x) (+2.0/3)"
+            ]
+          },
+          "market_conditions": {
+            "name": "Market Conditions",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Macro Regime is GREEN: Institutional equity tailwind (+3.0/3)",
+              "India VIX (14.5) reflects stable market regime (+2.0/2)"
+            ]
+          },
+          "governance": {
+            "name": "Governance",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Zero promoter share pledging (0.0%) (+3.0/3)",
+              "Strong institutional ownership (FII+DII: 76.5%) (+2.0/2)"
+            ]
+          }
+        },
+        "summary_verdict": "HIGH CONVICTION COMPOUNDER (86.5/100): Exceptional ROCE, cash conversion, and balance sheet strength.",
+        "key_strengths": [
+          "Financial Quality: Bank ROE (15.9%) healthy",
+          "Earnings Growth: High revenue CAGR (17.0% >= 15%)",
+          "Cash Flow: Banking liquidity & operating cash conversion validated",
+          "Valuation: Attractive valuation: PEG=0.84 or P/E (20.1x) at steep discount to Banking benchmark (16.0x)"
+        ],
+        "key_risks": [
+          "Stock is trading at 2.97 times its book value",
+          "Company has low interest coverage ratio."
+        ]
+      }
     },
     {
-      "symbol": "CEIGALL.NS",
+      "symbol": "JSWSTEEL.NS",
       "passed": true,
-      "sector": "Diversified/Other",
-      "current_price": 387.0,
-      "sma_200": 337.8,
-      "fair_value_min": 409.33,
-      "fair_value_max": 523.03,
-      "fair_value_mid": 454.81,
-      "margin_of_safety_pct": 14.91,
+      "sector": "Metals",
+      "current_price": 1337.0,
+      "sma_200": 1255.75,
+      "fair_value_min": 1471.28,
+      "fair_value_max": 1879.97,
+      "fair_value_mid": 1634.76,
+      "margin_of_safety_pct": 18.21,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
           "pct": 40.0,
-          "price_target": 387.0,
+          "price_target": 1337.0,
           "trigger": "Immediate on approval"
         },
         "tranche_2_pullback": {
           "pct": 30.0,
-          "price_target": 367.65,
+          "price_target": 1270.15,
           "trigger": "5% dip or 50-EMA test"
         },
         "tranche_3_deep_value": {
           "pct": 30.0,
-          "price_target": 348.3,
+          "price_target": 1203.3,
           "trigger": "10% dip or 200-SMA support"
         }
       },
@@ -768,8 +1663,181 @@
         "ROE drops below 12% on trailing 12-month basis.",
         "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
       ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
+      "quarterly_review_date": "2027-02-18",
+      "tax_12m_flag_date": "2027-11-21",
+      "fundamentals": {
+        "symbol": "JSWSTEEL.NS",
+        "market_cap_cr": 325258.6020864,
+        "pe_ratio": 11.45,
+        "pb_ratio": 2.87,
+        "roe_pct": 31.93,
+        "debt_to_equity": 0.62,
+        "rev_growth_yoy_pct": 20.7,
+        "earnings_growth_yoy_pct": 225.2,
+        "source": "yfinance_info",
+        "as_of_date": "2026-11-17"
+      },
+      "rejection_reasons": [],
+      "unverified_badges": [],
+      "conviction_tier": "QUALITY_COMPOUNDER",
+      "gemini_audit": null,
+      "compounder_score": 74.5,
+      "compounder_grade": "GRADE B (Solid Quality)",
+      "compounder_breakdown": {
+        "symbol": "JSWSTEEL.NS",
+        "company_name": "JSW Steel Ltd",
+        "sector": "Metals",
+        "total_score": 74.5,
+        "max_possible_score": 100.0,
+        "score_percentage": 74.5,
+        "grade": "GRADE B (Solid Quality)",
+        "verdict": "SELECTIVE_COMPOUNDER",
+        "is_vetoed": false,
+        "veto_reason": null,
+        "categories": {
+          "financial_quality": {
+            "name": "Financial Quality",
+            "weight": 20.0,
+            "score": 2.5,
+            "max_score": 20.0,
+            "rating_pct": 12.5,
+            "notes": [
+              "Weak ROCE (11.0% < 13%) shows poor capital efficiency (+0/7)",
+              "Sub-par ROE (10.2% < 12%) (+0/6)",
+              "Moderate operating margin (17.0%) (+2.5/4)",
+              "Volatile historical returns (+0/3)"
+            ]
+          },
+          "earnings_growth": {
+            "name": "Earnings Growth",
+            "weight": 15.0,
+            "score": 15.0,
+            "max_score": 15.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "High revenue CAGR (18.0% >= 15%) (+7.5/7.5)",
+              "Robust net profit CAGR (35.0% >= 15%) (+7.5/7.5)"
+            ]
+          },
+          "cash_flow": {
+            "name": "Cash Flow",
+            "weight": 15.0,
+            "score": 15.0,
+            "max_score": 15.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "High-integrity cash conversion: 5Y CFO/PAT is 145.9% (+8.0/8)",
+              "Sustained positive Free Cash Flow generation (Latest FCF: \u20b910,610 Cr) (+7.0/7)"
+            ]
+          },
+          "valuation": {
+            "name": "Valuation",
+            "weight": 20.0,
+            "score": 18.5,
+            "max_score": 20.0,
+            "rating_pct": 92.5,
+            "notes": [
+              "Attractive valuation: PEG=0.60 or P/E (20.9x) at steep discount to Metals benchmark (22.0x) (+10.0/10)",
+              "Price to Book (2.9x) justified by return on capital (+5.0/5)",
+              "Modest Margin of Safety (+18.2%) (+3.5/5)"
+            ]
+          },
+          "balance_sheet": {
+            "name": "Balance Sheet",
+            "weight": 10.0,
+            "score": 4.5,
+            "max_score": 10.0,
+            "rating_pct": 45.0,
+            "notes": [
+              "Moderate leverage (D/E: 0.62) (+3.0/7)",
+              "Adequate operational liquidity (+1.5/3)"
+            ]
+          },
+          "technicals": {
+            "name": "Technicals",
+            "weight": 10.0,
+            "score": 9.0,
+            "max_score": 10.0,
+            "rating_pct": 90.0,
+            "notes": [
+              "Bullish trend alignment: Price > 50-EMA > 200-SMA (+4.0/4)",
+              "Healthy momentum: RSI (59.6) in constructive accumulation zone (+3.0/3)",
+              "Normal trading liquidity (Vol Ratio: 1.10x) (+2.0/3)"
+            ]
+          },
+          "market_conditions": {
+            "name": "Market Conditions",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Macro Regime is GREEN: Institutional equity tailwind (+3.0/3)",
+              "India VIX (14.5) reflects stable market regime (+2.0/2)"
+            ]
+          },
+          "governance": {
+            "name": "Governance",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Zero promoter share pledging (0.0%) (+3.0/3)",
+              "Strong institutional ownership (FII+DII: 37.6%) (+2.0/2)"
+            ]
+          }
+        },
+        "summary_verdict": "APPROVED QUALITY EQUITY (74.5/100): Sound fundamentals with manageable valuation/momentum headwind.",
+        "key_strengths": [
+          "Earnings Growth: High revenue CAGR (18.0% >= 15%)",
+          "Cash Flow: High-integrity cash conversion: 5Y CFO/PAT is 145.9%",
+          "Valuation: Attractive valuation: PEG=0.60 or P/E (20.9x) at steep discount to Metals benchmark (22.0x)",
+          "Technicals: Bullish trend alignment: Price > 50-EMA > 200-SMA"
+        ],
+        "key_risks": [
+          "Financial Quality: Weak ROCE (11.0% < 13%) shows poor capital efficiency",
+          "Stock is trading at 2.83 times its book value",
+          "Company has a low return on equity of 8.97% over last 3 years."
+        ]
+      }
+    },
+    {
+      "symbol": "CEIGALL.NS",
+      "passed": true,
+      "sector": "Diversified/Other",
+      "current_price": 379.4,
+      "sma_200": 339.42,
+      "fair_value_min": 401.29,
+      "fair_value_max": 512.76,
+      "fair_value_mid": 445.88,
+      "margin_of_safety_pct": 14.91,
+      "target_weight_pct": 5.0,
+      "tranche_plan": {
+        "tranche_1_initial": {
+          "pct": 40.0,
+          "price_target": 379.3999938964844,
+          "trigger": "Immediate on approval"
+        },
+        "tranche_2_pullback": {
+          "pct": 30.0,
+          "price_target": 360.43,
+          "trigger": "5% dip or 50-EMA test"
+        },
+        "tranche_3_deep_value": {
+          "pct": 30.0,
+          "price_target": 341.46,
+          "trigger": "10% dip or 200-SMA support"
+        }
+      },
+      "thesis_break_triggers": [
+        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
+        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
+        "ROE drops below 12% on trailing 12-month basis.",
+        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
+      ],
+      "quarterly_review_date": "2027-02-18",
+      "tax_12m_flag_date": "2027-11-21",
       "fundamentals": {
         "symbol": "CEIGALL.NS",
         "market_cap_cr": 6741.7280512,
@@ -785,33 +1853,151 @@
       "rejection_reasons": [],
       "unverified_badges": [],
       "conviction_tier": "QUALITY_COMPOUNDER",
-      "gemini_audit": null
+      "gemini_audit": null,
+      "compounder_score": 67.0,
+      "compounder_grade": "GRADE B (Solid Quality)",
+      "compounder_breakdown": {
+        "symbol": "CEIGALL.NS",
+        "company_name": "Ceigall India Ltd",
+        "sector": "Diversified/Other",
+        "total_score": 67.0,
+        "max_possible_score": 100.0,
+        "score_percentage": 67.0,
+        "grade": "GRADE B (Solid Quality)",
+        "verdict": "SELECTIVE_COMPOUNDER",
+        "is_vetoed": false,
+        "veto_reason": null,
+        "categories": {
+          "financial_quality": {
+            "name": "Financial Quality",
+            "weight": 20.0,
+            "score": 13.5,
+            "max_score": 20.0,
+            "rating_pct": 67.5,
+            "notes": [
+              "Moderate ROCE (17.0%) (+3.5/7)",
+              "Healthy ROE (15.0% >= 15%) (+4.5/6)",
+              "Moderate operating margin (16.0%) (+2.5/4)",
+              "Consistent 3-Year ROE track record (21.0% >= 15%) (+3.0/3)"
+            ]
+          },
+          "earnings_growth": {
+            "name": "Earnings Growth",
+            "weight": 15.0,
+            "score": 15.0,
+            "max_score": 15.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "High revenue CAGR (36.0% >= 15%) (+7.5/7.5)",
+              "Robust net profit CAGR (22.0% >= 15%) (+7.5/7.5)"
+            ]
+          },
+          "cash_flow": {
+            "name": "Cash Flow",
+            "weight": 15.0,
+            "score": 0.0,
+            "max_score": 15.0,
+            "rating_pct": 0.0,
+            "notes": [
+              "Accrual Warning: 5Y CFO/PAT is -72.3% (<50%) indicates paper earnings (+0/8)",
+              "Negative Free Cash Flow (\u20b9-129 Cr) due to heavy capex/working capital (+0/7)"
+            ]
+          },
+          "valuation": {
+            "name": "Valuation",
+            "weight": 20.0,
+            "score": 18.5,
+            "max_score": 20.0,
+            "rating_pct": 92.5,
+            "notes": [
+              "Attractive valuation: PEG=0.85 or P/E (18.6x) at steep discount to Diversified/Other benchmark (20.0x) (+10.0/10)",
+              "Price to Book (2.9x) justified by return on capital (+5.0/5)",
+              "Modest Margin of Safety (+14.9%) (+3.5/5)"
+            ]
+          },
+          "balance_sheet": {
+            "name": "Balance Sheet",
+            "weight": 10.0,
+            "score": 4.5,
+            "max_score": 10.0,
+            "rating_pct": 45.0,
+            "notes": [
+              "Moderate leverage (D/E: 0.77) (+3.0/7)",
+              "Adequate operational liquidity (+1.5/3)"
+            ]
+          },
+          "technicals": {
+            "name": "Technicals",
+            "weight": 10.0,
+            "score": 7.5,
+            "max_score": 10.0,
+            "rating_pct": 75.0,
+            "notes": [
+              "Trading above 200-SMA structural baseline (+2.5/4)",
+              "Healthy momentum: RSI (45.5) in constructive accumulation zone (+3.0/3)",
+              "Normal trading liquidity (Vol Ratio: 1.10x) (+2.0/3)"
+            ]
+          },
+          "market_conditions": {
+            "name": "Market Conditions",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Macro Regime is GREEN: Institutional equity tailwind (+3.0/3)",
+              "India VIX (14.5) reflects stable market regime (+2.0/2)"
+            ]
+          },
+          "governance": {
+            "name": "Governance",
+            "weight": 5.0,
+            "score": 3.0,
+            "max_score": 5.0,
+            "rating_pct": 60.0,
+            "notes": [
+              "Zero promoter share pledging (0.0%) (+3.0/3)",
+              "Low institutional participation (FII+DII: 8.8%) (+0/2)"
+            ]
+          }
+        },
+        "summary_verdict": "APPROVED QUALITY EQUITY (67.0/100): Sound fundamentals with manageable valuation/momentum headwind.",
+        "key_strengths": [
+          "Earnings Growth: High revenue CAGR (36.0% >= 15%)",
+          "Valuation: Attractive valuation: PEG=0.85 or P/E (18.6x) at steep discount to Diversified/Other benchmark (20.0x)",
+          "Technicals: Trading above 200-SMA structural baseline",
+          "Market Conditions: Macro Regime is GREEN: Institutional equity tailwind"
+        ],
+        "key_risks": [
+          "Cash Flow: Accrual Warning: 5Y CFO/PAT is -72.3% (<50%) indicates paper earnings"
+        ]
+      }
     },
     {
       "symbol": "BANCOINDIA.NS",
       "passed": true,
       "sector": "Diversified/Other",
-      "current_price": 705.25,
-      "sma_200": 620.61,
-      "fair_value_min": 716.46,
-      "fair_value_max": 915.48,
-      "fair_value_mid": 796.07,
+      "current_price": 706.0,
+      "sma_200": 622.05,
+      "fair_value_min": 717.23,
+      "fair_value_max": 916.46,
+      "fair_value_mid": 796.92,
       "margin_of_safety_pct": 11.41,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
           "pct": 40.0,
-          "price_target": 705.25,
+          "price_target": 706.0,
           "trigger": "Immediate on approval"
         },
         "tranche_2_pullback": {
           "pct": 30.0,
-          "price_target": 669.99,
+          "price_target": 670.7,
           "trigger": "5% dip or 50-EMA test"
         },
         "tranche_3_deep_value": {
           "pct": 30.0,
-          "price_target": 634.73,
+          "price_target": 635.4,
           "trigger": "10% dip or 200-SMA support"
         }
       },
@@ -821,8 +2007,8 @@
         "ROE drops below 12% on trailing 12-month basis.",
         "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
       ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
+      "quarterly_review_date": "2027-02-18",
+      "tax_12m_flag_date": "2027-11-21",
       "fundamentals": {
         "symbol": "BANCOINDIA.NS",
         "market_cap_cr": 10087.7049856,
@@ -838,33 +2024,151 @@
       "rejection_reasons": [],
       "unverified_badges": [],
       "conviction_tier": "QUALITY_COMPOUNDER",
-      "gemini_audit": null
+      "gemini_audit": null,
+      "compounder_score": 85.5,
+      "compounder_grade": "GRADE A (Institutional Compounder)",
+      "compounder_breakdown": {
+        "symbol": "BANCOINDIA.NS",
+        "company_name": "Banco Products (India) Ltd",
+        "sector": "Diversified/Other",
+        "total_score": 85.5,
+        "max_possible_score": 100.0,
+        "score_percentage": 85.5,
+        "grade": "GRADE A (Institutional Compounder)",
+        "verdict": "APPROVED_COMPOUNDER",
+        "is_vetoed": false,
+        "veto_reason": null,
+        "categories": {
+          "financial_quality": {
+            "name": "Financial Quality",
+            "weight": 20.0,
+            "score": 18.5,
+            "max_score": 20.0,
+            "rating_pct": 92.5,
+            "notes": [
+              "Exceptional ROCE (30.9% >= 25%) indicates strong economic moat (+7.0/7)",
+              "Top-quartile ROE (30.2% >= 20%) (+6.0/6)",
+              "Moderate operating margin (19.0%) (+2.5/4)",
+              "Consistent 3-Year ROE track record (30.0% >= 15%) (+3.0/3)"
+            ]
+          },
+          "earnings_growth": {
+            "name": "Earnings Growth",
+            "weight": 15.0,
+            "score": 15.0,
+            "max_score": 15.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "High revenue CAGR (21.0% >= 15%) (+7.5/7.5)",
+              "Robust net profit CAGR (32.0% >= 15%) (+7.5/7.5)"
+            ]
+          },
+          "cash_flow": {
+            "name": "Cash Flow",
+            "weight": 15.0,
+            "score": 10.5,
+            "max_score": 15.0,
+            "rating_pct": 70.0,
+            "notes": [
+              "Moderate cash conversion: 5Y CFO/PAT is 53.5% (+3.5/8)",
+              "Sustained positive Free Cash Flow generation (Latest FCF: \u20b9267 Cr) (+7.0/7)"
+            ]
+          },
+          "valuation": {
+            "name": "Valuation",
+            "weight": 20.0,
+            "score": 18.5,
+            "max_score": 20.0,
+            "rating_pct": 92.5,
+            "notes": [
+              "Attractive valuation: PEG=0.62 or P/E (19.8x) at steep discount to Diversified/Other benchmark (20.0x) (+10.0/10)",
+              "Price to Book (5.4x) justified by return on capital (+5.0/5)",
+              "Modest Margin of Safety (+11.4%) (+3.5/5)"
+            ]
+          },
+          "balance_sheet": {
+            "name": "Balance Sheet",
+            "weight": 10.0,
+            "score": 8.5,
+            "max_score": 10.0,
+            "rating_pct": 85.0,
+            "notes": [
+              "Conservative industrial leverage (D/E: 0.28 <= 0.5) (+5.5/7)",
+              "Strong retained earnings buffer and solvency cushions (+3.0/3)"
+            ]
+          },
+          "technicals": {
+            "name": "Technicals",
+            "weight": 10.0,
+            "score": 6.5,
+            "max_score": 10.0,
+            "rating_pct": 65.0,
+            "notes": [
+              "Trading above 200-SMA structural baseline (+2.5/4)",
+              "Strong momentum: RSI (71.9) near upper threshold (+2.0/3)",
+              "Normal trading liquidity (Vol Ratio: 1.10x) (+2.0/3)"
+            ]
+          },
+          "market_conditions": {
+            "name": "Market Conditions",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Macro Regime is GREEN: Institutional equity tailwind (+3.0/3)",
+              "India VIX (14.5) reflects stable market regime (+2.0/2)"
+            ]
+          },
+          "governance": {
+            "name": "Governance",
+            "weight": 5.0,
+            "score": 3.0,
+            "max_score": 5.0,
+            "rating_pct": 60.0,
+            "notes": [
+              "Zero promoter share pledging (0.0%) (+3.0/3)",
+              "Low institutional participation (FII+DII: 4.2%) (+0/2)"
+            ]
+          }
+        },
+        "summary_verdict": "HIGH CONVICTION COMPOUNDER (85.5/100): Exceptional ROCE, cash conversion, and balance sheet strength.",
+        "key_strengths": [
+          "Financial Quality: Exceptional ROCE (30.9% >= 25%) indicates strong economic moat",
+          "Earnings Growth: High revenue CAGR (21.0% >= 15%)",
+          "Valuation: Attractive valuation: PEG=0.62 or P/E (19.8x) at steep discount to Diversified/Other benchmark (20.0x)",
+          "Balance Sheet: Conservative industrial leverage (D/E: 0.28 <= 0.5)"
+        ],
+        "key_risks": [
+          "Company might be capitalizing the interest cost"
+        ]
+      }
     },
     {
       "symbol": "TECHM.NS",
       "passed": true,
       "sector": "IT",
-      "current_price": 1754.0,
-      "sma_200": 1534.27,
-      "fair_value_min": 1679.96,
-      "fair_value_max": 2146.61,
-      "fair_value_mid": 1866.62,
-      "margin_of_safety_pct": 6.03,
+      "current_price": 1746.2,
+      "sma_200": 1534.05,
+      "fair_value_min": 1664.81,
+      "fair_value_max": 2127.26,
+      "fair_value_mid": 1849.79,
+      "margin_of_safety_pct": 5.6,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
           "pct": 40.0,
-          "price_target": 1754.0,
+          "price_target": 1746.199951171875,
           "trigger": "Immediate on approval"
         },
         "tranche_2_pullback": {
           "pct": 30.0,
-          "price_target": 1666.3,
+          "price_target": 1658.89,
           "trigger": "5% dip or 50-EMA test"
         },
         "tranche_3_deep_value": {
           "pct": 30.0,
-          "price_target": 1578.6,
+          "price_target": 1571.58,
           "trigger": "10% dip or 200-SMA support"
         }
       },
@@ -874,50 +2178,171 @@
         "ROE drops below 12% on trailing 12-month basis.",
         "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
       ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
+      "quarterly_review_date": "2027-02-18",
+      "tax_12m_flag_date": "2027-11-21",
       "fundamentals": {
         "symbol": "TECHM.NS",
-        "market_cap_cr": 155399.028736,
-        "pe_ratio": 28.19,
-        "pb_ratio": 5.24,
+        "market_cap_cr": 172712.132608,
+        "pe_ratio": 28.32,
+        "pb_ratio": 5.26,
         "roe_pct": 19.19,
         "debt_to_equity": 0.07,
         "rev_growth_yoy_pct": 15.6,
         "earnings_growth_yoy_pct": 32.5,
         "source": "yfinance_info",
-        "as_of_date": "2026-11-18"
+        "as_of_date": "2026-11-17"
       },
       "rejection_reasons": [],
       "unverified_badges": [],
       "conviction_tier": "QUALITY_COMPOUNDER",
-      "gemini_audit": null
+      "gemini_audit": null,
+      "compounder_score": 68.5,
+      "compounder_grade": "GRADE B (Solid Quality)",
+      "compounder_breakdown": {
+        "symbol": "TECHM.NS",
+        "company_name": "Tech Mahindra Ltd",
+        "sector": "IT",
+        "total_score": 68.5,
+        "max_possible_score": 100.0,
+        "score_percentage": 68.5,
+        "grade": "GRADE B (Solid Quality)",
+        "verdict": "SELECTIVE_COMPOUNDER",
+        "is_vetoed": false,
+        "veto_reason": null,
+        "categories": {
+          "financial_quality": {
+            "name": "Financial Quality",
+            "weight": 20.0,
+            "score": 14.0,
+            "max_score": 20.0,
+            "rating_pct": 70.0,
+            "notes": [
+              "Solid ROCE (23.1% >= 18%) above cost of capital (+5.5/7)",
+              "Healthy ROE (17.5% >= 15%) (+4.5/6)",
+              "Moderate operating margin (17.0%) (+2.5/4)",
+              "Stable 3-Year ROE (14.0%) (+1.5/3)"
+            ]
+          },
+          "earnings_growth": {
+            "name": "Earnings Growth",
+            "weight": 15.0,
+            "score": 4.0,
+            "max_score": 15.0,
+            "rating_pct": 26.7,
+            "notes": [
+              "Moderate revenue CAGR (8.0%) (+3.5/7.5)",
+              "Stagnant/declining profit growth (2.0% < 6%) (+0.5/7.5)"
+            ]
+          },
+          "cash_flow": {
+            "name": "Cash Flow",
+            "weight": 15.0,
+            "score": 15.0,
+            "max_score": 15.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "High-integrity cash conversion: 5Y CFO/PAT is 133.4% (+8.0/8)",
+              "Sustained positive Free Cash Flow generation (Latest FCF: \u20b95,626 Cr) (+7.0/7)"
+            ]
+          },
+          "valuation": {
+            "name": "Valuation",
+            "weight": 20.0,
+            "score": 6.5,
+            "max_score": 20.0,
+            "rating_pct": 32.5,
+            "notes": [
+              "Expensive multiple: PEG=5.98, P/E 29.9x (+0/10)",
+              "Moderate Price to Book (5.7x) (+3.0/5)",
+              "Modest Margin of Safety (+5.6%) (+3.5/5)"
+            ]
+          },
+          "balance_sheet": {
+            "name": "Balance Sheet",
+            "weight": 10.0,
+            "score": 10.0,
+            "max_score": 10.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Virtually debt-free balance sheet (D/E: 0.07) (+7.0/7)",
+              "Strong retained earnings buffer and solvency cushions (+3.0/3)"
+            ]
+          },
+          "technicals": {
+            "name": "Technicals",
+            "weight": 10.0,
+            "score": 9.0,
+            "max_score": 10.0,
+            "rating_pct": 90.0,
+            "notes": [
+              "Bullish trend alignment: Price > 50-EMA > 200-SMA (+4.0/4)",
+              "Healthy momentum: RSI (51.5) in constructive accumulation zone (+3.0/3)",
+              "Normal trading liquidity (Vol Ratio: 1.10x) (+2.0/3)"
+            ]
+          },
+          "market_conditions": {
+            "name": "Market Conditions",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Macro Regime is GREEN: Institutional equity tailwind (+3.0/3)",
+              "India VIX (14.5) reflects stable market regime (+2.0/2)"
+            ]
+          },
+          "governance": {
+            "name": "Governance",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Zero promoter share pledging (0.0%) (+3.0/3)",
+              "Strong institutional ownership (FII+DII: 56.4%) (+2.0/2)"
+            ]
+          }
+        },
+        "summary_verdict": "APPROVED QUALITY EQUITY (68.5/100): Sound fundamentals with manageable valuation/momentum headwind.",
+        "key_strengths": [
+          "Cash Flow: High-integrity cash conversion: 5Y CFO/PAT is 133.4%",
+          "Balance Sheet: Virtually debt-free balance sheet (D/E: 0.07)",
+          "Technicals: Bullish trend alignment: Price > 50-EMA > 200-SMA",
+          "Market Conditions: Macro Regime is GREEN: Institutional equity tailwind"
+        ],
+        "key_risks": [
+          "Earnings Growth: Stagnant/declining profit growth (2.0% < 6%)",
+          "Valuation: Expensive multiple: PEG=5.98, P/E 29.9x",
+          "The company has delivered a poor sales growth of 8.46% over past five years.",
+          "Company has a low return on equity of 13.6% over last 3 years."
+        ]
+      }
     },
     {
       "symbol": "BAJAJ-AUTO.NS",
       "passed": true,
       "sector": "Auto",
-      "current_price": 10629.0,
-      "sma_200": 10368.67,
-      "fair_value_min": 10127.32,
-      "fair_value_max": 12940.47,
-      "fair_value_mid": 11252.58,
-      "margin_of_safety_pct": 5.54,
+      "current_price": 10765.0,
+      "sma_200": 10381.66,
+      "fair_value_min": 10122.94,
+      "fair_value_max": 12934.87,
+      "fair_value_mid": 11247.71,
+      "margin_of_safety_pct": 4.29,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
           "pct": 40.0,
-          "price_target": 10629.0,
+          "price_target": 10765.0,
           "trigger": "Immediate on approval"
         },
         "tranche_2_pullback": {
           "pct": 30.0,
-          "price_target": 10097.55,
+          "price_target": 10226.75,
           "trigger": "5% dip or 50-EMA test"
         },
         "tranche_3_deep_value": {
           "pct": 30.0,
-          "price_target": 9566.1,
+          "price_target": 9688.5,
           "trigger": "10% dip or 200-SMA support"
         }
       },
@@ -927,50 +2352,169 @@
         "ROE drops below 12% on trailing 12-month basis.",
         "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
       ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
+      "quarterly_review_date": "2027-02-18",
+      "tax_12m_flag_date": "2027-11-21",
       "fundamentals": {
         "symbol": "BAJAJ-AUTO.NS",
-        "market_cap_cr": 292088.9974784,
-        "pe_ratio": 22.67,
-        "pb_ratio": 8.01,
+        "market_cap_cr": 295963.7479424,
+        "pe_ratio": 22.97,
+        "pb_ratio": 8.11,
         "roe_pct": 35.56,
         "debt_to_equity": 0.7,
         "rev_growth_yoy_pct": 57.4,
         "earnings_growth_yoy_pct": 63.8,
         "source": "yfinance_info",
-        "as_of_date": "2026-11-18"
+        "as_of_date": "2026-11-17"
       },
       "rejection_reasons": [],
       "unverified_badges": [],
-      "conviction_tier": "QUALITY_COMPOUNDER",
-      "gemini_audit": null
+      "conviction_tier": "THIN_DISCOUNT",
+      "gemini_audit": null,
+      "compounder_score": 78.5,
+      "compounder_grade": "GRADE B (Solid Quality)",
+      "compounder_breakdown": {
+        "symbol": "BAJAJ-AUTO.NS",
+        "company_name": "Bajaj Auto Ltd",
+        "sector": "Auto",
+        "total_score": 78.5,
+        "max_possible_score": 100.0,
+        "score_percentage": 78.5,
+        "grade": "GRADE B (Solid Quality)",
+        "verdict": "SELECTIVE_COMPOUNDER",
+        "is_vetoed": false,
+        "veto_reason": null,
+        "categories": {
+          "financial_quality": {
+            "name": "Financial Quality",
+            "weight": 20.0,
+            "score": 20.0,
+            "max_score": 20.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Exceptional ROCE (28.2% >= 25%) indicates strong economic moat (+7.0/7)",
+              "Top-quartile ROE (29.2% >= 20%) (+6.0/6)",
+              "High operating margin (20.0% >= 20%) (+4.0/4)",
+              "Consistent 3-Year ROE track record (26.0% >= 15%) (+3.0/3)"
+            ]
+          },
+          "earnings_growth": {
+            "name": "Earnings Growth",
+            "weight": 15.0,
+            "score": 15.0,
+            "max_score": 15.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "High revenue CAGR (20.0% >= 15%) (+7.5/7.5)",
+              "Robust net profit CAGR (21.0% >= 15%) (+7.5/7.5)"
+            ]
+          },
+          "cash_flow": {
+            "name": "Cash Flow",
+            "weight": 15.0,
+            "score": 7.0,
+            "max_score": 15.0,
+            "rating_pct": 46.7,
+            "notes": [
+              "Accrual Warning: 5Y CFO/PAT is 38.7% (<50%) indicates paper earnings (+0/8)",
+              "Sustained positive Free Cash Flow generation (Latest FCF: \u20b91,885 Cr) (+7.0/7)"
+            ]
+          },
+          "valuation": {
+            "name": "Valuation",
+            "weight": 20.0,
+            "score": 13.0,
+            "max_score": 20.0,
+            "rating_pct": 65.0,
+            "notes": [
+              "Attractive valuation: PEG=1.08 or P/E (22.6x) at steep discount to Auto benchmark (22.0x) (+10.0/10)",
+              "High Price to Book (8.1x) requires flawless execution (+1.0/5)",
+              "Trading near intrinsic fair worth (+4.3%) (+2.0/5)"
+            ]
+          },
+          "balance_sheet": {
+            "name": "Balance Sheet",
+            "weight": 10.0,
+            "score": 4.5,
+            "max_score": 10.0,
+            "rating_pct": 45.0,
+            "notes": [
+              "Moderate leverage (D/E: 0.72) (+3.0/7)",
+              "Adequate operational liquidity (+1.5/3)"
+            ]
+          },
+          "technicals": {
+            "name": "Technicals",
+            "weight": 10.0,
+            "score": 9.0,
+            "max_score": 10.0,
+            "rating_pct": 90.0,
+            "notes": [
+              "Bullish trend alignment: Price > 50-EMA > 200-SMA (+4.0/4)",
+              "Healthy momentum: RSI (53.0) in constructive accumulation zone (+3.0/3)",
+              "Normal trading liquidity (Vol Ratio: 1.10x) (+2.0/3)"
+            ]
+          },
+          "market_conditions": {
+            "name": "Market Conditions",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Macro Regime is GREEN: Institutional equity tailwind (+3.0/3)",
+              "India VIX (14.5) reflects stable market regime (+2.0/2)"
+            ]
+          },
+          "governance": {
+            "name": "Governance",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Zero promoter share pledging (0.0%) (+3.0/3)",
+              "Strong institutional ownership (FII+DII: 22.1%) (+2.0/2)"
+            ]
+          }
+        },
+        "summary_verdict": "APPROVED QUALITY EQUITY (78.5/100): Sound fundamentals with manageable valuation/momentum headwind.",
+        "key_strengths": [
+          "Financial Quality: Exceptional ROCE (28.2% >= 25%) indicates strong economic moat",
+          "Earnings Growth: High revenue CAGR (20.0% >= 15%)",
+          "Technicals: Bullish trend alignment: Price > 50-EMA > 200-SMA",
+          "Market Conditions: Macro Regime is GREEN: Institutional equity tailwind"
+        ],
+        "key_risks": [
+          "Cash Flow: Accrual Warning: 5Y CFO/PAT is 38.7% (<50%) indicates paper earnings",
+          "Stock is trading at 8.11 times its book value"
+        ]
+      }
     },
     {
       "symbol": "BALUFORGE.NS",
       "passed": true,
       "sector": "Diversified/Other",
-      "current_price": 535.6,
-      "sma_200": 481.01,
-      "fair_value_min": 488.93,
-      "fair_value_max": 624.74,
-      "fair_value_mid": 543.25,
+      "current_price": 515.7,
+      "sma_200": 482.62,
+      "fair_value_min": 470.76,
+      "fair_value_max": 601.53,
+      "fair_value_mid": 523.07,
       "margin_of_safety_pct": 1.41,
       "target_weight_pct": 5.0,
       "tranche_plan": {
         "tranche_1_initial": {
           "pct": 40.0,
-          "price_target": 535.5999755859375,
+          "price_target": 515.7000122070312,
           "trigger": "Immediate on approval"
         },
         "tranche_2_pullback": {
           "pct": 30.0,
-          "price_target": 508.82,
+          "price_target": 489.92,
           "trigger": "5% dip or 50-EMA test"
         },
         "tranche_3_deep_value": {
           "pct": 30.0,
-          "price_target": 482.04,
+          "price_target": 464.13,
           "trigger": "10% dip or 200-SMA support"
         }
       },
@@ -980,8 +2524,8 @@
         "ROE drops below 12% on trailing 12-month basis.",
         "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
       ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
+      "quarterly_review_date": "2027-02-18",
+      "tax_12m_flag_date": "2027-11-21",
       "fundamentals": {
         "symbol": "BALUFORGE.NS",
         "market_cap_cr": 6501.7499648,
@@ -999,108 +2543,150 @@
         "\u26a0\ufe0f ROE Unverified"
       ],
       "conviction_tier": "THIN_DISCOUNT",
-      "gemini_audit": null
-    },
-    {
-      "symbol": "MPHASIS.NS",
-      "passed": true,
-      "sector": "IT",
-      "current_price": 2392.2,
-      "sma_200": 2351.75,
-      "fair_value_min": 2166.61,
-      "fair_value_max": 2768.44,
-      "fair_value_mid": 2407.34,
-      "margin_of_safety_pct": 0.63,
-      "target_weight_pct": 5.0,
-      "tranche_plan": {
-        "tranche_1_initial": {
-          "pct": 40.0,
-          "price_target": 2391.699951171875,
-          "trigger": "Immediate on approval"
+      "gemini_audit": null,
+      "compounder_score": 74.0,
+      "compounder_grade": "GRADE B (Solid Quality)",
+      "compounder_breakdown": {
+        "symbol": "BALUFORGE.NS",
+        "company_name": "Balu Forge Industries Ltd",
+        "sector": "Diversified/Other",
+        "total_score": 74.0,
+        "max_possible_score": 100.0,
+        "score_percentage": 74.0,
+        "grade": "GRADE B (Solid Quality)",
+        "verdict": "SELECTIVE_COMPOUNDER",
+        "is_vetoed": false,
+        "veto_reason": null,
+        "categories": {
+          "financial_quality": {
+            "name": "Financial Quality",
+            "weight": 20.0,
+            "score": 17.0,
+            "max_score": 20.0,
+            "rating_pct": 85.0,
+            "notes": [
+              "Solid ROCE (22.7% >= 18%) above cost of capital (+5.5/7)",
+              "Healthy ROE (19.6% >= 15%) (+4.5/6)",
+              "High operating margin (27.0% >= 20%) (+4.0/4)",
+              "Consistent 3-Year ROE track record (22.0% >= 15%) (+3.0/3)"
+            ]
+          },
+          "earnings_growth": {
+            "name": "Earnings Growth",
+            "weight": 15.0,
+            "score": 15.0,
+            "max_score": 15.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "High revenue CAGR (51.0% >= 15%) (+7.5/7.5)",
+              "Robust net profit CAGR (102.0% >= 15%) (+7.5/7.5)"
+            ]
+          },
+          "cash_flow": {
+            "name": "Cash Flow",
+            "weight": 15.0,
+            "score": 0.0,
+            "max_score": 15.0,
+            "rating_pct": 0.0,
+            "notes": [
+              "Accrual Warning: 5Y CFO/PAT is 13.3% (<50%) indicates paper earnings (+0/8)",
+              "Negative Free Cash Flow (\u20b9-322 Cr) due to heavy capex/working capital (+0/7)"
+            ]
+          },
+          "valuation": {
+            "name": "Valuation",
+            "weight": 20.0,
+            "score": 15.0,
+            "max_score": 20.0,
+            "rating_pct": 75.0,
+            "notes": [
+              "Attractive valuation: PEG=0.22 or P/E (22.3x) at steep discount to Diversified/Other benchmark (20.0x) (+10.0/10)",
+              "Moderate Price to Book (3.6x) (+3.0/5)",
+              "Trading near intrinsic fair worth (+1.4%) (+2.0/5)"
+            ]
+          },
+          "balance_sheet": {
+            "name": "Balance Sheet",
+            "weight": 10.0,
+            "score": 10.0,
+            "max_score": 10.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Virtually debt-free balance sheet (D/E: 0.12) (+7.0/7)",
+              "Strong retained earnings buffer and solvency cushions (+3.0/3)"
+            ]
+          },
+          "technicals": {
+            "name": "Technicals",
+            "weight": 10.0,
+            "score": 9.0,
+            "max_score": 10.0,
+            "rating_pct": 90.0,
+            "notes": [
+              "Bullish trend alignment: Price > 50-EMA > 200-SMA (+4.0/4)",
+              "Healthy momentum: RSI (53.1) in constructive accumulation zone (+3.0/3)",
+              "Normal trading liquidity (Vol Ratio: 1.10x) (+2.0/3)"
+            ]
+          },
+          "market_conditions": {
+            "name": "Market Conditions",
+            "weight": 5.0,
+            "score": 5.0,
+            "max_score": 5.0,
+            "rating_pct": 100.0,
+            "notes": [
+              "Macro Regime is GREEN: Institutional equity tailwind (+3.0/3)",
+              "India VIX (14.5) reflects stable market regime (+2.0/2)"
+            ]
+          },
+          "governance": {
+            "name": "Governance",
+            "weight": 5.0,
+            "score": 3.0,
+            "max_score": 5.0,
+            "rating_pct": 60.0,
+            "notes": [
+              "Zero promoter share pledging (0.0%) (+3.0/3)",
+              "Low institutional participation (FII+DII: 6.0%) (+0/2)"
+            ]
+          }
         },
-        "tranche_2_pullback": {
-          "pct": 30.0,
-          "price_target": 2272.11,
-          "trigger": "5% dip or 50-EMA test"
-        },
-        "tranche_3_deep_value": {
-          "pct": 30.0,
-          "price_target": 2152.53,
-          "trigger": "10% dip or 200-SMA support"
-        }
-      },
-      "thesis_break_triggers": [
-        "Promoter share pledge exceeds 10% or rises > 5% in a single quarter.",
-        "Two consecutive quarters of negative earnings growth or EBITDA margin collapse > 300 bps.",
-        "ROE drops below 12% on trailing 12-month basis.",
-        "Auditor resignation, regulatory investigation, or qualified audit report from SEBI/MCA."
-      ],
-      "quarterly_review_date": "2027-02-16",
-      "tax_12m_flag_date": "2027-11-19",
-      "fundamentals": {
-        "symbol": "MPHASIS.NS",
-        "market_cap_cr": 45687.0920192,
-        "pe_ratio": 22.94,
-        "pb_ratio": 4.23,
-        "roe_pct": 19.61,
-        "debt_to_equity": 0.3,
-        "rev_growth_yoy_pct": 17.4,
-        "earnings_growth_yoy_pct": 19.6,
-        "source": "yfinance_info",
-        "as_of_date": "2026-11-18"
-      },
-      "rejection_reasons": [],
-      "unverified_badges": [],
-      "conviction_tier": "THIN_DISCOUNT",
-      "gemini_audit": null
+        "summary_verdict": "APPROVED QUALITY EQUITY (74.0/100): Sound fundamentals with manageable valuation/momentum headwind.",
+        "key_strengths": [
+          "Financial Quality: Solid ROCE (22.7% >= 18%) above cost of capital",
+          "Earnings Growth: High revenue CAGR (51.0% >= 15%)",
+          "Valuation: Attractive valuation: PEG=0.22 or P/E (22.3x) at steep discount to Diversified/Other benchmark (20.0x)",
+          "Balance Sheet: Virtually debt-free balance sheet (D/E: 0.12)"
+        ],
+        "key_risks": [
+          "Cash Flow: Accrual Warning: 5Y CFO/PAT is 13.3% (<50%) indicates paper earnings",
+          "Promoter holding has decreased over last 3 years: -3.48%"
+        ]
+      }
     }
   ],
-  "screened_out_count": 735,
+  "screened_out_count": 722,
   "screened_out": [
-    {
-      "symbol": "ICICIBANK.NS",
-      "passed": true,
-      "margin_of_safety_pct": 0.0,
-      "reasons": [
-        "Trading above fair value (No margin of safety)"
-      ]
-    },
     {
       "symbol": "CHOLAFIN.NS",
       "passed": true,
-      "margin_of_safety_pct": 0.0,
+      "margin_of_safety_pct": -7.58,
       "reasons": [
         "Trading above fair value (No margin of safety)"
       ]
     },
     {
       "symbol": "TCS.NS",
-      "passed": true,
+      "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Trading above fair value (No margin of safety)"
-      ]
-    },
-    {
-      "symbol": "BAJAJ-AUTO.NS",
-      "passed": true,
-      "margin_of_safety_pct": 0.0,
-      "reasons": [
-        "Trading above fair value (No margin of safety)"
-      ]
-    },
-    {
-      "symbol": "JSWSTEEL.NS",
-      "passed": true,
-      "margin_of_safety_pct": 0.0,
-      "reasons": [
-        "Trading above fair value (No margin of safety)"
+        "Price \u20b92376.20 is below 200-day SMA \u20b92379.62 (downtrend)"
       ]
     },
     {
       "symbol": "ITC.NS",
       "passed": false,
-      "margin_of_safety_pct": 0.0,
+      "margin_of_safety_pct": -21.62,
       "reasons": [
         "YoY Revenue Growth 3.9% below 10.0%.",
         "YoY Earnings Growth -18.8% below 12.0%."
@@ -1109,7 +2695,7 @@
     {
       "symbol": "RELIANCE.NS",
       "passed": false,
-      "margin_of_safety_pct": 0.0,
+      "margin_of_safety_pct": -60.93,
       "reasons": [
         "ROE 8.8% below institutional minimum of 15.0%."
       ]
@@ -1117,7 +2703,7 @@
     {
       "symbol": "SUNPHARMA.NS",
       "passed": false,
-      "margin_of_safety_pct": 0.0,
+      "margin_of_safety_pct": -155.75,
       "reasons": [
         "ROE 13.1% below institutional minimum of 15.0%.",
         "P/E ratio 40.9 exceeds hard cap of 35.0.",
@@ -1127,7 +2713,7 @@
     {
       "symbol": "LT.NS",
       "passed": false,
-      "margin_of_safety_pct": 0.0,
+      "margin_of_safety_pct": -44.02,
       "reasons": [
         "Debt-to-Equity 1.05 exceeds conservative ceiling 0.8."
       ]
@@ -1135,7 +2721,7 @@
     {
       "symbol": "BSE.NS",
       "passed": false,
-      "margin_of_safety_pct": 0.0,
+      "margin_of_safety_pct": -115.25,
       "reasons": [
         "P/E ratio 51.7 exceeds hard cap of 35.0."
       ]
@@ -1143,7 +2729,7 @@
     {
       "symbol": "HDFCBANK.NS",
       "passed": false,
-      "margin_of_safety_pct": 0.0,
+      "margin_of_safety_pct": 25.79,
       "reasons": [
         "ROE 11.0% below institutional minimum of 15.0%."
       ]
@@ -1151,7 +2737,7 @@
     {
       "symbol": "BAJFINANCE.NS",
       "passed": true,
-      "margin_of_safety_pct": 0.0,
+      "margin_of_safety_pct": -34.29,
       "reasons": [
         "Trading above fair value (No margin of safety)"
       ]
@@ -1161,7 +2747,7 @@
       "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "YoY Revenue Growth 1.4% below 10.0%."
+        "Price \u20b91098.00 is below 200-day SMA \u20b91179.91 (downtrend)"
       ]
     },
     {
@@ -1169,7 +2755,7 @@
       "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Debt-to-Equity 1.33 exceeds conservative ceiling 0.8."
+        "Price \u20b9288.30 is below 200-day SMA \u20b93180.27 (downtrend)"
       ]
     },
     {
@@ -1177,8 +2763,7 @@
       "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "ROE 11.7% below institutional minimum of 15.0%.",
-        "Debt-to-Equity 0.97 exceeds conservative ceiling 0.8."
+        "Price \u20b9178.00 is below 200-day SMA \u20b9193.52 (downtrend)"
       ]
     },
     {
@@ -1186,8 +2771,7 @@
       "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "P/E ratio 46.0 exceeds hard cap of 35.0.",
-        "YoY Earnings Growth 3.9% below 12.0%."
+        "Price \u20b92052.50 is below 200-day SMA \u20b92115.60 (downtrend)"
       ]
     },
     {
@@ -1195,13 +2779,13 @@
       "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "ROE 12.1% below institutional minimum of 15.0%."
+        "Price \u20b9223.46 is below 200-day SMA \u20b9254.29 (downtrend)"
       ]
     },
     {
       "symbol": "CIPLA.NS",
       "passed": false,
-      "margin_of_safety_pct": 0.0,
+      "margin_of_safety_pct": -142.06,
       "reasons": [
         "ROE 8.3% below institutional minimum of 15.0%.",
         "P/E ratio 38.7 exceeds hard cap of 35.0.",
@@ -1214,16 +2798,41 @@
       "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "P/E ratio 87.3 exceeds hard cap of 35.0.",
-        "YoY Earnings Growth 3.9% below 12.0%."
+        "Price \u20b93582.60 is below 200-day SMA \u20b93587.92 (downtrend)"
       ]
     },
     {
       "symbol": "MCX.NS",
       "passed": false,
-      "margin_of_safety_pct": 0.0,
+      "margin_of_safety_pct": -166.33,
       "reasons": [
         "P/E ratio 63.9 exceeds hard cap of 35.0."
+      ]
+    },
+    {
+      "symbol": "SBIN.NS",
+      "passed": false,
+      "margin_of_safety_pct": 51.75,
+      "reasons": [
+        "ROE 14.7% below institutional minimum of 15.0%.",
+        "YoY Revenue Growth 7.8% below 10.0%."
+      ]
+    },
+    {
+      "symbol": "MUTHOOTFIN.NS",
+      "passed": false,
+      "margin_of_safety_pct": 0.0,
+      "reasons": [
+        "Price \u20b92550.50 is below 200-day SMA \u20b93112.07 (downtrend)"
+      ]
+    },
+    {
+      "symbol": "HCLTECH.NS",
+      "passed": false,
+      "margin_of_safety_pct": -25.38,
+      "reasons": [
+        "YoY Revenue Growth 2.2% below 10.0%.",
+        "YoY Earnings Growth 10.8% below 12.0%."
       ]
     }
   ],

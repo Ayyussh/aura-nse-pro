@@ -2,21 +2,21 @@
   "benchmark": {
     "ticker": "^NSEI",
     "name": "NIFTY 50",
-    "close": NaN,
-    "change_1d_pct": NaN,
-    "change_1m_pct": NaN
+    "close": 25800.599609375,
+    "change_1d_pct": 1.12,
+    "change_1m_pct": 13.72
   },
   "sectors_count": 10,
   "sectors": [
     {
       "sector": "Banking",
       "ticker": "^NSEBANK",
-      "current_price": NaN,
-      "change_1d_pct": NaN,
-      "change_1m_pct": NaN,
-      "relative_strength": NaN,
-      "status": "LAGGING",
-      "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
+      "current_price": 64635.2,
+      "change_1d_pct": 2.49,
+      "change_1m_pct": 17.68,
+      "relative_strength": 3.96,
+      "status": "LEADING",
+      "status_desc": "Outperforming NIFTY with strong institutional accumulation.",
       "constituents": [
         "HDFCBANK.NS",
         "ICICIBANK.NS",
@@ -28,33 +28,31 @@
       "constituent_count": 24
     },
     {
-      "sector": "IT",
-      "ticker": "^CNXIT",
-      "current_price": NaN,
-      "change_1d_pct": NaN,
-      "change_1m_pct": NaN,
-      "relative_strength": NaN,
-      "status": "LAGGING",
-      "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
+      "sector": "Realty",
+      "ticker": "^CNXREALTY",
+      "current_price": 938.9,
+      "change_1d_pct": 1.71,
+      "change_1m_pct": 16.86,
+      "relative_strength": 3.14,
+      "status": "LEADING",
+      "status_desc": "Outperforming NIFTY with strong institutional accumulation.",
       "constituents": [
-        "TCS.NS",
-        "INFY.NS",
-        "HCLTECH.NS",
-        "WIPRO.NS",
-        "LTIM.NS",
-        "TECHM.NS"
+        "DLF.NS",
+        "GODREJPROP.NS",
+        "LODHA.NS",
+        "OBEROIRLTY.NS"
       ],
-      "constituent_count": 102
+      "constituent_count": 4
     },
     {
       "sector": "Auto",
       "ticker": "^CNXAUTO",
-      "current_price": NaN,
-      "change_1d_pct": NaN,
-      "change_1m_pct": NaN,
-      "relative_strength": NaN,
-      "status": "LAGGING",
-      "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
+      "current_price": 28787.65,
+      "change_1d_pct": 0.65,
+      "change_1m_pct": 15.1,
+      "relative_strength": 1.38,
+      "status": "IMPROVING",
+      "status_desc": "Neutral-to-positive relative momentum building.",
       "constituents": [
         "TATAMOTORS.NS",
         "TMPV.NS",
@@ -66,12 +64,43 @@
       "constituent_count": 9
     },
     {
+      "sector": "Infra",
+      "ticker": "^CNXINFRA",
+      "current_price": 9689.4,
+      "change_1d_pct": 0.61,
+      "change_1m_pct": 12.77,
+      "relative_strength": -0.95,
+      "status": "WEAKENING",
+      "status_desc": "Mild underperformance; momentum slowing.",
+      "constituents": [],
+      "constituent_count": 0
+    },
+    {
+      "sector": "FMCG",
+      "ticker": "^CNXFMCG",
+      "current_price": 48535.7,
+      "change_1d_pct": -0.06,
+      "change_1m_pct": 12.6,
+      "relative_strength": -1.12,
+      "status": "WEAKENING",
+      "status_desc": "Mild underperformance; momentum slowing.",
+      "constituents": [
+        "HINDUNILVR.NS",
+        "ITC.NS",
+        "NESTLEIND.NS",
+        "BRITANNIA.NS",
+        "TATACONSUM.NS",
+        "DABUR.NS"
+      ],
+      "constituent_count": 22
+    },
+    {
       "sector": "Pharma",
       "ticker": "^CNXPHARMA",
-      "current_price": NaN,
-      "change_1d_pct": NaN,
-      "change_1m_pct": NaN,
-      "relative_strength": NaN,
+      "current_price": 28386.9,
+      "change_1d_pct": 0.05,
+      "change_1m_pct": 10.9,
+      "relative_strength": -2.82,
       "status": "LAGGING",
       "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
       "constituents": [
@@ -87,10 +116,10 @@
     {
       "sector": "Energy",
       "ticker": "^CNXENERGY",
-      "current_price": NaN,
-      "change_1d_pct": NaN,
-      "change_1m_pct": NaN,
-      "relative_strength": NaN,
+      "current_price": 37321.25,
+      "change_1d_pct": -0.22,
+      "change_1m_pct": 6.32,
+      "relative_strength": -7.4,
       "status": "LAGGING",
       "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
       "constituents": [
@@ -104,12 +133,24 @@
       "constituent_count": 6
     },
     {
+      "sector": "PSE & Defense",
+      "ticker": "^CNXPSE",
+      "current_price": 9528.8,
+      "change_1d_pct": 0.13,
+      "change_1m_pct": 5.47,
+      "relative_strength": -8.25,
+      "status": "LAGGING",
+      "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
+      "constituents": [],
+      "constituent_count": 0
+    },
+    {
       "sector": "Metals",
       "ticker": "^CNXMETAL",
-      "current_price": NaN,
-      "change_1d_pct": NaN,
-      "change_1m_pct": NaN,
-      "relative_strength": NaN,
+      "current_price": 12271.1,
+      "change_1d_pct": -0.23,
+      "change_1m_pct": 4.01,
+      "relative_strength": -9.71,
       "status": "LAGGING",
       "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
       "constituents": [
@@ -123,66 +164,28 @@
       "constituent_count": 8
     },
     {
-      "sector": "FMCG",
-      "ticker": "^CNXFMCG",
-      "current_price": NaN,
-      "change_1d_pct": NaN,
-      "change_1m_pct": NaN,
-      "relative_strength": NaN,
+      "sector": "IT",
+      "ticker": "^CNXIT",
+      "current_price": 31322.65,
+      "change_1d_pct": 1.3,
+      "change_1m_pct": -2.36,
+      "relative_strength": -16.08,
       "status": "LAGGING",
       "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
       "constituents": [
-        "HINDUNILVR.NS",
-        "ITC.NS",
-        "NESTLEIND.NS",
-        "BRITANNIA.NS",
-        "TATACONSUM.NS",
-        "DABUR.NS"
+        "TCS.NS",
+        "INFY.NS",
+        "HCLTECH.NS",
+        "WIPRO.NS",
+        "LTIM.NS",
+        "TECHM.NS"
       ],
-      "constituent_count": 22
-    },
-    {
-      "sector": "Realty",
-      "ticker": "^CNXREALTY",
-      "current_price": NaN,
-      "change_1d_pct": NaN,
-      "change_1m_pct": NaN,
-      "relative_strength": NaN,
-      "status": "LAGGING",
-      "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
-      "constituents": [
-        "DLF.NS",
-        "GODREJPROP.NS",
-        "LODHA.NS",
-        "OBEROIRLTY.NS"
-      ],
-      "constituent_count": 4
-    },
-    {
-      "sector": "Infra",
-      "ticker": "^CNXINFRA",
-      "current_price": NaN,
-      "change_1d_pct": NaN,
-      "change_1m_pct": NaN,
-      "relative_strength": NaN,
-      "status": "LAGGING",
-      "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
-      "constituents": [],
-      "constituent_count": 0
-    },
-    {
-      "sector": "PSE & Defense",
-      "ticker": "^CNXPSE",
-      "current_price": NaN,
-      "change_1d_pct": NaN,
-      "change_1m_pct": NaN,
-      "relative_strength": NaN,
-      "status": "LAGGING",
-      "status_desc": "Severe underperformance vs benchmark; avoid aggressive longs.",
-      "constituents": [],
-      "constituent_count": 0
+      "constituent_count": 102
     }
   ],
-  "top_leading": [],
-  "timestamp": "2026-11-20 02:37:14 IST"
+  "top_leading": [
+    "Banking",
+    "Realty"
+  ],
+  "timestamp": "2026-11-20 16:37:35 IST"
 }
