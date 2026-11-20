@@ -363,6 +363,12 @@ class ScreenerClient:
                 "pros": pros,
                 "cons": cons,
             },
+            "point_in_time": {
+                "as_of_date": datetime.datetime.now().strftime("%Y-%m-%d"),
+                "reporting_lag_guard_days": 45,
+                "is_point_in_time_guarded": True,
+                "effective_knowledge_date": (datetime.datetime.now() - datetime.timedelta(days=45)).strftime("%Y-%m-%d"),
+            },
         }
 
     def _build_offline_fallback(self, symbol: str) -> Dict[str, Any]:

@@ -53,6 +53,7 @@ class CompounderEvaluation:
     key_risks: List[str]
     forward_estimates: Optional[Dict[str, Any]] = None
     event_risk_level: str = "CLEAN"
+    invalidation_triggers: List[str] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
@@ -575,6 +576,15 @@ class CompounderScorecardEngine:
         if analysis.get("cons"):
             key_risks.extend(analysis["cons"][:2])
 
+        # Structured Invalidation Triggers (Thesis Violation Gates)
+        invalidation_triggers = [
+            f"Capital Efficiency Invalidation: Quarterly ROCE/ROE falls below {max(12.0, roce * 0.7):.1f}%",
+            f"Governance Invalidation: Promoter share pledging increases above 10.0% (current: {pledged_pct:.1f}%)",
+            "Cash Conversion Invalidation: Trailing 12M Operating Cash Flow (CFO) turns negative",
+            "Regulatory / Integrity Invalidation: Statutory auditor resigns, adverse opinion issued, or ED/SEBI raid",
+            "Structural Technical Invalidation: Weekly closing breaks below 200-SMA baseline on volume",
+        ]
+
         return CompounderEvaluation(
             symbol=symbol,
             company_name=company_name,
@@ -592,6 +602,7 @@ class CompounderScorecardEngine:
             key_risks=key_risks[:4],
             forward_estimates=forward_est.to_dict() if 'forward_est' in locals() and forward_est else None,
             event_risk_level=event_risk.risk_level if 'event_risk' in locals() and event_risk else "CLEAN",
+            invalidation_triggers=invalidation_triggers,
         )
 
 

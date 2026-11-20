@@ -364,6 +364,15 @@ def export_all_static_snapshots() -> Dict[str, int]:
         except Exception as he:
             logger.debug(f"Could not export hedging recommendation: {he}")
 
+        # 15. Strategy-Level Benchmark Comparison & Post-Cost Alpha
+        try:
+            from backend.analytics.benchmark_comparison import benchmark_engine
+            bench_res = benchmark_engine.evaluate_alpha()
+            _write_json("benchmark_comparison.json", bench_res.to_dict())
+            exported_counts["benchmark_comparison"] = 1
+        except Exception as be:
+            logger.debug(f"Could not export benchmark comparison: {be}")
+
     finally:
         db.close()
 

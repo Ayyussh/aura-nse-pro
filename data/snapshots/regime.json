@@ -111,9 +111,9 @@
     "total_call_oi": 15000000,
     "total_put_oi": 15300000,
     "sentiment": "NEUTRAL",
-    "as_of_timestamp": "2026-11-20T18:13:01.593629",
+    "as_of_timestamp": "2026-11-20T19:05:39.529243",
     "data_source": "BENCHMARK_DERIVATIVES_BASELINE"
   },
-  "evaluated_at": "2026-11-20T13:19:12.072829",
-  "snapshot_generated_at": "2026-11-20T18:49:11.853969+05:30"
+  "evaluated_at": "2026-11-20T13:36:15.740612",
+  "snapshot_generated_at": "2026-11-20T19:06:15.709951+05:30"
 }

@@ -50,6 +50,7 @@ export function App() {
   const [telegramAlerts, setTelegramAlerts] = useState<any[]>([]);
   const [sectorMatrix, setSectorMatrix] = useState<any>(null);
   const [valuePicksData, setValuePicksData] = useState<any>(null);
+  const [benchmarkData, setBenchmarkData] = useState<any>(null);
 
   const [isLoadingScan, setIsLoadingScan] = useState<boolean>(false);
   const [isLoadingValueScan, setIsLoadingValueScan] = useState<boolean>(false);
@@ -121,6 +122,7 @@ export function App() {
         portfolioData,
         mistakesData,
         valueData,
+        benchmarkSnap,
       ] = await Promise.all([
         fetchSnapshot("market_status.json", null),
         fetchSnapshot("regime.json", null),
@@ -132,6 +134,7 @@ export function App() {
         fetchSnapshot("portfolio.json", []),
         fetchSnapshot("mistakes.json", []),
         fetchSnapshot("value_picks.json", null),
+        fetchSnapshot("benchmark_comparison.json", null),
       ]);
 
       if (statusData) setMarketStatus(statusData);
@@ -166,6 +169,9 @@ export function App() {
       }
       if (valueData) {
         setValuePicksData(valueData);
+      }
+      if (benchmarkSnap) {
+        setBenchmarkData(benchmarkSnap);
       }
       setIsDemoMode(false);
     } catch (e) {
@@ -737,6 +743,7 @@ export function App() {
             telegramAlerts={telegramAlerts}
             sectorMatrix={sectorMatrix}
             valuePicksData={valuePicksData}
+            benchmarkData={benchmarkData}
             onRefreshScan={handleRunScanNow}
             onRunValueScan={handleRunValueScan}
             isLoading={isLoadingScan}
@@ -757,6 +764,7 @@ export function App() {
             telegramAlerts={telegramAlerts}
             sectorMatrix={sectorMatrix}
             valuePicksData={valuePicksData}
+            benchmarkData={benchmarkData}
             onRefreshScan={handleRunScanNow}
             onRunValueScan={handleRunValueScan}
             isLoading={isLoadingScan}
