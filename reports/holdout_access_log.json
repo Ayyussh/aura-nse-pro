@@ -668,5 +668,45 @@
       "start": "2025-09-01",
       "end": "2026-11-13"
     }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1795180491",
+    "timestamp": "2026-11-20T13:14:51.683093+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1795180495",
+    "timestamp": "2026-11-20T13:14:55.439478+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1795180649",
+    "timestamp": "2026-11-20T13:17:29.028158+00:00",
+    "requester": "agent",
+    "reason": "Replay run on split='holdout' with allow_holdout=True",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
+  },
+  {
+    "access_id": "HOLDOUT_ACCESS_1795180789",
+    "timestamp": "2026-11-20T13:19:49.479281+00:00",
+    "requester": "test_agent",
+    "reason": "Unit test verification of holdout logging",
+    "split_accessed": {
+      "start": "2025-09-01",
+      "end": "2026-11-13"
+    }
   }
 ]
