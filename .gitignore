@@ -48,6 +48,7 @@ backend/*.db
 tests/*.db*
 tests/*.db
 logs/
+uv.lock
 data/heartbeat.json
 reports/screenshots/
 reports/*.html
