@@ -1131,10 +1131,17 @@ def run_value_investing_scan(universe_limit: int | None = None, mode: str = "all
                 ai_conviction = ai_audit.get("ai_conviction_pct", 75.0)
                 ai_thesis = ai_audit.get("bull_thesis") or ai_audit.get("moat_assessment", "Secular earnings compounder")
 
+                comp_score = p.get("compounder_score", 0.0)
+                comp_grade = p.get("compounder_grade", "UNGRADED")
+                roce_val = funds.get("roce_pct", "N/A")
+                roce_str = f" | ROCE: {roce_val}%" if roce_val not in ("UNKNOWN", "N/A") else ""
+
                 msg_lines.append(f"*{idx}. {sym}* ({sector}) — {tier_badge}")
                 msg_lines.append(f"💵 *Market Price:* ₹{cp:,.2f} | *Fair Worth:* ₹{fv:,.2f}")
                 msg_lines.append(f"🛡️ *Margin of Safety:* *+{mos:.1f}% Discount*")
-                msg_lines.append(f"📊 *Health:* ROE: {roe}% | P/E: {pe} | D/E: {de_str}")
+                if comp_score > 0:
+                    msg_lines.append(f"🏆 *Compounder Matrix:* *{comp_score:.1f}/100* ({comp_grade})")
+                msg_lines.append(f"📊 *Health:* ROE: {roe}%{roce_str} | P/E: {pe} | D/E: {de_str}")
                 msg_lines.append(f"🤖 *AI Audit:* Conviction: {ai_conviction:.0f}% | _{ai_thesis}_")
                 msg_lines.append(f"📥 *Staggered Plan:* T1: ₹{t1:,.2f} (40%) | T2: ₹{t2:,.2f} (30%) | T3: ₹{t3:,.2f} (30%)\n")
 
