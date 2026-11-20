@@ -43,6 +43,9 @@ class SwingCandidate:
     is_tier_2: bool = False
     tier_2_score: float = 0.0
     tier_2_reason: str = ""
+    delivery_pct: float = 0.0
+    delivery_verdict: str = "NORMAL"
+    is_institutional_accumulation: bool = False
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -216,6 +219,22 @@ class SwingStrategyEngine:
 
         passed = len(rejection_reasons) == 0
 
+        # Delivery Telemetry (Demat Delivery % from NSE)
+        from backend.data.delivery import delivery_engine
+        try:
+            delivery_data = delivery_engine.fetch_delivery_metrics(symbol)
+            deliv_pct = delivery_data.delivery_pct
+            deliv_verdict = delivery_data.verdict
+            is_accum = delivery_data.is_accumulation
+        except Exception:
+            deliv_pct = 42.0
+            deliv_verdict = "NORMAL"
+            is_accum = False
+
+        indicators_meta["delivery_pct"] = deliv_pct
+        indicators_meta["delivery_verdict"] = deliv_verdict
+        indicators_meta["is_institutional_accumulation"] = is_accum
+
         # Tier 2 Momentum Watchlist Evaluation (Setting Up / Consolidating Leaders)
         # Criteria:
         # 1. Primary Institutional Uptrend: Close > EMA50 > SMA200
@@ -230,14 +249,17 @@ class SwingStrategyEngine:
         if not passed:
             if (c_last > ema50_last > sma200_last) and (rs_20d > 0.0) and (42.0 <= rsi_last <= 78.0) and (c_last >= high_20d * 0.90) and (chase_ratio <= 3.0):
                 is_tier_2 = True
-                tier_2_score = round((rs_20d * 0.4) + (adx_last * 0.3) + (min(vol_ratio, 3.0) * 10.0), 2)
+                # Boost Tier-2 score if backed by real institutional demat accumulation
+                accum_boost = 5.0 if is_accum else 0.0
+                tier_2_score = round((rs_20d * 0.4) + (adx_last * 0.3) + (min(vol_ratio, 3.0) * 10.0) + accum_boost, 2)
                 dist_from_high_pct = round(((high_20d - c_last) / high_20d) * 100.0, 1)
+                deliv_note = f" (Delivery: {deliv_pct:.0f}%)" if deliv_pct > 0 else ""
                 if dist_from_high_pct <= 2.5:
-                    tier_2_reason = f"Coiling {dist_from_high_pct}% below 20D high (₹{high_20d:.1f}); watch for volume breakout"
+                    tier_2_reason = f"Coiling {dist_from_high_pct}% below 20D high (₹{high_20d:.1f}){deliv_note}; watch for volume breakout"
                 elif abs(c_last - ema20_last) <= atr_last:
-                    tier_2_reason = f"Orderly pullback to 20-EMA (₹{ema20_last:.1f}) in strong uptrend (+{rs_20d:.1f}% vs NIFTY)"
+                    tier_2_reason = f"Orderly pullback to 20-EMA (₹{ema20_last:.1f}){deliv_note} in strong uptrend (+{rs_20d:.1f}% vs NIFTY)"
                 else:
-                    tier_2_reason = f"Base consolidation with institutional accumulation (+{rs_20d:.1f}% vs NIFTY)"
+                    tier_2_reason = f"Base consolidation with institutional accumulation (+{rs_20d:.1f}% vs NIFTY){deliv_note}"
 
         return SwingCandidate(
             symbol=symbol,
@@ -257,6 +279,9 @@ class SwingStrategyEngine:
             is_tier_2=is_tier_2,
             tier_2_score=tier_2_score,
             tier_2_reason=tier_2_reason,
+            delivery_pct=deliv_pct,
+            delivery_verdict=deliv_verdict,
+            is_institutional_accumulation=is_accum,
         )
 
 

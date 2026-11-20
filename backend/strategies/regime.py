@@ -135,7 +135,28 @@ def evaluate_market_regime(
         sizing_multiplier = 1.0
         regime_description = "Favorable / Bullish: NIFTY trading above key short-term EMAs and India VIX remains subdued (<= 18)."
 
-    # 4. Leading vs Lagging Sectors (Bank Nifty, IT, Auto, Metals, Pharma)
+    # 4. Global Macro Transmission & Derivatives Sentiment Integration
+    try:
+        from backend.data.macro_factors import macro_engine
+        from backend.data.derivatives import derivatives_engine
+
+        macro_snap = macro_engine.fetch_macro_snapshot()
+        derivatives_snap = derivatives_engine.fetch_index_derivatives("NIFTY")
+
+        # Macro Shock Protection: If Macro Pressure Index >= 78.0 (Crude spike / US yield surge),
+        # step down GREEN to AMBER to protect capital from global contagion
+        if regime_label == "GREEN" and macro_snap.macro_pressure_index >= 78.0:
+            regime_label = "AMBER"
+            sizing_multiplier = 0.5
+            regime_description = (
+                f"Cautionary / Global Macro Shock: NIFTY technicals are green, but Global Macro Pressure Index "
+                f"is elevated ({macro_snap.macro_pressure_index}/100) due to crude/yield spikes. Sizing throttled to 50%."
+            )
+    except Exception as me:
+        macro_snap = None
+        derivatives_snap = None
+
+    # 5. Leading vs Lagging Sectors (Bank Nifty, IT, Auto, Metals, Pharma)
     sector_tickers = {
         "Banking": "^NSEBANK",
         "IT": "^CNXIT",
@@ -188,5 +209,9 @@ def evaluate_market_regime(
         "vix_5d_change": round(vix_5d_change, 2),
         "top_leading_sectors": top_sectors,
         "sector_rankings": sector_momentum,
+        "macro_pressure_index": macro_snap.macro_pressure_index if macro_snap else 50.0,
+        "macro_regime_impact": macro_snap.regime_impact if macro_snap else "NEUTRAL",
+        "macro_factors": macro_snap.to_dict() if macro_snap else {},
+        "derivatives_telemetry": derivatives_snap.to_dict() if derivatives_snap else {},
         "evaluated_at": datetime.datetime.utcnow().isoformat(),
     }

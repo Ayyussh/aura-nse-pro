@@ -314,6 +314,24 @@ def export_all_static_snapshots() -> Dict[str, int]:
             _write_json("value_picks.json", default_val)
             exported_counts["value_picks"] = 0
 
+        # 11. Global Macro Cross-Asset Factors
+        try:
+            from backend.data.macro_factors import macro_engine
+            macro_data = macro_engine.fetch_macro_snapshot()
+            _write_json("macro_snapshot.json", macro_data.to_dict())
+            exported_counts["macro_snapshot"] = 1
+        except Exception as me:
+            logger.debug(f"Could not export macro snapshot: {me}")
+
+        # 12. Derivatives Telemetry & Options Sentiment
+        try:
+            from backend.data.derivatives import derivatives_engine
+            deriv_data = derivatives_engine.fetch_index_derivatives("NIFTY")
+            _write_json("derivatives_matrix.json", deriv_data.to_dict())
+            exported_counts["derivatives_matrix"] = 1
+        except Exception as de:
+            logger.debug(f"Could not export derivatives matrix: {de}")
+
     finally:
         db.close()
 

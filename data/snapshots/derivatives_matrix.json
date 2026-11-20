@@ -1,0 +1,14 @@
+{
+  "underlying": "NIFTY",
+  "underlying_price": 25800.0,
+  "pcr_oi": 1.02,
+  "pcr_volume": 0.98,
+  "max_pain_strike": 25800.0,
+  "gamma_resistance_call_strike": 26000.0,
+  "gamma_support_put_strike": 25500.0,
+  "total_call_oi": 15000000,
+  "total_put_oi": 15300000,
+  "sentiment": "NEUTRAL",
+  "as_of_timestamp": "2026-11-20T18:13:01.593629",
+  "data_source": "BENCHMARK_DERIVATIVES_BASELINE"
+}

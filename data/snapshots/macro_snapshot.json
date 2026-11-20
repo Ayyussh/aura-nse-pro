@@ -1,0 +1,44 @@
+{
+  "as_of_date": "2026-11-20",
+  "macro_pressure_index": 35.0,
+  "regime_impact": "GOLDILOCKS",
+  "brent_crude": {
+    "symbol": "BZ=F",
+    "name": "Brent Crude Oil ($/bbl)",
+    "current_value": 89.3,
+    "change_5d_pct": -6.82,
+    "change_20d_pct": -17.92,
+    "interpretation": "Stable / Benign"
+  },
+  "us_10y_yield": {
+    "symbol": "^TNX",
+    "name": "US 10-Year Treasury Yield (%)",
+    "current_value": 5.05,
+    "change_5d_pct": -1.0,
+    "change_20d_pct": -1.5,
+    "interpretation": "Yields controlled"
+  },
+  "usdinr": {
+    "symbol": "USDINR=X",
+    "name": "USD / INR Exchange Rate",
+    "current_value": 92.69,
+    "change_5d_pct": -1.43,
+    "change_20d_pct": -2.43,
+    "interpretation": "Rupee orderly"
+  },
+  "dxy": {
+    "symbol": "DX-Y.NYB",
+    "name": "US Dollar Index (DXY)",
+    "current_value": 103.82,
+    "change_5d_pct": 0.4,
+    "change_20d_pct": 2.06,
+    "interpretation": "Dollar neutral"
+  },
+  "tailwinds": [
+    "Brent Crude softened -6.8% in 5 days (positive for Indian margins)",
+    "Rupee appreciation indicates positive capital inflow"
+  ],
+  "headwinds": [
+    "No severe macro shocks active"
+  ]
+}
