@@ -38,7 +38,7 @@ class Settings(BaseSettings):
     ADMIN_USERNAME: str = "investor"
     ADMIN_PASSWORD: str = "aura_nse_secure_pass_2026"
 
-    # LLM keys
+    # LLM keys and tiered model routing
     GEMINI_API_KEY_1: str | None = None
     GEMINI_API_KEY_2: str | None = None
     GEMINI_API_KEY_3: str | None = None
@@ -47,6 +47,10 @@ class Settings(BaseSettings):
     OPENROUTER_API_KEY: str | None = None
     OPENAI_API_KEY: str | None = None
     OLLAMA_BASE_URL: str = "http://localhost:11434"
+
+    # Model Tiers (Quick-Think for screening/analysts vs Deep-Think for arbitration/managers)
+    QUICK_THINK_MODEL: str = "gemini-2.5-flash"
+    DEEP_THINK_MODEL: str = "gemini-2.5-pro"
 
     # Alerts
     TELEGRAM_BOT_TOKEN: str | None = None

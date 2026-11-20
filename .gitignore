@@ -50,4 +50,5 @@ tests/*.db
 logs/
 data/heartbeat.json
 reports/screenshots/
+reports/*.html
 data/audit_anchor_history.jsonl

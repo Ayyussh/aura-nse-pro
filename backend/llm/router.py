@@ -323,6 +323,108 @@ class LLMRouter:
 
         return None
 
+    def call_tiered_model(
+        self,
+        prompt: str,
+        system_prompt: str,
+        tier: str = "quick",
+        response_json: bool = True,
+    ) -> Dict[str, Any]:
+        """Dispatch a prompt using Tiered Model Routing (Quick-Think vs Deep-Think).
+
+        Tiers:
+          - 'quick': Fast low-latency models (e.g. gemini-2.5-flash, llama-3.3-70b)
+                     used for rapid screening, news filtering, and agent debating.
+          - 'deep': High-reasoning cognitive models (e.g. gemini-2.5-pro, claude-3-7-sonnet,
+                    deepseek-r1, gpt-4o) used for chief arbitrator adjudication,
+                    macro risk synthesis, and comprehensive research dossiers.
+        """
+        target_model = settings.QUICK_THINK_MODEL if tier == "quick" else settings.DEEP_THINK_MODEL
+        keys = self.get_active_vault_entries()
+
+        # If vault is empty, check environment keys directly
+        if not keys:
+            env_key = settings.GEMINI_API_KEY_1 or settings.GEMINI_API_KEY_2 or settings.GROQ_API_KEY or settings.OPENAI_API_KEY
+            if env_key:
+                try:
+                    if settings.GEMINI_API_KEY_1 or settings.GEMINI_API_KEY_2:
+                        raw = self.call_gemini(env_key, target_model, prompt, system_prompt)
+                    else:
+                        base = "https://api.groq.com/openai/v1" if settings.GROQ_API_KEY else "https://api.openai.com/v1"
+                        raw = self.call_openai_compatible(base, env_key, target_model, prompt, system_prompt)
+                    clean = raw.strip()
+                    if clean.startswith("```json"): clean = clean[7:]
+                    if clean.startswith("```"): clean = clean[3:]
+                    if clean.endswith("```"): clean = clean[:-3]
+                    parsed = json.loads(clean.strip()) if response_json else {"text": raw}
+                    return {"status": "SUCCESS", "tier": tier, "model": target_model, "data": parsed}
+                except Exception as ex:
+                    logger.warning(f"Tiered model direct env call note: {ex}")
+
+            return {"status": "FALLBACK", "tier": tier, "model": "rule_based_fallback", "data": None}
+
+        # Sort vault entries: prioritize models matching the requested tier
+        def tier_priority(entry: ApiKeyVault) -> int:
+            m = str(entry.model_name).lower()
+            if tier == "deep":
+                return 0 if (m == target_model.lower() or any(x in m for x in ("pro", "sonnet", "r1", "o1", "o3", "opus", "deep"))) else 1
+            else:
+                return 0 if (m == target_model.lower() or any(x in m for x in ("flash", "mini", "70b", "8b", "quick", "fast"))) else 1
+
+        sorted_keys = sorted(keys, key=tier_priority)
+
+        for entry in sorted_keys:
+            try:
+                plain_key = decrypt_secret(str(entry.encrypted_key)).strip()
+                if not plain_key:
+                    continue
+                provider = str(entry.provider)
+                model_name = target_model if provider == "gemini" and "gemini" in target_model else str(entry.model_name)
+                entry_id = int(entry.id)
+                t_start = time.time()
+
+                if provider == "gemini":
+                    raw_text = self.call_gemini(plain_key, model_name, prompt, system_prompt)
+                elif provider in ("groq", "openrouter", "openai"):
+                    base_url = (
+                        "https://api.groq.com/openai/v1" if provider == "groq"
+                        else "https://openrouter.ai/api/v1" if provider == "openrouter"
+                        else "https://api.openai.com/v1"
+                    )
+                    raw_text = self.call_openai_compatible(base_url, plain_key, model_name, prompt, system_prompt)
+                elif provider == "ollama":
+                    raw_text = self.call_openai_compatible(settings.OLLAMA_BASE_URL + "/v1", "", model_name, prompt, system_prompt)
+                else:
+                    continue
+
+                latency_ms = (time.time() - t_start) * 1000.0
+                self.mark_key_success(entry_id, latency_ms)
+
+                clean = raw_text.strip()
+                if clean.startswith("```json"): clean = clean[7:]
+                if clean.startswith("```"): clean = clean[3:]
+                if clean.endswith("```"): clean = clean[:-3]
+                parsed = json.loads(clean.strip()) if response_json else {"text": raw_text}
+
+                return {
+                    "status": "SUCCESS",
+                    "tier": tier,
+                    "provider": provider,
+                    "model": model_name,
+                    "latency_ms": round(latency_ms, 1),
+                    "data": parsed,
+                }
+            except Exception as e:
+                err_msg = str(e)
+                logger.warning(f"call_tiered_model error on {getattr(entry, 'key_label', '')}: {err_msg}")
+                entry_id = int(getattr(entry, "id", 0) or 0)
+                if "429" in err_msg or "ResourceExhausted" in err_msg:
+                    self.mark_key_cooldown(entry_id, duration_seconds=180, reason="429 Rate Limit")
+                elif "401" in err_msg or "403" in err_msg:
+                    self.mark_key_cooldown(entry_id, duration_seconds=86400, reason="Invalid API Key")
+
+        return {"status": "FALLBACK", "tier": tier, "model": "rule_based_fallback", "data": None}
+
     def _fallback_algorithmic_audit(self) -> Dict[str, Any]:
         """Deterministic fallback when no external LLM keys are configured."""
         return {
@@ -482,3 +584,19 @@ class LLMRouter:
 
 
 llm_router = LLMRouter()
+
+
+def call_tiered_model(
+    prompt: str,
+    system_prompt: str = "",
+    tier: str = "quick",
+    response_json: bool = True,
+) -> Dict[str, Any]:
+    """Module-level convenience wrapper for llm_router.call_tiered_model."""
+    return llm_router.call_tiered_model(
+        prompt=prompt,
+        system_prompt=system_prompt,
+        tier=tier,
+        response_json=response_json,
+    )
+

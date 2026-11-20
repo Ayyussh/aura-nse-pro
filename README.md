@@ -31,14 +31,16 @@
                                     │
                                     ▼
 ┌────────────────────────────────────────────────────────────────────────┐
-│                   AI Valuation & Moat Audit Guard                      │
-│   Institutional Moat Verification, Cyclical Trap Guard & Thesis Review │
+│            Multi-Agent Dialectical Debate & Cognitive Routing          │
+│  • Agent Bull (Growth/Momentum) vs Agent Bear (Risk/Forensics)         │
+│  • Chief Arbitrator (CIO) Adjudication using Deep-Think Cognitive LLM  │
+│  • Tiered Model Routing: Quick-Think (Flash/70B) vs Deep-Think (Pro/R1)│
 └───────────────────────────────────┬────────────────────────────────────┘
                                     │
                                     ▼
 ┌────────────────────────────────────────────────────────────────────────┐
-│               Enterprise React 19 Institutional Terminal               │
-│   Obsidian Dark UI, 3-Tranche Allocation Ladders & Broker Order Plans  │
+│               Enterprise React 19 Terminal & HTML Dossiers             │
+│   Obsidian Dark UI, 3-Tranche Ladders & Standalone Research Dossiers   │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -66,6 +68,37 @@
 ### 4. Statutory Cost & Capital Gains Tracking
 * **Pre-Trade Friction Accounting:** Accounts for all mandatory Indian statutory charges (STT, Stamp Duty, GST, Exchange turnover fees, and DP charges).
 * **Capital Gains Tax Ledger:** Automated lot-based tax tracking for Short-Term (STCG) and Long-Term (LTCG) holding periods.
+
+### 5. Multi-Agent Dialectical Debate Engine (Bull vs. Bear vs. CIO Arbitrator)
+Inspired by institutional trading desk deliberation and multi-agent LLM reasoning frameworks (such as *TradingAgents*), AURA implements an adversarial dialectical debate before capital deployment:
+* **Two-Phase Architecture:** Rather than wasting tokens running LLM agents across 750+ raw stocks, AURA uses high-throughput vectorized screening to filter 750–2,760 stocks down to high-conviction candidates in seconds. Only qualified candidates undergo multi-agent deliberation.
+* **Agent Bull (Growth & Momentum):** Constructs aggressive data-driven expansion theses evaluating technical trend alignment (20/50/200 MAs), volume absorption, Mansfield Relative Strength vs NIFTY 50, and earnings catalysts.
+* **Agent Bear (Risk Officer & Short-Side Forensics):** Stress-tests and attempts to invalidate the trade, attacking overhead resistance supply clusters, macro/sector drag, cyclical peak risks, and stop-loss vulnerability.
+* **Chief Arbitrator (CIO):** Moderates multi-round cross-examinations using high-reasoning **Deep-Think** cognitive models. Renders final binding verdicts (`APPROVED`, `APPROVED_REDUCED_SIZE`, `REJECTED`), conviction scores (0–100%), sizing multipliers, and explicit invalidation criteria.
+* **Deterministic Offline Fallbacks:** Zero reliance on live LLM APIs. If external models are rate-limited or offline, deterministic algorithmic rules referee the setup seamlessly.
+
+### 6. Tiered Cognitive Model Routing (Quick-Think vs. Deep-Think)
+Optimizes LLM intelligence, speed, and cost efficiency by routing tasks based on cognitive intensity:
+* **Quick-Think Tier (`QUICK_THINK_MODEL`, default: `gemini-2.5-flash`):** Sub-second latency models for rapid pre-market screening, news filtering, and turn-by-turn analyst debate arguments.
+* **Deep-Think Tier (`DEEP_THINK_MODEL`, default: `gemini-2.5-pro`):** Heavy cognitive reasoning models for chief arbitrator adjudication, multi-round synthesis, and comprehensive research dossier generation.
+* **Multi-Provider Vault Rotation:** Transparent failover and rotation across Google Gemini, Groq (Llama-3.3-70B), OpenRouter, OpenAI, and local Ollama instances.
+
+### 7. Interactive Single-Ticker CLI & Standalone HTML Research Dossiers
+Run an on-demand, institutional deep-dive on any NSE scrip from your terminal:
+```bash
+# Analyze any NSE equity with default 2-round debate
+python scripts/analyze_ticker.py --ticker TATAMOTORS.NS
+
+# Run a 3-round debate and automatically open the generated dossier in your browser
+python scripts/analyze_ticker.py --ticker RELIANCE.NS --rounds 3 --open
+```
+* **Publication-Grade HTML Research Dossier:** Generates an obsidian-styled, standalone HTML dossier saved to `reports/dossier_<TICKER>.html` featuring:
+  * Live price telemetry, 52-week range, and macro regime metrics.
+  * Calibrated ML win probability and friction-adjusted Expected Value ($EV_R$).
+  * Intrinsic fair worth valuation with Margin of Safety percentage.
+  * Full transcript of Agent Bull vs. Agent Bear dialectical rounds with Chief Arbitrator rulings.
+  * Staggered 3-Tranche allocation ladder (40% initial, 30% pullback, 30% deep value).
+  * Paisa-accurate statutory charges breakdown (STT, Stamp Duty, Exchange fees, SEBI, GST, DP fees, and slippage).
 
 ---
 
