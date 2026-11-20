@@ -1,6 +1,6 @@
 {
   "scan_date": "2026-11-20",
-  "scan_timestamp": "2026-11-20 16:37:26 IST",
+  "scan_timestamp": "2026-11-20 19:24:05 IST",
   "total_screened": 750,
   "undervalued_count": 15,
   "value_picks": [
@@ -180,7 +180,33 @@
           "Cash Flow: High-integrity cash conversion: 5Y CFO/PAT is 90.0%",
           "Valuation: Attractive valuation: PEG=0.06 or P/E (3.7x) at steep discount to Diversified/Other benchmark (20.0x)"
         ],
-        "key_risks": []
+        "key_risks": [],
+        "forward_estimates": {
+          "symbol": "CHENNPETRO",
+          "trailing_pe": 3.72,
+          "forward_pe": 4.02,
+          "trailing_eps": 382.9,
+          "forward_eps": 354.4,
+          "peg_ratio": 1.2,
+          "target_median_price": 1885.0,
+          "current_price": 1426.1,
+          "analyst_upside_pct": 32.18,
+          "recommendation_key": "none",
+          "number_of_analyst_opinions": 1,
+          "forward_growth_pct": -7.44,
+          "is_value_trap": false,
+          "value_trap_reason": "",
+          "as_of_date": "2026-11-20",
+          "data_source": "YAHOO_DALAL_STREET_CONSENSUS"
+        },
+        "event_risk_level": "CLEAN",
+        "invalidation_triggers": [
+          "Capital Efficiency Invalidation: Quarterly ROCE/ROE falls below 24.4%",
+          "Governance Invalidation: Promoter share pledging increases above 10.0% (current: 0.0%)",
+          "Cash Conversion Invalidation: Trailing 12M Operating Cash Flow (CFO) turns negative",
+          "Regulatory / Integrity Invalidation: Statutory auditor resigns, adverse opinion issued, or ED/SEBI raid",
+          "Structural Technical Invalidation: Weekly closing breaks below 200-SMA baseline on volume"
+        ]
       }
     },
     {
@@ -361,6 +387,32 @@
         "key_risks": [
           "Company has low interest coverage ratio.",
           "The company has delivered a poor sales growth of 9.03% over past five years."
+        ],
+        "forward_estimates": {
+          "symbol": "UNIONBANK",
+          "trailing_pe": 7.59,
+          "forward_pe": 7.61,
+          "trailing_eps": 28.82,
+          "forward_eps": 28.77,
+          "peg_ratio": 1.2,
+          "target_median_price": 200.0,
+          "current_price": 218.85,
+          "analyst_upside_pct": -8.61,
+          "recommendation_key": "none",
+          "number_of_analyst_opinions": 17,
+          "forward_growth_pct": -0.18,
+          "is_value_trap": false,
+          "value_trap_reason": "",
+          "as_of_date": "2026-11-20",
+          "data_source": "YAHOO_DALAL_STREET_CONSENSUS"
+        },
+        "event_risk_level": "CLEAN",
+        "invalidation_triggers": [
+          "Capital Efficiency Invalidation: Quarterly ROCE/ROE falls below 12.0%",
+          "Governance Invalidation: Promoter share pledging increases above 10.0% (current: 0.0%)",
+          "Cash Conversion Invalidation: Trailing 12M Operating Cash Flow (CFO) turns negative",
+          "Regulatory / Integrity Invalidation: Statutory auditor resigns, adverse opinion issued, or ED/SEBI raid",
+          "Structural Technical Invalidation: Weekly closing breaks below 200-SMA baseline on volume"
         ]
       }
     },
@@ -426,17 +478,17 @@
         "bear_risk": "Cyclical downturn in sector or quarterly margin contraction.",
         "summary": "Algorithmic institutional valuation fallback."
       },
-      "compounder_score": 85.5,
-      "compounder_grade": "GRADE A (Institutional Compounder)",
+      "compounder_score": 77.5,
+      "compounder_grade": "GRADE B (Solid Quality)",
       "compounder_breakdown": {
         "symbol": "IOC.NS",
         "company_name": "Indian Oil Corporation Ltd",
         "sector": "Energy",
-        "total_score": 85.5,
+        "total_score": 77.5,
         "max_possible_score": 100.0,
-        "score_percentage": 85.5,
-        "grade": "GRADE A (Institutional Compounder)",
-        "verdict": "APPROVED_COMPOUNDER",
+        "score_percentage": 77.5,
+        "grade": "GRADE B (Solid Quality)",
+        "verdict": "SELECTIVE_COMPOUNDER",
         "is_vetoed": false,
         "veto_reason": null,
         "categories": {
@@ -478,13 +530,14 @@
           "valuation": {
             "name": "Valuation",
             "weight": 20.0,
-            "score": 20.0,
+            "score": 12.0,
             "max_score": 20.0,
-            "rating_pct": 100.0,
+            "rating_pct": 60.0,
             "notes": [
-              "Attractive valuation: PEG=0.07 or P/E (4.6x) at steep discount to Energy benchmark (22.0x) (+10.0/10)",
+              "Attractive valuation: PEG=0.07 or P/E (4.5x) at steep discount to Energy benchmark (22.0x) (+10.0/10)",
               "Price to Book (0.9x) justified by return on capital (+5.0/5)",
-              "Strong Margin of Safety (+69.7% discount to intrinsic worth) (+5.0/5)"
+              "Strong Margin of Safety (+69.7% discount to intrinsic worth) (+5.0/5)",
+              "CRITICAL VALUE TRAP WARNING: Classic Value Trap: Trailing P/E 4.4x appears cheap, but forward EPS is projected to contract -44.0% NTM. (-8.0 pts)"
             ]
           },
           "balance_sheet": {
@@ -533,14 +586,40 @@
             ]
           }
         },
-        "summary_verdict": "HIGH CONVICTION COMPOUNDER (85.5/100): Exceptional ROCE, cash conversion, and balance sheet strength.",
+        "summary_verdict": "APPROVED QUALITY EQUITY (77.5/100): Sound fundamentals with manageable valuation/momentum headwind.",
         "key_strengths": [
           "Financial Quality: Solid ROCE (18.7% >= 18%) above cost of capital",
           "Earnings Growth: High revenue CAGR (17.0% >= 15%)",
           "Cash Flow: High-integrity cash conversion: 5Y CFO/PAT is 145.3%",
-          "Valuation: Attractive valuation: PEG=0.07 or P/E (4.6x) at steep discount to Energy benchmark (22.0x)"
+          "Market Conditions: Macro Regime is GREEN: Institutional equity tailwind"
         ],
-        "key_risks": []
+        "key_risks": [],
+        "forward_estimates": {
+          "symbol": "IOC",
+          "trailing_pe": 4.39,
+          "forward_pe": 7.83,
+          "trailing_eps": 34.3,
+          "forward_eps": 19.22,
+          "peg_ratio": 1.2,
+          "target_median_price": 153.0,
+          "current_price": 150.5,
+          "analyst_upside_pct": 1.66,
+          "recommendation_key": "none",
+          "number_of_analyst_opinions": 31,
+          "forward_growth_pct": -43.97,
+          "is_value_trap": true,
+          "value_trap_reason": "Classic Value Trap: Trailing P/E 4.4x appears cheap, but forward EPS is projected to contract -44.0% NTM.",
+          "as_of_date": "2026-11-20",
+          "data_source": "YAHOO_DALAL_STREET_CONSENSUS"
+        },
+        "event_risk_level": "CLEAN",
+        "invalidation_triggers": [
+          "Capital Efficiency Invalidation: Quarterly ROCE/ROE falls below 13.1%",
+          "Governance Invalidation: Promoter share pledging increases above 10.0% (current: 0.0%)",
+          "Cash Conversion Invalidation: Trailing 12M Operating Cash Flow (CFO) turns negative",
+          "Regulatory / Integrity Invalidation: Statutory auditor resigns, adverse opinion issued, or ED/SEBI raid",
+          "Structural Technical Invalidation: Weekly closing breaks below 200-SMA baseline on volume"
+        ]
       }
     },
     {
@@ -595,7 +674,7 @@
       "unverified_badges": [
         "\u26a0\ufe0f Debt/Equity Unverified"
       ],
-      "conviction_tier": "HIGH_CONVICTION",
+      "conviction_tier": "QUALITY_COMPOUNDER",
       "gemini_audit": {
         "verdict": "APPROVED_HIGH_CONVICTION",
         "ai_conviction_pct": 80.0,
@@ -607,17 +686,17 @@
         "bear_risk": "Slower earnings momentum.",
         "summary": "Algorithmic institutional valuation fallback."
       },
-      "compounder_score": 81.0,
-      "compounder_grade": "GRADE A (Institutional Compounder)",
+      "compounder_score": 73.0,
+      "compounder_grade": "GRADE B (Solid Quality)",
       "compounder_breakdown": {
         "symbol": "BEPL.NS",
         "company_name": "Bhansali Engineering Polymers Ltd",
         "sector": "Diversified/Other",
-        "total_score": 81.0,
+        "total_score": 73.0,
         "max_possible_score": 100.0,
-        "score_percentage": 81.0,
-        "grade": "GRADE A (Institutional Compounder)",
-        "verdict": "APPROVED_COMPOUNDER",
+        "score_percentage": 73.0,
+        "grade": "GRADE B (Solid Quality)",
+        "verdict": "SELECTIVE_COMPOUNDER",
         "is_vetoed": false,
         "veto_reason": null,
         "categories": {
@@ -659,13 +738,14 @@
           "valuation": {
             "name": "Valuation",
             "weight": 20.0,
-            "score": 20.0,
+            "score": 12.0,
             "max_score": 20.0,
-            "rating_pct": 100.0,
+            "rating_pct": 60.0,
             "notes": [
               "Attractive valuation: PEG=1.24 or P/E (12.4x) at steep discount to Diversified/Other benchmark (20.0x) (+10.0/10)",
               "Price to Book (2.4x) justified by return on capital (+5.0/5)",
-              "Strong Margin of Safety (+43.7% discount to intrinsic worth) (+5.0/5)"
+              "Strong Margin of Safety (+43.7% discount to intrinsic worth) (+5.0/5)",
+              "CRITICAL VALUE TRAP WARNING: Classic Value Trap: Trailing P/E 12.3x appears cheap, but forward EPS is projected to contract -34.8% NTM. (-8.0 pts)"
             ]
           },
           "balance_sheet": {
@@ -714,16 +794,42 @@
             ]
           }
         },
-        "summary_verdict": "HIGH CONVICTION COMPOUNDER (81.0/100): Exceptional ROCE, cash conversion, and balance sheet strength.",
+        "summary_verdict": "APPROVED QUALITY EQUITY (73.0/100): Sound fundamentals with manageable valuation/momentum headwind.",
         "key_strengths": [
           "Financial Quality: Solid ROCE (23.8% >= 18%) above cost of capital",
           "Cash Flow: High-integrity cash conversion: 5Y CFO/PAT is 105.3%",
-          "Valuation: Attractive valuation: PEG=1.24 or P/E (12.4x) at steep discount to Diversified/Other benchmark (20.0x)",
-          "Balance Sheet: Virtually debt-free balance sheet (D/E: 0.00)"
+          "Balance Sheet: Virtually debt-free balance sheet (D/E: 0.00)",
+          "Market Conditions: Macro Regime is GREEN: Institutional equity tailwind"
         ],
         "key_risks": [
           "Earnings Growth: Sluggish revenue CAGR (-2.0% < 6%)",
           "The company has delivered a poor sales growth of -0.25% over past five years."
+        ],
+        "forward_estimates": {
+          "symbol": "BEPL",
+          "trailing_pe": 12.34,
+          "forward_pe": 18.91,
+          "trailing_eps": 8.92,
+          "forward_eps": 5.82,
+          "peg_ratio": 1.2,
+          "target_median_price": 126.55,
+          "current_price": 110.04,
+          "analyst_upside_pct": 15.0,
+          "recommendation_key": "none",
+          "number_of_analyst_opinions": 0,
+          "forward_growth_pct": -34.75,
+          "is_value_trap": true,
+          "value_trap_reason": "Classic Value Trap: Trailing P/E 12.3x appears cheap, but forward EPS is projected to contract -34.8% NTM.",
+          "as_of_date": "2026-11-20",
+          "data_source": "YAHOO_DALAL_STREET_CONSENSUS"
+        },
+        "event_risk_level": "CLEAN",
+        "invalidation_triggers": [
+          "Capital Efficiency Invalidation: Quarterly ROCE/ROE falls below 16.7%",
+          "Governance Invalidation: Promoter share pledging increases above 10.0% (current: 0.0%)",
+          "Cash Conversion Invalidation: Trailing 12M Operating Cash Flow (CFO) turns negative",
+          "Regulatory / Integrity Invalidation: Statutory auditor resigns, adverse opinion issued, or ED/SEBI raid",
+          "Structural Technical Invalidation: Weekly closing breaks below 200-SMA baseline on volume"
         ]
       }
     },
@@ -845,7 +951,7 @@
             "max_score": 20.0,
             "rating_pct": 100.0,
             "notes": [
-              "Attractive valuation: PEG=0.33 or P/E (9.8x) at steep discount to Banking benchmark (16.0x) (+10.0/10)",
+              "Attractive valuation: PEG=0.32 or P/E (9.7x) at steep discount to Banking benchmark (16.0x) (+10.0/10)",
               "Price to Book (1.5x) justified by return on capital (+5.0/5)",
               "Strong Margin of Safety (+41.3% discount to intrinsic worth) (+5.0/5)"
             ]
@@ -900,11 +1006,37 @@
           "Financial Quality: Bank ROE (15.4%) healthy",
           "Earnings Growth: Steady revenue CAGR (14.0% >= 10%)",
           "Cash Flow: Banking liquidity & operating cash conversion validated",
-          "Valuation: Attractive valuation: PEG=0.33 or P/E (9.8x) at steep discount to Banking benchmark (16.0x)"
+          "Valuation: Attractive valuation: PEG=0.32 or P/E (9.7x) at steep discount to Banking benchmark (16.0x)"
         ],
         "key_risks": [
           "Company has low interest coverage ratio.",
           "The company has delivered a poor sales growth of 11.5% over past five years."
+        ],
+        "forward_estimates": {
+          "symbol": "INDIANB",
+          "trailing_pe": 9.68,
+          "forward_pe": 8.3,
+          "trailing_eps": 98.13,
+          "forward_eps": 114.48,
+          "peg_ratio": 1.2,
+          "target_median_price": 1000.0,
+          "current_price": 950.0,
+          "analyst_upside_pct": 5.26,
+          "recommendation_key": "none",
+          "number_of_analyst_opinions": 16,
+          "forward_growth_pct": 16.66,
+          "is_value_trap": false,
+          "value_trap_reason": "",
+          "as_of_date": "2026-11-20",
+          "data_source": "YAHOO_DALAL_STREET_CONSENSUS"
+        },
+        "event_risk_level": "CLEAN",
+        "invalidation_triggers": [
+          "Capital Efficiency Invalidation: Quarterly ROCE/ROE falls below 12.0%",
+          "Governance Invalidation: Promoter share pledging increases above 10.0% (current: 0.0%)",
+          "Cash Conversion Invalidation: Trailing 12M Operating Cash Flow (CFO) turns negative",
+          "Regulatory / Integrity Invalidation: Statutory auditor resigns, adverse opinion issued, or ED/SEBI raid",
+          "Structural Technical Invalidation: Weekly closing breaks below 200-SMA baseline on volume"
         ]
       }
     },
@@ -1030,7 +1162,8 @@
             "notes": [
               "Attractive valuation: PEG=1.20 or P/E (15.6x) at steep discount to Diversified/Other benchmark (20.0x) (+10.0/10)",
               "Price to Book (2.4x) justified by return on capital (+5.0/5)",
-              "Strong Margin of Safety (+29.7% discount to intrinsic worth) (+5.0/5)"
+              "Strong Margin of Safety (+29.7% discount to intrinsic worth) (+5.0/5)",
+              "Consensus EPS Growth (+34.5%) & Analyst Upside (+25.3%) (+2.0 pts)"
             ]
           },
           "balance_sheet": {
@@ -1089,6 +1222,32 @@
         "key_risks": [
           "Financial Quality: Weak ROCE (11.4% < 13%) shows poor capital efficiency",
           "Company has a low return on equity of 11.5% over last 3 years."
+        ],
+        "forward_estimates": {
+          "symbol": "DEEPAKFERT",
+          "trailing_pe": 15.58,
+          "forward_pe": 11.58,
+          "trailing_eps": 92.26,
+          "forward_eps": 124.13,
+          "peg_ratio": 0.98,
+          "target_median_price": 1801.0,
+          "current_price": 1437.2,
+          "analyst_upside_pct": 25.31,
+          "recommendation_key": "strong_buy",
+          "number_of_analyst_opinions": 3,
+          "forward_growth_pct": 34.55,
+          "is_value_trap": false,
+          "value_trap_reason": "",
+          "as_of_date": "2026-11-20",
+          "data_source": "YAHOO_DALAL_STREET_CONSENSUS"
+        },
+        "event_risk_level": "CLEAN",
+        "invalidation_triggers": [
+          "Capital Efficiency Invalidation: Quarterly ROCE/ROE falls below 12.0%",
+          "Governance Invalidation: Promoter share pledging increases above 10.0% (current: 0.0%)",
+          "Cash Conversion Invalidation: Trailing 12M Operating Cash Flow (CFO) turns negative",
+          "Regulatory / Integrity Invalidation: Statutory auditor resigns, adverse opinion issued, or ED/SEBI raid",
+          "Structural Technical Invalidation: Weekly closing breaks below 200-SMA baseline on volume"
         ]
       }
     },
@@ -1274,6 +1433,32 @@
           "Financial Quality: Weak ROCE (9.1% < 13%) shows poor capital efficiency",
           "Company has a low return on equity of 8.03% over last 3 years.",
           "Dividend payout has been low at 1.01% of profits over last 3 years"
+        ],
+        "forward_estimates": {
+          "symbol": "CONFIPET",
+          "trailing_pe": 16.55,
+          "forward_pe": 16.55,
+          "trailing_eps": 4.05,
+          "forward_eps": 4.05,
+          "peg_ratio": 1.2,
+          "target_median_price": 77.08,
+          "current_price": 67.03,
+          "analyst_upside_pct": 15.0,
+          "recommendation_key": "none",
+          "number_of_analyst_opinions": 0,
+          "forward_growth_pct": 0.0,
+          "is_value_trap": false,
+          "value_trap_reason": "",
+          "as_of_date": "2026-11-20",
+          "data_source": "YAHOO_DALAL_STREET_CONSENSUS"
+        },
+        "event_risk_level": "CLEAN",
+        "invalidation_triggers": [
+          "Capital Efficiency Invalidation: Quarterly ROCE/ROE falls below 12.0%",
+          "Governance Invalidation: Promoter share pledging increases above 10.0% (current: 0.0%)",
+          "Cash Conversion Invalidation: Trailing 12M Operating Cash Flow (CFO) turns negative",
+          "Regulatory / Integrity Invalidation: Statutory auditor resigns, adverse opinion issued, or ED/SEBI raid",
+          "Structural Technical Invalidation: Weekly closing breaks below 200-SMA baseline on volume"
         ]
       }
     },
@@ -1395,7 +1580,7 @@
             "max_score": 20.0,
             "rating_pct": 100.0,
             "notes": [
-              "Attractive valuation: PEG=0.65 or P/E (18.1x) at steep discount to Auto benchmark (22.0x) (+10.0/10)",
+              "Attractive valuation: PEG=0.65 or P/E (18.2x) at steep discount to Auto benchmark (22.0x) (+10.0/10)",
               "Price to Book (4.7x) justified by return on capital (+5.0/5)",
               "Strong Margin of Safety (+26.2% discount to intrinsic worth) (+5.0/5)"
             ]
@@ -1451,10 +1636,36 @@
           "Financial Quality: Exceptional ROCE (35.2% >= 25%) indicates strong economic moat",
           "Earnings Growth: Steady revenue CAGR (12.0% >= 10%)",
           "Cash Flow: High-integrity cash conversion: 5Y CFO/PAT is 97.9%",
-          "Valuation: Attractive valuation: PEG=0.65 or P/E (18.1x) at steep discount to Auto benchmark (22.0x)"
+          "Valuation: Attractive valuation: PEG=0.65 or P/E (18.2x) at steep discount to Auto benchmark (22.0x)"
         ],
         "key_risks": [
           "The company has delivered a poor sales growth of 8.90% over past five years."
+        ],
+        "forward_estimates": {
+          "symbol": "HEROMOTOCO",
+          "trailing_pe": 18.21,
+          "forward_pe": 17.19,
+          "trailing_eps": 303.99,
+          "forward_eps": 322.07,
+          "peg_ratio": 1.2,
+          "target_median_price": 6000.0,
+          "current_price": 5536.0,
+          "analyst_upside_pct": 8.38,
+          "recommendation_key": "none",
+          "number_of_analyst_opinions": 38,
+          "forward_growth_pct": 5.95,
+          "is_value_trap": false,
+          "value_trap_reason": "",
+          "as_of_date": "2026-11-20",
+          "data_source": "YAHOO_DALAL_STREET_CONSENSUS"
+        },
+        "event_risk_level": "CLEAN",
+        "invalidation_triggers": [
+          "Capital Efficiency Invalidation: Quarterly ROCE/ROE falls below 24.6%",
+          "Governance Invalidation: Promoter share pledging increases above 10.0% (current: 0.0%)",
+          "Cash Conversion Invalidation: Trailing 12M Operating Cash Flow (CFO) turns negative",
+          "Regulatory / Integrity Invalidation: Statutory auditor resigns, adverse opinion issued, or ED/SEBI raid",
+          "Structural Technical Invalidation: Weekly closing breaks below 200-SMA baseline on volume"
         ]
       }
     },
@@ -1566,7 +1777,7 @@
             "max_score": 20.0,
             "rating_pct": 82.5,
             "notes": [
-              "Attractive valuation: PEG=0.84 or P/E (20.1x) at steep discount to Banking benchmark (16.0x) (+10.0/10)",
+              "Attractive valuation: PEG=0.83 or P/E (20.0x) at steep discount to Banking benchmark (16.0x) (+10.0/10)",
               "Moderate Price to Book (3.0x) (+3.0/5)",
               "Modest Margin of Safety (+18.2%) (+3.5/5)"
             ]
@@ -1621,11 +1832,37 @@
           "Financial Quality: Bank ROE (15.9%) healthy",
           "Earnings Growth: High revenue CAGR (17.0% >= 15%)",
           "Cash Flow: Banking liquidity & operating cash conversion validated",
-          "Valuation: Attractive valuation: PEG=0.84 or P/E (20.1x) at steep discount to Banking benchmark (16.0x)"
+          "Valuation: Attractive valuation: PEG=0.83 or P/E (20.0x) at steep discount to Banking benchmark (16.0x)"
         ],
         "key_risks": [
-          "Stock is trading at 2.97 times its book value",
+          "Stock is trading at 3.04 times its book value",
           "Company has low interest coverage ratio."
+        ],
+        "forward_estimates": {
+          "symbol": "ICICIBANK",
+          "trailing_pe": 20.14,
+          "forward_pe": 16.7,
+          "trailing_eps": 81.43,
+          "forward_eps": 98.22,
+          "peg_ratio": 0.53,
+          "target_median_price": 1752.0,
+          "current_price": 1640.0,
+          "analyst_upside_pct": 6.83,
+          "recommendation_key": "strong_buy",
+          "number_of_analyst_opinions": 41,
+          "forward_growth_pct": 20.62,
+          "is_value_trap": false,
+          "value_trap_reason": "",
+          "as_of_date": "2026-11-20",
+          "data_source": "YAHOO_DALAL_STREET_CONSENSUS"
+        },
+        "event_risk_level": "CLEAN",
+        "invalidation_triggers": [
+          "Capital Efficiency Invalidation: Quarterly ROCE/ROE falls below 12.0%",
+          "Governance Invalidation: Promoter share pledging increases above 10.0% (current: 0.0%)",
+          "Cash Conversion Invalidation: Trailing 12M Operating Cash Flow (CFO) turns negative",
+          "Regulatory / Integrity Invalidation: Statutory auditor resigns, adverse opinion issued, or ED/SEBI raid",
+          "Structural Technical Invalidation: Weekly closing breaks below 200-SMA baseline on volume"
         ]
       }
     },
@@ -1681,15 +1918,15 @@
       "unverified_badges": [],
       "conviction_tier": "QUALITY_COMPOUNDER",
       "gemini_audit": null,
-      "compounder_score": 74.5,
+      "compounder_score": 66.5,
       "compounder_grade": "GRADE B (Solid Quality)",
       "compounder_breakdown": {
         "symbol": "JSWSTEEL.NS",
         "company_name": "JSW Steel Ltd",
         "sector": "Metals",
-        "total_score": 74.5,
+        "total_score": 66.5,
         "max_possible_score": 100.0,
-        "score_percentage": 74.5,
+        "score_percentage": 66.5,
         "grade": "GRADE B (Solid Quality)",
         "verdict": "SELECTIVE_COMPOUNDER",
         "is_vetoed": false,
@@ -1733,13 +1970,14 @@
           "valuation": {
             "name": "Valuation",
             "weight": 20.0,
-            "score": 18.5,
+            "score": 10.5,
             "max_score": 20.0,
-            "rating_pct": 92.5,
+            "rating_pct": 52.5,
             "notes": [
               "Attractive valuation: PEG=0.60 or P/E (20.9x) at steep discount to Metals benchmark (22.0x) (+10.0/10)",
               "Price to Book (2.9x) justified by return on capital (+5.0/5)",
-              "Modest Margin of Safety (+18.2%) (+3.5/5)"
+              "Modest Margin of Safety (+18.2%) (+3.5/5)",
+              "CRITICAL VALUE TRAP WARNING: Classic Value Trap: Trailing P/E 11.5x appears cheap, but forward EPS is projected to contract -34.9% NTM. (-8.0 pts)"
             ]
           },
           "balance_sheet": {
@@ -1788,17 +2026,43 @@
             ]
           }
         },
-        "summary_verdict": "APPROVED QUALITY EQUITY (74.5/100): Sound fundamentals with manageable valuation/momentum headwind.",
+        "summary_verdict": "APPROVED QUALITY EQUITY (66.5/100): Sound fundamentals with manageable valuation/momentum headwind.",
         "key_strengths": [
           "Earnings Growth: High revenue CAGR (18.0% >= 15%)",
           "Cash Flow: High-integrity cash conversion: 5Y CFO/PAT is 145.9%",
-          "Valuation: Attractive valuation: PEG=0.60 or P/E (20.9x) at steep discount to Metals benchmark (22.0x)",
-          "Technicals: Bullish trend alignment: Price > 50-EMA > 200-SMA"
+          "Technicals: Bullish trend alignment: Price > 50-EMA > 200-SMA",
+          "Market Conditions: Macro Regime is GREEN: Institutional equity tailwind"
         ],
         "key_risks": [
           "Financial Quality: Weak ROCE (11.0% < 13%) shows poor capital efficiency",
-          "Stock is trading at 2.83 times its book value",
+          "Stock is trading at 2.89 times its book value",
           "Company has a low return on equity of 8.97% over last 3 years."
+        ],
+        "forward_estimates": {
+          "symbol": "JSWSTEEL",
+          "trailing_pe": 11.5,
+          "forward_pe": 17.66,
+          "trailing_eps": 116.3,
+          "forward_eps": 75.71,
+          "peg_ratio": 1.2,
+          "target_median_price": 1400.0,
+          "current_price": 1337.0,
+          "analyst_upside_pct": 4.71,
+          "recommendation_key": "buy",
+          "number_of_analyst_opinions": 35,
+          "forward_growth_pct": -34.9,
+          "is_value_trap": true,
+          "value_trap_reason": "Classic Value Trap: Trailing P/E 11.5x appears cheap, but forward EPS is projected to contract -34.9% NTM.",
+          "as_of_date": "2026-11-20",
+          "data_source": "YAHOO_DALAL_STREET_CONSENSUS"
+        },
+        "event_risk_level": "CLEAN",
+        "invalidation_triggers": [
+          "Capital Efficiency Invalidation: Quarterly ROCE/ROE falls below 12.0%",
+          "Governance Invalidation: Promoter share pledging increases above 10.0% (current: 0.0%)",
+          "Cash Conversion Invalidation: Trailing 12M Operating Cash Flow (CFO) turns negative",
+          "Regulatory / Integrity Invalidation: Statutory auditor resigns, adverse opinion issued, or ED/SEBI raid",
+          "Structural Technical Invalidation: Weekly closing breaks below 200-SMA baseline on volume"
         ]
       }
     },
@@ -1910,7 +2174,7 @@
             "max_score": 20.0,
             "rating_pct": 92.5,
             "notes": [
-              "Attractive valuation: PEG=0.85 or P/E (18.6x) at steep discount to Diversified/Other benchmark (20.0x) (+10.0/10)",
+              "Attractive valuation: PEG=0.85 or P/E (18.7x) at steep discount to Diversified/Other benchmark (20.0x) (+10.0/10)",
               "Price to Book (2.9x) justified by return on capital (+5.0/5)",
               "Modest Margin of Safety (+14.9%) (+3.5/5)"
             ]
@@ -1964,12 +2228,38 @@
         "summary_verdict": "APPROVED QUALITY EQUITY (67.0/100): Sound fundamentals with manageable valuation/momentum headwind.",
         "key_strengths": [
           "Earnings Growth: High revenue CAGR (36.0% >= 15%)",
-          "Valuation: Attractive valuation: PEG=0.85 or P/E (18.6x) at steep discount to Diversified/Other benchmark (20.0x)",
+          "Valuation: Attractive valuation: PEG=0.85 or P/E (18.7x) at steep discount to Diversified/Other benchmark (20.0x)",
           "Technicals: Trading above 200-SMA structural baseline",
           "Market Conditions: Macro Regime is GREEN: Institutional equity tailwind"
         ],
         "key_risks": [
           "Cash Flow: Accrual Warning: 5Y CFO/PAT is -72.3% (<50%) indicates paper earnings"
+        ],
+        "forward_estimates": {
+          "symbol": "CEIGALL",
+          "trailing_pe": 18.49,
+          "forward_pe": 15.28,
+          "trailing_eps": 20.52,
+          "forward_eps": 24.83,
+          "peg_ratio": 1.2,
+          "target_median_price": 350.0,
+          "current_price": 379.4,
+          "analyst_upside_pct": -7.75,
+          "recommendation_key": "buy",
+          "number_of_analyst_opinions": 3,
+          "forward_growth_pct": 21.02,
+          "is_value_trap": false,
+          "value_trap_reason": "",
+          "as_of_date": "2026-11-20",
+          "data_source": "YAHOO_DALAL_STREET_CONSENSUS"
+        },
+        "event_risk_level": "CLEAN",
+        "invalidation_triggers": [
+          "Capital Efficiency Invalidation: Quarterly ROCE/ROE falls below 12.0%",
+          "Governance Invalidation: Promoter share pledging increases above 10.0% (current: 0.0%)",
+          "Cash Conversion Invalidation: Trailing 12M Operating Cash Flow (CFO) turns negative",
+          "Regulatory / Integrity Invalidation: Statutory auditor resigns, adverse opinion issued, or ED/SEBI raid",
+          "Structural Technical Invalidation: Weekly closing breaks below 200-SMA baseline on volume"
         ]
       }
     },
@@ -2081,7 +2371,7 @@
             "max_score": 20.0,
             "rating_pct": 92.5,
             "notes": [
-              "Attractive valuation: PEG=0.62 or P/E (19.8x) at steep discount to Diversified/Other benchmark (20.0x) (+10.0/10)",
+              "Attractive valuation: PEG=0.62 or P/E (19.9x) at steep discount to Diversified/Other benchmark (20.0x) (+10.0/10)",
               "Price to Book (5.4x) justified by return on capital (+5.0/5)",
               "Modest Margin of Safety (+11.4%) (+3.5/5)"
             ]
@@ -2136,11 +2426,37 @@
         "key_strengths": [
           "Financial Quality: Exceptional ROCE (30.9% >= 25%) indicates strong economic moat",
           "Earnings Growth: High revenue CAGR (21.0% >= 15%)",
-          "Valuation: Attractive valuation: PEG=0.62 or P/E (19.8x) at steep discount to Diversified/Other benchmark (20.0x)",
+          "Valuation: Attractive valuation: PEG=0.62 or P/E (19.9x) at steep discount to Diversified/Other benchmark (20.0x)",
           "Balance Sheet: Conservative industrial leverage (D/E: 0.28 <= 0.5)"
         ],
         "key_risks": [
           "Company might be capitalizing the interest cost"
+        ],
+        "forward_estimates": {
+          "symbol": "BANCOINDIA",
+          "trailing_pe": 19.51,
+          "forward_pe": 19.51,
+          "trailing_eps": 36.19,
+          "forward_eps": 36.19,
+          "peg_ratio": 1.2,
+          "target_median_price": 811.9,
+          "current_price": 706.0,
+          "analyst_upside_pct": 15.0,
+          "recommendation_key": "none",
+          "number_of_analyst_opinions": 0,
+          "forward_growth_pct": 0.0,
+          "is_value_trap": false,
+          "value_trap_reason": "",
+          "as_of_date": "2026-11-20",
+          "data_source": "YAHOO_DALAL_STREET_CONSENSUS"
+        },
+        "event_risk_level": "CLEAN",
+        "invalidation_triggers": [
+          "Capital Efficiency Invalidation: Quarterly ROCE/ROE falls below 21.6%",
+          "Governance Invalidation: Promoter share pledging increases above 10.0% (current: 0.0%)",
+          "Cash Conversion Invalidation: Trailing 12M Operating Cash Flow (CFO) turns negative",
+          "Regulatory / Integrity Invalidation: Statutory auditor resigns, adverse opinion issued, or ED/SEBI raid",
+          "Structural Technical Invalidation: Weekly closing breaks below 200-SMA baseline on volume"
         ]
       }
     },
@@ -2252,8 +2568,8 @@
             "max_score": 20.0,
             "rating_pct": 32.5,
             "notes": [
-              "Expensive multiple: PEG=5.98, P/E 29.9x (+0/10)",
-              "Moderate Price to Book (5.7x) (+3.0/5)",
+              "Expensive multiple: PEG=6.00, P/E 30.0x (+0/10)",
+              "Moderate Price to Book (5.8x) (+3.0/5)",
               "Modest Margin of Safety (+5.6%) (+3.5/5)"
             ]
           },
@@ -2312,9 +2628,35 @@
         ],
         "key_risks": [
           "Earnings Growth: Stagnant/declining profit growth (2.0% < 6%)",
-          "Valuation: Expensive multiple: PEG=5.98, P/E 29.9x",
+          "Valuation: Expensive multiple: PEG=6.00, P/E 30.0x",
           "The company has delivered a poor sales growth of 8.46% over past five years.",
           "Company has a low return on equity of 13.6% over last 3 years."
+        ],
+        "forward_estimates": {
+          "symbol": "TECHM",
+          "trailing_pe": 28.06,
+          "forward_pe": 19.56,
+          "trailing_eps": 62.22,
+          "forward_eps": 89.3,
+          "peg_ratio": 1.86,
+          "target_median_price": 1800.0,
+          "current_price": 1746.2,
+          "analyst_upside_pct": 3.08,
+          "recommendation_key": "buy",
+          "number_of_analyst_opinions": 39,
+          "forward_growth_pct": 43.52,
+          "is_value_trap": false,
+          "value_trap_reason": "",
+          "as_of_date": "2026-11-20",
+          "data_source": "YAHOO_DALAL_STREET_CONSENSUS"
+        },
+        "event_risk_level": "CLEAN",
+        "invalidation_triggers": [
+          "Capital Efficiency Invalidation: Quarterly ROCE/ROE falls below 16.2%",
+          "Governance Invalidation: Promoter share pledging increases above 10.0% (current: 0.0%)",
+          "Cash Conversion Invalidation: Trailing 12M Operating Cash Flow (CFO) turns negative",
+          "Regulatory / Integrity Invalidation: Statutory auditor resigns, adverse opinion issued, or ED/SEBI raid",
+          "Structural Technical Invalidation: Weekly closing breaks below 200-SMA baseline on volume"
         ]
       }
     },
@@ -2486,7 +2828,33 @@
         ],
         "key_risks": [
           "Cash Flow: Accrual Warning: 5Y CFO/PAT is 38.7% (<50%) indicates paper earnings",
-          "Stock is trading at 8.11 times its book value"
+          "Stock is trading at 8.08 times its book value"
+        ],
+        "forward_estimates": {
+          "symbol": "BAJAJ-AUTO",
+          "trailing_pe": 22.96,
+          "forward_pe": 21.27,
+          "trailing_eps": 468.8,
+          "forward_eps": 506.01,
+          "peg_ratio": 1.31,
+          "target_median_price": 11977.5,
+          "current_price": 10765.0,
+          "analyst_upside_pct": 11.26,
+          "recommendation_key": "none",
+          "number_of_analyst_opinions": 42,
+          "forward_growth_pct": 7.94,
+          "is_value_trap": false,
+          "value_trap_reason": "",
+          "as_of_date": "2026-11-20",
+          "data_source": "YAHOO_DALAL_STREET_CONSENSUS"
+        },
+        "event_risk_level": "CLEAN",
+        "invalidation_triggers": [
+          "Capital Efficiency Invalidation: Quarterly ROCE/ROE falls below 19.7%",
+          "Governance Invalidation: Promoter share pledging increases above 10.0% (current: 0.0%)",
+          "Cash Conversion Invalidation: Trailing 12M Operating Cash Flow (CFO) turns negative",
+          "Regulatory / Integrity Invalidation: Statutory auditor resigns, adverse opinion issued, or ED/SEBI raid",
+          "Structural Technical Invalidation: Weekly closing breaks below 200-SMA baseline on volume"
         ]
       }
     },
@@ -2600,7 +2968,7 @@
             "max_score": 20.0,
             "rating_pct": 75.0,
             "notes": [
-              "Attractive valuation: PEG=0.22 or P/E (22.3x) at steep discount to Diversified/Other benchmark (20.0x) (+10.0/10)",
+              "Attractive valuation: PEG=0.22 or P/E (22.4x) at steep discount to Diversified/Other benchmark (20.0x) (+10.0/10)",
               "Moderate Price to Book (3.6x) (+3.0/5)",
               "Trading near intrinsic fair worth (+1.4%) (+2.0/5)"
             ]
@@ -2655,12 +3023,38 @@
         "key_strengths": [
           "Financial Quality: Solid ROCE (22.7% >= 18%) above cost of capital",
           "Earnings Growth: High revenue CAGR (51.0% >= 15%)",
-          "Valuation: Attractive valuation: PEG=0.22 or P/E (22.3x) at steep discount to Diversified/Other benchmark (20.0x)",
+          "Valuation: Attractive valuation: PEG=0.22 or P/E (22.4x) at steep discount to Diversified/Other benchmark (20.0x)",
           "Balance Sheet: Virtually debt-free balance sheet (D/E: 0.12)"
         ],
         "key_risks": [
           "Cash Flow: Accrual Warning: 5Y CFO/PAT is 13.3% (<50%) indicates paper earnings",
           "Promoter holding has decreased over last 3 years: -3.48%"
+        ],
+        "forward_estimates": {
+          "symbol": "BALUFORGE",
+          "trailing_pe": 20.89,
+          "forward_pe": 20.89,
+          "trailing_eps": 24.69,
+          "forward_eps": 24.69,
+          "peg_ratio": 1.2,
+          "target_median_price": 593.05,
+          "current_price": 515.7,
+          "analyst_upside_pct": 15.0,
+          "recommendation_key": "none",
+          "number_of_analyst_opinions": 0,
+          "forward_growth_pct": 0.0,
+          "is_value_trap": false,
+          "value_trap_reason": "",
+          "as_of_date": "2026-11-20",
+          "data_source": "YAHOO_DALAL_STREET_CONSENSUS"
+        },
+        "event_risk_level": "CLEAN",
+        "invalidation_triggers": [
+          "Capital Efficiency Invalidation: Quarterly ROCE/ROE falls below 15.9%",
+          "Governance Invalidation: Promoter share pledging increases above 10.0% (current: 0.0%)",
+          "Cash Conversion Invalidation: Trailing 12M Operating Cash Flow (CFO) turns negative",
+          "Regulatory / Integrity Invalidation: Statutory auditor resigns, adverse opinion issued, or ED/SEBI raid",
+          "Structural Technical Invalidation: Weekly closing breaks below 200-SMA baseline on volume"
         ]
       }
     }

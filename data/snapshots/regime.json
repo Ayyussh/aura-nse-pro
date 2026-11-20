@@ -54,46 +54,47 @@
       "is_outperforming": false
     }
   ],
-  "macro_pressure_index": 35.0,
+  "macro_pressure_index": 25.0,
   "macro_regime_impact": "GOLDILOCKS",
   "macro_factors": {
     "as_of_date": "2026-11-20",
-    "macro_pressure_index": 35.0,
+    "macro_pressure_index": 25.0,
     "regime_impact": "GOLDILOCKS",
     "brent_crude": {
       "symbol": "BZ=F",
       "name": "Brent Crude Oil ($/bbl)",
-      "current_value": 89.3,
-      "change_5d_pct": -6.82,
-      "change_20d_pct": -17.92,
+      "current_value": 88.98,
+      "change_5d_pct": -7.16,
+      "change_20d_pct": -18.21,
       "interpretation": "Stable / Benign"
     },
     "us_10y_yield": {
       "symbol": "^TNX",
       "name": "US 10-Year Treasury Yield (%)",
-      "current_value": 5.05,
-      "change_5d_pct": -1.0,
-      "change_20d_pct": -1.5,
+      "current_value": 4.97,
+      "change_5d_pct": -3.53,
+      "change_20d_pct": -5.3,
       "interpretation": "Yields controlled"
     },
     "usdinr": {
       "symbol": "USDINR=X",
       "name": "USD / INR Exchange Rate",
-      "current_value": 92.69,
-      "change_5d_pct": -1.43,
-      "change_20d_pct": -2.43,
+      "current_value": 92.66,
+      "change_5d_pct": -1.46,
+      "change_20d_pct": -2.46,
       "interpretation": "Rupee orderly"
     },
     "dxy": {
       "symbol": "DX-Y.NYB",
       "name": "US Dollar Index (DXY)",
-      "current_value": 103.82,
-      "change_5d_pct": 0.4,
-      "change_20d_pct": 2.06,
+      "current_value": 103.65,
+      "change_5d_pct": 0.23,
+      "change_20d_pct": 1.89,
       "interpretation": "Dollar neutral"
     },
     "tailwinds": [
-      "Brent Crude softened -6.8% in 5 days (positive for Indian margins)",
+      "Brent Crude softened -7.2% in 5 days (positive for Indian margins)",
+      "US 10Y Yield declined -3.5% (liquidity tailwind)",
       "Rupee appreciation indicates positive capital inflow"
     ],
     "headwinds": [
@@ -111,9 +112,9 @@
     "total_call_oi": 15000000,
     "total_put_oi": 15300000,
     "sentiment": "NEUTRAL",
-    "as_of_timestamp": "2026-11-20T19:05:39.529243",
+    "as_of_timestamp": "2026-11-20T13:54:10.636757",
     "data_source": "BENCHMARK_DERIVATIVES_BASELINE"
   },
-  "evaluated_at": "2026-11-20T13:36:15.740612",
-  "snapshot_generated_at": "2026-11-20T19:06:15.709951+05:30"
+  "evaluated_at": "2026-11-20T13:54:11.872502",
+  "snapshot_generated_at": "2026-11-20T19:24:08.859306+05:30"
 }
