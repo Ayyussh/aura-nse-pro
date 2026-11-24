@@ -1,5 +1,5 @@
 {
-  "as_of_date": "2026-11-23",
+  "as_of_date": "2026-11-25",
   "evaluation_period": "1-Year Purged Walk-Forward (Gate G2 Tested)",
   "swing_strategy": {
     "strategy_name": "AURA Institutional Swing Alpha",
@@ -18,9 +18,9 @@
   "compounder_strategy": {
     "strategy_name": "AURA Multi-Year Value Compounders",
     "horizon": "1 to 3+ Years",
-    "active_compounders_screened": 15,
+    "active_compounders_screened": 17,
     "average_roce_pct": 24.5,
-    "average_margin_of_safety_pct": 30.9,
+    "average_margin_of_safety_pct": 30.7,
     "average_debt_to_equity": 0.14,
     "cash_conversion_cfo_to_pat_pct": 102.5,
     "corporate_governance_veto_pass_rate": 100.0

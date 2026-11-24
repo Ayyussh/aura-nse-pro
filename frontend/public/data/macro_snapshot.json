@@ -1,41 +1,42 @@
 {
-  "as_of_date": "2026-11-23",
-  "macro_pressure_index": 35.0,
+  "as_of_date": "2026-11-25",
+  "macro_pressure_index": 25.0,
   "regime_impact": "GOLDILOCKS",
   "brent_crude": {
     "symbol": "BZ=F",
     "name": "Brent Crude Oil ($/bbl)",
-    "current_value": 89.29,
-    "change_5d_pct": -3.41,
-    "change_20d_pct": -21.1,
+    "current_value": 88.33,
+    "change_5d_pct": -5.16,
+    "change_20d_pct": -23.73,
     "interpretation": "Stable / Benign"
   },
   "us_10y_yield": {
     "symbol": "^TNX",
     "name": "US 10-Year Treasury Yield (%)",
-    "current_value": 4.91,
-    "change_5d_pct": -4.7,
-    "change_20d_pct": -7.04,
+    "current_value": 4.9,
+    "change_5d_pct": -3.9,
+    "change_20d_pct": -5.85,
     "interpretation": "Yields controlled"
   },
   "usdinr": {
     "symbol": "USDINR=X",
     "name": "USD / INR Exchange Rate",
-    "current_value": 92.66,
-    "change_5d_pct": -1.67,
-    "change_20d_pct": -2.17,
+    "current_value": 92.91,
+    "change_5d_pct": -1.12,
+    "change_20d_pct": -2.14,
     "interpretation": "Rupee orderly"
   },
   "dxy": {
     "symbol": "DX-Y.NYB",
     "name": "US Dollar Index (DXY)",
-    "current_value": 103.77,
-    "change_5d_pct": 0.21,
-    "change_20d_pct": 2.13,
+    "current_value": 103.8,
+    "change_5d_pct": 0.3,
+    "change_20d_pct": 1.81,
     "interpretation": "Dollar neutral"
   },
   "tailwinds": [
-    "US 10Y Yield declined -4.7% (liquidity tailwind)",
+    "Brent Crude softened -5.2% in 5 days (positive for Indian margins)",
+    "US 10Y Yield declined -3.9% (liquidity tailwind)",
     "Rupee appreciation indicates positive capital inflow"
   ],
   "headwinds": [
