@@ -1,7 +1,7 @@
 {
-  "status": "PRE_OPEN_AUCTION",
+  "status": "PRE_MARKET_AWAITING",
   "is_trading_day": true,
-  "current_time_ist": "09:11:23",
-  "next_trading_day": "2026-11-25",
-  "snapshot_generated_at": "2026-11-25T09:11:23.288158+05:30"
+  "current_time_ist": "01:28:21",
+  "next_trading_day": "2026-11-26",
+  "snapshot_generated_at": "2026-11-26T01:28:21.905221+05:30"
 }

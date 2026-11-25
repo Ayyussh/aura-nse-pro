@@ -1,6 +1,6 @@
 {
-  "scan_date": "2026-11-25",
-  "scan_timestamp": "2026-11-25 02:00:58 IST",
+  "scan_date": "2026-11-26",
+  "scan_timestamp": "2026-11-26 01:28:18 IST",
   "total_screened": 750,
   "undervalued_count": 17,
   "value_picks": [
@@ -3455,12 +3455,44 @@
       }
     }
   ],
-  "screened_out_count": 720,
+  "screened_out_count": 737,
   "screened_out": [
+    {
+      "symbol": "ICICIBANK.NS",
+      "passed": true,
+      "margin_of_safety_pct": 0.0,
+      "reasons": [
+        "Trading above fair value (No margin of safety)"
+      ]
+    },
     {
       "symbol": "CHOLAFIN.NS",
       "passed": true,
-      "margin_of_safety_pct": -7.58,
+      "margin_of_safety_pct": 0.0,
+      "reasons": [
+        "Trading above fair value (No margin of safety)"
+      ]
+    },
+    {
+      "symbol": "TCS.NS",
+      "passed": true,
+      "margin_of_safety_pct": 0.0,
+      "reasons": [
+        "Trading above fair value (No margin of safety)"
+      ]
+    },
+    {
+      "symbol": "BAJAJ-AUTO.NS",
+      "passed": true,
+      "margin_of_safety_pct": 0.0,
+      "reasons": [
+        "Trading above fair value (No margin of safety)"
+      ]
+    },
+    {
+      "symbol": "JSWSTEEL.NS",
+      "passed": true,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
         "Trading above fair value (No margin of safety)"
       ]
@@ -3468,7 +3500,7 @@
     {
       "symbol": "ITC.NS",
       "passed": false,
-      "margin_of_safety_pct": -21.63,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
         "YoY Revenue Growth 3.9% below 10.0%.",
         "YoY Earnings Growth -18.8% below 12.0%."
@@ -3477,7 +3509,7 @@
     {
       "symbol": "RELIANCE.NS",
       "passed": false,
-      "margin_of_safety_pct": -60.93,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
         "ROE 8.8% below institutional minimum of 15.0%."
       ]
@@ -3485,7 +3517,7 @@
     {
       "symbol": "SUNPHARMA.NS",
       "passed": false,
-      "margin_of_safety_pct": -155.75,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
         "ROE 13.1% below institutional minimum of 15.0%.",
         "P/E ratio 40.9 exceeds hard cap of 35.0.",
@@ -3495,7 +3527,7 @@
     {
       "symbol": "LT.NS",
       "passed": false,
-      "margin_of_safety_pct": -49.58,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
         "Debt-to-Equity 1.05 exceeds conservative ceiling 0.8."
       ]
@@ -3503,7 +3535,7 @@
     {
       "symbol": "BSE.NS",
       "passed": false,
-      "margin_of_safety_pct": -115.25,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
         "P/E ratio 51.7 exceeds hard cap of 35.0."
       ]
@@ -3511,7 +3543,7 @@
     {
       "symbol": "HDFCBANK.NS",
       "passed": false,
-      "margin_of_safety_pct": 25.79,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
         "ROE 11.0% below institutional minimum of 15.0%."
       ]
@@ -3519,7 +3551,7 @@
     {
       "symbol": "BAJFINANCE.NS",
       "passed": true,
-      "margin_of_safety_pct": -34.29,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
         "Trading above fair value (No margin of safety)"
       ]
@@ -3529,7 +3561,7 @@
       "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b91103.40 is below 200-day SMA \u20b91177.13 (downtrend)"
+        "YoY Revenue Growth 1.4% below 10.0%."
       ]
     },
     {
@@ -3537,7 +3569,7 @@
       "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b9286.85 is below 200-day SMA \u20b93180.79 (downtrend)"
+        "Debt-to-Equity 1.33 exceeds conservative ceiling 0.8."
       ]
     },
     {
@@ -3545,7 +3577,9 @@
       "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b9163.00 is below 200-day SMA \u20b9193.32 (downtrend)"
+        "ROE 11.7% below institutional minimum of 15.0%.",
+        "Debt-to-Equity 0.97 exceeds conservative ceiling 0.8.",
+        "Compounder Score 56.0/100 below 60.0 hurdle (GRADE C (Mediocre / Cyclical))."
       ]
     },
     {
@@ -3553,7 +3587,8 @@
       "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b92019.10 is below 200-day SMA \u20b92113.93 (downtrend)"
+        "P/E ratio 47.5 exceeds hard cap of 35.0.",
+        "YoY Earnings Growth 3.9% below 12.0%."
       ]
     },
     {
@@ -3561,13 +3596,13 @@
       "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b9222.85 is below 200-day SMA \u20b9254.03 (downtrend)"
+        "ROE 12.1% below institutional minimum of 15.0%."
       ]
     },
     {
       "symbol": "CIPLA.NS",
       "passed": false,
-      "margin_of_safety_pct": -142.06,
+      "margin_of_safety_pct": 0.0,
       "reasons": [
         "ROE 8.3% below institutional minimum of 15.0%.",
         "P/E ratio 38.7 exceeds hard cap of 35.0.",
@@ -3580,50 +3615,16 @@
       "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b93578.10 is below 200-day SMA \u20b93590.33 (downtrend)"
+        "P/E ratio 83.4 exceeds hard cap of 35.0.",
+        "Compounder Score 56.0/100 below 60.0 hurdle (GRADE C (Mediocre / Cyclical))."
       ]
     },
     {
       "symbol": "MCX.NS",
       "passed": false,
-      "margin_of_safety_pct": -166.33,
-      "reasons": [
-        "P/E ratio 63.9 exceeds hard cap of 35.0."
-      ]
-    },
-    {
-      "symbol": "SBIN.NS",
-      "passed": false,
-      "margin_of_safety_pct": 51.75,
-      "reasons": [
-        "ROE 14.7% below institutional minimum of 15.0%.",
-        "YoY Revenue Growth 7.8% below 10.0%."
-      ]
-    },
-    {
-      "symbol": "MUTHOOTFIN.NS",
-      "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "Price \u20b92543.30 is below 200-day SMA \u20b93104.32 (downtrend)"
-      ]
-    },
-    {
-      "symbol": "HCLTECH.NS",
-      "passed": false,
-      "margin_of_safety_pct": -25.37,
-      "reasons": [
-        "YoY Revenue Growth 2.2% below 10.0%.",
-        "YoY Earnings Growth 10.8% below 12.0%."
-      ]
-    },
-    {
-      "symbol": "MARUTI.NS",
-      "passed": false,
-      "margin_of_safety_pct": -133.93,
-      "reasons": [
-        "ROE 12.9% below institutional minimum of 15.0%.",
-        "YoY Earnings Growth -26.4% below 12.0%."
+        "P/E ratio 63.9 exceeds hard cap of 35.0."
       ]
     }
   ],
