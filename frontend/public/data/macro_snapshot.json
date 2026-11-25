@@ -5,9 +5,9 @@
   "brent_crude": {
     "symbol": "BZ=F",
     "name": "Brent Crude Oil ($/bbl)",
-    "current_value": 88.33,
-    "change_5d_pct": -5.16,
-    "change_20d_pct": -23.73,
+    "current_value": 87.69,
+    "change_5d_pct": -5.85,
+    "change_20d_pct": -24.28,
     "interpretation": "Stable / Benign"
   },
   "us_10y_yield": {
@@ -21,21 +21,21 @@
   "usdinr": {
     "symbol": "USDINR=X",
     "name": "USD / INR Exchange Rate",
-    "current_value": 92.91,
-    "change_5d_pct": -1.12,
-    "change_20d_pct": -2.14,
+    "current_value": 92.73,
+    "change_5d_pct": -0.8,
+    "change_20d_pct": -2.33,
     "interpretation": "Rupee orderly"
   },
   "dxy": {
     "symbol": "DX-Y.NYB",
     "name": "US Dollar Index (DXY)",
-    "current_value": 103.8,
-    "change_5d_pct": 0.3,
-    "change_20d_pct": 1.81,
+    "current_value": 103.92,
+    "change_5d_pct": 0.41,
+    "change_20d_pct": 1.92,
     "interpretation": "Dollar neutral"
   },
   "tailwinds": [
-    "Brent Crude softened -5.2% in 5 days (positive for Indian margins)",
+    "Brent Crude softened -5.9% in 5 days (positive for Indian margins)",
     "US 10Y Yield declined -3.9% (liquidity tailwind)",
     "Rupee appreciation indicates positive capital inflow"
   ],
