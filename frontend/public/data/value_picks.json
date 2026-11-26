@@ -1,6 +1,6 @@
 {
-  "scan_date": "2026-11-26",
-  "scan_timestamp": "2026-11-26 01:28:18 IST",
+  "scan_date": "2026-11-27",
+  "scan_timestamp": "2026-11-27 01:09:06 IST",
   "total_screened": 750,
   "undervalued_count": 17,
   "value_picks": [
@@ -3587,7 +3587,7 @@
       "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "P/E ratio 47.5 exceeds hard cap of 35.0.",
+        "P/E ratio 47.3 exceeds hard cap of 35.0.",
         "YoY Earnings Growth 3.9% below 12.0%."
       ]
     },
@@ -3615,7 +3615,7 @@
       "passed": false,
       "margin_of_safety_pct": 0.0,
       "reasons": [
-        "P/E ratio 83.4 exceeds hard cap of 35.0.",
+        "P/E ratio 83.7 exceeds hard cap of 35.0.",
         "Compounder Score 56.0/100 below 60.0 hurdle (GRADE C (Mediocre / Cyclical))."
       ]
     },
