@@ -3,51 +3,53 @@
   "is_shadow_mode": false,
   "sizing_multiplier": 1.0,
   "description": "Favorable / Bullish: NIFTY trading above key short-term EMAs and India VIX remains subdued (<= 18).",
-  "nifty_close": NaN,
-  "nifty_20_ema": 24755.43,
-  "nifty_50_ema": 24076.98,
-  "nifty_200_sma": NaN,
-  "nifty_above_20ema": false,
-  "nifty_above_50ema": false,
-  "nifty_above_200sma": false,
-  "india_vix": NaN,
-  "vix_5d_change": NaN,
-  "top_leading_sectors": [],
+  "nifty_close": 25884.5,
+  "nifty_20_ema": 24862.96,
+  "nifty_50_ema": 24147.86,
+  "nifty_200_sma": 24003.92,
+  "nifty_above_20ema": true,
+  "nifty_above_50ema": true,
+  "nifty_above_200sma": true,
+  "india_vix": 16.84,
+  "vix_5d_change": 1.27,
+  "top_leading_sectors": [
+    "Banking"
+  ],
   "sector_rankings": [
     {
       "sector": "Banking",
-      "monthly_return_pct": NaN,
-      "relative_strength": NaN,
-      "is_outperforming": false
-    },
-    {
-      "sector": "IT",
-      "monthly_return_pct": NaN,
-      "relative_strength": NaN,
-      "is_outperforming": false
+      "monthly_return_pct": 17.71,
+      "relative_strength": 3.93,
+      "is_outperforming": true
     },
     {
       "sector": "Auto",
-      "monthly_return_pct": NaN,
-      "relative_strength": NaN,
+      "monthly_return_pct": 12.95,
+      "relative_strength": -0.83,
       "is_outperforming": false
     },
     {
       "sector": "Pharma",
-      "monthly_return_pct": NaN,
-      "relative_strength": NaN,
+      "monthly_return_pct": 10.75,
+      "relative_strength": -3.03,
       "is_outperforming": false
     },
     {
       "sector": "Energy",
-      "monthly_return_pct": NaN,
-      "relative_strength": NaN,
+      "monthly_return_pct": 4.59,
+      "relative_strength": -9.19,
+      "is_outperforming": false
+    },
+    {
+      "sector": "IT",
+      "monthly_return_pct": 3.72,
+      "relative_strength": -10.06,
       "is_outperforming": false
     },
     {
       "sector": "Metals",
-      "monthly_return_pct": NaN,
-      "relative_strength": NaN,
+      "monthly_return_pct": -0.79,
+      "relative_strength": -14.57,
       "is_outperforming": false
     }
   ],
@@ -60,9 +62,9 @@
     "brent_crude": {
       "symbol": "BZ=F",
       "name": "Brent Crude Oil ($/bbl)",
-      "current_value": 91.65,
-      "change_5d_pct": -0.36,
-      "change_20d_pct": -20.86,
+      "current_value": 92.05,
+      "change_5d_pct": 0.08,
+      "change_20d_pct": -20.52,
       "interpretation": "Stable / Benign"
     },
     "us_10y_yield": {
@@ -76,17 +78,17 @@
     "usdinr": {
       "symbol": "USDINR=X",
       "name": "USD / INR Exchange Rate",
-      "current_value": 92.43,
-      "change_5d_pct": -1.1,
-      "change_20d_pct": -2.64,
+      "current_value": 92.24,
+      "change_5d_pct": -1.31,
+      "change_20d_pct": -3.1,
       "interpretation": "Rupee orderly"
     },
     "dxy": {
       "symbol": "DX-Y.NYB",
       "name": "US Dollar Index (DXY)",
-      "current_value": 103.79,
-      "change_5d_pct": -0.11,
-      "change_20d_pct": 1.79,
+      "current_value": 103.65,
+      "change_5d_pct": -0.24,
+      "change_20d_pct": 1.65,
       "interpretation": "Dollar neutral"
     },
     "tailwinds": [
@@ -108,9 +110,9 @@
     "total_call_oi": 15000000,
     "total_put_oi": 15300000,
     "sentiment": "NEUTRAL",
-    "as_of_timestamp": "2026-11-26T19:39:12.160904",
+    "as_of_timestamp": "2026-11-27T02:59:19.698456",
     "data_source": "BENCHMARK_DERIVATIVES_BASELINE"
   },
-  "evaluated_at": "2026-11-26T19:39:13.218270",
-  "snapshot_generated_at": "2026-11-27T01:09:10.467913+05:30"
+  "evaluated_at": "2026-11-27T03:02:27.273163",
+  "snapshot_generated_at": "2026-11-27T08:32:27.261309+05:30"
 }
